@@ -1,0 +1,423 @@
+NAME
+
+    dpaView - manipulate DPA ports
+
+
+SYNOPSIS
+
+    DPA test and configuration tool
+
+
+DESCRIPTION
+
+    The dpaView utility is a (bash) script-based utility that provides a control and status interface to DPA hardware. dpaView exposes several layers of status and control information, allowing the user to perform a range of tasks from setting register bits to initializing all installed DPAs using a few commands. The utility is implemented as a thin shell wrapper, allowing the user to execute shell commands from within dpaView, and to place instructions in a text file and use them as input for batch operations. As a shell script, it may be used in a minimal environment, and is easily modified without special tools.
+
+     dpaView provides built in help for the commands; (type 'help') at the prompt for assistance.
+
+NOTE: Do not run dpaView while the SIAM application is running, as it will interfere with the MMC SPI bus
+
+ENVIRONMENT
+
+      dpaView is intended for use on a sideArm board, connected to DPAs via a backplane. The following components must be on the sidearm:
+          o sa1110spi kernel module must be installed
+          o sa1110gpio c. kernel module must be installed
+          o bash shell
+          o A text editor is optional (for creating script files)
+
+COMMAND REFERENCE
+
+###########################
+#
+# List of dpaView Commands
+#
+###########################
+
+    ## Control Commands ##
+
+    comms           (com)   enable/disable comms
+    setComms        (scom)  set comm parameters
+    power           (pow)   turn instrument power on/off
+    relays          (rel)   connect/isolate relays
+    interrupts      (ints)  enable/disable interrupts
+    init            (ini)   initialize DPAs
+    setCurrentLimit (scl)   set DPA current limit (counts)
+    setCurrentMa    (scm)   set DPA current limit (mA)
+    ocReset         (ocr)   reset overcurrent interrupt
+
+    ## Status Commands ##
+
+    probe           (pro)   detect installed DPAs
+    status          (sta)   get current state of hardware
+    ocStatus        (ocs)   get overcurrent status (aliases getInterrupts)
+    readAdcChannel  (radc)  read ADC channels
+    getRelays       (grel)  get relay state
+    getControls     (gcon)  get channel control state
+    getInterrupts   (gints) get interrupt state
+
+
+    ## Information Commands ##
+
+    help                    print this message
+    show                    show variable value
+    debug           (dbg)   enable or disable debug messages
+
+    ## Program Commands ##
+
+    prev            (pre)  executes previous command
+    exit                   quits dpaView
+
+    ## Tips ##
+
+    * Type command name with no options for info
+    * Type help reg to see register map
+    * Bash shell commands are also available
+
+###############
+#
+# Command Help
+#
+###############
+
+
+###################################
+# 
+# comms (com)
+#
+# Description:
+# Enable or disable communications
+#
+###################################
+dpaView> comms
+
+  Use: comms <dpa|a> <channel[0|1|a]> <on|off>
+  alias: com
+
+###################################
+# 
+# setComms (scom)
+#
+# Description:
+# Set communications parameters
+#
+###################################
+dpaView> setComms
+
+  Use: setComms <dpa|a> <channel[0|1|a]>
+                [<mode [(2)32|(4)85]>] [<slew[f|s]>] [<dir[o|l]>] [<dup [f|h]>] 
+  alias: scom
+
+###################################
+# 
+# power (pow)
+#
+# Description:
+# Turn power on/off
+#
+###################################
+dpaView> power
+
+  Use: power <dpa|a> <channel[0|1|a]> <on|off>
+  alias: pow
+
+###################################
+# 
+# relays (rel)
+#
+# Description:
+# Isolate/connect relays
+# enable/disable RS485 termination resistors
+#
+###################################
+dpaView> relays
+
+  Use: relays <dpa|a> <channel[0|1|a]> <options[tcpa]> <con|iso>
+    t - RS485 terminations
+    c - Communications isolation
+    p - Power isolation
+    a - all
+  alias: rel
+
+###################################
+# 
+# interrupts (ints)
+#
+# Description:
+# Set, clear, enable, disable interrupts
+#
+###################################
+dpaView> interrupts
+
+  Use: interrupts <dpa|a> <interrupt[0|1|g|a]> <set|clr|en|dis>
+  alias: ints
+
+###################################
+# 
+# init (ini)
+#
+# Description:
+# Initialize DPA channel(s)
+#
+###################################
+dpaView> init
+
+  Use: init <dpa[0|1|a]> <chan[0|1|a]> [<iLimit mA>
+            <chControlMask>  <relayMask> <intEnableMask>]
+
+       Defaults:
+         iLimit        (dec) - 0x01E0 (480 mA)
+         chControl     (hex) - 0x0020
+         relayMask     (hex) - 0x0003
+         interruptMask (hex) - 0x0038
+  alias: ini
+
+###################################
+# 
+# setCurrentLimit (scl)
+#
+# Description:
+# Set current limit (counts)
+#
+###################################
+dpaView> setCurrentLimit
+
+  Use: setCurrentLimit <dpa|a> <channel[0|1|a]> <counts>
+
+  counts: 0.12 Amps/count (0-12 Amps, 0-99 counts full scale)
+
+  alias: scl
+
+###################################
+# 
+# setCurrentMa (scm)
+#
+# Description:
+# Set current limit (milliAmps)
+#
+###################################
+dpaView> setCurrentMa
+
+  Use: setCurrentMa <dpa|a> <channel[0|1|a]> <milliamps>
+
+  milliamps: 0-12000
+
+  alias: scm
+
+###################################
+# 
+# ocReset (ocr)
+#
+# Description:
+# Reset over-current trip
+#
+###################################
+dpaView> ocReset
+
+  Use: ocReset <dpa|a> <0|1|a>
+  alias: ocr
+
+###################################
+# 
+# probe (pro)
+#
+# Description:
+# Probe DPA slots and report which
+# are populated
+#
+###################################
+dpaView> probe
+
+  Use: probe <dpa|a]> [q]
+       q -  quiet, don't display output
+  alias: pro
+
+###################################
+# 
+# status (sta)
+#
+# Description:
+# Report status of DPA slots, relays
+# controls and interrupt settings
+#
+###################################
+dpaView> status
+
+  Use: status <dpa|a> <channel[0|1|a]> <options[prcia]>
+    p - probe
+    r - relays
+    c - control
+    i - interrupts
+    a - all
+  alias: sta
+
+###################################
+# 
+# ocStatus (ocs)
+#
+# Description:
+# Report interrupt status 
+#
+###################################
+dpaView> ocStatus
+
+  Use: ocStatus <dpa|a> 
+  alias: ocs, gints
+
+###################################
+# 
+# readAdcChannel ()
+#
+# Description:
+# Read ADC channel(s)
+#
+###################################
+dpaView> readAdcChannel
+
+  Use: readAdcChannel <dpa|a> <AdcChannels[01234567a]>
+       AdcChannels:
+         0: Ch 1 Current
+         1: Ch 1 Trip
+         2: Ch 1 Voltage
+         3: Heatsink Temp
+         4: Ch 2 Current
+         5: Ch 2 Trip
+         6: Ch 2 Voltage
+         7: Battery Supply Voltage
+         a: all
+
+###################################
+# 
+# getRelays (grel)
+#
+# Description:
+# Read relay settings
+#
+###################################
+dpaView> getRelays 
+
+  Use: getRelays <dpa|a> <channel[0|1|a]> [q]
+       q -  quiet, don't display output
+  alias: grel
+
+###################################
+# 
+# getControls (gcon)
+#
+# Description:
+# Read control settings
+#
+###################################
+dpaView> getControls
+
+  Use: getControls <dpa|a> <chan[0|1|a]> [q]
+       q -  quiet, don't display output
+  alias: gcon
+
+###################################
+# 
+# getInterrupts (gints)
+#
+# Description:
+# Read control settings
+#
+###################################
+dpaView> getInterrupts
+
+  Use: getInterrupts <dpa|a> [q]
+       q -  quiet, don't display output
+  alias: gints
+
+################################
+#
+# Register Map (cmd: help reg)
+#
+# Description:
+# Display map of DPA registers
+#
+################################
+
+dpaView> help reg
+  ## Control Reg Map   ##
+     <11:8> 0
+     <7> Status               1=OK         0=Fault
+     <6> Reserved             undefined
+     <5> SerialDirection      1=On         0=LowPower
+     <4> CommSlewRate         1=Fast       0=SRL
+     <3> CommMode             1=485        0=232
+     <2> CommDuplex           1=Half       0=Full
+     <1> CommPower            1=On         0=Off
+     <0> Instrument Power     1=On         0=Off
+
+  ## Relays Reg Map    ##
+     <11:3> unused
+     <2> 485 Terminators      1=Connected  0=Isolated
+     <1> CommPowerRelay       1=Isolated   0=Connected
+     <0> InstrumentPowerRelay 1=Isolated   0=Connected
+
+  ## DPOT Reg Map      ##
+     <11:9>                   unused
+     <8> Direction            1=Up         0=Down
+     <7> SavePosition         1=Save       0=NOOP
+     <6:0> Counts             (range 0 to 99d)
+
+  ## Interrupt Reg Map ##
+     <11:6> 0
+     <5> Ch1OverCurrentIntEn 1=Enabled     0=Disabled
+     <4> Ch2OverCurrentIntEn 1=Enabled     0=Disabled
+     <3> GlobalEnable        1=Enabled     0=Disabled
+     <2> Ch2OverCurrentFlag  1=Overcurrent 0=OK
+     <1> Ch1OverCurrentFlag  1=Overcurrent 0=OK
+     <0> GlobalFlag          1=Overcurrent 0=OK
+
+  ## ADC Reg Map       ##
+     <11:8> 0
+     <7> PowerDownMode1      (see notes)
+     <6> PowerDownMode0      (see notes)
+     <5> AcquisitionMode     0=Ext         1=Int
+     <4> MeasurementType     0=Single      0=Differential
+     <3> Polarity            0=Unipolar    1=Bipolar
+     <2> Channel Address     2
+     <1> Channel Address     1
+     <0> Channel Address     0
+
+     Notes:
+     PowerDownModes:
+       00=Full
+       01=Stby
+       10=Normal,IntClock
+       11=Normal,ExtClock
+
+     ADC Channels:
+       0:      VBat   (5.8*Vin)
+       1: Ch 2 Vsense (6*Vin)
+       2: Ch 2 Trip Level Sense
+       3: Ch 2 Current Sense
+       4:      Heat Sink Temp
+       5: Ch 1 Vsense (6*Vin)
+       6: Ch 1 Trip Level Sense
+       7: Ch 1 Current Sense
+
+###################################
+#
+# Show (cmd: show)
+#
+# Description: 
+# Show values of dpaView variables
+#
+###################################
+
+dpaView> show
+Use: show $<variable>
+Variables:
+  ADC_REG
+  ADC_STAT
+  CONTROL_REG
+  CONTROL_STAT
+  DEBUG
+  DPA_RTN
+  DPOT_REG
+  DPOT_STAT
+  INTERRUPT_REG
+  INTERRUPT_STAT
+  RELAY_REG
+  RELAY_STAT
+  SPI_CS

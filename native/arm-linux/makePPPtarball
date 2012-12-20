@@ -1,0 +1,30 @@
+#!/bin/sh
+#  create an installation tarball to put ppp and globalstar support onto
+#  the sidearm -- brent@mbari.org 2/24/04
+#
+tarFile=mooringPPP-0.1
+src=$PWD
+mooringDir=$src/../linux/mooring
+tmpDir=/tmp/mooring
+rm -rf /tmp/mooring 2>/dev/null
+mkdir /tmp/mooring
+cd /tmp/mooring
+mkdir -p dev usr/local/bin usr/sbin
+cp -a $mooringDir/* .
+rm -rf `find -type d -a -name "CVS*"`
+cp $src/nanocom usr/local/bin
+cd dev
+ln -s ttySX12 globalstar
+cd ../etc/ppp/peers
+ln -s pap-secrets chap-secrets
+ln -s pap-secrets srp-secrets
+cd $tmpDir
+tar --owner=root --group=root -cvf $src/$tarFile.tar etc dev root usr
+cp $src/ppp/pppd usr/sbin
+chmod u+s usr/sbin/pppd
+#group 54 is the lock group on the debian mooring target machines
+#the ops user is a member of the lock group so it can run pppd
+tar --owner=root --group=54 -rvf $src/$tarFile.tar usr/sbin/pppd
+cd $src
+gzip $tarFile.tar
+mv $tarFile.tar.gz $tarFile.tgz

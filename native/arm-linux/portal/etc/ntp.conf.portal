@@ -1,0 +1,23 @@
+#restrict default ignore
+#restrict 127.0.0.1
+
+# MTM3
+#restrict 10.1.1.2
+
+# MSE
+#restrict 10.1.1.0 mask 255.255.255.0 
+#restrict 10.1.36.0 mask 255.255.255.0 
+#restrict 134.89.36.0 mask 255.255.255.0 
+
+
+driftfile /etc/ntp/drift
+broadcastdelay 0.008
+#authenticate yes
+#keys /etc/ntp/keys
+
+# Servers
+server Time-sh1.shore.mbari.org version 3 prefer
+server Time-sh2.shore.mbari.org version 3
+server Time-sh3.shore.mbari.org version 3
+server Time-sh4.shore.mbari.org version 3
+

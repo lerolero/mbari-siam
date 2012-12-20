@@ -1,0 +1,21 @@
+replot=0
+set terminal jpeg
+set xdata time
+set timefmt "%m/%d/%Y %H:%M:%S"
+set format x "%m/%d/%Y %H:%M:%S"
+set xlabel "Connection"
+set xtics rotate
+
+set output "/home/ops/mse/siam/shoreUtils/portalStats/statFiles/Connection_Volume.jpg"
+set title "Connection Volume - All Volume and Data Only Volume"
+set ylabel "Volume (Kbytes)"
+#set yrange [0:1300]
+set datafile separator ";"
+set style line 1 lt 1 lw 1 pt 1 ps 1
+set style data linespoints
+set clip two
+set key outside Right noautotitle
+set multiplot
+
+plot "/home/ops/mse/siam/shoreUtils/portalStats/statFiles/volume_Data.dat" using 1:2 t "Application Only Volume",\
+"/home/ops/mse/siam/shoreUtils/portalStats/statFiles/volume_Data.dat" using 1:3 t "Total PPP Volume"

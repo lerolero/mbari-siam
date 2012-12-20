@@ -1,0 +1,8 @@
+
+# Run the shore messaging service
+I0:2:respawn:/etc/runShoreMsgService &> /dev/null
+
+# Run the simulated shore messaging service
+#I0:2:respawn:/etc/runSimShoreMsgService &> /dev/null
+
+

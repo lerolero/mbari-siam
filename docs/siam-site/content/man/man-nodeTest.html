@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>nodeTest Manual Page</title>
+<link href="../../css/content.css" rel="stylesheet" type="text/css" />
+<link href="../../css/manpage.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+<div class="nameHeader">
+	<h1>Name</h1> 
+ <div class="nameText">
+	<h2>nodeTest <!-- name text here --></h2>
+ </div>
+</div>
+
+<div class="synopsisHeader">
+	<h1>Synopsis</h1>
+ <div class="synopsisText">
+				<div class="commands">nodeTest <em class="options"></em></div>
+ </div>
+</div>
+
+<div class="descriptionHeader">
+	<h1>Description</h1>
+ <div class="descriptionText">
+	<p>
+	<!-- description text here -->
+The nodeTest utility runs the SIAM node application on the localhost.
+The node contains a NodeService and InstrumentService distributed objects
+which are accessible across the network to other utilities such as listPorts,
+shutdownPort, and scanPort. 
+nodeTest is invoked without any arguments.
+	</p>	 
+	 <h2>Options</h2>
+none
+		 <p>
+		Example output:
+		output from the node application is redirected to a log file:</p><div class="path">SIAM_HOME/logs/nodeName.yyyymmddhhmm</div><p><br />
+		where nodeName is the hostname (from /etc/hostname) and yyyymmddhhmm is the date and time when the node was started.
+		</p>
+		 <p></p>
+	 </div>
+</div>
+
+<div class="environmentHeader">
+	<h1>Environment</h1>
+ <div class="environmentText">
+	<p>
+	<!-- description text here -->
+	The following environment variables must be set:
+	</p>	 
+			 <table class="altTable">
+				 <tr>
+					 <th>Variable</th>
+					 <th>Description</th>
+					 <th>Example</th>
+					 </tr>
+				 <tr>
+					 <td>JAVA_HOME </td>
+					 <td>location of Java installation</td>
+					 <td><div class="path"> /j9, /opt/java/jdk1.3.1, etc.</div></td>
+					 </tr>
+				 <tr class="alt">
+					 <td>JAVA</td>
+					 <td>Path to JVM command</td>
+					 <td>For MMC<div class="commands">$JAVA_HOME/bin/j9</div><br />For Sun JVM (e.g. linux, win32, mac OS) <div class="commands">$JAVA_HOME/bin/java</div>
+						 </td>
+					 </tr>
+				 <tr>
+					 <td>SIAM_HOME</td>
+					 <td>top of the SIAM directory tree</td>
+					 <td>-</td>
+					 </tr>
+				 <tr class="alt">
+					 <td>SIAM_CLASSPATH</td>
+					 <td>Path including all SIAM and supporting classes</td>
+					 <td>For MMC<div class="path">$JAVA_HOME/lib/jclMax/classes.zip:$JAVA_HOME/lib/prsnlmot.jar:$JAVA_HOME/lib/RXTXcomm.jar:$SIAM_HOME/classes</div><br />
+						 For linux/win32<div class="path"> $SIAM_HOME/classes</div></td>
+					 </tr>
+<!--
+				  <tr>
+				  <td></td>
+				  <td></td>
+				  <td>-</td>
+				  </tr>
+				  <tr class="alt">
+				  <td></td>
+				  <td></td>
+				  <td>-</td>
+				  </tr>
+	  -->
+				 </table>
+
+			 <p></p>
+ </div>
+</div>
+
+<div class="seeAlsoHeader">
+	<h1>See Also</h1>
+ <div class="seeAlsoText">
+  <div class="command"><a href="../configure.html#" target="mainFrame">Configuration guide</a>,<a href="man-node.html#" target="mainFrame">node</a></div>
+ </div>
+</div>
+
+
+</body>
+</html>

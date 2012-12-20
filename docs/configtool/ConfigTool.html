@@ -1,0 +1,1158 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   
+<meta name="Author" content="Kent Headley">
+   <meta name="GENERATOR" content="Mozilla/4.79 [en] (Windows NT 5.0; U) [Netscape]">
+   
+<title>ConfigTool</title>
+</head>
+<body>
+<b>NAME</b>
+<blockquote>ConfigTool</blockquote>
+<b>SYNOPSIS</b>
+<blockquote>
+  <pre>Configuration tools for MMC and SIAM</pre>
+</blockquote>
+<b>DESCRIPTION</b> 
+<blockquote> 
+  <p>Configuring MMC hardware and the SIAM application can be complicated, since 
+    the parameters are represented in a large number of files, which include Linux 
+    system files as well as application specific configuration files. Also, the 
+    logic for setting up a SIAM node is fairly complicated. There are also special 
+    configuration requirements, including the ability to configure a node via 
+    a serial console (i.e., in the absence of an ethernet network), and that the 
+    configuration tool be cross-platform.</p>
+  <p> <b>ConfigTool</b> is an application that addresses these requirements by 
+    presenting configuration parameters in logical groups, masking both the distributed 
+    nature of the configuration and the logic required to set up a SIAM node. 
+    ConfigTool is a web application (Java servlet) that runs inside of a Jetty 
+    servlet container/web server. ConfigTool implements the configuration logic, 
+    generates the HTML user interface and reads and writes the configuration files. 
+    The user interface may be operated using most common web browsers, including 
+    the <b>links</b> text-based browser which may be used over a serial console. 
+    The links browser is used by default when ConfigTool is run from the SIAM 
+    command line.</p>
+  <p> <b>Operation Overview</b></p>
+  <p>The ConfigTool server is started from the MMC command line using the wrapper 
+    script, <b>configt</b>, which starts the server and points the links browser 
+    to the ConfigTool URL to display the user interface. ConfigTool requires root 
+    permissions to run, and may not be run concurrently with the SIAM application 
+    (the configt script will not permit this). </p>
+  <p>The table below summarizes basic ConfigTool operations, like starting and 
+    stopping the server.</p>
+  <h4>Basic Operations</h4>
+  <table width="85%" border="1" cellpadding="5">
+    <tr> 
+      <td width="23%" height="274"><b>Starting ConfigTool using configt </b></td>
+      <td width="77%" height="274"> 
+        <p>Runs ConfigTool server and starts links browser<br>
+          <br>
+          Usage: <b>configt [-d] [-s &lt;delaySec&gt;] [-r &lt;id&gt;] [&lt;configTool 
+          options&gt;]</b><br>
+          -d : send output to configt.out [/dev/null]<br>
+          -s : start delay [20]<br>
+          -r : required uid (Win32 only) [0]<br>
+          --help : display use message</p>
+        <p> Notes:<br>
+          - configt must be run as root (<b>use su -m</b>) under Linux or the 
+          -r option must<br>
+          be used under Win32/Cygwin to set the root user ID.</p>
+        <p> - The SIAM application may not be run concurrently with configt.</p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="23%" height="274"> <b>Starting ConfigTool Server</b></td>
+      <td width="77%" height="274"> 
+        <p>&nbsp;</p>
+        <p>Exit the SIAM application before starting the ConfigTool server. </p>
+        <p>The ConfigTool server must be run as root. </p>
+        <p>Usage: <kbd>configTool -[wml] [-p &lt;configtool properties&gt;] </kbd></p>
+        <blockquote> 
+          <p>w: x86-Win32 <br>
+            m: MMC <br>
+            l: x86-Linux System <br>
+            p: properties file [default is $SIAM_HOME/properties/configtool.properties] 
+          </p>
+          <p>Starting the configTool server When running in the background,<br>
+            redirect output to a file to allow a text browser to run in the same 
+            session, e.g.: </p>
+          <blockquote> 
+            <p> <kbd>configTool -w -p myconfigtool.properties >& server.log & 
+              <br>
+              configTool -m >& /dev/null &</kbd></p>
+            <p>&nbsp;</p>
+          </blockquote>
+        </blockquote>
+      </td>
+    </tr>
+    <tr> 
+      <td width="23%" height="217"> <b>Starting the User Interface</b></td>
+      <td width="77%" height="217"> 
+        <p>&nbsp;</p>
+        <p>The user interface is accessed via web browser, by pointing to the 
+          configTool servlet URL:</p>
+        <blockquote> 
+          <p>Start links browser on localhost (in a different console session 
+            from the server or with server running in the background):</p>
+          <blockquote> 
+            <p><code><kbd>links http://localhost:8181/config</kbd></code></p>
+          </blockquote>
+          <p>Configure host node137:</p>
+          <blockquote> 
+            <p><code><kbd>http://node137:8181/config</kbd></code></p>
+          </blockquote>
+          <p>Configure host by IP address:</p>
+          <blockquote> 
+            <p><code><kbd>http://137.89.4.137:8181/config</kbd></code></p>
+            <p>&nbsp;</p>
+          </blockquote>
+        </blockquote>
+      </td>
+    </tr>
+    <tr> 
+      <td width="23%"> <b>Stopping the User Interface</b></td>
+      <td width="77%"> 
+        <p>&nbsp;</p>
+        <p>Stopping the user interface is done simply by exiting the web browser 
+          or directing the browser to another page.</p>
+        <p>To exit the links browser, use</p>
+        <blockquote> 
+          <p><kbd>ALT-F x </kbd></p>
+          <p>or</p>
+          <p><kbd>ESC f x </kbd>(ESC invokes the links menu bar, f selects the 
+            file menu, x exits links) </p>
+          <p>&nbsp;</p>
+        </blockquote>
+      </td>
+    </tr>
+    <tr> 
+      <td width="23%"> <b>Stopping the ConfigTool Server</b></td>
+      <td width="77%"> 
+        <p>&nbsp;</p>
+        <p>To stop the ConfigTool server, use the &quot;Exit ConfigTool&quot; 
+          button on the user interface main page.</p>
+        <p>It is also possible to use </p>
+        <blockquote> 
+          <p><kbd>CTRL-C </kbd></p>
+          <p>or</p>
+          <p><kbd><br>
+            kill &lt;JVM PID&gt;</kbd></p>
+        </blockquote>
+        <p>to stop a server running in the foreground or background, respectively.</p>
+        <p>&nbsp;</p>
+      </td>
+    </tr>
+  </table>
+  <h4>Navigation Overview</h4>
+  <p> ConfigTool is guides the user through configuration processes through a 
+    pair of simple &quot;wizards&quot;. Each wizard guides the user through a 
+    series of related <br>
+    configuration options. Users should exit the configuration tool after completing 
+    either of the configuration wizard paths. That is, do not go through the Node 
+    Configuration Path and the Port Configuration path in the same session. Instead, 
+    exit ConfigTool after finishing one of these before beginning the next. </p>
+  <p>When the server is started, it reads the current state represented by the 
+    relevant configuration files. Once the current configuration is loaded, configuration 
+    changes are maintained in the server's copy of the configuration. <b>Changes 
+    are not written back to the configuration files until the user selects the 
+    &quot;finish&quot; option on the last wizard menu</b>. Thus, the settings 
+    represented by the ConfigTool wizard may not reflect the actual current state 
+    of the system. The current state of the configuration settings can be reloaded 
+    at any time using the &quot;Reload Configuration&quot; option from the main 
+    menu. </p>
+  <h4></h4>
+  <p>There are currently two wizards: one for node hardware and software configuration 
+    options, and another for configuring the MMC serial ports (see diagram below). 
+    In addition, it is possible to review a summary of the current configuration 
+    settings by selecting an option from the main menu.</p>
+  <table width="50%" border="1" cellpadding="10">
+    <tr> 
+      <th colspan="2">ConfigTool Navigation</th>
+    </tr>
+    <tr> 
+      <td><img src="ConfigTool-overview.gif" width="579" height="510" border="3" align="middle"></td>
+      <td> 
+        <p align="center"><b>Navigation Screen Shots</b></p>
+        <table width="79%" border="1" cellpadding="10">
+          <tr> 
+            <td colspan="2"> 
+              <div align="center">
+                <p><a href="Main-links.gif"><img src="Main-links-50.gif" width="180" height="156" border="0"></a></p>
+                <p>Main Menu</p>
+              </div>
+            </td>
+          </tr>
+          <tr> 
+            <td> 
+              <div align="center">
+                <p><a href="portType-100.png"><img src="portType-50.gif" width="180" height="149" border="0"></a></p>
+                <p>Port Configuration</p>
+              </div>
+            </td>
+            <td> 
+              <div align="center">
+                <p><a href="nodeConfig-100.png"><img src="nodeConfig-50.gif" width="180" height="149" border="0"></a></p>
+                <p>Node Configuration</p>
+              </div>
+            </td>
+          </tr>
+          <tr> 
+            <td> 
+              <div align="center">
+                <p><a href="serviceJar-100.png"><img src="serviceJar-50.gif" width="180" height="149" border="0"></a></p>
+                <p>Service Jars</p>
+              </div>
+            </td>
+            <td> 
+              <div align="center">
+                <p><a href="nodeSummary-100.png"><img src="nodeSummary-50.gif" width="180" height="149" border="0"></a></p>
+                <p>Node Summary</p>
+              </div>
+            </td>
+          </tr>
+          <tr> 
+            <td>
+              <p><a href="portSummary-100.png"><img src="portSummary-50.gif" width="180" height="149" border="0"></a></p>
+              <p align="center">Port Summary</p>
+            </td>
+            <td>&nbsp;</td>
+          </tr>
+        </table>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+      </td>
+    </tr>
+  </table>
+  <p align="center">&nbsp;</p>
+  <p align="left">Users make configuration choices using HTML forms presented 
+    by the wizard. Once the configuration options have all been set, it presents 
+    of a summary of the options configured and allows the user write the changes 
+    back to the configuration files, cancel or go back to make further changes. 
+    Once the user chooses to write the configuration changes (finish), all configuration 
+    files are updated. The ConfigTool provides a way to preserve the original 
+    configuration by creating backups of the files it changes. The ConfigTool 
+    configuration file (SIAM_HOME/properties/configtool.properties) has two parameters 
+    for configuring the use of backups. These are described in the <a href="#servletConfig">ConfigTool 
+    configuration</a> section.</p>
+  <table width="85%" border="1" cellpadding="5">
+    <tr> 
+      <td width="22%" height="153"><b>Main Menu Options</b></td>
+      <td width="78%" height="153"> 
+        <blockquote> 
+          <p>&nbsp;</p>
+        </blockquote>
+        <ul>
+          <li>Configure Node</li>
+          <li>Configure Ports</li>
+          <li>Reload Configuration</li>
+          <li>Current Node Settings</li>
+          <li>Current Port Settings</li>
+          <li>Exit ConfigTool</li>
+        </ul>
+      </td>
+    </tr>
+    <tr> 
+      <td width="22%" height="65"><b>Using links Browser</b></td>
+      <td width="78%" height="65"> 
+        <blockquote> 
+          <p>&nbsp;</p>
+        </blockquote>
+        <ul>
+          <li>Up/Down arrows: previous/next link on page</li>
+          <li>Left/Right Arrows: previous/next page</li>
+          <li>ESC: menu</li>
+          <li>CTRL-R: reload current page</li>
+          <li>Controls 
+            <ul>
+              <li>Buttons</li>
+              <li>Dropdown Box </li>
+              <li>Checkbox</li>
+              <li>Text Box</li>
+            </ul>
+          </li>
+          <li>ESC-F-x: exit links</li>
+          <li>Links menu options File, View, Link, Downloads, Setup, Help</li>
+        </ul>
+      </td>
+    </tr>
+  </table>
+  <h4>Configuration Parameters</h4>
+  <p>The table below describes the configuration parameters exposed by the ConfigTool 
+    user interface. Some of these parameters map directly into configuration files; 
+    a number of other system configuration parameters are generated internally 
+    by ConfigTool, based on selected settings.For a more complete mapping of system 
+    configuration parameters, see <a href="ConfigToolParamMap.pdf">this diagram</a>:</p>
+  <p>: <a href="ConfigToolParamMap.pdf"><img src="ParameterRef-25.jpg" width="124" height="123" border="3"></a></p>
+  <table width="73%" border="1" cellpadding="8">
+    <tr> 
+      <th colspan="3">Node Configuration Options</th>
+    </tr>
+    <tr> 
+      <td width="16%"> 
+        <div align="center"><b>Configuration Parameter</b></div>
+      </td>
+      <td width="68%"> 
+        <div align="center"><b>Description</b></div>
+      </td>
+      <td width="16%"> 
+        <div align="center"><b>Values</b></div>
+      </td>
+    </tr>
+    <tr> 
+      <td width="16%"> 
+        <div align="center">nodeID</div>
+      </td>
+      <td width="68%">The node ID is a positive (long) integer which comprises 
+        a unique identifier within the SSDS data system. This number may be obtained 
+        from the SSDS ID database (<a href="http://ssdspub.mbari.org:8080/access/index.jsp">http://ssdspub.mbari.org:8080/access/index.jsp</a>).</td>
+      <td width="16%">long integer &gt; 0</td>
+    </tr>
+    <tr> 
+      <td width="16%"> 
+        <div align="center">nodeType</div>
+      </td>
+      <td width="68%">Nodes may be either primary nodes or subnodes. On a MOOS 
+        mooring network, there is one primary node, which acts as a gateway connecting 
+        the mooring network to the shore network. The other nodes are subnodes, 
+        which differ in their physical connection to the primary node or other 
+        subnodes; ethernet (fiber optic) and RS-422 (copper) connections are supported.</td>
+      <td width="16%">primary_node<br>
+        ETH_subnode <br>
+        RS422_subnode</td>
+    </tr>
+    <tr> 
+      <td width="16%"> 
+        <div align="center">sleepManager</div>
+      </td>
+      <td width="68%">When sleepManagerEnabled is TRUE, the SIAM application manages 
+        power by suspending processor operation whenever there is no activity 
+        scheduled for some minimum period of time.Otherwise, the processor runs 
+        continuously. Note that when the processor is sleeping, the console does 
+        not respond to input. Instrument serial ports may be configured to wake 
+        up the processor upon receiving characters (this is done by setting the 
+        appropriate bits of the arguments to the setPWER command in suspend.sh, 
+        but is not currently brought out through the ConfigTool interface).</td>
+      <td width="16%">TRUE<br>
+        FALSE</td>
+    </tr>
+    <tr> 
+      <td width="16%"> 
+        <div align="center">autostart</div>
+      </td>
+      <td width="68%">If this parameter is set to true, the SIAM node application 
+        will be started automatically when the node is booted.</td>
+      <td width="16%">TRUE<br>
+        FALSE</td>
+    </tr>
+    <tr> 
+      <td width="16%"> 
+        <div align="center">debugLevel</div>
+      </td>
+      <td width="68%">This setting determines the amount of debug information 
+        provided and logged by the SIAM application when it is running. In order 
+        of increasing information, the supported levels are ERROR, WARN, INFO 
+        and DEBUG. This parameter affects the amount of storage space required 
+        for the node logs; DEBUG should not be used for deployment.</td>
+      <td width="16%">ERROR<br>
+        WARN<br>
+        INFO<br>
+        DEBUG</td>
+    </tr>
+    <tr> 
+      <td width="16%">lrRadioConnection</td>
+      <td width="68%"> 
+        <p>Long Range Radio Connection</p>
+      </td>
+      <td width="16%">portal<br>
+        auxPortal<br>
+        auxConsole<br>
+        none</td>
+    </tr>
+    <tr> 
+      <td width="16%">lrRadioDevice</td>
+      <td width="68%"> 
+        <p>Long Range Radio Device</p>
+      </td>
+      <td width="16%">freewave<br>
+        globalstar<br>
+        nullModem<br>
+        none</td>
+    </tr>
+    <tr> 
+      <td width="16%">srRadioConnection</td>
+      <td width="68%"> 
+        <p>Short Range Radio Connection</p>
+      </td>
+      <td width="16%"> 
+        <p>auxConsole<br>
+          powerSvc<br>
+          none</p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="16%">srRadioDevice</td>
+      <td width="68%"> 
+        <p>Short Range Radio Device</p>
+      </td>
+      <td width="16%">freewave<br>
+        nullModem<br>
+        none</td>
+    </tr>
+    <tr> 
+      <td width="16%"> 
+        <div align="center">ethernet</div>
+      </td>
+      <td width="68%">If this parameter is set to TRUE, the ethernet networking 
+        will be brought up when the node is booted. </td>
+      <td width="16%">TRUE<br>
+        FALSE</td>
+    </tr>
+    <tr> 
+      <td width="16%"> 
+        <div align="center">networkNumber</div>
+      </td>
+      <td width="68%">Network number is combined with the networkNumberBase to 
+        create the networkID for the mooring network. The networkID is used to 
+        create a range of network addresses used by different MOOS mooring networks. 
+        A complete mooring network IP addresses consists of<br>
+        <code> </code> 
+        <blockquote> 
+          <p><code><dfn>&lt;ethernetAddressBase&gt;.&lt;networkID=networkNumberBase+NetworkNumber&gt;.&lt;node 
+            OUI&gt;</dfn></code></p>
+        </blockquote>
+        <p><code>Where node OUI is the 6th octet of the MMC ethernet controller 
+          MAC address.</code></p>
+        <p>This setting applies only to primary nodes.</p>
+      </td>
+      <td width="16%">integer &gt; 0</td>
+    </tr>
+    <tr> 
+      <td width="16%"> 
+        <div align="center">ethernetAddressBase</div>
+      </td>
+      <td width="68%"> 
+        <p>This parameter comprises the first two octets of the mooring network 
+          addresses used for the mooring network (e.g., 134.89. for a mooring 
+          network connected to the MBARI network). A complete mooring network 
+          IP addresses consists of<br>
+          <code> </code></p>
+        <blockquote> 
+          <p><code><dfn>&lt;ethernetAddressBase&gt;.&lt;networkID=networkNumberBase+NetworkNumber&gt;.&lt;node 
+            OUI&gt;</dfn> </code></p>
+        </blockquote>
+        <p><code>Where node OUI is the 6th octet of the MMC ethernet controller 
+          MAC address. The networkID is used to create a range of network addresses 
+          used by different MOOS mooring networks.</code></p>
+      </td>
+      <td width="16%"> 
+        <p>N.N.<br>
+          1&lt;N&lt;255</p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="16%">pppAddressBase</td>
+      <td width="68%"> 
+        <p>First two octets of PPP address (no trailing dot)</p>
+      </td>
+      <td width="16%">e.g. 10.1</td>
+    </tr>
+    <tr> 
+      <td width="16%"> 
+        <div align="center">networkNumberBase</div>
+      </td>
+      <td width="68%">The third octet of a node's IP address is obtained by summing 
+        the networkNumberBase and the networkNumber (below), resulting in a networkID. 
+        The networkID is used to create a range of network addresses used by different 
+        MOOS mooring networks. The networkNumber base may depend on, for example, 
+        the building network that the mooring needs to connect to. For MBARI, 
+        the network number base 35; network addresses A complete mooring network 
+        IP addresses consists of<br>
+        <code> </code> 
+        <blockquote> 
+          <p><code><dfn>&lt;ethernetAddressBase&gt;.&lt;networkID=networkNumberBase+NetworkNumber&gt;.&lt;node 
+            OUI&gt;</dfn></code></p>
+        </blockquote>
+        <p><code>Where node OUI is the 6th octet of the MMC ethernet controller 
+          MAC address.</code></p>
+        <p>This setting applies only to primary nodes.</p>
+      </td>
+      <td width="16%">0 &lt; integer &lt; 255</td>
+    </tr>
+    <tr> 
+      <td width="16%">wakeOnSerialRx</td>
+      <td width="68%">Wake the node when serial characters are received</td>
+      <td width="16%"> 
+        <p>DISABLED<br>
+          ENABLED </p>
+      </td>
+    </tr>
+  </table>
+  <p>&nbsp;</p>
+  <table width="83%" border="1" cellpadding="8">
+    <tr> 
+      <th colspan="3">Port Configuration Options</th>
+    </tr>
+    <tr> 
+      <td width="16%"> 
+        <div align="center"><b>Configuration Parameter</b></div>
+      </td>
+      <td width="68%"> 
+        <div align="center"><b>Description</b></div>
+      </td>
+      <td width="16%"> 
+        <div align="center"><b>Values</b></div>
+      </td>
+    </tr>
+    <tr> 
+      <td width="16%"> 
+        <div align="center">Service Type</div>
+      </td>
+      <td width="68%">The Service Type parameter indicates the source of the instrument 
+        service code for a particular instrument serial port. When set to PUCK, 
+        the SIAM application will query the associated serial port using the PUCK 
+        protocol to obtain instrument service code. When set to JAR, the Service 
+        JAR parameter specifies the name of a Java Archive (JAR) file containing 
+        insturment service code. If set to DOWNLINK, the associated serial port 
+        will be used to connect to a subnode. If set to NULL, the port is unused.</td>
+      <td width="16%">PUCK<br>
+        JAR<br>
+        DOWNLINK<br>
+        NULL</td>
+    </tr>
+    <tr> 
+      <td width="16%"> 
+        <div align="center">Service Jar</div>
+      </td>
+      <td width="68%">The name of a Java Archive (JAR) file containing SIAM instrument 
+        service code for a specified instrument serial port.</td>
+      <td width="16%">JAR file name</td>
+    </tr>
+  </table>
+  <p>&nbsp;</p>
+  <h4>Configuration File Reference</h4>
+  <table width="92%" border="1" cellpadding="5">
+    <tr> 
+      <td width="10%"> 
+        <div align="center"><b>Related Configuration File(s)</b></div>
+      </td>
+      <td width="36%"> 
+        <div align="center"><b>Description</b></div>
+      </td>
+      <td width="14%"> 
+        <div align="center"><b> References</b></div>
+      </td>
+      <td width="40%"> 
+        <div align="center"><b>Modifies</b></div>
+      </td>
+    </tr>
+    <tr> 
+      <td width="10%">siamPort.cfg</td>
+      <td width="36%">Sets SIAM application configuration parameters</td>
+      <td width="14%"> 
+        <div align="center">-</div>
+      </td>
+      <td width="40%">serialPortN<br>
+        powerPortN<br>
+        serviceJarN<br>
+        nodeID<br>
+        nodeType <br>
+        networkNumberBase<br>
+        networkNumber<br>
+        ethernetAddressBase.<br>
+        advertiseService <br>
+        wirelessLink<br>
+        ethernetEnabled<br>
+        DHCP<br>
+        jarLocation<br>
+        logLocation<br>
+        platformSerialPorts<br>
+        codeBaseLocation 
+        <p>SleepManager.enabled<br>
+          SleepManager.sleepString<br>
+          #SleepManager.pollSeconds<br>
+          SleepManager.sleepDelay<br>
+          #SleepManager.wakeupSeconds<br>
+          #SleepManager.minSleepSeconds</p>
+        <p>NodeService.leaseInterval</p>
+        <p>CommsManager.enabled<br>
+          CommsManager.onString<br>
+          CommsManager.offString<br>
+          CommsManager.protocolWaitTime<br>
+          CommsManager.processWaitTime<br>
+          CommsManager.leaseRenewalInterval</p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="10%">siamEnv</td>
+      <td width="36%">Sets environment SIAM application and ops user</td>
+      <td width="14%"> /j9/j9env</td>
+      <td width="40%">. /j9/j9env<br>
+        JAVA<br>
+        JAVA_OPTIONS<br>
+        SIAM_BIN<br>
+        SIAM_CODEBASE PARENT_HOST<br>
+        SIAM_CLASSPATH<br>
+        SIAM_AUTOSTART<br>
+        LOG4J_THRESHOLD=DEBUG<br>
+        PATH<br>
+        SIAM_PPP_SCRIPT<br>
+        ETHERNET_ADDRESS_PREFIX</td>
+    </tr>
+    <tr> 
+      <td width="10%" height="381">rc.local <br>
+      </td>
+      <td width="36%" height="381">Performs user defined system configuration 
+        operations at the end of the boot process</td>
+      <td width="14%" height="381"> 
+        <p>mount<br>
+          /etc/siam/manageLog /var/log/syslog <br>
+          /root/ricohRTC<br>
+          /proc/sys/net/ipv4/ip_forward<br>
+          source /root/.bashrc<br>
+          source /etc/siam/siamEnv<br>
+          $SIAM_HOME/properties/hosts.template<br>
+          /etc/hosts<br>
+          /etc/hostname<br>
+          /usr/bin/ifswitch-to-dhcp <br>
+          $SIAM_HOME/bin/arm-linux/ipaddr <br>
+          ifdown<br>
+          ifup </p>
+        <p>PRIMARY_NODE_NAME<br>
+          PRIMARY_NODE_ADDRESS<br>
+          ETHERNET_ADDRESS_PREFIX</p>
+      </td>
+      <td width="40%" height="381">/var/log/syslog <br>
+        /var/log/messages<br>
+        /var/lock<br>
+        /var/lock<br>
+        /root/ricohRTC -s<br>
+        /proc/sys/net/ipv4/ip_forward 
+        <p>/usr/bin/ifswitch-to-dhcp<br>
+          /etc/hostname<br>
+          /etc/hosts<br>
+          eth0</p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="10%"> hosts<br>
+      </td>
+      <td width="36%">Maps known host names to network IP addresses</td>
+      <td width="14%">PRIMARY_NODE_NAME<br>
+        PRIMARY_NODE_ADDRESS<br>
+        ETHERNET_ADDRESS_PREFIX</td>
+      <td width="40%">127.0.0.1 localhost loc local familiar 
+        <p>10.1.1.1 shore # portal node's ppp interface address</p>
+        <p>10.1.1.2 surface-rf mooring # surface node's ppp interface address</p>
+        <p>134.89.37.200 surface # surface node's ethernet address (static)</p>
+        <p># Subnode names have sidearm OUI appended</p>
+        <p>134.89.37.1 node401 node1<br>
+          134.89.37.2 node402 node2<br>
+          134.89.37.3 node403 node3</p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="10%" height="40">hostname <br>
+      </td>
+      <td width="36%" height="40">Defines the name of the local ethernet interface</td>
+      <td width="14%" height="40"> 
+        <div align="center">-</div>
+      </td>
+      <td width="40%" height="40">hostname (&quot;surface&quot;)</td>
+    </tr>
+    <tr> 
+      <td width="10%">binRouting.sh</td>
+      <td width="36%">Defines network routing for surface-shore ppp network</td>
+      <td width="14%">PRIMARY_NODE_NAME</td>
+      <td width="40%"><br>
+        route add -net 10.1.1.0 netmask 255.255.255.0 gw surface</td>
+    </tr>
+    <tr> 
+      <td width="10%"> 
+        <p>interfaces</p>
+      </td>
+      <td width="36%">Defines ethernet interfaces</td>
+      <td width="14%">PRIMARY_NODE_ADDRESS</td>
+      <td width="40%">auto lo<br>
+        iface lo inet loopback 
+        <p>auto eth0<br>
+          iface eth0 inet static<br>
+          address 134.89.37.200 <br>
+          netmask 255.255.255.00<br>
+          gateway 134.89.37.200</p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="10%"> <br>
+        longhaul <br>
+      </td>
+      <td width="36%">Defines primary wireless link ppp parameters</td>
+      <td width="14%">/etc/siam/rfpower.ops</td>
+      <td width="40%"> 
+        <div align="center">-</div>
+      </td>
+    </tr>
+    <tr> 
+      <td width="10%">shorthaul</td>
+      <td width="36%">Defines secondary wireless link ppp parameters</td>
+      <td width="14%"> 
+        <div align="center">-</div>
+      </td>
+      <td width="40%"> 
+        <div align="center">-</div>
+      </td>
+    </tr>
+    <tr> 
+      <td width="10%">auxTelem.sh</td>
+      <td width="36%">Periodically enables secondary wireless link</td>
+      <td width="14%">/etc/siam/siamEnv<br>
+        /etc/siam/cpuAwake<br>
+        /etc/siam/rfpower<br>
+      </td>
+      <td width="40%">&nbsp;</td>
+    </tr>
+    <tr> 
+      <td width="10%">j9env</td>
+      <td width="36%">Defines environment for j9 JVM</td>
+      <td width="14%">PATH<br>
+        JAVA_HOME<br>
+        LD_LIBRARY_PATH </td>
+      <td width="40%">JAVA_HOME<br>
+        PATH<br>
+        LD_LIBRARY_PATH</td>
+    </tr>
+    <tr> 
+      <td width="10%">.bashrc</td>
+      <td width="36%">Defines environment for ops user</td>
+      <td width="14%">/etc/bashrc<br>
+        <br>
+        SIAM_HOME</td>
+      <td width="40%">PS1='\h:\w\$ '</td>
+    </tr>
+    <tr> 
+      <td width="10%">suspend.sh</td>
+      <td width="36%">Suspends processor operation as part of power managment</td>
+      <td width="14%"> 
+        <p>/bin/sync <br>
+          /root/setPWER <br>
+          /root/suspend <br>
+          /root/ricohRTC<br>
+          # ifdown eth0<br>
+          # ifup eth0</p>
+      </td>
+      <td width="40%"> 
+        <p> # Set PWER<br>
+          # The current bits set are:<br>
+          # 0x80000000 = SA1100 RTC (/root/suspend needs this)<br>
+          # 0x8 and 0x4 = Exar UARTs (/dev/ttySX{0-15})<br>
+          # 0x1 = MSP430<br>
+          # See the Sidearm4 documentation on the the assignment<br>
+          # of GPIO bits. Set additional bits as necessary.<br>
+          /root/setPWER 80000001</p>
+        <p> /root/suspend -v $sleepTime<br>
+          /root/ricohRTC -s </p>
+      </td>
+    </tr>
+  </table>
+  <h4><a name="servletConfig"></a>ConfigTool Servlet Configuration</h4>
+  <p>The stable release of the ConfigTool servlet does not require configuration; 
+    by default it is configured to run on an MMC node. When bench testing on other 
+    platforms (x86-win32/cygwin or x86-linux), the servlet needs to be configured 
+    appropriately. The ConfigTool servlet is configured via a set of Java properties 
+    files (specifying paths to the required files and executables) and configuration 
+    file templates (defining configuration-file-specific parameters and defining 
+    the configuration items in each configuration file and the user interface 
+    controls used to represent them).</p>
+  <table width="90%" border="1" cellpadding="5">
+    <tr> 
+      <th colspan="3">configtool.properties</th>
+    </tr>
+    <tr> 
+      <td height="37" width="16%"> 
+        <div align="center"><b>Property</b></div>
+      </td>
+      <td height="37" width="53%"> 
+        <div align="center"><b>Description</b></div>
+      </td>
+      <td height="37" width="31%"> 
+        <div align="center"><b>Comments</b></div>
+      </td>
+    </tr>
+    <tr> 
+      <td width="16%">config.configBackupType</td>
+      <td width="53%"> Backup policy for configuration file backups.<br>
+        <br>
+        Valid values are as follows :<br>
+        - SIMPLE: single backup copy (myConfigFile.bak)<br>
+        - DATE : use date (myConfigFile.bak.mmddyy)<br>
+        - INDEX : use date and index (myConfigFile.bak.mmddyy-n)<br>
+        <br>
+        Default value is INDEX<br>
+      </td>
+      <td width="31%">Values are case insensitive</td>
+    </tr>
+    <tr> 
+      <td width="16%">config.configBackupPath</td>
+      <td width="53%"> Path (directory) where configuration backups<br>
+        should be stored (relative to SIAM_HOME).<br>
+        <br>
+        Default value (commented out) stores backups<br>
+        in associated config file location.<br>
+        <br>
+        Path names with spaces are allowed; quoting is<br>
+        not needed or permitted. Do not use leading <br>
+        or trailing slashes/backslashes. <br>
+      </td>
+      <td width="31%">
+        <p>Values are case sensitive</p>
+        <p>Examples:<br>
+          config.configBackupPath=myBackupDirectory<br>
+          config.configBackupPath=My Backup Directory<br>
+          config.configBackupPath=myBackupDirectory/foo </p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="16%">jarPath</td>
+      <td width="53%">Specifies directory where instrument service JAR files are 
+        located </td>
+      <td width="31%"> 
+        <p><br>
+          relative to siam_home</p>
+        <p>example:<br>
+          jarPath=ports/ <br>
+        </p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="16%">serialPorts</td>
+      <td width="53%">Number of serial ports to configure. </td>
+      <td width="31%">The ConfigItems for each serial port must be defined in 
+        &lt;configFile&gt;.properties, and there must be already be entries in 
+        siamPort.cfg for all serial ports and their power ports.</td>
+    </tr>
+    <tr> 
+      <td width="16%">&lt;configFile&gt;.type=&lt;TYPE&gt;</td>
+      <td width="53%"> 
+        <p>Declares a configuration file named &lt;configFile&gt; of type &lt;TYPE&gt; 
+          to the configuration servlet. The &lt;TYPE&gt; string identifies which 
+          config file should be represented in the user interface. <br>
+          <br>
+          the &lt;configFile&gt; name is used to specify the properties file (see 
+          properties.&lt;configFile&gt;) and the location of the configuration 
+          file (see config.&lt;configFile&gt;)</p>
+      </td>
+      <td width="31%"> 
+        <p>Currently supported types are:<br>
+          <br>
+          SIAMPORT<br>
+          SIAMENV<br>
+          RCLOCAL<br>
+          HOSTS<br>
+          HOSTNAME<br>
+          INTERFACES<br>
+          BINROUTINGSH</p>
+        <p>example:</p>
+        <p>siamEnv.type=SIAMENV</p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="16%">properties.&lt;configFile&gt;</td>
+      <td width="53%"> 
+        <p>Specifies the (configuration file specific) properties used by the 
+          ConfigFile object and defines the ConfigItems represented by the ConfigFile, 
+          including the user interface controls used to represent them in the 
+          user interface.</p>
+        <p>This allows some aspects of the user interface to be modified without 
+          recompiling any code.</p>
+      </td>
+      <td width="31%"> 
+        <p>relative to siam_home <br>
+        </p>
+        <p>example:<br>
+          properties.rcLocal=properties/rclocal.properties<br>
+        </p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="16%">siam_home</td>
+      <td width="53%">Specifies the path to the top level SIAM directory.</td>
+      <td width="31%"> 
+        <p>siam_home is an absolute path and should match the $SIAM_HOME environment 
+          variable.</p>
+        <p>example:<br>
+          siam_home=/mnt/hda/siam/ </p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="16%">ipAddressCommand<br>
+      </td>
+      <td width="53%">Specifies path to a command that will return the system's 
+        IP address. This is, in general, a native binary, and resides in different 
+        directories within the SIAM directory structure, depending on the platform.</td>
+      <td width="31%"> 
+        <p>relative to siam_home</p>
+        <p>example:<br>
+          ipAddressCommand=bin/arm-linux/ipaddr </p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="16%">ethernetAddressCommand<br>
+      </td>
+      <td width="53%">Specifies path to a command that will return the system's 
+        MAC address. This is, in general, a native binary, and resides in different 
+        directories within the SIAM directory structure, depending on the platform.</td>
+      <td width="31%"> 
+        <p>relative to siam_home</p>
+        <p>example:<br>
+          ethernetAddressCommand=bin/arm-linux/ethaddr </p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="16%">scriptRunner<br>
+      </td>
+      <td width="53%">Specifies path to a command that will run scripts on the 
+        platform. This is needed to allow scripts to be executed from within Java, 
+        as Runtime.exec() only works correctly on native executables. This is, 
+        in general, a native binary, and resides in different directories within 
+        the SIAM directory structure, depending on the platform.</td>
+      <td width="31%"> 
+        <p>relative to siam_home</p>
+        <p>example:<br>
+          scriptRunner=bin/arm-linux/commandRunner</p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="16%">actionScript<br>
+      </td>
+      <td width="53%"> 
+        <p>Specifies the path to the post-configuration script that should be 
+          run after modifying the configuration files.</p>
+        <p>Note: this script is run as root. Damage to system could occur if the 
+          wrong script is specified, or if the script is modified.</p>
+      </td>
+      <td width="31%"> 
+        <p>relative to siam_home</p>
+        <p>example:<br>
+          actionScript=utils/configAction</p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="16%">actionPath</td>
+      <td width="53%"> 
+        <p>Specifies the PATH environment variable for the action script.</p>
+      </td>
+      <td width="31%"> 
+        <p>absolute path, does not resolve $PATH environment variable</p>
+        <p>example:<br>
+          actionPath=.:/bin:/sbin:/usr/bin:/usr/sbin:...</p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="16%">config.&lt;configFile&gt;</td>
+      <td width="53%">Specifies the path to the actual configuration file to be 
+        modified or replaced.</td>
+      <td width="31%"> 
+        <p><br>
+          config paths are absolute</p>
+        <p>example:<br>
+          config.siamPort=/mnt/hda/siam/properties/siamPort.cfg<br>
+        </p>
+      </td>
+    </tr>
+  </table>
+  <h4>Configuration File Specific Properties</h4>
+  <p>In general, each configuration file has a set of parameters that are represented 
+    (brought out) to the ConfigTool user interface. Internally, these parameters 
+    are represented as ConfigItems, which manage the value of their parameters 
+    and maintains an HTML control in the user interface to that is used to set 
+    their value. The ConfigItem must be configured to read (import) and write 
+    (export) its parameter's value from/to the configuration file. The HTML control 
+    it displays to set the parameter value must also be defined and configured. 
+    Each configuration file uses a Java properties file to define and configure 
+    its ConfigItems and HTML controls.</p>
+  <p>Property entries in the configuration file properties files have the general 
+    form:</p>
+  <blockquote> 
+    <p><samp>&lt;ConfigFile&gt;.&lt;configItem&gt;.pageID=&lt;htmlPageName&gt; 
+      </samp></p>
+  </blockquote>
+  <p>Additionally, configuration file properties files may define other parameters 
+    and properties used internally.</p>
+  <table width="90%" border="1" cellpadding="5">
+    <tr> 
+      <th colspan="3">&lt;configFile&gt;.properties</th>
+    </tr>
+    <tr> 
+      <td height="37" width="35%"> 
+        <div align="center"><b>Property</b></div>
+      </td>
+      <td height="37" width="26%"> 
+        <div align="center"><b>Description</b></div>
+      </td>
+      <td height="37" width="39%"> 
+        <div align="center"><b>Comments</b></div>
+      </td>
+    </tr>
+    <tr> 
+      <td height="37" width="35%">&lt;ConfigFile&gt;.&lt;configItem&gt;.pageID=&lt;htmlPageName&gt; 
+      </td>
+      <td height="37" width="26%">&nbsp;</td>
+      <td height="37" width="39%">example:<br>
+        <samp>SiamPortCfg.nodeType.pageID=NodeMain </samp></td>
+    </tr>
+    <tr> 
+      <td height="37" width="35%">&lt;ConfigFile&gt;.&lt;configItem&gt;.controlType=&lt;CONTROL_TYPE&gt; 
+      </td>
+      <td height="37" width="26%">&nbsp;</td>
+      <td height="37" width="39%">example:<br>
+        <samp>SiamPortCfg.nodeType.controlType=SELECT </samp></td>
+    </tr>
+    <tr> 
+      <td height="37" width="35%">&lt;ConfigFile&gt;.&lt;configItem&gt;.validateRegexp= 
+        &lt;regexp&gt;</td>
+      <td height="37" width="26%">&nbsp;</td>
+      <td height="37" width="39%">example:<br>
+        <samp>SiamPortCfg.nodeType.validateRegexp= </samp></td>
+    </tr>
+    <tr> 
+      <td height="37" width="35%">&lt;ConfigFile&gt;.&lt;configItem&gt;.values=&lt;value&gt;, 
+        &lt;value&gt;,... </td>
+      <td height="37" width="26%">&nbsp;</td>
+      <td height="37" width="39%">example:<br>
+        <samp>SiamPortCfg.nodeType.values=primary_node,ETH_subnode,RS422_subnode</samp> 
+      </td>
+    </tr>
+    <tr> 
+      <td height="37" width="35%">&lt;ConfigFile&gt;.&lt;configItem&gt;.importRegexp=&lt;regexp&gt; 
+      </td>
+      <td height="37" width="26%">&nbsp;</td>
+      <td height="37" width="39%">example:<br>
+        <samp>SiamPortCfg.nodeType.importRegexp=^[ \\t]*nodeType[ \\t]*=[ \\t]* 
+        </samp></td>
+    </tr>
+    <tr> 
+      <td height="37" width="35%">&lt;ConfigFile&gt;.&lt;configItem&gt;.exportRegexp=&lt;regexp&gt; 
+        <value> </td>
+      <td height="37" width="26%">&nbsp;</td>
+      <td height="37" width="39%">example:<br>
+        <samp>SiamPortCfg.nodeType.exportRegexp=nodeType = &lt;VALUE&gt;</samp></td>
+    </tr>
+    <tr> 
+      <td height="37" width="35%">&lt;ConfigFile&gt;.&lt;configItem&gt;.attribute.ROW=&lt;row&gt; 
+      </td>
+      <td height="37" width="26%">&nbsp;</td>
+      <td height="37" width="39%">example:<br>
+        <samp>SiamPortCfg.nodeType.attribute.ROW=1</samp> </td>
+    </tr>
+    <tr> 
+      <td height="37" width="35%">&lt;ConfigFile&gt;.&lt;configItem&gt;.attribute.COL=&lt;col&gt;</td>
+      <td height="37" width="26%">&nbsp;</td>
+      <td height="37" width="39%">example:<br>
+        <samp>SiamPortCfg.nodeType.attribute.COL=0</samp> </td>
+    </tr>
+    <tr> 
+      <td height="37" width="35%">&lt;ConfigFile&gt;.&lt;configItem&gt;.attribute.&lt;attributeName&gt;=&lt;value&gt;</td>
+      <td height="37" width="26%">&nbsp;</td>
+      <td height="37" width="39%">&nbsp;</td>
+    </tr>
+    <tr> 
+      <td height="37" width="35%">&lt;ConfigFile&gt;.&lt;configItem&gt;.itemRef=&lt;configItemName&gt; 
+        <value> </td>
+      <td height="37" width="26%">&nbsp;</td>
+      <td height="37" width="39%"> 
+        <p>example:<br>
+          <samp>Tags.tagHostname.itemRef=hostname</samp></p>
+      </td>
+    </tr>
+    <tr> 
+      <td height="37" width="35%">&lt;ConfigFile&gt;.&lt;configItem&gt;.valueRef=&lt;configItemName&gt;</td>
+      <td height="37" width="26%">&nbsp;</td>
+      <td height="37" width="39%"> 
+        <p>example:<br>
+          <samp>SiamPortCfg.serviceJar0.valueRef=jarList</samp></p>
+      </td>
+    </tr>
+  </table>
+  <p>&nbsp;</p>
+  <p><b>APPENDICES</b></p>
+  <h4>MMC Serial Ports</h4>
+  <table width="67%" border="1" cellpadding="5">
+    <tr> 
+      <th width="32%"><b>Serial Port Function</b></th>
+      <th width="68%"><b> Device Name</b></th>
+    </tr>
+    <tr> 
+      <td width="32%">Console port</td>
+      <td width="68%"> /dev/ttySA0</td>
+    </tr>
+    <tr> 
+      <td width="32%">Synchronous serial port </td>
+      <td width="68%">/dev/ttySA1</td>
+    </tr>
+    <tr> 
+      <td width="32%">Debug port</td>
+      <td width="68%"> /dev/ttySA2</td>
+    </tr>
+    <tr> 
+      <td width="32%">Instrument backplane serial ports</td>
+      <td width="68%">/dev/ttySX0 through /dev/ttySX11</td>
+    </tr>
+    <tr> 
+      <td width="32%">RF modem/transceiver port 0</td>
+      <td width="68%">/dev/ttySX13 (RFIO connector closest to edge of sidearm)</td>
+    </tr>
+    <tr> 
+      <td width="32%">RF modem/transceiver port 1</td>
+      <td width="68%">/dev/ttySX12</td>
+    </tr>
+    <tr> 
+      <td width="32%">Uplink RS-485 port</td>
+      <td width="68%">/dev/ttySX14</td>
+    </tr>
+    <tr> 
+      <td width="32%">MSP-430</td>
+      <td width="68%">/dev/ttySX15</td>
+    </tr>
+  </table>
+  <h4> Configuring Power Management</h4>
+  <h4></h4>
+  <p># Set PWER<br>
+    # Set PWER<br>
+    # The current bits set are:<br>
+    # 0x80000000 = SA1100 RTC (/root/suspend needs this)<br>
+    # 0x8 and 0x4 = Exar UARTs (/dev/ttySX{0-15})<br>
+    # 0x1 = MSP430<br>
+    # See the Sidearm4 documentation on the the assignment<br>
+    # of GPIO bits. Set additional bits as necessary.<br>
+    /root/setPWER 80000001</p>
+  <h4>Configuring PPP Networking</h4>
+  <p>&nbsp;</p>
+  <h4></h4>
+  <h4>ConfigTool Internals Reference</h4>
+  <p>&nbsp;</p>
+  <p></p>
+</blockquote>
+<p><b>BUGS</b> </p>
+<p><b>TO DO</b></p>
+<ul>
+  <li>Create an error handler that redirects exceptions to the browser<br>
+  </li>
+</ul>
+<p><br>
+  <b> ENVIRONMENT</b> </p>
+<blockquote>The following environment variables must be set:</blockquote>
+<ul>
+  <li> JAVA - name of the JVM. E.g. on a Sidearm, JAVA should be set to <i>j9. 
+    </i>On a workstation with Sun's Java installed, JAVA could be set to <i>java</i>.</li>
+  <li> SIAM_HOME - top of the SIAM directory tree</li>
+  <li> SIAM_CLASSPATH - on a Sidearm, SIAM_CLASSPATH should be set to <i>$JAVA_HOME/lib/jclMax/classes.zip:$JAVA_HOME/lib/prsnlmot.jar:$JAVA_HOME/lib/RXTXcomm.jar:$SIAM_HOME/classes</i>.&nbsp; 
+    On X86 system, SIAM_CLASSPATH should be set to<i> $SIAM_HOME/classes</i></li>
+  <li>LD_LIBRARY_PATH - path to j9executables; typically /j9/bin</li>
+</ul>
+
+<p><br><b>SEE ALSO</b>
+<blockquote>SIAM installation</blockquote>
+
+</body>
+</html>

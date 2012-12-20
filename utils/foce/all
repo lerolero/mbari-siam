@@ -1,0 +1,10 @@
+#!/bin/bash
+#
+
+while [ 1 ]; do
+    echo "motor: `getLastSample loc /dev/ttyS1 | tail -n 1`"
+    echo "pH: `getLastSample loc pH | tail -n 1`"
+    echo "CTD1: `getLastSample loc /dev/ttyS4 | tail -n 1`"
+    echo "CTD2: `getLastSample loc /dev/ttyS8 | tail -n 1`"
+done
+

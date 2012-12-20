@@ -1,0 +1,23 @@
+# Generic '/etc/hosts' file for moored networks. 
+# Note that moored networks are private; thus names and addresses
+# can be duplicated across multiple moorings/networks.
+# Note that this file can be used for surface-only system ("MOOS Lite")
+
+# DO NOT REMOVE THE FOLLOWING LINE
+127.0.0.1	localhost familiar 
+
+10.1.1.1        shore portal-mtm1    # portal node's ppp interface address
+
+# surface node's ppp interface address
+10.1.1.2        surface-rf mooring mtm-1 mtm-1.mbari.org 
+
+192.168.0.101   surface              # surface node's ethernet address (static)
+
+192.168.0.100   bin                  # BIN's ethernet address (static)
+
+
+#####################################################################
+# Stuff from here on down is for backwards compatibility with
+# April 2004 MTM deployment; these can be removed after MTM upgrade
+134.89.10.29	siam-portal-1	siam-portal-1.shore.mbari.org
+

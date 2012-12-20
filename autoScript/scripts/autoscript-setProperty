@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# Autoscript
+#
+# Purpose: Set service property
+# and cache
+
+#########################
+# Script configuration
+#########################
+export LOG4J_THRESHOLD=INFO
+
+# node host definitions
+SURFACE=surface
+SECONDARY=node21
+BIN=node2
+
+# define node and port
+NODE=$BIN
+PORT=/dev/ttySX1
+# set properties string
+# using space-delimited name=value pairs
+PROPERTIES="eventDetectorStatusIntervalSec=1209600"
+
+#########################
+# Main script entry point
+#########################
+
+# keep awake 
+cpuAwake 600 $NODE
+
+# set property...
+setProperty $NODE $PORT $PROPERTIES
+# persist using cachePort
+cachePort $NODE $PORT
+#restart port if needed
+#restartPort $NODE $PORT
+
+# show port properties
+portProperties $NODE $PORT
+
+# AUTOSCRIPT EOF

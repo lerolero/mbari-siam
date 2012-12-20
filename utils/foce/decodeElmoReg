@@ -1,0 +1,558 @@
+#!/bin/bash
+
+#########################################
+# Name:
+#
+# Summary:
+#
+# Description:
+#
+# Author:
+#
+# Copyright MBARI
+#
+#########################################
+
+#########################################
+# Script configuration defaults
+# casual users should not need to change
+# anything below this section
+#########################################
+X_ARG="defaultXValue"
+STATUS_REG=""
+FAULT_REG=""
+
+#################################
+# Script variable initialization
+#################################
+VERBOSE="FALSE"
+
+
+#################################
+# Function Definitions
+#################################
+
+#################################
+# name: sigTrap
+# description: signal trap callback
+# will interrupt 
+# args: none
+#################################
+#sigTrap(){
+#    exit 0;
+#}
+
+#################################
+# name: printUsage
+# description: print use message
+# args: none
+#################################
+printUsage(){
+    echo
+    echo "usage: `basename $0` [options]"
+	echo
+	echo "Options"
+    echo " -f <0xfaultReg>  : specify fault register value"
+    echo " -s <0xstatusReg> : specify fault register value"
+    echo " -V               : verbose output               [$VERBOSE]"
+    echo " -h               : print this help message"
+    echo ""
+    echo "Example:"
+    #echo ""
+    echo " - Decode status register 0x04004140 and fault register 0x00003000"
+    echo "    decodeElmoReg -s 0x04004140 -f 0x00003000"
+    echo ""
+}
+
+########################################
+# name: vout
+# description: print verbose message to stderr
+# args:
+#     msg: message
+########################################
+vout(){
+    if [ "$VERBOSE" == "TRUE" ]
+    then
+	echo "$1" >&2
+    fi
+}
+
+########################################
+# name: exitError
+# description: print use message to stderr
+# args:
+#     msg:        error message
+#     returnCode: exit status to return
+########################################
+exitError(){
+    echo >&2
+    echo "$1" >&2
+    echo >&2
+    exit $2
+}
+
+########################################
+# name: decodeStatus
+# description: Decode Elmo Status Reg
+# args: none
+########################################
+decodeStatus(){
+
+echo
+echo "#"
+echo "# Motor Status Register"
+echo "#"
+echo
+let "driveRead = $STATUS_REG & 0x0001"
+if [ "$driveRead" -eq 0 ]
+then
+ msg="OK"
+else
+ msg="ERROR"
+fi
+echo "driveRead      : $driveRead [$msg]"
+
+let "servoStatus = $STATUS_REG & 0x000E"
+let "servoStatus = $servoStatus>>1"
+if [ "$servoStatus" -eq 0 ]
+then
+ msg="OK"
+elif [ "$servoStatus" -eq 1 ]
+then
+ msg="Under voltage"
+elif [ "$servoStatus" -eq 2 ]
+then
+ msg="Over voltage"
+elif [ "$servoStatus" -eq 5 ]
+then
+ msg="Short circuit"
+elif [ "$servoStatus" -eq 6 ]
+then
+ msg="Temperature"
+else
+ msg="Invalid value"
+fi
+echo "servoStatus    : $servoStatus [$msg]"
+
+let "MO = $STATUS_REG & 0x0010"
+let "MO = $MO>>4"
+if [ "$MO" -eq 0 ]
+then
+ msg="Motor Disabled"
+else
+ msg="Motor Enabled"
+fi
+echo "MO             : $MO [$msg]"
+
+let "RM = $STATUS_REG & 0x0020"
+let "RM = $RM>>5"
+if [ "$RM" -eq 0 ]
+then
+ msg="Internal"
+else
+ msg="External"
+fi
+echo "RM             : $RM [$msg]"
+
+let "MF = $STATUS_REG & 0x0040"
+let "MF = $MF>>6"
+if [ "$MF" -eq 0 ]
+then
+ msg="OK"
+else
+ msg="Motor Fault"
+fi
+echo "MF             : $MF [$msg]"
+
+let "UM = $STATUS_REG & 0x0380"
+let "UM = $UM>>7"
+if [ "$UM" -eq 1 ]
+then
+ msg="Torque Control"
+elif [ "$UM" -eq 2 ]
+then
+ msg="Speed Control"
+elif [ "$UM" -eq 3 ]
+then
+ msg="Micro-stepper"
+elif [ "$UM" -eq 4 ]
+then
+ msg="Dual feedback position control"
+elif [ "$UM" -eq 5 ]
+then
+ msg="Single loop position control"
+else
+ msg="Invalid value"
+fi
+echo "UM             : $UM [$msg]"
+
+let "gainScheduling = $STATUS_REG & 0x0400"
+let "gainScheduling = $gainScheduling>>10"
+if [ "$gainScheduling" -eq 0 ]
+then
+ msg="ON"
+else
+ msg="OFF"
+fi
+echo "gainScheduling : $gainScheduling [$msg]"
+
+let "homingActive = $STATUS_REG & 0x0800"
+let "homingActive = $homingActive>>11"
+if [ "$homingActive" -eq 0 ]
+then
+ msg="N"
+else
+ msg="Y"
+fi
+echo "homingActive   : $homingActive [$msg]"
+
+let "programRunning = $STATUS_REG & 0x1000"
+let "programRunning = $programRunning>>12"
+if [ "$programRunning" -eq 0 ]
+then
+ msg="N"
+else
+ msg="Y"
+fi
+echo "programRunning : $programRunning [$msg]"
+
+let "LC = $STATUS_REG & 0x2000"
+let "LC = $LC>>13"
+if [ "$LC" -eq 0 ]
+then
+ msg="Peak Limit or OFF"
+else
+ msg="Continuous Limit"
+fi
+echo "LC             : $LC [$msg]"
+
+let "MS = $STATUS_REG & 0xC000"
+let "MS = $MS>>14"
+
+if [ "$UM" -eq 2 ]
+then
+ if [ "$MS" -eq 0 ]
+ then
+ msg="N/A"
+ elif [ "$MS" -eq 1 ]
+ then
+ msg="reference speed=target speed or motor is OFF"
+ elif [ "$MS" -eq 2 ]
+ then
+ msg="reference speed!=target speed (motor may be accelerating/decelerating in profile mode)"
+ elif [ "$MS" -eq 3 ]
+ then
+  msg="reserved"
+ else
+  msg="Invalid"
+ fi
+else
+ if [ "$MS" -eq 0 ]
+ then
+ msg="motor position stabilized"
+ elif [ "$MS" -eq 1 ]
+ then
+ msg="position controller reference stationary or motor is OFF"
+ elif [ "$MS" -eq 2 ]
+ then
+ msg="position controller reference dynamically controlled by profiler PTP, Jog, PT or PVT"
+ elif [ "$MS" -eq 3 ]
+ then
+ msg="reserved"
+ else
+ msg="Invalid"
+ fi
+fi
+echo "MS             : $MS [$msg]"
+
+let "recorderStatus = $STATUS_REG & 0x30000"
+let "recorderStatus = $recorderStatus>>16"
+ if [ "$recorderStatus" -eq 0 ]
+ then
+ msg="inactive/no recorded data"
+ elif [ "$recorderStatus" -eq 1 ]
+ then
+ msg="waiting for trigger"
+ elif [ "$recorderStatus" -eq 2 ]
+ then
+ msg="finished, data ready"
+ elif [ "$recorderStatus" -eq 3 ]
+ then
+  msg="recording"
+ else
+  msg="Invalid"
+ fi
+echo "recorderStatus : $recorderStatus [$msg]"
+
+# bits 18-23 aren't used
+
+let "digitalHalls = $STATUS_REG & 0x07000000"
+let "digitalHalls = $digitalHalls>>24"
+let "dhC=($digitalHalls&0x4)>>2"
+let "dhB=($digitalHalls&0x2)>>1"
+let "dhA=($digitalHalls&0x1)"
+msg="A/$dhA B/$dhB C/$dhC "
+echo "digitalHalls   : $digitalHalls [$msg]"
+
+let "cpuStatus = $STATUS_REG & 0x08000000"
+let "cpuStatus = $cpuStatus>>27"
+if [ "$cpuStatus" -eq 0 ]
+then
+ msg="OK"
+else
+ msg="Stack Overflow/exception"
+fi
+echo "cpuStatus      : $cpuStatus [$msg]"
+
+let "limitStop = $STATUS_REG & 0x10000000"
+let "limitStop = $limitStop>>28"
+if [ "$limitStop" -eq 0 ]
+then
+ msg="limits not triggered"
+else
+ msg="stopped by RLS, FLS, stop switch or VH[3]/VL[3]"
+fi
+echo "limitStop      : $limitStop [$msg]"
+
+let "programError = $STATUS_REG & 0x20000000"
+let "programError = $limitStop>>29"
+if [ "$programError" -eq 0 ]
+then
+ msg="OK"
+else
+ msg="Error in user program"
+fi
+echo "programError   : $programError [$msg]"
+
+# bits 30-31 unused
+}
+
+
+########################################
+# name: decodeFault
+# description: Decode Elmo Fault Reg
+# args: none
+########################################
+decodeFault(){
+
+echo
+echo "#"
+echo "# Motor Fault Register"
+echo "#"
+echo
+
+
+let "reg = $FAULT_REG & 0xffffffff"
+if [ "$reg" -eq 0 ]
+then
+ msg="motor on or last motor shutdown normal"
+ echo "OK      : $reg [$msg]"
+fi
+
+let "feedback = $FAULT_REG & 0x1"
+if [ "$feedback" -eq 1 ]
+then
+ msg="Hall Sensor/Resolver feedback not ready"
+ echo "feedback      : $feedback [$msg]"
+fi
+# 0x2 reserved
+let "feedback = ($FAULT_REG & 0x4) >> 2"
+if [ "$feedback" -eq 1 ]
+then
+ msg="feedback loss - no match between encoder and Hall location"
+ echo "feedback      : $feedback [$msg]"
+fi
+
+let "peakCurrent = ($FAULT_REG & 0x8) >> 3"
+if [ "$peakCurrent" -eq 1 ]
+then
+ msg="peak current exceeded"
+ echo "peakCurrent      : $peakCurrent [$msg]"
+fi
+
+let "inhibit = ($FAULT_REG & 0x10) >> 4"
+if [ "$inhibit" -eq 1 ]
+then
+ msg="inhibit"
+ echo "inhibit      : $inhibit [$msg]"
+fi
+
+let "bit = ($FAULT_REG & 0x20) >> 5"
+if [ "$bit" -eq 1 ]
+then
+ msg="reserved"
+ echo "bit 5     : $bit [$msg]"
+fi
+
+let "hallChange = ($FAULT_REG & 0x40) >> 6"
+if [ "$hallChange" -eq 1 ]
+then
+ msg="Hall sensors changed simultaneously"
+ echo "hallChange     : $hallChange [$msg]"
+fi
+
+let "speedTracking = ($FAULT_REG & 0x80) >> 7"
+if [ "$speedTracking" -eq 1 ]
+then
+ msg="speed tracking error DV[2]-VX (UM=2,4,5) > ER[2]"
+ echo "speedTracking     : $speedTracking [$msg]"
+fi
+
+let "positionTracking = ($FAULT_REG & 0x100) >> 8"
+if [ "$positionTracking" -eq 1 ]
+then
+ msg="position tracking error DV[3]-PX (UM=5) or DV[3]-PY (UM=4)> ER[2]"
+ echo "positionTracking     : $positionTracking [$msg]"
+fi
+
+let "database = ($FAULT_REG & 0x200) >> 9"
+if [ "$database" -eq 1 ]
+then
+ msg="can't start due to inconsistent database"
+ echo "database     : $database [$msg]"
+fi
+
+let "ecam = ($FAULT_REG & 0x400) >> 10"
+if [ "$ecam" -eq 1 ]
+then
+ msg="too large a difference in ECAM table"
+ echo "ecam     : $ecam [$msg]"
+fi
+
+let "heartbeat = ($FAULT_REG & 0x800) >> 11"
+if [ "$heartbeat" -eq 1 ]
+then
+ msg="heartbeat failure"
+ echo "heartbeat     : $heartbeat [$msg]"
+fi
+
+let "servo = ($FAULT_REG & 0x1000) >> 12"
+if [ "$servo" -eq 1 ]
+then
+ let "servoFault = ($FAULT_REG & 0xE000) >> 13"
+  if [ "$servoFault" -eq 0 ]
+ then
+ msg="OK"
+ elif [ "$servoFault" -eq 1 ]
+ then
+ msg="Under voltage"
+ # - power supply shut down or too high an output impedance
+ elif [ "$servoFault" -eq 2 ]
+ then
+ msg="Over voltage"
+ #- power supply voltage too high or servo could not absorb kinetic energy while braking under load.
+ elif [ "$servoFault" -eq 3 ] || [ "$servoFault" -eq 4 ] 
+ then
+ msg="reserved"
+ elif [ "$servoFault" -eq 5 ] 
+ then
+ msg="Short circuit"
+ # - motor or wiring may defective or drive is faulty
+ elif [ "$servoFault" -eq 6 ] 
+ then
+ msg="Temperature"
+ #- drive overheating
+ else
+ msg="reserved"
+ fi
+ echo "servo          : $servo [$msg]"
+fi
+
+let "zero = ($FAULT_REG & 0x10000) >> 16"
+if [ "$zero" -eq 1 ]
+then
+ msg="could not find electrical zero (insufficient current?)"
+ echo "zero     : $zero [$msg]"
+fi
+
+let "speed = ($FAULT_REG & 0x20000) >> 17"
+if [ "$speed" -eq 1 ]
+then
+ msg="speed limit exceeded VX< LL[2] or VX>HL[2]"
+ echo "speed     : $speed [$msg]"
+fi
+
+let "stack = ($FAULT_REG & 0x40000) >> 18"
+if [ "$stack" -eq 1 ]
+then
+ msg="stack overflow (use CD)"
+ echo "stack     : $stack [$msg]"
+fi
+
+let "cpu = ($FAULT_REG & 0x80000) >> 19"
+if [ "$cpu" -eq 1 ]
+then
+ msg="CPU exception (use CD)"
+ echo "cpu     : $cpu [$msg]"
+fi
+
+let "stuck = ($FAULT_REG & 0x200000) >> 21"
+if [ "$stuck" -eq 1 ]
+then
+ msg="motor stuck - powered but not moving (CL[2,3]"
+ echo "stuck     : $stuck [$msg]"
+fi
+
+let "positionLimit = ($FAULT_REG & 0x200000) >> 21"
+if [ "$positionLimit" -eq 1 ]
+then
+ msg="position limit exceeded - PX<LL[3], PX<HL[3] (UM=5)|PY<LL[3], PY<HL[3] (UM=4)"
+ echo "positionLimit     : $positionLimit [$msg]"
+fi
+
+let "noStart = ($FAULT_REG & 0x20000000) >> 29"
+if [ "$noStart" -eq 1 ]
+then
+ msg="cannot start motor"
+ echo "noStart     : $noStart [$msg]"
+fi
+
+}
+
+##########################
+# Script main entry point
+##########################
+
+# Argument processing
+if [ "$#" -eq 0 ];then
+    printUsage
+    exit 0
+fi
+
+while getopts f:s:hV Option
+do
+    case $Option in
+	f ) FAULT_REG="$OPTARG"
+	;;
+	s ) STATUS_REG="$OPTARG"
+	;;
+	V ) VERBOSE="TRUE"
+	;;
+	h)printUsage
+	  exit 0
+	;;
+	*) exit 0 # getopts outputs error message
+	;;
+    esac
+done
+
+# call sigTrap on INT,TERM or EXIT
+# trap sigTrap INT TERM EXIT
+
+# reset trapped signals
+# trap - INT TERM EXIT
+
+vout "FAULT_REG=$FAULT_REG"
+vout "STATUS_REG=$STATUS_REG"
+
+if [ "$STATUS_REG" ]
+then
+decodeStatus
+fi
+if [ "$FAULT_REG" ]
+then
+decodeFault
+fi
+echo ""
+
+

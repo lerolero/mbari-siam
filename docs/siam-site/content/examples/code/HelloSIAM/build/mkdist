@@ -1,0 +1,40 @@
+#!/bin/bash
+
+HELLO_HOME="$SIAM_HOME/docs/siam-site/content/examples/code/HelloSIAM"
+BUILD_DIR="$HELLO_HOME/build"
+HELLO_PKG="$BUILD_DIR/hello-install.tar.gz"
+
+if [ "$#" -gt 0 ]
+then
+if [ "$1" == "-h" ] ||  [ "$1" == "--help" ]
+then
+echo ""
+echo " Usage `basename $0` [<HELLO_HOME>]"
+echo ""
+exit 0
+fi
+fi
+
+if [ "$#" -eq 1 ]
+then
+ HELLO_HOME="$1"
+fi
+
+if [  ! -d $HELLO_HOME ]
+then
+echo ""
+echo "$HELLO_HOME is not a directory"
+echo ""
+exit 0
+fi
+if [  ! -d $BUILD_DIR ]
+then
+echo ""
+echo "$BUILD_DIR is not a directory"
+echo ""
+exit 0
+fi
+
+cd $HELLO_HOME
+tar czvf $HELLO_PKG -C $HELLO_HOME --exclude *DS_Store* make puckxml src jars utils ports
+

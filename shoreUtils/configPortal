@@ -1,0 +1,63 @@
+#!/bin/csh
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Configure host to run portal application
+set user=`whoami`
+if ($user !~ "oreilly") then
+  echo "You must be 'oreilly' to configure portal."
+  exit 1
+endif
+
+echo "NOTE: YOU MUST VERIFY THAT FIREWALL IS DISABLED ON THIS HOST"
+
+@ netNumberBase=35
+
+# Get network number
+while (1) 
+    echo -n "Enter deployed network number (must be in range 1 - 5): "
+    set netNumber=$<
+    if ($netNumber > 0 && $netNumber < 6) then
+      @ thirdOctet=$netNumber + $netNumberBase
+      echo "Third octet is $thirdOctet"
+      break;
+    endif
+end
+
+echo "Select wireless link:"
+echo "1 Freewave"
+echo "2 Globalstar"
+while (1)
+  echo -n "Select: "
+  set item=$<
+  if ($item == 1) then
+    set linkType=freewave
+    break
+  else if ($item == 2) then
+    set linkType=globalstar
+    break
+  else 
+    echo "Invalid selection"
+  endif
+end
+
+# Add appropriate entries to /etc/hosts
+
+# Add routes to subnodes when ppp is connected
+
+# Add callback to notify portal when ppp is connected
+
+# Add callback to notify portal when ppp is DISconnected
+
+# Ensure that ppp modules are configured correctly for compression
+
+# For Globalstar connection, configure inittab to answer phone and 
+# exec ppp 
+
+# For Freewave connection, configure /etc/rc.local such that ppp is
+# started on reboot
+
+
+
+

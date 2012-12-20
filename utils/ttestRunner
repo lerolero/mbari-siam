@@ -1,0 +1,13 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Execute JUnit Text TestRunner on specified test class
+# Author: Karen A. Salamy
+#$JAVA -cp ${SIAM_CLASSPATH}:${SIAM_HOME}/jars/junit.jar \ 
+#-Djava.security.policy=$SIAM_HOME/properties/policy \
+#-Dsiam_home=$SIAM_HOME \
+#-Dsiam_port_cfg="/properties/siamPort.test" \
+
+$JAVA -cp ${SIAM_CLASSPATH}:${SIAM_HOME}/jars/junit.jar -Dsiam_home=$SIAM_HOME  -Dsiam_port_cfg="/properties/siamPort.test" -Djava.security.policy=$SIAM_HOME/properties/policy junit.textui.TestRunner $*

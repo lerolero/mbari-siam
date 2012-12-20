@@ -1,0 +1,13 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# logMessage: send a text message to be included in the specified
+# node's data stream
+
+# $1 is node
+# $2 is message (must be quoted)
+$JAVA -cp $SIAM_CLASSPATH -Djava.security.policy=$SIAM_HOME/properties/policy \
+-Dlog4j.threshold=$LOG4J_THRESHOLD org.mbari.siam.operations.utils.LogMessage $1 "$2"
+

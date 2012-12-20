@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+  <meta name="Author" content="Tom O'Reilly">
+  <meta name="GENERATOR"
+ content="Mozilla/4.79 [en] (Windows NT 5.0; U) [Netscape]">
+  <title>logView</title>
+</head>
+<body>
+<b>NAME</b>
+<blockquote>logView - Display packets from specified SIAM log to stdout
+</blockquote>
+<b>SYNOPSIS</b>
+<blockquote>
+  <pre>logView [options] deviceID directory</pre>
+</blockquote>
+<b>DESCRIPTION</b>
+<blockquote>The logView utility displays packets from the specified
+SIAM device log, residing in the specified directory. Note that the
+SIAM "log" for
+a given device actually consists of two files, a "dat" file and an
+"idx" (index) file. For example, the log for device ID "1287" consists
+of the files "1287_0.dat" and "1287_0.idx". To view all packets from
+device 1287, the user would 'cd' to the directory in which these files
+reside and type:
+  <br>
+&nbsp;
+  <blockquote>
+    <pre>% logView 1287 .</pre>
+  </blockquote>
+</blockquote>
+<b>OPTIONS</b>
+<ul>
+  <li>
+    <b>-utc</b>- Print timestamp in UTC format
+  </li>
+  <li>
+    <b>-type</b> <i>type</i>- Only print packets of the specified <i>type</i>,
+where type is one of the following: "all", "metadata", "data", or
+"message".
+  </li>
+  <li>
+    <b>-bin</b>- Print packets in "raw" binary form.
+  </li>
+  <li>
+    <b>-start &lt;timespec&gt;</b> - Do not print packets with created
+before the
+specified time, where <i>timespec</i> </li>
+  <li>
+    <b>-stop &lt;timespec</b>- Do not print packets created after the
+specified time.
+  </li>
+</ul>
+Valid <i>timespec</i> formats for the <i>-start</i> and <i>-stop</i>
+options
+are as follows:
+<ul>
+  <li> m/d/yyyy - numeric month, day-of-month, year
+  </li>
+  <li>
+m/d/yyyyTh:m:s - numeric month, day-of-month, year, followed by letter
+'T',
+then hour, minutes, seconds
+  </li>
+</ul>
+<p><br>
+<b>EXAMPLES</b>
+</p>
+<blockquote>To view all metadata packets from device 1321, when the log
+files reside in the
+current directory, the user would type:
+  <br>
+&nbsp;
+  <blockquote>
+    <pre>% logView -type metadata 1321 .</pre>
+  </blockquote>
+To view all packets created from device 1287, between noon on July 12,
+2004 and 3 AM on July 15, when the log files reside in directory
+~/logs, the user would type:
+  <br>
+&nbsp;
+  <blockquote>
+    <pre>% logView -start 7/12/2004T12:0:0 -stop 7/15/2004T3:0:0 1287 ~/logs</pre>
+  </blockquote>
+</blockquote>
+<p><br>
+<span style="font-weight: bold;">KNOWN BUGS<br>
+</span></p>
+<div style="margin-left: 40px;">The -start and -stop "time window"
+options only work correctly if all packets in the log are sorted in
+ascending timestamp order; utilities such as <a href="getPackets.html"><span
+ style="font-style: italic;">getPackets</span></a> may generate logs
+that are not ordered in this way.<br>
+<br>
+</div>
+<p><b>ENVIRONMENT</b>
+</p>
+<blockquote>The following environment variables must be set:</blockquote>
+<ul>
+  <li>
+JAVA_HOME - location of Java installation, e.g.<i> /j9</i> or <i>/opt/java/jdk1.3.1</i></li>
+  <li>
+JAVA - name of the JVM. E.g. on a Sidearm, JAVA should be set to <i>j9.
+    </i>On
+a workstation with Sun's Java installed, JAVA could be set to <i>java</i>.</li>
+  <li>
+SIAM_HOME - top of the SIAM directory tree</li>
+  <li>
+SIAM_CLASSPATH - on a Sidearm, SIAM_CLASSPATH should be set to <i>$JAVA_HOME/lib/jclMax/classes.zip:$JAVA_HOME/lib/prsnlmot.jar:$JAVA_HOME/lib/RXTXcomm.jar:$SIAM_HOME/classes</i>.&nbsp;
+On X86 system, SIAM_CLASSPATH should be set to<i> $SIAM_HOME/classes</i></li>
+</ul>
+</body>
+</html>

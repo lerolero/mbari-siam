@@ -1,0 +1,14 @@
+The wiring for the DPA ports is as follows for a DTE connector out of the back plane.
+
+
+---------------------------------------------------------------
+|   DB-9 male  |   5 pin DPA    |   Function   |  wire color* |
+---------------------------------------------------------------
+|    3         |       1        |  TX  (out)   |  green       |
+|    7         |       2        |  RTS (out)   |  yellow      |
+|    2         |       3        |  RX  (in)    |  orange      |
+|    8         |       4        |  CTS (in)    |  red         |
+|    5         |       5        |  GND         |  brown       |
+---------------------------------------------------------------
+
+*Wire colors as of last batch (2/2003) of connectors.  Note: this is not a standard, do not count on it!!!

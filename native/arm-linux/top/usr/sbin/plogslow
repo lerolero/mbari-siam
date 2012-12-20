@@ -1,0 +1,13 @@
+#!/bin/bash
+SYSLOG=/var/log/syslog
+PPPLOG=/var/log/ppp.log
+if [ -s $PPPLOG ]; then
+  exec tail "$@" $PPPLOG
+else
+  exec tail "$@" $SYSLOG | { while read -r logLine; do
+    case "$logLine" in 
+      *\ pppd\[*\]*) echo $logLine;;
+      *\ chat\[*\]*) echo ${logLine//^M}
+    esac
+  done; }
+fi

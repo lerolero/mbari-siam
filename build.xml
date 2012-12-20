@@ -1,0 +1,658 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id: build.xml,v 1.14 2012/12/19 23:29:53 headley Exp $ -->
+<project name="siam" default="all" basedir=".">
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Load property files in this order:
+
+    1. User properties
+    2. This level properties
+
+    This allows a user to have specific settings that override any other
+    settings (other than command-line, which always take precedence).
+    -->
+    <property file="${user.home}/build.properties" />
+    <property file="build.properties" />
+    <property environment="env" />
+	<property name="pname" value="" /> 
+	<dirname property="siam_home" file="build.xml" />
+    <property name="distPortDir" value="${siam_home}/build/dist/ports" />
+
+    <!-- This classpath is used for building the applications -->
+    <path id="classpath">
+        <pathelement location="${classes}" />
+        <fileset dir="${lib.java}">
+            <include name="*.jar" />
+            <exclude name="j2me*" />
+        </fileset>
+    </path>
+
+    <!-- This classpath is used for building the tests -->
+    <path id="classpath.test">
+        <fileset dir="${lib.java}">
+            <include name="*.jar" />
+            <exclude name="j2me*" />
+        </fileset>
+        <pathelement location="${classes}" />
+        <pathelement location="${resources.test}" />
+    </path>
+
+    <!-- This classpath is used for executing compiled classes-->
+    <path id="classpath.run">
+        <pathelement location="${resources.test}" />
+        <fileset dir="${lib.java}">
+            <include name="*.jar" />
+            <exclude name="j2me*" />
+        </fileset>
+        <fileset dir="${dist}">
+            <include name="*.jar" />
+        </fileset>
+    </path>
+
+    <!-- Include FOCE specific targets -->
+	<include file="foce-build.xml" as="foce" />
+	<import file="foce2011-build.xml" as="foce2011" />
+   
+    <!-- Include XFOCE specific targets -->
+	<include file="xfoce-build.xml" as="xfoce" />
+	<import file="swfoce2012-build.xml" as="swfoce2012" />
+   
+	 <!-- Include MOOS specific targets -->
+	<include file="moos-build.xml" as="moos" />
+
+	 <!-- Include dummy JAR targets -->
+	<import file="dummies-build.xml" as="dummies" />
+
+	 <!-- Include muce 2009 JAR targets -->
+	<import file="muce2009-build.xml" as="muce2009" />
+
+	 <!-- Include CIMT 2006 JAR targets -->
+	<import file="cimt2006-build.xml" as="cimt2006" />
+	
+	 <!-- Include CIMT 2006 JAR targets -->
+	<import file="puckdemo-build.xml" as="puckdemo" />
+
+	 <!-- Include example JAR targets -->
+	<import file="example-build.xml" as="example" />
+
+    <!-- 
+    USAGE: Describes the common useages of the build file
+    -->
+    <target name="help" description="Description of usage of build file">
+        <echo>
+            The SIAM project supports the following build targets:
+            
+            all           - Compiles, builds, and generates javadocs
+            build         - Compiles the java code and builds jar files
+            clean         - Deletes all compiled classes and build products
+            compile       - Compiles the java source code
+            help          - Prints this message
+            init          - Sets up the build directories
+            javadoc       - Generates javadocs
+            siamjar       - siam.jar
+            siamif        - siamif.jar
+            install       - copy siam.jar to codebase
+			
+            For help with platform-specific targets:
+            moos.help
+            foce.help
+            xfoce.help
+            foce2011.help
+            muce2009.help
+            cimt2006.help
+            puckdemo.help
+            example.help
+        </echo>
+    </target>
+
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    CLEAN: Delete the ${build} and ${dist} directory trees
+    -->
+    <target name="clean" description="Remove the build directory">
+        <delete dir="${build}" />
+        <delete dir="${classes}" />
+    </target>
+
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    INIT: Init target sets up properties used by other targets
+    -->
+    <target name="init" description="Create the build directory structure">
+        <!-- Create the timestamp -->
+        <tstamp />
+        <!-- Create the directory build structure used by compile -->
+        <mkdir dir="${build}" />
+        <mkdir dir="${javadoc}" />
+        <mkdir dir="${classes}" />
+        <mkdir dir="${classes.test}" />
+        <mkdir dir="${dist}" />
+        <mkdir dir="${dist}/ports" />
+		<mkdir dir="${codebase}" />
+
+        <!-- Drop files that don't compile -->
+
+<!-- all obsolete
+        <delete includeEmptyDirs="true">
+            <fileset dir="src/org/mbari/siam/distributed/jini">
+                <include name="ServiceEventListener.java" />
+            </fileset>
+            <fileset dir="src/org/mbari/siam/distributed/portal">
+                <include name="ConfigureDeviceCommand.java" />
+            </fileset>
+            <fileset dir="src/org/mbari/siam/distributed/utils">
+                <include name="ReadPuck_versionOneDotZero.java" />
+                <include name="WritePuck_versionOneDotZero.java" />
+            </fileset>
+        </delete>
+-->
+
+    </target>
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    COMPILE: Compile the java code from ${src.java} into ${classes}
+    -->
+    <target name="compile" depends="init" description="Compile java source">
+        <echo>Compiling classes using Java ${java.version} by ${java.vendor} located in ${java.home} source=${siam.source} target=${siam.target}</echo>
+        <javac fork="true" memoryinitialsize="256m" memorymaximumsize="256m" srcdir="${src.java}" destdir="${classes}" deprecation="off" debug="on" debuglevel="lines,vars,source" source="${siam.source}" target="${siam.target}" includeantruntime="false">
+        <!-- <javac srcdir="${src.java}" destdir="${classes}" deprecation="on" debug="off"> -->
+            <classpath refid="classpath" />
+
+           <exclude name="**/SIAM_DevicePropertiesEditor.java" />
+           <exclude name="**/SIAM_DevicePropertiesEditorBeanInfo.java" />
+           <exclude name="**/Seabird-internalLog.java" />
+           <exclude name="**/FOCEMotorUtil.java" />
+           <exclude name="**/LogParser.java" />
+           <exclude name="**/org/mbari/siam/tests/moos/**" />
+           <exclude name="**/org/mbari/siam/tests/serialization/**" />
+  		   <exclude name="**/org/mbari/siam/moos/utils/node/**" />
+  		   <exclude name="**/com/jrefinery/**" />
+ 		   <!--<exclude name="**/org/mbari/siam/dataTurbine/**" />-->
+		   
+		   <!-- User exclusions may be added here to ignore test and other non-repository code -->
+		   <!--
+           <exclude name="**/org/mbari/siam/foce/devices/controlLoop/*HYB*" />
+           <exclude name="**/org/mbari/siam/foce/devices/controlLoop/PID_Thruster.java" />
+           <exclude name="**/org/mbari/siam/foce/devices/controlLoop/tmp/**" />
+           <exclude name="**/org/mbari/siam/foce/devices/elmo/tmp/**" />
+           <exclude name="**/org/mbari/siam/foce/devices/elmo/cspline/**" />
+           <exclude name="**/org/mbari/siam/foce/devices/elmo/*.java" />
+           <exclude name="**/org/mbari/siam/foce/utils/tmp/**" />
+           <exclude name="**/org/mbari/siam/distributed/devices/tmp/**" />
+           <exclude name="**/*bak*.java" />
+		   -->
+          <exclude name="**/tmp/**" />
+          <exclude name="**/siam/sandbox/**" />
+          <exclude name="**/DeviceLogUtilBase.java" />
+		   
+		   
+		   
+        </javac>
+        <rmic base="${classes}">
+            <classpath refid="classpath" />
+            <include name="**/BaseInstrumentService.class" />
+            <include name="**/InstrumentService.class" />
+            <include name="**/NodeService.class" />
+            <include name="**/StreamingInstrumentService.class" />
+            <include name="**/TerminalInstrumentService.class" />
+            <include name="**/A3LAMessagingService.class" />
+            <include name="**/AanderaaO2.class" />
+            <include name="**/ActiVideoServer.class" />
+            <include name="**/AnalogInstrument.class" />
+            <include name="**/Aquadopp.class" />
+            <include name="**/AxisCamera.class" />
+            <include name="**/Benchmark1Impl.class" />
+            <include name="**/Benchmark2Impl.class" />
+			<include name="**/CO2SubsystemMonitor.class" />
+            <include name="**/CompassKVHC100.class" />
+            <include name="**/ControlLoopService.class" />
+            <include name="**/CPUTempService.class" />
+            <include name="**/DataLogger.class" />
+            <include name="**/DigitalInputService.class" />
+            <include name="**/DigiWorkhorseADCP.class" />
+            <include name="**/DummyInstrument.class" />
+            <include name="**/DummySummarizer.class" />
+            <include name="**/ElmoService.class" />
+            <include name="**/ElmoService.class" />
+			<include name="**/FOCEProcess.class" />
+            <include name="**/GarminGPS.class" />
+            <include name="**/GashoundSubsystem.class" />
+            <include name="**/HeaveSensor.class" />
+            <include name="**/HydroRad.class" />
+            <include name="**/ISUS2.class" />
+            <include name="**/McLaneProfiler.class" />
+            <include name="**/mdTest.class" />
+            <include name="**/Medusa.class" />
+            <include name="**/Metsys.class" />
+            <include name="**/MotorControl.class" />
+            <include name="**/MOOSNodeService.class" />
+            <include name="**/MRBaseInstrumentService.class" />
+            <include name="**/MRPolledInstrumentService.class" />
+            <include name="**/MSP430.class" />
+            <include name="**/NAL9601MessagingService.class" />
+            <include name="**/NALMessagingService.class" />
+            <include name="**/NobskaMAVS.class" />
+            <include name="**/NodeEventCallbackService.class" />
+            <include name="**/Ocr3000.class" />
+            <include name="**/PhDigital.class" />
+            <include name="**/Portal.class" />
+            <include name="**/PowerCan.class" />
+            <include name="**/Pump.class" />
+            <include name="**/PumpUser.class" />
+            <include name="**/PumpedSeabird.class" />
+            <include name="**/SAMI.class" />
+            <include name="**/SatlanticISUS.class" />
+            <include name="**/SBE16plus.class" />
+            <include name="**/SBE18.class" />
+            <include name="**/SBE19plus.class" />
+            <include name="**/SBE37.class" />
+            <include name="**/SBE52MP.class" />
+			<include name="**/ScaledAnalog.class" />
+            <include name="**/ScheduledISUS.class" />
+            <include name="**/SeaBird37im.class" />
+            <include name="**/Seabird.class" />
+            <include name="**/Seahorse.class" />
+            <include name="**/Sensoray518.class" />
+            <include name="**/SerialAdc.class" />
+            <include name="**/Shmoo.class" />
+            <include name="**/ShmooInstrumentService.class" />
+            <include name="**/ShoreMessagingService.class" />
+            <include name="**/SimulatedShoreMessagingService.class" />
+			<include name="**/SimulatedVector.class" />
+            <include name="**/SmartStar.class" />
+            <include name="**/SOON.class" />
+            <include name="**/StreamingSBE19.class" />
+            <include name="**/ValveControl.class" />
+            <include name="**/ValveService.class" />
+            <include name="**/VarDummyInstrument.class" />
+            <include name="**/Vector.class" />
+            <include name="**/WhoiAsimet.class" />
+            <include name="**/WetLabsECO.class" />
+            <include name="**/WetLabsTriplet.class" />
+            <include name="**/WorkhorseADCP.class" />
+            <include name="**/Ysi.class" />
+        </rmic>
+        <!--
+        <javac srcdir="${src.test}" destdir="${classes.test}" deprecation="on" debug="on" debuglevel="lines,vars,source">
+            <classpath refid="classpath.test" />
+        </javac>
+        -->
+    </target>
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    JAVADOC: Create javadocs from source directory depends="init"
+
+					<doclet name="org.umlgraph.doclet.UmlGraphDoc"
+	        		  path="${lib.java}/UMLGraph.jar">
+	        	        <param name="-attributes" />
+	        	        <param name="-operations" />
+	        	        <param name="-qualify" />
+	        	        <param name="-types" />
+	        	        <param name="-visibility" />
+	        	    </doclet>
+		  <apply executable="dot" dest="${javadoc}" parallel="false">
+		    <arg value="-Tpng"/>
+		    <arg value="-o"/>
+		     <targetfile/>
+		     <srcfile/>
+		     <fileset dir="${javadoc}" includes="*.dot"/>
+		     <mapper type="glob" from="*.dot" to="*.png"/>
+		  </apply>
+
+    -->
+    <target name="javadoc"  description="Generate javadocs">
+        <property name="build.doc" value="${dist}/${project}_doc.jar" />
+		
+        <echo>Generating Javadoc using Java ${java.version} by ${java.vendor} located in ${java.home} dest=${javadoc}</echo>
+		
+        <javadoc maxmemory="256m" excludepackagenames="com.jrefinery.*" sourcepath="${src.java}/org/mbari/siam/core" destdir="${javadoc}" author="true" version="true" private="false" splitindex="true" nohelp="true" nodeprecatedlist="false" windowtitle="Software infrastructure and application for MOOS (SIAM)" stylesheetfile="${siam_home}/docs/siam-site/css/javadoc-stylesheet.css">
+            <classpath refid="classpath" />
+            <group title=" SIAM Devices" packages="org.mbari.siam.core" />
+            <packageset dir="${src.java}" />
+            <doctitle>
+                <![CDATA[<h1>Software Infrastructure and Application for MOOS</h1>]]>
+				</doctitle>
+            <bottom>
+                <![CDATA[<i>Copyright &#169; 2003 MBARI.</i>
+					<br>
+					<br>
+					<a href="http://www.mbari.org">The Monterey Bay Aquarium Research Institute (MBARI)</a> provides this documentation and code &quot;as is&quot;, with no warranty, express or implied, of its quality or consistency. It is provided without support and without obligation on the part of MBARI to assist in its use, correction, modification, or enhancement.]]>
+				</bottom>
+			<!--
+			<doclet name="org.umlgraph.doclet.UmlGraphDoc"
+				path="/Users/headley/Downloads/UMLGraph-5.3/lib/UMLGraph.jar">
+				<param name="-attributes" />
+				<param name="-operations" />
+				<param name="-qualify" />
+				<param name="-types" />
+				<param name="-visibility" />
+				</doclet>
+				-->
+			</javadoc>
+		<!--
+		 <apply executable="dot" dest="${javadoc}" parallel="false">
+		 <arg value="-Tpng"/>
+		 <arg value="-o"/>
+		 <targetfile/>
+		 <srcfile/>
+		 <fileset dir="${javadoc}" includes="*.dot"/>
+		 <mapper type="glob" from="*.dot" to="*.png"/>
+		 </apply>
+		-->
+        <!-- Build the documentation jar file -->
+        <jar jarfile="${build.doc}">
+            <fileset dir="${javadoc}" />
+			</jar>
+		</target>
+	
+	
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    BUILD: Create jar files of the classes and sources
+    -->
+    <target name="build" depends="compile" description="Compiles source and builds jars">
+
+        <!-- Name the jars to be created -->
+        <property name="jar.bin" value="${dist}/${project}_bin.jar" />
+        <property name="jar.src" value="${dist}/${project}_src.jar" />
+        <property name="jar.bin.test" value="${dist}/${project}-test.jar" />
+        <property name="jar.src.test" value="${dist}/${project}-test_src.jar" />
+        <property name="jar.siam" value="${dist}/${siamjar}" />
+        <property name="jar.siamif" value="${dist}/${siamifjar}" />
+        <property name="manifest" value="${build}/MANIFEST.MF" />
+
+        <!-- Build the manifest file -->
+        <manifest file="${manifest}">
+            <!--<attribute name="Main-class" value="org.mbari.vims.annotation.gui.AnnotationGUI"/>-->
+            <attribute name="Built-By" value="${user.name}" />
+            <section name="common">
+                <attribute name="Specification-Title" value="${project}" />
+                <attribute name="Specification-Version" value="${version}" />
+                <attribute name="Specification-Vendor" value="MBARI" />
+                <attribute name="Implementation-Title" value="${project}" />
+                <attribute name="Implementation-Version" value="${version} ${TODAY}" />
+                <attribute name="Implementation-Vendor" value="MBARI" />
+            </section>
+        </manifest>
+
+        <!-- Make Jars ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <!-- Build the binary jar file -->
+        <jar jarfile="${jar.bin}" manifest="${manifest}">
+            <fileset dir="${classes}">
+                <exclude name="test/**" />
+            </fileset>
+        </jar>
+
+        <!-- Build the source jar file -->
+        <jar jarfile="${jar.src}">
+            <fileset dir="${src.java}" />
+        </jar>
+		
+        <!-- Build the binary test jar file -->
+        <jar jarfile="${jar.bin.test}">
+            <fileset dir="${classes.test}" />
+        </jar>
+
+        <!-- Build the source jar file -->
+        <jar jarfile="${jar.src.test}">
+            <fileset dir="${src.test}" />
+        </jar>
+
+    </target>
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ALL: Default - it does everything
+    -->
+    <target name="all" depends="clean,build,javadoc" description="Clean and build" />
+
+	<!-- Install SIAM ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="install">
+		<echo>Installing SIAM to codebase</echo>
+		<unzip src="jars/siam.jar" dest="codebase/" />
+		<delete dir="codebase/META-INF" />
+		</target>
+
+    <!-- Make SIAM JAR ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+   <target name="siamjar" depends="build">
+         <!-- Name the jars to be created -->
+        <property name="jar.siam" value="${dist}/${siamjar}" />
+         <jar jarfile="${jar.siam}">
+            <fileset dir="${classes}">
+				<include name="**/org/doomdark/**" />
+				<include name="**/it/**" />
+                <include name="**/org/mbari/jddac/**" />
+                <include name="**/org/mbari/puck/**" />
+                <include name="**/org/mbari/util/**" />
+                <include name="**/org/mbari/siam/configt/**" />
+                <include name="**/org/mbari/siam/core/**" />
+                <include name="**/org/mbari/siam/dataTurbine/**" />
+                <include name="**/org/mbari/siam/distributed/**" />
+                <include name="**/org/mbari/siam/foce/deployed/**" />
+                <include name="**/org/mbari/siam/foce/utils/**" />
+                <include name="**/org/mbari/siam/moos/**" />
+                <include name="**/org/mbari/siam/operations/**" />
+                <include name="**/org/mbari/siam/registry/**" />
+                <include name="**/org/mbari/siam/tests/**" />
+                <include name="**/org/mbari/siam/utils/**" />
+            </fileset>
+       </jar>
+	   <echo>Moving ${lib.java}/${siamjar} to ${lib.java}/${siamjar}.bak</echo>
+	   <move file="${lib.java}/${siamjar}" tofile="${lib.java}/${siamjar}.bak" failonerror="false" />
+	   <echo>Installing ${jar.siam} to ${lib.java}/${siamjar}</echo>
+	   <copy file="${jar.siam}" tofile="${lib.java}/${siamjar}" />
+   </target>
+
+    <!-- Make siamif.jar ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <target name="siamif" depends="build">
+         <!-- Name the jars to be created -->
+       <property name="jar.siamif" value="${dist}/${siamifjar}" />
+        <jar jarfile="${jar.siamif}">
+            <fileset dir="${classes}">
+                <include name="**/org/mbari/siam/distributed/**" />
+            </fileset>
+       </jar>
+   </target>
+
+    <!-- Make logview tar.gz ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <target name="logview" depends="build">
+   </target>
+   
+    <!-- Update puckxml ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <target name="puckxml" depends="puckxml.check,puckxml.create, puckxml.update">
+   </target>
+    <target name="puckxml.check">
+		<condition property="puckxml.doCreate">
+		    <not>
+			<resourceexists>
+				<file file="${puckxml}/CVS" />
+			</resourceexists>			
+			</not>
+		</condition>
+		<condition property="doUpdate">
+		<istrue value="${updatePUCKXML}"/>
+		</condition>
+
+   </target>
+    <target name="puckxml.create" if="puckxml.doCreate">
+		<mkdir dir="puckxml" />
+		<exec executable="cvs">
+			<arg line="checkout -r ${puckxml.version} puckxml" />
+		</exec>
+   </target>
+    <target name="puckxml.update" if="doUpdate">
+		<exec executable="cvs">
+			<arg line="update puckxml" />
+		</exec>
+   </target>
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    TEST.AQUADOPP: Runs the annotation application
+    -->
+    <target name="test.aquadopp" depends="build">
+        <java classname="moos.devices.nortek.AquadoppTest02" fork="true">
+            <classpath refid="classpath.run" />
+            <jvmarg value="-Xms128m"/>
+            <jvmarg value="-Xmx256m"/>
+            <arg value="1473" />
+            <arg value="${test.resources}/aquadopp" />
+        </java>
+    </target>
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    TEST.WETLABS: Runs the annotation application
+    -->
+    <target name="test.wetlabs" depends="build">
+        <java classname="moos.devices.SummaryBlockTest" fork="true">
+            <classpath refid="classpath.run" />
+            <arg value="moos.devices.wetlabs.WetLabsTriplet" />
+            <arg value="1536" />
+            <arg value="${test.resources}/wetlabs" />
+            <arg value="Chlorophyll" />
+        </java>
+    </target>
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    TEST.AANDERRA: Runs the annotation application
+    -->
+    <target name="test.aanderaa" depends="build">
+        <java classname="moos.devices.SummaryBlockTest" fork="true">
+            <classpath refid="classpath.run" />
+            <arg value="moos.devices.aanderaa.AanderaaO2" />
+            <arg value="1524" />
+            <arg value="${test.resources}/aanderra" />
+            <arg value="Oxygen" />
+        </java>
+    </target>
+
+    
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    TEST.OCR3000 Runs the annotation application
+    -->
+    <target name="test.ocr3000" depends="build">
+        <java classname="moos.devices.SummaryBlockTest" fork="true">
+            <classpath refid="classpath.run" />
+            <arg value="moos.devices.ocr3000.Ocr3000" />
+            <arg value="1516" />
+            <arg value="${test.resources}/hyperocr" />
+            <arg value="ES684.58" />
+        </java>
+    </target>
+    
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    TEST.HYPEROCR Runs the annotation application
+    -->
+    <target name="test.hyperocr" depends="build">
+        <java classname="moos.devices.ocr3000.HyperocrTest" fork="true">
+            <classpath refid="classpath.run" />
+            <arg value="1516" />
+            <arg value="${test.resources}/hyperocr" />
+        </java>
+    </target>
+
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    TEST.WORKHORSE: Runs the annotation application
+    -->
+    <target name="test.workhorse" depends="build">
+        <java classname="moos.devices.workhorse.WorkhorseTest01" fork="true">
+            <classpath refid="classpath.run" />
+            <arg value="${test.resources}/workhorse/WorkhorseData.bin" />
+        </java>
+        <java classname="moos.devices.SummaryBlockTest" fork="true">
+            <classpath refid="classpath.run" />
+            <arg value="moos.devices.workhorse.WorkhorseADCP" />
+            <arg value="1525" />
+            <arg value="${test.resources}/workhorse" />
+            <arg value="heading" />
+            <arg value="velocity-1" />
+            <arg value="velocity-2" />
+            <arg value="velocity-3" />
+            <arg value="velocity-4" />
+        </java>
+    </target>
+    
+    <!-- RUN.RMISERVER: Starts the RMI Server test client -->
+    <target name="run.rmiserver" depends="compile" >
+        
+        <!-- Initialize the test setup -->
+        <property name="serverdir" value="${classes}" />
+        <path id="cp.server">
+            <pathelement location="${serverdir}" />
+            <fileset dir="${lib.java}">
+                <include name="*.jar" />
+                <exclude name="j2me*" />
+            </fileset>
+        </path>
+        <delete dir="${serverdir}/tests/linkBenchmarks/client" />
+        
+        <!-- Run the Server -->
+        <echo>Starting RMI Server</echo>
+        <java classname="moos.operations.utils.RMIRun" fork="true">
+            <classpath refid="cp.server" />
+            <sysproperty key="java.security.policy" value="${basedir}/properties/policy" />
+            <sysproperty key="siam_home" value="${basedir}" />
+            <sysproperty key="log4j.threshold" value="DEBUG" />
+            <arg value="tests.linkBenchmarks.server.Benchmark1Impl" />
+            <arg value="localhost" />
+        </java>
+    </target>
+    
+    <!-- RUN.RMICLIENT: Starts the RMI Server test client -->
+    <target name="run.rmiclient" depends="build" >
+        
+        <property name="clientdir" value="${build}/testrmiclient" />
+        <mkdir dir="${clientdir}" />
+        <path id="cp.client">
+            <pathelement location="${clientdir}" />
+            <pathelement location="${test.resources}" />
+            <fileset dir="${lib.java}">
+                <include name="*.jar" />
+                <exclude name="j2me*" />
+            </fileset>
+        </path>
+        
+        <!-- Compile all the files EXCEPT the RMI server -->
+        <echo>Compiling RMI test client classes using Java ${java.version} by ${java.vendor} located in ${java.home}</echo>
+        <javac srcdir="${src.java}" destdir="${clientdir}" deprecation="on" debug="on" debuglevel="lines,vars,source">
+            <classpath refid="classpath" />
+            <exclude name="tests/linkBenchmarks/server/**"/>
+        </javac>
+        <!-- <copy file="${classes}/tests/linkBenchmarks/server/Benchmark1Impl_Stub.class" todir="${clientdir}/tests/linkBenchmarks/server" /> -->
+        
+        <!-- Run the Client -->
+        <property name="codebase" value="${codebase}" />
+        <echo>Starting RMI Client. Using codebase of ${codebase}</echo>
+        <java classname="moos.operations.utils.RMIRun" fork="true">
+            <classpath refid="cp.client" />
+            <sysproperty key="java.rmi.server.codebase" value="${codebase}" />
+            <sysproperty key="java.security.policy" value="${basedir}/properties/policy" />
+            <sysproperty key="siam_home" value="${basedir}" />
+            <sysproperty key="log4j.threshold" value="DEBUG" />
+            <arg value="moos.operations.utils.RMIRun" />
+            <arg value="tests.linkBenchmarks.client.Benchmark1Test" />
+            <arg value="localhost" />
+        </java>
+    </target>
+    
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    TEST.NUMBERSTATS Runs the annotation application
+    -->
+    <target name="test.numberstats" depends="build">
+        <java classname="moos.jddac.NumberStatsFunctionTest" fork="true">
+            <classpath refid="classpath.run" />
+        </java>
+        <java classname="moos.jddac.MutableIntegerArrayStatsFunctionTest" fork="true">
+            <classpath refid="classpath.run" />
+        </java>
+    </target>
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    TEST Runs the unit tests
+    -->
+    <target name="test" depends="build">
+        <java classname="tests.AllTests" fork="true">
+            <classpath refid="classpath.run" />
+            <jvmarg value="-Xms128m"/>
+            <jvmarg value="-Xmx256m"/>
+        </java>
+    </target>
+    
+</project>

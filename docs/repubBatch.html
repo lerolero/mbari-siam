@@ -1,0 +1,58 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Kent Headley">
+   <meta name="GENERATOR" content="Mozilla/4.79 [en] (Windows NT 5.0; U) [Netscape]">
+   <title>repubBatch</title>
+</head>
+<body>
+<b>NAME</b>
+<blockquote>repubBatch - republish SIAM data logs in batch mode</blockquote>
+<b>SYNOPSIS</b>
+<blockquote>
+<pre>repubBatch [options] deviceID [deviceID...]
+
+
+ -b &lt;mm/dd/yyyyThh:mm:ss&gt; : Start time      []
+ -e &lt;mm/dd/yyyyThh:mm:ss&gt; : End time        []
+ -d &lt;path&gt;                : Log directory   [.]
+ -t                       : test option     []
+ -p                       : print option    []
+ -s                       : sticky option   []
+ -n                       : nowrap option   []
+ -l &lt;logPublish&gt;          : logPublish path [logPublish]
+ -V                       : verbose output  [FALSE]
+ -h                       : print this help message
+</pre>
+</blockquote>
+<b>DESCRIPTION</b>
+<blockquote>The repubBatch utility wraps the logPublish utility to republish SIAM data packets from 
+one of more specified data logs. The utility accepts all of the logPublish options.
+</blockquote>
+
+<p><br><b>ENVIRONMENT</b>
+<blockquote>The following environment variables must be set:</blockquote>
+
+<ul>
+<li>
+JAVA_HOME - location of Java installation, e.g.<i> /j9</i> or <i>/opt/java/jdk1.3.1</i></li>
+
+<li>
+JAVA - name of the JVM. E.g. on a Sidearm, JAVA should be set to <i>j9.
+</i>On
+a workstation with Sun's Java installed, JAVA could be set to <i>java</i>.</li>
+
+<li>
+SIAM_HOME - top of the SIAM directory tree</li>
+
+<li>
+SIAM_CLASSPATH - on a Sidearm, SIAM_CLASSPATH should be set to <i>$JAVA_HOME/lib/jclMax/classes.zip:$JAVA_HOME/lib/prsnlmot.jar:$JAVA_HOME/lib/RXTXcomm.jar:$SIAM_HOME/classes</i>.&nbsp;
+On X86 system, SIAM_CLASSPATH should be set to<i> $SIAM_HOME/classes</i></li>
+</ul>
+
+<p><br><b>SEE ALSO</b>
+<blockquote>&nbsp;<a href="logPublish.html">logPublish</a></blockquote>
+
+</body>
+</html>

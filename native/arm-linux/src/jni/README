@@ -1,0 +1,12 @@
+Additional build instructions:
+
+Populate the ./include subdirectory with jni.h and jni_md.h from
+the host Java distribution.
+
+You may need to edit the macro CC in Makefile.  This Makefile
+refers to its location on workstation seamonkey.
+
+After this library (libsystemCall.so) is built, copy it to the target
+system. Ensure that it is in the LD_LIBRARY_PATH of
+the application or in the IVE home directory if using J9 along with the
+rest of the shared libraries.

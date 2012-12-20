@@ -1,0 +1,5 @@
+# Machine-generated file - use "minicom -s" to change parameters.
+pu baudrate         115200
+pu bits             8
+pu parity           N
+pu stopbits         1

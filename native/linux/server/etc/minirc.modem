@@ -1,0 +1,3 @@
+# Machine-generated file - use "minicom -s" to change parameters.
+pr port             /dev/modem
+pu baudrate         115200

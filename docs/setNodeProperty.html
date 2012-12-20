@@ -1,0 +1,62 @@
+<!DOCTYPE doctype PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+  <meta name="Author" content="Tom O'Reilly">
+  <meta name="GENERATOR"
+ content="Mozilla/4.79 [en] (Windows NT 5.0; U) [Netscape]">
+  <title>setNodeProperty</title>
+</head>
+<body>
+<b>NAME</b>
+<blockquote>setNodeProperty - set node service properties to specified
+values
+on specified MOOS node<br>
+</blockquote>
+<b>SYNOPSIS</b>
+<blockquote>
+  <pre>setProperty nodeHost name=value[ name=value...]</pre>
+</blockquote>
+<b>DESCRIPTION</b>
+<blockquote>The <i>setNodeProperty</i> utility sets the value of one
+or more properties of the node service running on the host. Each
+property setting
+as specified as a 'key=value' pair. If a whitespace must be included in
+the key=value string, the entire string must be enclosed by single or
+double
+quotes. Multiple key=value pairs may be specifed in a single invocation
+of <i>setNodeProperty</i>. For example, to enable continuous
+reassertion of the satellite link on the "surface" node:
+  <blockquote>
+    <pre>% setNodeProperty surface CommsManager.reassert=true<br></pre>
+  </blockquote>
+  <p>Current properties can be displayed with the <a
+ style="font-style: italic;" href="nodeProperties.html">nodeProperties</a>
+utility. <br>
+  </p>
+  <p>This utility may be run on the same host as the node, or on any
+networked host from which the node host is accessible. If run on the
+node's host, then <i>nodeHost</i> should be specified as "localhost". </p>
+</blockquote>
+<p><br>
+<b>ENVIRONMENT</b> </p>
+<blockquote>The following environment variables must be set:</blockquote>
+<ul>
+  <li> JAVA_HOME - location of Java installation, e.g.<i> /j9</i> or <i>/opt/java/jdk1.3.1</i></li>
+  <li> JAVA - name of the JVM. E.g. on a Sidearm, JAVA should be set to
+    <i>j9. </i>On a workstation with Sun's Java installed, JAVA could
+be set to <i>java</i>.</li>
+  <li> SIAM_HOME - top of the SIAM directory tree</li>
+  <li> SIAM_CLASSPATH - on a Sidearm, SIAM_CLASSPATH should be set to <i>$JAVA_HOME/lib/jclMax/classes.zip:$JAVA_HOME/lib/prsnlmot.jar:$JAVA_HOME/lib/RXTXcomm.jar:$SIAM_HOME/classes</i>.&nbsp;
+On X86 system, SIAM_CLASSPATH should be set to<i> $SIAM_HOME/classes</i></li>
+</ul>
+<p><br>
+<b>SEE ALSO</b>&nbsp;<br>
+</p>
+<blockquote><a href="nodeProperties.html">nodeProperties</a><br>
+&nbsp; <br>
+</blockquote>
+<br>
+</body>
+</html>

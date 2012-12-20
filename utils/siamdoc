@@ -1,0 +1,11 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Go to SIAM documents directory; open browser
+
+cd $SIAM_HOME/docs
+echo Now in SIAM documents directory $SIAM_HOME/docs
+echo Opening browser on $SIAM_HOME/docs/MMC-SIAM-UserGuide.html
+mozilla file://$SIAM_HOME/docs/MMC-SIAM-UsersGuide.html &

@@ -1,0 +1,10 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Load SIAM device service from PUCK or jar file
+$JAVA $JAVA_OPTIONS -Dlog4j.threshold=$LOG4J_THRESHOLD \
+-Dsiam_home=$SIAM_HOME -cp $SIAM_CLASSPATH \
+org.mbari.siam.tests.moos.devices.TestNodeService $*
+

@@ -1,0 +1,30 @@
+#!/bin/sh
+#
+# start/stop sa1100lddio driver
+
+case "$1" in
+    start)
+        echo -n "Configuring sa1100_lddio lddio port: "
+	insmod -o sa1100_lddio /root/sa1100lddio.o
+	echo "done."
+	;;
+    stop)
+        echo -n "Deconfiguring sa1100_lddio lddio port: "
+        rmmod sa1100_lddio
+	echo "done."
+	;;
+    reload)
+	;;
+    force-reload)
+	$0 restart
+	;;
+    restart)
+	;;
+    *)
+	echo "Usage: /etc/init.d/loadlddio {start|stop|reload|restart}"
+	exit 1
+	;;
+esac
+
+exit 0
+

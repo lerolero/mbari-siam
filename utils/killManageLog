@@ -1,0 +1,17 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Kill manageLog processes
+# $Revision: 1.3 $";
+
+test=0
+while [ "$test" -eq 0 ]
+do
+pid=`ps -eaf | grep manageLog | awk '{print $2; exit}'`
+echo killing $pid
+kill $pid
+test="$?"
+echo test:$test
+done

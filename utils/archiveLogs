@@ -1,0 +1,52 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Retrieve and archive logs from all SIAM instrument services on 
+# specified target node.
+
+if [ $# -ne 1 ]
+then
+  echo usage: $0 nodeName
+  exit 1
+fi
+
+node=$1
+
+
+# Generate awk script to process each port/device indicated by listPorts
+cat > tmp.awk <<'EOF'
+BEGIN {
+  node = ARGV[1];
+  ARGV[1] = "";
+}
+
+{ 
+  if (NR <= 5) {
+    next; 
+  }
+
+  port = $1;
+  deviceID = $2;
+  ###  printf "port=%s, deviceID=%d\n", port, deviceID;
+  if (deviceID > 0L) {
+    cmd = "archiveLog " node " " deviceID " " port;
+    print cmd | "/bin/bash";
+    close("/bin/bash");
+    printf "done with that one - get next\n";
+  }
+}
+
+EOF
+
+
+listPorts $node | awk -f tmp.awk $node
+
+
+echo "All done"
+
+
+
+
+

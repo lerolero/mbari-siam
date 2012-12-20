@@ -1,0 +1,25 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+#
+if [ ! -n "$1" ] || [ ! -n "$2" ] || [ ! -n "$3" ] || [ ! -n "$4" ]
+then
+  echo
+  echo "usage: `basename $0` nodeURL port scheduleName schedule"
+  echo "(schedule may be specified as interval seconds)"
+  echo
+  exit 1
+fi  
+
+nodeURL=$1
+port=$2
+name=$3
+schedule="$4"
+
+# Script executes org.mbari.siam.operations.utils.AddSchedule.main()
+ 
+$JAVA -cp $SIAM_CLASSPATH -Djava.security.policy=$SIAM_HOME/properties/policy \
+org.mbari.siam.operations.utils.AddSchedule $nodeURL $port $name "$schedule" o
+

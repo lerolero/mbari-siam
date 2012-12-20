@@ -1,0 +1,89 @@
+This document describes how to set up a moored network, consisting
+of a portal node, which is linked to a Sidearm mooring (i.e. surface)
+node via ppp, and a  Sidearm "BIN" ("Benthic Instrument Node") which is 
+linked to the mooring node via Ethernet.
+
+Each sidearm node's ethernet interface must be assigned a static 
+IP address; this is done by modifying /etc/network/interfaces,
+assigning appropriate addresses as follows:
+
+  # /etc/network/interfaces -- configuration file for ifup(8), ifdown(8)
+  # $Revision: 1.1 $ $Author: bobh $ $Date: 2008/11/04 22:06:13 $
+  # The loopback interface
+  # automatically added when upgrading
+  auto lo
+       iface lo inet loopback
+
+  # Cerf Ethernet Settings - static IP
+  # Please edit these numbers to reflect your network settings.
+  auto eth0
+       iface eth0 inet static
+       address 192.168.0.101
+       netmask 255.255.255.0
+       gateway 192.168.0.100
+
+
+Note that in the moored network, the surface node acts as a router 
+(between shore portal and BIN); thus, you must ensure that 
+packet-forwarding is enabled on the surface node. To enable
+packet-forwarding, write ascii '1' to the surface node's
+/proc/sys/net/ipv4/ip_forward file, e.g. as 'root':
+
+  # echo '1' > /proc/sys/net/ipv4/ip_forward
+
+The /etc/hostname file should be modified, so that 'hostname'
+is resolvable in the deployed environment. E.g. set hostname
+to 'bin' on the benthic node.
+
+The /etc/hosts file on each node contains the following entries;
+note that the surface and bin ethernet addresses correspond to the
+values entered into their /etc/network/interfaces files:
+
+  10.1.1.2        surface-rf    # surface node's ppp interface address 
+  10.1.1.1        shore         # portal node's ppp interface address
+ 
+  192.168.0.101   surface       # surface node's ethernet address
+  192.168.0.100   bin           # BIN's ethernet address
+ 
+
+Following are routing tables on each node:
+
+Routes on mtm-surface node:
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+shore           *               255.255.255.255 UH    0      0        0 ppp0
+192.168.0.0     *               255.255.255.0   U     0      0        0 eth0
+default         bin             0.0.0.0         UG    0      0        0 eth0
+(Does not require explicit route commands)
+
+Routes on mtm-bin node:
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+surface         *               255.255.255.255 UH    0      0        0 eth0
+192.168.0.0     *               255.255.255.0   U     0      0        0 eth0
+10.1.1.0        surface         255.255.255.0   UG    0      0        0 eth0
+default         bin             0.0.0.0         UG    0      0        0 eth0
+(Execute script /etc/init.d/binRouting.sh)
+
+Routes on portal:
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+surface-rf      *               255.255.255.255 UH    0      0        0 ppp0
+192.168.0.0     surface-rf      255.255.255.0   UG    0      0        0 ppp0
+134.89.28.0     *               255.255.254.0   U     0      0        0 eth0
+127.0.0.0       *               255.0.0.0       U     0      0        0 lo
+default         134.89.28.1     0.0.0.0         UG    0      0        0 eth0
+
+
+Note: The surface node's "longhaul" dialup ppp script must specify the
+an interface that resolves to the surface node's RF interface.
+
+Note: The portal's route entry to the bin must be re-asserted when
+the ppp link is re-established, e.g. by adding the following to
+/etc/ppp/ip-up.local:
+
+  /sbin/route add -net 192.168.0.0 netmask 255.255.255.0 gw mooring
+
+
+Testing the moored network
+--------------------------
+'ping' test - run 'ping' from each node to every other node in the 
+moored network, to verify connectivity. I.e., complete the following
+test matrix:

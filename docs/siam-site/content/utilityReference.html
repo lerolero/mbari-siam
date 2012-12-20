@@ -1,0 +1,743 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>SIAM Utility Reference</title>
+<link href="../css/content.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+<h1>SIAM Utility Reference</h1>
+<p>The SIAM utilities provide command-line tools for performing SIAM system operations. 
+The utilities are implemented as a collection of scripts that wrap Java/native C applications; mostly the scripts are written in bash, csh, and Perl.<br />
+The utilities are indexed here by function; click the links to view man pages for each utility.
+</p>
+<p>
+For a simple summary of commands and options, see the <a href="man/utilityQuickRef.html" target="mainFrame">Quick Reference Summary</a>
+</p>
+
+<a name="deployed.node"></a>
+<h2>Commonly Used</h2>
+<table class="altTable">
+<tr>
+  <th>Command</th>
+  <th width="50%">Description</th>
+  <th width="25%">Path</th>
+  <th width="10%">Info</th>
+</tr>
+<tr>
+  <th>Node</th>
+  <th></th>
+  <th></th>
+  <th></th>
+</tr>
+<tr>
+<td><a href="man/man-exitNode.html">exitNode</a></td>
+<td>Shutdown SIAM application</td>
+<td>SIAM_HOME/utils/exitNode</td>
+<td></td>
+</tr>
+<tr class="alt">
+<td><a href="man/man-listPorts.html">listPorts</a></td>
+<td>Show instrument service status</td>
+<td>SIAM_HOME/utils/listPorts</td>
+<td></td>
+</tr>
+<tr>
+<td><a href="man/man-nodeInfo.html">nodeInfo</a></td>
+<td>Show SIAM node configuration information (number of subnodes, etc.)</td>
+<td>SIAM_HOME/utils/nodeInfo</td>
+<td></td>
+</tr>
+<tr class="alt">
+<td><a href="man/man-nodeStatus.html">nodeStatus</a></td>
+<td>Show SIAM node status information</td>
+<td>SIAM_HOME/utils/nodeStatus</td>
+<td></td>
+</tr>
+<tr>
+<td><a href="man/man-nodeTest.html">nodeTest</a></td>
+<td>Start SIAM application</td>
+<td>SIAM_HOME/utils/nodeTest</td>
+<td></td>
+</tr>
+
+<tr>
+  <th>Port Management</th>
+  <th></th>
+  <th></th>
+  <th></th>
+</tr>
+
+<tr>
+<td><a href="man/man-cachePort.html">cachePort</a></td>
+<td>Save current instrument service configuration settings</td>
+<td>SIAM_HOME/utils/cachePort</td>
+<td></td>
+</tr>
+<tr class="alt">
+<td><a href="man/man-portProperties.html">portProperties</a></td>
+<td>Show instrument service configuration information</td>
+<td>SIAM_HOME/utils/portProperties</td>
+<td></td>
+</tr>
+<tr>
+<td><a href="man/man-powerDownPort.html">powerDownPort</a></td>
+<td>Turn off power to an instrument port</td>
+<td>SIAM_HOME/utils/powerDownPort</td>
+<td></td>
+</tr>
+<tr class="alt">
+<td><a href="man/man-powerUpPort.html">powerUpPort</a></td>
+<td>Turn on power to an instrument port</td>
+<td>SIAM_HOME/utils/powerUpPort</td>
+<td></td>
+</tr>
+<tr>
+<td><a href="man/man-restartPort.html">restartPort</a></td>
+<td>Restart instrument port</td>
+<td>SIAM_HOME/utils/restartPort</td>
+<td></td>
+</tr>
+<tr class="alt">
+<td><a href="man/man-scanPort.html">scanPort</a></td>
+<td>Start an instrument service</td>
+<td>SIAM_HOME/utils/scanPort</td>
+<td></td>
+</tr>
+<tr>
+<td><a href="man/man-shutdownPort.html">shutdownPort</a></td>
+<td>Stop instrument service</td>
+<td>SIAM_HOME/utils/shutdownPort</td>
+<td></td>
+</tr>
+<tr class="alt">
+<td><a href="man/man-setProperty.html">setProperty</a></td>
+<td>Set an instrument service configuration parameter</td>
+<td>SIAM_HOME/utils/setProperty</td>
+<td></td>
+</tr>
+
+<tr>
+  <th>Sampling</th>
+  <th></th>
+  <th></th>
+  <th></th>
+</tr>
+
+<tr>
+<td><a href="man/man-getLastSample.html">getLastSample</a></td>
+<td>Show last data sample taken by an instrument service</td>
+<td>SIAM_HOME/utils/getLastSample</td>
+<td></td>
+</tr>
+<tr class="alt">
+<td><a href="man/man-getMetadata.html">getMetadata</a></td>
+<td>Show instrument service metadata</td>
+<td>SIAM_HOME/utils/getMetadata</td>
+<td></td>
+</tr>
+<tr>
+<td><a href="man/man-samplePort.html">samplePort</a></td>
+<td>Request instrument service to take a sample</td>
+<td>SIAM_HOME/utils/restartPort</td>
+<td></td>
+</tr>
+
+<tr>
+  <th>Scheduling</th>
+  <th></th>
+  <th></th>
+  <th></th>
+</tr>
+
+<tr>
+<td><a href="man/man-scheduler.html#resumeSchedule">resumeSchedule</a></td>
+<td>Resume paused instrument service sample schedule</td>
+<td>SIAM_HOME/utils/resumeSchedule</td>
+<td></td>
+</tr>
+<tr class="alt">
+<td><a href="man/man-scheduler.html#setSchedule">setSchedule</a></td>
+<td>Set an instrument service schedule</td>
+<td>SIAM_HOME/utils/setSchedule</td>
+<td></td>
+</tr>
+<tr>
+<td><a href="man/man-scheduler.html#showSchedule">showSchedule</a></td>
+<td>Show an instrument service schedule</td>
+<td>SIAM_HOME/utils/showSchedule</td>
+<td></td>
+</tr>
+<tr class="alt">
+<td><a href="man/man-scheduler.html#suspendSchedule">suspendSchedule</a></td>
+<td>Pause instrument service sample schedule</td>
+<td>SIAM_HOME/utils/suspendSchedule</td>
+<td></td>
+</tr>
+<tr>
+<td><a href="man/man-scheduler.html#synch">synch</a></td>
+<td>Change an instrument service start time</td>
+<td>SIAM_HOME/utils/synch</td>
+<td></td>
+</tr>
+<!--
+<tr>
+<td><a href="man/man-.html"></a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="alt">
+<td><a href="man/man-.html"></a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+-->
+</table>
+
+<a name="deployed.node"></a>
+<h2>Deployed.Node</h2>
+<table class="altTable">
+<tr>
+  <th>Command</th>
+  <th>Description</th>
+  <th>Path</th>
+  <th>Info</th>
+</tr>
+<tr>
+<td><a href="man/man-addService.html">addService</a></td>
+<td>Add a service Jar file to the service code directory for use with an ID only puck</td>
+<td>SIAM_HOME/utils/addService</td>
+<td></td>
+</tr>
+<tr class="alt">
+<td><a href="man/man-auxTelem.html">auxTelem</a></td>
+<td>Shell script passed to /etc/inittab to enablethe secondary radio port as a Linux tty</td>
+<td>SIAM_HOME/native/arm-linux/top/etc/auxTelem.sh</td>
+<td>This script applies only to MMC platform, but may be adapted to other platforms</td>
+</tr>
+<tr>
+<td><a href="man/man-exitNode.html">exitNode</a></td>
+<td>Shutdown SIAM application</td>
+<td>SIAM_HOME/utils/exitNode</td>
+<td></td>
+</tr>
+<tr class="alt">
+<td><a href="man/man-getLeases.html">getLeases</a></td>
+<td>List CPU and comms leases established on specified SIAM node</td>
+<td>SIAM_HOME/utils/getLeases</td>
+<td></td>
+</tr>
+<tr>
+<td><a href="man/man-killj9.html">killj9</a></td>
+<td>Kill all j9 JVM processes</td>
+<td>SIAM_HOME/utils/killj9</td>
+<td>This script applies only to MMC platform, but may be adapted to other platforms</td>
+</tr>
+<tr class="alt">
+<td><a href="man/man-lease.html">lease</a></td>
+<td>Manage communications leases for a SIAM node</td>
+<td>SIAM_HOME/utils/lease</td>
+<td></td>
+</tr>
+<tr>
+<td><a href="man/man-listPorts.html">listPorts</a></td>
+<td>Show instrument service status</td>
+<td>SIAM_HOME/utils/listPorts</td>
+<td></td>
+</tr>
+<tr class="alt">
+<td><a href="man/man-listServices.html">listServices</a></td>
+<td>Show services registered using addService</td>
+<td>SIAM_HOME/utils/listServices</td>
+<td></td>
+</tr>
+<tr>
+<td><a href="man/man-listSubnodes.html">listSubnodes</a></td>
+<td>List information about subnodes of the specified SIAM node</td>
+<td>SIAM_HOME/utils/listSubnodes</td>
+<td></td>
+</tr>
+<tr class="alt">
+<td><a href="man/man-node.html">node</a></td>
+<td>Start SIAM application (with specified portal host)</td>
+<td>SIAM_HOME/utils/node</td>
+<td></td>
+</tr>
+<tr>
+<td><a href="man/man-nodeInfo.html">nodeInfo</a></td>
+<td>Show SIAM node configuration information (number of subnodes, etc.)</td>
+<td>SIAM_HOME/utils/nodeInfo</td>
+<td></td>
+</tr>
+<tr class="alt">
+<td><a href="man/man-nodeStatus.html">nodeStatus</a></td>
+<td>Show SIAM node status information</td>
+<td>SIAM_HOME/utils/nodeStatus</td>
+<td></td>
+</tr>
+<tr>
+<td><a href="man/man-nodeTest.html">nodeTest</a></td>
+<td>Start SIAM application</td>
+<td>SIAM_HOME/utils/nodeTest</td>
+<td></td>
+</tr>
+<tr class="alt">
+<td><a href="man/man-removeService.html">removeService</a></td>
+<td>Remove an ID-only PUCK instrument that has been registered using addService </td>
+<td>SIAM_HOME/utils/removeService</td>
+<td></td>
+</tr>
+<tr>
+<td><a href="man/man-setNodeProperty.html">setNodeProperty</a></td>
+<td>Set SIAM node application property (configuration) values</td>
+<td>SIAM_HOME/utils/setNodeProperty</td>
+<td></td>
+</tr>
+<!--
+<tr>
+<td><a href="man/man-.html"></a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="alt">
+<td><a href="man/man-.html"></a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+-->
+</table>
+
+<a name="deployed.service"></a>
+<h2>Deployed.service</h2>
+<table class="altTable">
+<tr>
+  <th>Command</th>
+  <th>Description</th>
+  <th>Path</th>
+  <th>Info</th>
+</tr>
+<tr>
+<td><a href="man/man-annotatePort.html">annotatePort</a></td>
+<td>Insert annotation into an instrument service data stream</td>
+<td>SIAM_HOME/utils/annotatePort</td>
+<td></td>
+</tr>
+<tr class="alt">
+<td><a href="man/man-cachePort.html">cachePort</a></td>
+<td>Save current instrument service configuration settings</td>
+<td>SIAM_HOME/utils/cachePort</td>
+<td></td>
+</tr>
+<tr>
+<td><a href="man/man-conPort.html">conPort</a></td>
+<td>Acquires a console session to a specified instrument port</td>
+<td>SIAM_HOME/utils/conPort</td>
+<td>See Environment Notes for SIAM_BIN setting</td>
+</tr>
+<tr class="alt">
+<td><a href="man/man-filters.html">filters</a></td>
+<td>Manage telemetry filters</td>
+<td>SIAM_HOME/utils/...</td>
+<td>getfilter, setfilter, clearfilter</td>
+</tr>
+<tr>
+<td><a href="man/man-getLastSample.html">getLastSample</a></td>
+<td>Show last data sample taken by an instrument service</td>
+<td>SIAM_HOME/utils/getLastSample</td>
+<td>SIAM_HOME/utils/portStatus</td>
+</tr>
+<tr class="alt">
+<td><a href="man/man-getMetadata.html">getMetadata</a></td>
+<td>Show instrument service metadata</td>
+<td>SIAM_HOME/utils/getMetadata</td>
+<td></td>
+</tr>
+<tr>
+<td><a href="man/man-portProperties.html">portProperties</a></td>
+<td>Show instrument service configuration information</td>
+<td>SIAM_HOME/utils/portProperties</td>
+<td></td>
+</tr>
+<tr class="alt">
+<td><a href="man/man-portStatus.html">portStatus</a></td>
+<td>Report status of Dual Port Adapter (DPA) instrument port</td>
+<td>SIAM_HOME/utils/portStatus</td>
+<td>This utility applies only to MMC platform</td>
+</tr>
+<tr>
+<td><a href="man/man-powerDownPort.html">powerDownPort</a></td>
+<td>Turn off power to an instrument port</td>
+<td>SIAM_HOME/utils/powerDownPort</td>
+<td></td>
+</tr>
+<tr class="alt">
+<td><a href="man/man-powerUpPort.html">powerUpPort</a></td>
+<td>Turn on power to an instrument port</td>
+<td>SIAM_HOME/utils/powerUpPort</td>
+<td></td>
+</tr>
+<tr>
+<td><a href="man/man-removeService.html">removeService</a></td>
+<td>Remove an ID-only PUCK instrument that has been registerd with addService </td>
+<td>SIAM_HOME/utils/removeService</td>
+<td></td>
+</tr>
+<tr class="alt">
+<td><a href="man/man-restartPort.html">restartPort</a></td>
+<td>Restart instrument port</td>
+<td>SIAM_HOME/utils/restartPort</td>
+<td></td>
+</tr>
+<tr>
+<td><a href="man/man-samplePort.html">samplePort</a></td>
+<td>Request instrument service to take a sample</td>
+<td>SIAM_HOME/utils/restartPort</td>
+<td></td>
+</tr>
+<tr class="alt">
+<td><a href="man/man-scanPort.html">scanPort</a></td>
+<td>Start an instrument service</td>
+<td>SIAM_HOME/utils/scanPort</td>
+<td></td>
+</tr>
+<tr>
+<td><a href="man/man-setInstClock.html">setInstClock</a></td>
+<td>Synchronize instrument clock with SIAM node clock (approximate)</td>
+<td>SIAM_HOME/utils/setInstClock</td>
+<td></td>
+</tr>
+<tr class="alt">
+<td><a href="man/man-setProperty.html">setProperty</a></td>
+<td>Set an instrument service configuration parameter</td>
+<td>SIAM_HOME/utils/setProperty</td>
+<td></td>
+</tr>
+<tr>
+<td><a href="man/man-scheduler.html#setSchedule">setSchedule</a></td>
+<td>Set an instrument service schedule</td>
+<td>SIAM_HOME/utils/setSchedule</td>
+<td></td>
+</tr>
+<tr class="alt">
+<td><a href="man/man-scheduler.html#showSchedule">showSchedule</a></td>
+<td>Show an instrument service schedule</td>
+<td>SIAM_HOME/utils/showSchedule</td>
+<td></td>
+</tr>
+<tr>
+<td><a href="man/man-shutdownPort.html">shutdownPort</a></td>
+<td>Stop instrument service</td>
+<td>SIAM_HOME/utils/shutdownPort</td>
+<td></td>
+</tr>
+<!--
+<tr>
+<td><a href="man/man-.html">-</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="alt">
+<td><a href="man/man-.html">-</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+-->
+</table>
+
+<a name="puck"></a>
+<h2>PUCK</h2>
+<table class="altTable">
+<tr>
+  <th>Command</th>
+  <th>Description</th>
+  <th>Path</th>
+  <th>Info</th>
+</tr>
+
+<tr>
+<td><a href="man/man-catJar.html">catJar</a></td>
+<td>List the contents of a SIAM instrument service JAR</td>
+<td><div class="path">SIAM_HOME/utils/catJar</div></td>
+<td></td>
+</tr>
+
+<tr>
+<td><a href="man/man-puckit.html">puckit</a></td>
+<td>Generate a SIAM instrument service JAR, which may be used in an associated PUCK-enabled instrument, or on SIAM node</td>
+<td><div class="path">SIAM_HOME/utils/puckit</div></td>
+<td></td>
+</tr>
+
+<tr class="alt">
+<td><a href="man/man-writePuck.html">writePuck</a></td>
+<td>Write payload content to a PUCK-enabled device.</td>
+<td></td>
+<td><div class="emphasis">PUCK utilities and classes are maintained in a separate software package</div></td>
+</tr>
+
+<tr>
+<td><a href="man/man-listPuck.html">listPuck</a></td>
+<td>List payload content of a PUCK-enabled device.</td>
+<td></td>
+<td><div class="emphasis">PUCK utilities and classes are maintained in a separate software package</div></td>
+</tr>
+
+<tr class="alt">
+<td><a href="man/man-extractPuck.html">extractPuck</a></td>
+<td>Get a payload (content) from a PUCK-enabled device.</td>
+<td></td>
+<td><div class="emphasis">PUCK utilities and classes are maintained in a separate software package</div></td>
+</tr>
+
+<tr>
+<td><a href="man/man-dumpPuck.html">dumpPuck</a></td>
+<td>Dump PUCK payload contents to the console.</td>
+<td></td>
+<td><div class="emphasis">PUCK utilities and classes are maintained in a separate software package</div></td>
+</tr>
+
+<tr class="alt">
+<td><a href="man/man-erasePuck.html">erasePuck</a></td>
+<td>Clear PUCK payload memory and datasheet</td>
+<td></td>
+<td><div class="emphasis">PUCK utilities and classes are maintained in a separate software package</div></td>
+</tr>
+
+<tr>
+<td><a href="man/man-readDatasheet.html">readDatasheet</a></td>
+<td>List PUCK datasheet</td>
+<td></td>
+<td><div class="emphasis">PUCK utilities and classes are maintained in a separate software package</div></td>
+</tr>
+
+<tr class="alt">
+<td><a href="man/man-writeDatasheet.html">writeDatasheet</a></td>
+<td>Write PUCK datasheet contents</td>
+<td></td>
+<td><div class="emphasis">PUCK utilities and classes are maintained in a separate software package</div></td>
+</tr>
+<!--
+<tr>
+<td><a href="man/man-.html">-</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="alt">
+<td><a href="man/man-.html">-</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+-->
+</table>
+
+<a name="shore.autoscript"></a>
+<h2>Shore.autoscript</h2>
+<table class="altTable">
+<tr>
+  <th>Command</th>
+  <th>Description</th>
+  <th>Path</th>
+  <th>Info</th>
+</tr>
+<tr>
+<td><a href="man/man-autoScript.html">autoScript</a></td>
+<td>Transfer a script from a portal to a primary SIAM node; execute it and receive the results</td>
+<td><p>portal</p><div class="path">SIAM_HOME/shoreUtils/manageAutoScript</div><p>SIAM node</p><div class="path">SIAM_HOME/utils/runAutoscript</div></td>
+<td></td>
+</tr>
+<!--
+<tr class="alt">
+<td><a href="man/man-manageAutoScript.html">manageAutoScript</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+-->
+<!--
+<tr>
+<td><a href="man/man-.html">-</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="alt">
+<td><a href="man/man-.html">-</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+-->
+</table>
+
+
+<a name="shore.portal"></a>
+<h2>Shore.portal</h2>
+<table class="altTable">
+<tr>
+  <th>Command</th>
+  <th>Description</th>
+  <th>Path</th>
+  <th>Info</th>
+</tr>
+<tr>
+<!--<td><a href="man/man-portal.html">portal</a></td>-->
+<td>portal</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<!--
+<tr>
+<td><a href="man/man-.html">-</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="alt">
+<td><a href="man/man-.html">-</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+-->
+</table>
+ 
+
+<a name="logs"></a>
+<h2>Logs</h2>
+<table class="altTable">
+<tr>
+  <th>Command</th>
+  <th>Description</th>
+  <th>Path</th>
+  <th>Info</th>
+</tr>
+<tr>
+<td><a href="man/man-getPackets.html">getPackets</a></td>
+<td>Request a set of packets from a SIAM node (with optional filtering)</td>
+<td>SIAM_HOME/utils/getPackets</td>
+<td></td>
+</tr>
+<tr class="alt">
+<td><a href="man/man-logPublish.html">logPublish</a></td>
+<td>Publish a set of SIAM packets to Shore Side Data System (SSDS) ingest server</td>
+<td>SIAM_HOME/utils/logPublish</td>
+<td>Specific to SSDS</td>
+</tr>
+<tr>
+<td><a href="man/man-logView.html">logView</a></td>
+<td>View data log contents on console, filter and format results</td>
+<td>SIAM_HOME/utils/logView</td>
+<td></td>
+</tr>
+<tr class="alt">
+<td><a href="man/man-repubBatch.html">repubBatch</a></td>
+<td>Call logPublish for multiple device IDs</td>
+<td>SIAM_HOME/shoreUtils/repubBatch</td>
+<td>Specific to SSDS</td>
+</tr>
+<!--
+<tr>
+<td><a href="man/man-.html">-</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="alt">
+<td><a href="man/man-.html">-</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+-->
+</table>
+<!--
+<h2>FOCE</h2>
+      all
+    * analog
+    * elmoPower
+    * foce
+    * monitor
+    * motor
+    * motor.bat
+    * motorCycle
+    * motorShore.bat
+    * motorUtil
+    * pH
+    * pH.bat
+    * pHshore.bat
+    * power
+    * power.bat
+    * relay
+    * sensoray
+    * sensors
+    * sensors.bat
+    * sensorshore.bat
+    * simple.mc
+    * startfoce
+    * step.mc
+
+<h2>MMC</h2>
+    * binBackups.html
+    * dpaView.html
+    * dpaViewCommandRef.txt
+    * enableSleep-disableSleep.html
+    * killBIN.html
+    * listSwitches.html
+    * ricohRTC.html
+    * startBIN.html
+    * suspend.html
+    * switchBIN400V.html
+    * switchHiVoltage.html
+    * wakeup.html
+    * cpuAwake.html
+-->
+<!--
+<table class="altTable">
+<tr>
+  <th>Command</th>
+  <th>Description</th>
+  <th>Path</th>
+  <th>Info</th>
+</tr>
+<tr>
+<td><a href="man/man-.html">-</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="alt">
+<td><a href="man/man-.html">-</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+-->
+<!--
+<tr>
+<td><a href="man/man-.html">-</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="alt">
+<td><a href="man/man-.html">-</a></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</table>
+-->
+
+</body>
+</html>

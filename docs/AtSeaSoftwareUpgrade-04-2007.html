@@ -1,0 +1,798 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1"
+ http-equiv="content-type">
+  <title>MSE software upgrade procedure</title>
+</head>
+<body>
+<div style="text-align: center;"><u><span
+ style="font-size: 10pt; font-family: Arial;"><span
+ style="font-weight: bold;">MSE SIAM Upgrade Procedures: April 2007<br>
+</span></span></u><span style="font-size: 10pt; font-family: Arial;"><span
+ style="font-weight: bold;"><span style="color: rgb(255, 0, 0);"><br>
+<span style="color: rgb(0, 0, 0);">version 1.1</span></span></span></span><u><span
+ style="font-size: 10pt; font-family: Arial;"><span
+ style="font-weight: bold;"><br>
+</span></span></u><u><span style="font-size: 10pt; font-family: Arial;"><span
+ style="font-weight: bold;"></span></span></u></div>
+<p class="MsoNormal"><u><span
+ style="font-size: 10pt; font-family: Arial;"><span
+ style="font-weight: bold;"><br>
+ATTENTION: COMPATABILITY NOTE </span><br>
+</span></u></p>
+<p class="MsoNormal"><u><span
+ style="font-size: 10pt; font-family: Arial;"><span
+ style="text-decoration: underline;"></span></span></u><span
+ style="font-size: 10pt; font-family: Arial;">The April 2007 SIAM
+upgrade is NOT backwards compatible with SIAM october20_2006 currently
+deployed on MSE; e.g. the october20_2006 portal can NOT retrieve data
+from a node running the latest SIAM. Likewise, the latest portal can
+NOT retrieve data from a node running version october20_2006. Thus
+either <span style="font-style: italic;">all nodes and portal must be
+upgraded, or none of them should be upgraded</span>. <br>
+</span></p>
+<p class="MsoNormal"><span style="font-size: 10pt; font-family: Arial;"></span><span
+ style="font-size: 10pt; font-family: Arial;"> Thus beginning upgrade
+of the first node is a committment to upgrade all of them. </span><span
+ style="font-size: 10pt; font-family: Arial;">Rolling back to the older
+version of SIAM is problematic and time-consuming. Thus, </span><span
+ style="font-size: 10pt; font-family: Arial;">you must get official
+go-ahead from Mark Chaffey before beginning the upgrade process.<br>
+</span></p>
+<p class="MsoNormal"><span style="font-size: 10pt; font-family: Arial;">User
+guides for SIAM tools are<a href="userdoc/index.html"> here</a>.<span
+ style="text-decoration: underline;"><br>
+</span></span></p>
+<p class="MsoNormal"><span style="font-size: 10pt; font-family: Arial;"><span
+ style="text-decoration: underline;">Documenting the upgrade process</span><br>
+</span></p>
+<p class="MsoNormal"><span style="font-size: 10pt; font-family: Arial;">___
+To keep a record of the upgrade process, you should enable "logging" in
+your terminal emulator.</span></p>
+<p class="MsoNormal"><span style="text-decoration: underline;">Linux
+laptop</span><br>
+</p>
+<ul>
+  <li>___ To-be-deployed SIAM release from CVS, including all source
+code</li>
+  <li>___ SIAM version october20_2006-2 (in case rollback is required)<br>
+  </li>
+  <li>___ JDK1.3.n<br>
+  </li>
+  <li>___ Proper configuration/environment to build SIAM if necessary,
+and run SIAM utilities<br>
+  </li>
+  <li>___ To-be-deployed siam.ipk</li>
+  <li>___ Public key for ops@siam-portal-1</li>
+  <li>___ Public key for root@siam-portal-1<br>
+  </li>
+</ul>
+<p class="MsoNormal"><br>
+<span style="font-size: 10pt; font-family: Arial;"><span
+ style="text-decoration: underline;"></span></span></p>
+<p class="MsoNormal"><span style="font-size: 10pt; font-family: Arial;"><span
+ style="text-decoration: underline;">Shelf node swap<br>
+</span>Node1 ("shelf") will be retrieved and replaced with node1. The
+SIAM release software should be installed and configured on node1
+before deployment. <br>
+<br>
+</span></p>
+<p class="MsoNormal"><span style="font-size: 10pt; font-family: Arial;"><span
+ style="text-decoration: underline;">A. Before installing new software
+at sea</span><br>
+</span></p>
+<span style="font-size: 10pt; font-family: Arial;">___ Verify
+shore-side portal has been terminated, and new SIAM portal has been
+installed</span><br>
+<span style="font-size: 10pt; font-family: Arial;">___ Login into
+"surface"
+node <a href="#FreewaveConsole">via Freewave RF console</a>. Your
+console machine must have a copy of the siam.ipk version to be
+installed on the nodes. <br>
+</span><br>
+<span style="font-size: 10pt; font-family: Arial;">___ Establish a long
+CPU lease on surface:</span><br>
+<span style="font-size: 10pt; font-family: Arial;"><span
+ style="font-family: monospace;">&nbsp;&nbsp; a 360000</span></span><br>
+<span style="font-size: 10pt; font-family: Arial;"><br>
+___ Shutdown SIAM
+node service on node11 "axis"<br>
+<span style="font-family: monospace;">&nbsp;&nbsp; exitNode node11</span><br>
+</span>
+<br>
+<span style="font-size: 10pt; font-family: Arial;">___ Wakeup node1,
+ssh into node1, and terminate the j9 JVM with killj9. Do NOT use
+exitNode on this node, as that would disable power to the axis
+node. <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family: monospace;">wakeup
+loc node1; cpuAwake node1; ssh node1 (enter password)<br>
+&nbsp;&nbsp; killj9</span></span><br>
+<br>
+<span style="font-size: 10pt; font-family: Arial;">___ Shutdown SIAM
+node service on node11 "secondary"</span><br>
+<span style="font-size: 10pt; font-family: Arial;"><span
+ style="font-family: monospace;">&nbsp;&nbsp; wakeup loc node11;
+cpuAwake node11; exitNode node11<br>
+</span></span><br>
+<span style="font-size: 10pt; font-family: Arial;"><span
+ style="font-family: monospace;"></span></span><span
+ style="font-size: 10pt; font-family: Arial;">___ Shutdown SIAM node
+service on node10 "snubber"<br>
+</span><span style="font-size: 10pt; font-family: Arial;"><span
+ style="font-family: monospace;">&nbsp;&nbsp; wakeup loc node10;
+cpuAwake node10; exitNode node10</span></span><span
+ style="font-size: 10pt; font-family: Arial;"><span
+ style="font-family: monospace;"></span></span><br>
+&nbsp;&nbsp;&nbsp; <br>
+___ Terminate j9 on surface with<span style="font-family: monospace;">
+killj9</span> <span style="text-decoration: underline;"></span> - do <span
+ style="text-decoration: underline;">NOT</span>
+use exitNode, as that will cut power to benthic nodes and will cut
+power to the snubber node. If you inadvertantly cut power to the
+snubber, use <a href="#snubber_power">this procedure</a> to restore it.<span
+ style="font-size: 10pt; font-family: Arial;"><span
+ style="font-family: monospace;"><br>
+</span></span><span style="font-size: 10pt; font-family: Arial;"><span
+ style="font-family: monospace;">&nbsp;&nbsp; killj9<br>
+<br>
+</span></span>
+<p class="MsoNormal"><span style="font-size: 10pt; font-family: Arial;"><span
+ style="text-decoration: underline;"><br>
+B. Installation and configuration</span><br>
+</span></p>
+<p class="MsoNormal"><span style="font-size: 10pt; font-family: Arial;">You
+must have the proper siam.ipk on your console laptop. Transfer siam.ipk
+to the surface node using <a href="#ZMODEM">ZMODEM protocol</a>.The
+transfer will take about 30 minutes.<br>
+</span></p>
+<p class="MsoNormal"><span style="font-size: 10pt; font-family: Arial;">___
+Become user 'root' on surface, preserving 'ops' environment ("<span
+ style="font-family: monospace;">su -m</span> ")<br>
+</span></p>
+<span style="font-size: 10pt; font-family: Arial;">___ Transfer
+siam.ipk from your laptop to surface:/mnt/hda using <a href="#ZMODEM">ZMODEM</a><br>
+___ scp siam.ipk to node11:/mnt/hda<br>
+___ scp siam.ipk to node10:/mnt/hda<br>
+___ scp siam.ipk to node11:/mnt/hda<br>
+___ Do NOT transfer siam.ipk to node1, as node should already be
+up-to-date<br>
+<br>
+___ <a href="#backup_logs">Backup and remove old logs</a><span
+ style="font-family: monospace;"></span><br>
+___ Install siam.ipk on surface: <span style="font-family: monospace;">ipkg
+install siam.ipk</span><br>
+___ <a href="#configt">Run configt</a> on surface<br>
+___ <a href="#Primary_node_properties">Verify surface node properties</a>
+in siamPort.cfg<br>
+___ <a href="#log4_settings">Verify log4j settings</a><br>
+</span><span style="font-size: 10pt; font-family: Arial;">___ Clear
+codebase directory: <br>
+<span style="font-family: monospace;">&nbsp;&nbsp; rm -rf
+/mnt/hda/codebase/moos/</span><br>
+___ </span><span style="font-size: 10pt; font-family: Arial;">Verify
+correct cupola phone number dial-string in /etc/ppp/dialMBARI &#8211; should
+be: <o:p></o:p></span><span
+ style="font-size: 10pt; font-family: &quot;Courier New&quot;;">ATD18317751667<br>
+</span><br>
+<span style="font-size: 10pt; font-family: Arial;"></span><span
+ style="font-size: 10pt; font-family: Arial;">___ ssh to node11 as user
+'ops'<br>
+___ Become user 'root', preserving 'ops' environment ("<span
+ style="font-family: monospace;">su -m</span>")<br>
+</span><span style="font-size: 10pt; font-family: Arial;">
+___ <a href="AtSeaSoftwareUpgrade-04-2007.html#backup_logs">Backup and
+remove old logs</a><span style="font-family: monospace;"></span><br>
+</span><span style="font-size: 10pt; font-family: Arial;">___ Install
+siam.ipk
+on node11</span><span style="font-size: 10pt; font-family: Arial;">: <span
+ style="font-family: monospace;">ipkg install siam.ipk</span></span><br>
+<span style="font-size: 10pt; font-family: Arial;">___ <a
+ href="#configt">Run configt</a> on node11<br>
+___ <a href="#Subnode_properties">Verify subnode properties</a> in
+siamPort.cfg<br>
+</span><span style="font-size: 10pt; font-family: Arial;">___ <a
+ href="#log4_settings">Verify log4j settings</a><br>
+</span><span style="font-size: 10pt; font-family: Arial;">___ Exit from
+"root", becoming user "ops"<br>
+___ Go to SIAM home directory ("gosiam")</span><br>
+<span style="font-size: 10pt; font-family: Arial;">___<a href="#puck"> </a></span><span
+ style="font-size: 10pt; font-family: Arial;"><a href="#puck">Re-flash
+PUCK</a> for Seabird on /dev/ttySX2<span style="font-family: monospace;"><br>
+</span></span><span style="font-size: 10pt; font-family: Arial;">___
+Clear codebase directory: <br>
+<span style="font-family: monospace;">&nbsp;&nbsp; rm -rf
+/mnt/hda/codebase/moos/</span></span><br>
+<span style="font-size: 10pt; font-family: Arial;"><span
+ style="font-family: monospace;"></span>___ Logoff node<br>
+</span><span style="font-size: 10pt; font-family: Arial;"></span><span
+ style="font-size: 10pt; font-family: Arial;"><br>
+___ ssh to node10 as user 'ops'<br>
+___ </span><span style="font-size: 10pt; font-family: Arial;">Become
+user 'root', preserving 'ops' environment ("<span
+ style="font-family: monospace;">su -m</span>")<br>
+</span><span style="font-size: 10pt; font-family: Arial;">
+___ <a href="AtSeaSoftwareUpgrade-04-2007.html#backup_logs">Backup and
+remove old logs</a><span style="font-family: monospace;"></span><br>
+</span><span style="font-size: 10pt; font-family: Arial;">___ Install
+siam.ipk
+on node10</span><span style="font-size: 10pt; font-family: Arial;">: <span
+ style="font-family: monospace;">ipkg install siam.ipk</span></span><br>
+<span style="font-size: 10pt; font-family: Arial;">___ <a
+ href="#configt">Run configt</a> on node10<br>
+</span><span style="font-size: 10pt; font-family: Arial;"></span><span
+ style="font-size: 10pt; font-family: Arial;"> ___ <a
+ href="#Subnode_properties">Verify subnode properties</a> in
+siamPort.cfg<br>
+</span><span style="font-size: 10pt; font-family: Arial;"></span><span
+ style="font-size: 10pt; font-family: Arial;">___ <a
+ href="#log4_settings">Verify log4j settings</a><br>
+</span><span style="font-size: 10pt; font-family: Arial;"></span><span
+ style="font-size: 10pt; font-family: Arial;">___ Exit from "root",
+becoming user "ops"<br>
+___ Go to SIAM home directory ("gosiam")</span><br>
+<span style="font-size: 10pt; font-family: Arial;">___ </span><span
+ style="font-size: 10pt; font-family: Arial;"><a href="#puck">Re-flash
+PUCK for Seabird on /dev/ttySX2</a><span style="font-family: monospace;"></span></span><br>
+<span style="font-size: 10pt; font-family: Arial;"></span><span
+ style="font-size: 10pt; font-family: Arial;"></span><span
+ style="font-size: 10pt; font-family: Arial;">___ Clear codebase
+directory: <br>
+<span style="font-family: monospace;">&nbsp;&nbsp; rm -rf
+/mnt/hda/codebase/moos/</span></span><br>
+<span style="font-size: 10pt; font-family: Arial;">___ <a
+ href="MSE%20software%20upgrade%20procedure.html#EXT-3_conversion">Convert
+snubber file system to EXT-3</a><br>
+</span><span style="font-size: 10pt; font-family: Arial;"></span><span
+ style="font-size: 10pt; font-family: Arial;">___ Logoff node<br>
+</span>
+<span style="font-size: 10pt; font-family: Arial;"></span><span
+ style="font-size: 10pt; font-family: Arial;"></span><br>
+<span style="font-size: 10pt; font-family: Arial;">___ ssh to node11 as
+user 'ops'<br>
+___ </span><span style="font-size: 10pt; font-family: Arial;">Become
+user 'root', preserving 'ops' environment ("<span
+ style="font-family: monospace;">su -m</span>")</span><br>
+<span style="font-size: 10pt; font-family: Arial;">
+___ <a href="AtSeaSoftwareUpgrade-04-2007.html#backup_logs">Backup and
+remove old logs</a><span style="font-family: monospace;"></span><br>
+</span><span style="font-size: 10pt; font-family: Arial;">___ Install
+siam.ipk
+on node11</span><span style="font-size: 10pt; font-family: Arial;">: <span
+ style="font-family: monospace;">ipkg install siam.ipk</span></span><br>
+<span style="font-size: 10pt; font-family: Arial;">___ <a
+ href="#configt">Run configt</a> on
+node11</span><br>
+<span style="font-size: 10pt; font-family: Arial;">___ <a
+ href="#Subnode_properties">Verify subnode
+properties</a> in siamPort.cfg<br>
+___ </span><span style="font-size: 10pt; font-family: Arial;"> <a
+ href="AtSeaSoftwareUpgrade-04-2007.html#log4_settings">Verify log4j
+settings</a><br>
+</span><span style="font-size: 10pt; font-family: Arial;">___ Verify
+property for<a href="#RSS422_config"> RS422 communications
+on McLane serial port (/dev/ttySX5)</a><br>
+___ Exit from "root", becoming user "ops"<br>
+___ Go to SIAM home directory ("gosiam")<br>
+</span><span style="font-size: 10pt; font-family: Arial;"></span><span
+ style="font-size: 10pt; font-family: Arial;">___ <a href="#puck">Re-flash
+PUCK for Seabird on /dev/ttySX1</a><span style="font-family: monospace;"></span><o:p></o:p></span><br>
+<span style="font-size: 10pt; font-family: Arial;">___ <a href="#puck">Re-flash
+PUCK for Aquadopp on /dev/ttySX3</a><span
+ style="font-family: monospace;"></span></span><br>
+<span style="font-size: 10pt; font-family: Arial;">___ Clear codebase
+directory: <br>
+<span style="font-family: monospace;">&nbsp;&nbsp; rm -rf
+/mnt/hda/codebase/moos/</span><br style="font-family: monospace;">
+</span><span style="font-size: 10pt; font-family: Arial;">___ Logoff
+node<br>
+</span>
+<span style="font-size: 10pt; font-family: Arial;"></span><span
+ style="font-size: 10pt; font-family: Arial;"></span><br>
+<span style="font-size: 10pt; font-family: Arial;"></span><br>
+<span style="font-size: 10pt; font-family: Arial;"><br>
+<span style="text-decoration: underline;">C. Reboot system</span><br>
+Note that rebooting the surface node will cause loss of high-voltage
+power to benthic nodes, and will cut power to the snubber node.<br>
+<br>
+___ Verify that shore-side portal (new version) has been started<br>
+___ Disable batteries on node1 shelf<br>
+___ Disable batteries on node11 axis<br>
+___ Verify capacitors enabled on node1 shelf<br>
+___ Verify capacitors enabled on node11 axis<br>
+<o:p></o:p></span>___ Halt node11 axis<br>
+___ Halt node1 shelf<br>
+___ Halt node10 snubber<br>
+___ Sync/reboot node11 secondary<br>
+___ Sync/reboot surface&nbsp; <br>
+___ Wait 10 minutes, then power-up shelf node1:&nbsp; <span
+ style="font-family: monospace;">switchBIN400V loc 0 ON&nbsp;&nbsp; </span><br>
+___ After 5 minutes, power-up axis node: <span
+ style="font-family: monospace;">switchBIN400V node1 13 0ON<br>
+</span><br>
+<br>
+<span style="font-size: 10pt; font-family: Arial;"><span
+ style="text-decoration: underline;">D. Verify</span></span><br>
+<br>
+___ Execute ATPs on surface instruments<br>
+___ Execute ATPs on node11 instruments<br>
+___ Execute ATPs on node10 instruments<br>
+___ Execute ATPs on node1 instruments<br>
+___ Execute ATPs on node11 instruments<br>
+___ Verify <a href="#RSS422_config">RS422 functionality on node11
+McLane port (/dev/ttySX5)</a><br>
+<br>
+___ Retrieve old logs from surface???<br>
+___ Remove /mnt/hda/siam.old from surface<br>
+___ Retrieve old logs from node11???<br>
+___ Remove /mnt/hda/siam.old from node11<br>
+___ Retrieve old logs from node10???<br>
+___ Remove /mnt/hda/siam.old from node10<br>
+___ Retrieve old logs from node11???<br>
+___ Remove /mnt/hda/siam.old from node11<br>
+<br>
+<span style="font-size: 10pt; font-family: Arial;"><o:p></o:p></span>
+<p style="text-decoration: underline;" class="MsoNormal"><br>
+<span style="font-size: 10pt; font-family: Arial;"></span></p>
+<p style="text-decoration: underline;" class="MsoNormal"><span
+ style="font-size: 10pt; font-family: Arial;">E. Configure
+'passwordess' ssh/scp<br>
+</span></p>
+<div><font face="Arial" size="2">E1. The following should be <a
+ href="#portal_to_mmc_scp">configured</a> so that shore may
+automatically copy files and execute commands on any of the nodes.
+NOTE: the public&nbsp;key for ops@portal should be generated BEFORE the
+cruise, since portal will not be accessible during the cruise. Also
+note that the public key must be generated on the <em>operational</em>
+portal, which&nbsp;for the deployed&nbsp;MSE system is "siam-portal-1".</font></div>
+<div><font face="Arial" size="2">___ ops@portal to ops@surface<br>
+___ root@portal to ops@surface<br>
+___ ops@portal to ops@node11<br>
+___ ops@portal to ops@node10<br>
+___ ops@portal to ops@node1<br>
+___ ops@portal to ops@node11<br>
+<br>
+</font><font face="Arial" size="2">___ ops@portal to root@surface<br>
+___ ops@portal to root@node11<br>
+___ ops@portal to root@node10<br>
+___ ops@portal to root@node1<br>
+___ ops@portal to root@node11<br>
+</font><br>
+</div>
+<div>&nbsp;</div>
+<div><font face="Arial" size="2">E2. The following should be <a
+ href="#mmc_to_mmc_scp">configured</a> so that surface may
+automatically copy files and execute commands on any of the nodes, as
+either "ops" or "root", as part of an autoscript.</font></div>
+<div><font face="Arial" size="2">___ ops@surface to ops@node11<br>
+___ ops@surface to ops@node10<br>
+___ ops@surface to ops@node1<br>
+___ ops@surface to ops@node11<br>
+</font><font face="Arial" size="2">___ ops@surface to ops@shore (so
+that autoscript can transfer files to shore if needed)<br>
+</font><br>
+<font face="Arial" size="2">___ ops@surface to root@node11<br>
+___ ops@surface to root@node10<br>
+___ ops@surface to root@node1<br>
+___ ops@surface to root@node11<br>
+</font><br>
+</div>
+<div><font face="Arial" size="2">___ ops@surface to root@surface</font></div>
+<p class="MsoNormal"><span style="font-size: 10pt; font-family: Arial;">&nbsp;<o:p></o:p></span></p>
+<h1>Notes</h1>
+<p class="MsoNormal"><a name="Primary_node_properties"></a><span
+ style="text-decoration: underline;">Primary node
+properties</span><br>
+<span style="font-size: 10pt; font-family: &quot;Courier New&quot;;"></span><span
+ style="font-size: 10pt; font-family: Arial;"><o:p></o:p></span><span
+ style="font-size: 10pt; font-family: Arial;">Verify
+following property values in primary node's siamPort.cfg:</span>
+<br>
+</p>
+<o:p>&nbsp;</o:p><span
+ style="font-size: 10pt; font-family: &quot;Courier New&quot;;">NodeService.leaseRenewalInterval=1200000&nbsp;&nbsp;&nbsp;
+# Connect w/shore every 20 minutes</span>
+<br>
+<span style="font-size: 10pt; font-family: &quot;Courier New&quot;;"></span><span
+ style="font-size: 10pt; font-family: &quot;Courier New&quot;;">CommsManager.parentLinkOn
+= globalstarOn<o:p></o:p></span>
+<br>
+<span style="font-size: 10pt; font-family: &quot;Courier New&quot;;">CommsManager.parentLinkOff
+= commsOff <o:p></o:p></span>
+<br>
+<span style="font-size: 10pt; font-family: &quot;Courier New&quot;;">CommsManager.parentLinkStatus
+= linkStatus ppp</span>
+<br>
+<span style="font-size: 10pt; font-family: &quot;Courier New&quot;;"></span><span
+ style="font-size: 10pt; font-family: &quot;Courier New&quot;;">CommsManager.processWaitTime
+= 3600000<br>
+CommsManager.maxReassertTries = 1<br>
+</span><span style="font-size: 10pt; font-family: &quot;Courier New&quot;;">SleepManager.minAwakeSeconds=60&nbsp;&nbsp;
+# Avoid race during portal wake/lease process</span><br>
+<br>
+<p class="MsoNormal"><u><span
+ style="font-size: 10pt; font-family: Arial;"><a
+ name="Subnode_properties"></a>Subnode properties<br>
+</span></u></p>
+<p class="MsoNormal"><span style="font-size: 10pt; font-family: Arial;">Verify
+following property values in subnode's siamPort.cfg:</span></p>
+<span style="font-size: 10pt; font-family: monospace;">CommsManager.parentLinkStatus
+= linkStatus eth0</span><span style="font-family: monospace;"><br>
+SleepManager.minAwakeSeconds=60&nbsp;&nbsp;
+# Avoid race during portal wake/lease process</span><br
+ style="font-family: monospace;">
+<span style="font-size: 10pt; font-family: monospace;"></span><br
+ style="font-family: monospace;">
+<span style="font-size: 10pt; font-family: monospace;"><o:p></o:p></span><o:p><span
+ style="text-decoration: underline;"><a name="EXT-3_conversion"></a>EXT-3
+conversion<br>
+</span></o:p><font face="Arial" size="2"><span
+ style="font-size: 10pt; font-family: Arial;"><span style=""></span></span></font><font
+ face="Arial" size="2"><span
+ style="font-size: 10pt; font-family: Arial;"><o:p></o:p></span></font><font
+ face="Arial" size="2"><span
+ style="font-size: 10pt; font-family: Arial;"><span style=""><font
+ face="Times New Roman" size="1"><span
+ style="font-family: 'Times New Roman'; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;"></span></font></span></span></font><font
+ face="Arial" size="2"><span
+ style="font-size: 10pt; font-family: Arial;"><br>
+Before converting the CFLASH to EXT-3 file system, you must ensure that
+no processes are accessing the CFLASH device:<br>
+</span></font>
+<ul>
+  <li><font face="Arial" size="2"><span
+ style="font-size: 10pt; font-family: Arial;">Ensure that no users are
+cd'ed to /mnt/hda</span></font></li>
+  <li><font face="Arial" size="2"><span
+ style="font-size: 10pt; font-family: Arial;">Kill any processes that
+access /mnt/hda such as manageLog and runAutoscript, which are likely
+to be running in the background<br>
+    </span></font></li>
+</ul>
+<font face="Arial" size="2"><span
+ style="font-size: 10pt; font-family: Arial;"><br>
+Convert the CF card to
+ext3 by executing the following commands as "root", from a directory
+outside of
+/mnt/hda:<o:p></o:p></span></font>
+<br>
+&nbsp; umount /dev/hda1<br>
+&nbsp; /sbin/tunefs -j -J size=4 /dev/hda1<br>
+<font face="Arial" size="2"><span
+ style="font-size: 10pt; font-family: Arial;"><span style=""><br>
+<font face="Times New Roman" size="1"><span
+ style="font-family: 'Times New Roman'; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;</span></font></span></span></font><font
+ face="Arial" size="2"><span
+ style="font-size: 10pt; font-family: Arial;">Reboot the node<o:p></o:p></span></font>
+to enable the conversion.<br>
+<font face="Arial" size="2"><span
+ style="font-size: 10pt; font-family: Arial;"><o:p>&nbsp;</o:p></span></font><br>
+<a name="puck"></a><span style="text-decoration: underline;">Updating
+PUCKs</span><br>
+<br>
+If the SIAM service is running, use the following as an example to
+update an instrument PUCK payload:<br>
+<br>
+<div style="margin-left: 40px;"><span style="font-family: monospace;">shutdownPort
+loc 3</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">powerUpPort loc 3</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">writePuck
+ports/AquadoppCM-1553.jar</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">scanPort loc 3</span><br
+ style="font-family: monospace;">
+</div>
+<br>
+<br>
+<p class="MsoNormal"><o:p><span style="text-decoration: underline;"><a
+ name="FreewaveConsole"></a>Freewave RF console</span><br>
+The shipboard terminate emulator (minicom, Hyperterm) should be
+configured for 38400 baud. The surface node's Freewave is powered on
+every 5 minutes, at which time the green CD LEDs on the Freewave light
+up and a login prompt will appear on the shipboard terminal. You have
+30 seconds to login before the surface node turns off the radio power.
+Once logged in, an "inactivity timeout" is in effect; specified by the
+TMOUT environment variable (in seconds). If TMOUT seconds elapse
+without anyone typing into the console, the user will be automatically
+logged out and the radio will be powered off. The radio will be powered
+on again 5 minutes later, as described above. By default, TMOUT is set
+to 600 seconds; you can set TMOUT to any desired value (e.g. TMOUT=3600
+sets the timeout to 1 hour). Setting TMOUT=0 disables the inactivity
+timeout - HOWEVER disabling the timeout is discouraged, as RF power
+will stay on "forever" if the user forgets to log out.<br>
+</o:p></p>
+<div><font face="Arial" size="2"><br>
+<br>
+<span style="font-weight: bold;"><a name="portal_to_mmc_scp"></a></span><span
+ style="text-decoration: underline;">Enable password-less ssh/scp from
+user1@portal to&nbsp;user2@node (portal to MMC node):</span><br
+ style="font-weight: bold; text-decoration: underline;">
+</font></div>
+<div><font face="Arial" size="2"><br>
+On portal machine, login as user1 (do NOT "su" to user1):<br>
+</font></div>
+<div><font face="Courier New" size="2">&nbsp; cd</font></div>
+<div><font face="Courier New" size="2">&nbsp; ssh-keygen -t dsa</font></div>
+<div><font face="Courier New" size="2">&nbsp; chmod 0644
+~/.ssh/id_dsa.pub</font></div>
+<div><font size="2"><font face="Courier New">&nbsp; scp
+~/.ssh/id_dsa.pub user2</font><font face="Courier New">@node:.ssh/<span
+ style="font-style: italic;">user1</span>-portal-dsa.pub&nbsp;&nbsp; <br>
+</font></font></div>
+<div>&nbsp;<br>
+<font face="Arial" size="2">Note that we rename the public key file on
+the destination to help remember where the file originated.<br>
+Then log onto MMC node as user2 and append the generated public DSA key
+to the authorized_keys file:</font></div>
+<div>
+<div><font face="Courier New" size="2">&nbsp; ssh user2@node</font></div>
+<div><font face="Courier New" size="2">&nbsp; cd ~/.ssh</font></div>
+<div><font face="Courier New" size="2">&nbsp; cat <span
+ style="font-style: italic;">user1</span>-portal-dsa.pub &gt;&gt;
+authorized_keys2</font></div>
+</div>
+<div>&nbsp;<br>
+<div style="font-weight: bold;"><font face="Arial" size="2">
+<div><font face="Arial" size="2"><a name="mmc_to_mmc_scp"></a><span
+ style="font-weight: normal; text-decoration: underline;">Enable
+password-less ssh/scp from&nbsp;user1@ node1 to&nbsp;user2@node1 (MMC
+node to MMC node):</span><br>
+</font></div>
+</font></div>
+<div style="text-decoration: underline;">&nbsp;</div>
+<div><font face="Arial" size="2">On node1, login as user1 (do NOT "su"
+to user1):</font></div>
+<div><font face="Courier New" size="2">&nbsp; cd</font></div>
+<div><font face="Courier New" size="2">&nbsp; ssh-keygen -d</font></div>
+<div><font face="Courier New" size="2">&nbsp; chmod 0644
+~/.ssh/id_dsa.pub</font></div>
+<div><font size="2"><font face="Courier New">&nbsp; scp
+~/.ssh/id_dsa.pub </font><font face="Courier New">user2@node1:.ssh/user1-node1-dsa.pub</font></font></div>
+<div>&nbsp;</div>
+<div><font face="Arial" size="2">Note that we rename the public key
+file on the destination to help remember where the file originated.<br>
+</font><font face="Arial" size="2">Then log onto node1 as user2:</font></div>
+<div><font size="2"><font face="Courier New">&nbsp; ssh </font><font
+ face="Courier New">user2@node1</font></font></div>
+<div><font face="Courier New" size="2">&nbsp; cd .ssh</font></div>
+<div><font face="Courier New" size="2">&nbsp; cat user1-node1-dsa.pub
+&gt;&gt;
+authorized_keys2</font></div>
+<div>&nbsp;<br>
+<a name="ZMODEM"></a><span style="text-decoration: underline;">ZMODEM
+transfer procedure</span><br>
+</div>
+On the destination node, 'cd' to the destination directory, ensure that
+the file does yet exist there (ZMODEM will NOT replace the destination
+file),&nbsp; and type "rz" - which waits for the incoming file. On your
+laptop's terminal emulator, invoke the command which sends the file (in
+minicom, type "ctrl-A S"). Note that the Freewave runs 38400 baud, and
+transfer of siam.ipk file will take about 30 minutes.<br>
+<br>
+<a name="power_procedures"></a><span style="text-decoration: underline;"><span
+ style="color: rgb(255, 0, 0);">Power control procedures GO HERE</span><br>
+<br>
+<a name="snubber_power"></a>Snubber power control:<br>
+</span>Snubber is powered through DPA 0, channel 1 on the surface node;
+there is a "snubber power control" service running on surface node on
+port /dev/ttySX1. NOTE: running exitNode on surface will cut power to
+the snubber, which can corrupt snubber's CFLASH. Thus you should ensure
+that snubber is halted before removing its power. <br>
+<br>
+You can power-up and boot the snubber node if the node service is not
+running on surface, by using the dpaView utility. Invoke "dpaView", and
+issue the command "power 0 1 on" to power the snubber. The snubber will
+boot and restart the SIAM node service. You can then execute "exitNode
+node10" to terminate the node service on snubber (to prevent the
+snubber from going to sleep mode). <br>
+<br>
+<span style="text-decoration: underline;"><br>
+<a name="configt"></a><span style="color: rgb(51, 0, 51);">configt
+procedures<br>
+</span></span><span style="color: rgb(255, 0, 0);"><span
+ style="color: rgb(51, 0, 51);">It is recommended that you run configt
+TWICE on each node; configure the node during the first session, and
+configure the ports in the second session.<br>
+<br>
+<br>
+<a name="RSS422_config"></a><span style="text-decoration: underline;">Configure
+MMC serial port for RS422 McLane interface</span><br>
+</span></span><br>
+<font face="Arial" size="2"><span
+ style="font-size: 10pt; font-family: Arial;">Lessons learned on McLane
+profiler (an RS422 instrument) and terminal programs.<o:p></o:p></span></font>
+<br>
+<font face="Arial" size="2"><span
+ style="font-size: 10pt; font-family: Arial;"><o:p>&nbsp;</o:p></span></font>
+<br>
+<font face="Arial" size="2"><span
+ style="font-size: 10pt; font-family: Arial;"><span style="">-<font
+ face="Times New Roman" size="1"><span
+ style="font-family: 'Times New Roman'; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></font></span></span></font><font face="Arial" size="2"><span
+ style="font-size: 10pt; font-family: Arial;">the commsMode property
+(commsMode0, commsMode1, etc.) in siamPort.cfg must be set to &#8220;RS422&#8221;<o:p></o:p></span></font>
+<br>
+<font face="Arial" size="2"><span
+ style="font-size: 10pt; font-family: Arial;"><span style="">-<font
+ face="Times New Roman" size="1"><span
+ style="font-family: 'Times New Roman'; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></font></span></span></font><font face="Arial" size="2"><span
+ style="font-size: 10pt; font-family: Arial;">the McLane service runs
+successfully when the commsMode property is correctly set<o:p></o:p></span></font>
+<br>
+<font face="Arial" size="2"><span
+ style="font-size: 10pt; font-family: Arial;"><span style="">-<font
+ face="Times New Roman" size="1"><span
+ style="font-family: 'Times New Roman'; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></font></span></span></font><font face="Arial" size="2"><span
+ style="font-size: 10pt; font-family: Arial;">terminal program conPort
+appears to work correctly<o:p></o:p></span></font>
+<br>
+<font face="Arial" size="2"><span
+ style="font-size: 10pt; font-family: Arial;"><span style="">-<font
+ face="Times New Roman" size="1"><span
+ style="font-family: 'Times New Roman'; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></font></span></span></font><font face="Arial" size="2"><span
+ style="font-size: 10pt; font-family: Arial;">terminal programs stip
+and minicom work after starting the service and running conPort
+(running the service and then running stip has not been tried)<o:p></o:p></span></font>
+<br>
+<font face="Arial" size="2"><span
+ style="font-size: 10pt; font-family: Arial;"><span style="">-<font
+ face="Times New Roman" size="1"><span
+ style="font-family: 'Times New Roman'; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></font></span></span></font><font face="Arial" size="2"><span
+ style="font-size: 10pt; font-family: Arial;">It is thought that stip
+(and possibly minicom) disable the RS422 output tranceivers(?)<o:p></o:p></span></font>
+<br>
+<font face="Arial" size="2"><span
+ style="font-size: 10pt; font-family: Arial;"><o:p>&nbsp;</o:p></span></font>
+<br>
+<font face="Arial" size="2"><span
+ style="font-size: 10pt; font-family: Arial;">To Do:<o:p></o:p></span></font>
+<br>
+<font face="Arial" size="2"><span
+ style="font-size: 10pt; font-family: Arial;"><span style="">-<font
+ face="Times New Roman" size="1"><span
+ style="font-family: 'Times New Roman'; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></font></span></span></font><font face="Arial" size="2"><span
+ style="font-size: 10pt; font-family: Arial;">It is not clear why stip
+would work after conPort is run (what causes the non-sticky behaviour
+of stip?)<o:p></o:p></span></font>
+<br>
+<font face="Arial" size="2"><span
+ style="font-size: 10pt; font-family: Arial;"><span style="">-<font
+ face="Times New Roman" size="1"><span
+ style="font-family: 'Times New Roman'; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></font></span></span></font><font face="Arial" size="2"><span
+ style="font-size: 10pt; font-family: Arial;">Determine what factors
+affect the behavior of stip and other terminal programs<o:p></o:p></span></font>
+<br>
+<font face="Courier New" size="2"><span
+ style="font-size: 10pt; font-family: 'Courier New';"><span style="">o<font
+ face="Times New Roman" size="1"><span
+ style="font-family: 'Times New Roman'; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></font></span></span></font><font face="Arial" size="2"><span
+ style="font-size: 10pt; font-family: Arial;">Verify the signals
+affected by stip/minicom<o:p></o:p></span></font>
+<br>
+<font face="Courier New" size="2"><span
+ style="font-size: 10pt; font-family: 'Courier New';"><span style="">o<font
+ face="Times New Roman" size="1"><span
+ style="font-family: 'Times New Roman'; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></font></span></span></font><font face="Arial" size="2"><span
+ style="font-size: 10pt; font-family: Arial;">Run service -&gt; stip<o:p></o:p></span></font>
+<br>
+<font face="Courier New" size="2"><span
+ style="font-size: 10pt; font-family: 'Courier New';"><span style="">o<font
+ face="Times New Roman" size="1"><span
+ style="font-family: 'Times New Roman'; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></font></span></span></font><font face="Arial" size="2"><span
+ style="font-size: 10pt; font-family: Arial;">Run service -&gt; conPort
+-&gt; shutdownPort-&gt;stip (this sequence works)<o:p></o:p></span></font>
+<br>
+<font face="Courier New" size="2"><span
+ style="font-size: 10pt; font-family: 'Courier New';"><span style="">o<font
+ face="Times New Roman" size="1"><span
+ style="font-family: 'Times New Roman'; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></font></span></span></font><font face="Arial" size="2"><span
+ style="font-size: 10pt; font-family: Arial;">Run stip with the &#8211;c
+(clocal, don&#8217;t disconnect) <o:p></o:p></span></font>
+<p class="MsoNormal"><font face="Arial" size="2"><span
+ style="font-size: 10pt; font-family: Arial;"><o:p>&nbsp;</o:p></span></font></p>
+<a name="log4_settings"></a><span
+ style="text-decoration: underline; font-family: arial;">Log4J
+settings<br>
+</span><span style="font-family: arial;">In general, Log4J "log level"
+should be set to INFO (via 'configt'). After running configt, you can
+verify appropriate debug level in $SIAM_HOME/properties/siam.log4j from
+the following line:</span><br style="font-family: arial;">
+<br>
+<span style="font-family: monospace;">log4j.rootCategory=INFO, rolling</span><br
+ style="font-family: monospace;">
+<br>
+<span style="font-family: arial;">If need be, you can edit siam.log4j
+and modify as needed.</span><br style="font-family: arial;">
+<br style="font-family: arial;">
+<span style="font-family: arial;">Set Log4J properties for "Rolling
+file appender" in
+$SIAM_HOME/properties/siam.log4j, such
+that "rolling" logs are reasonably large. The values in the tagged
+siam.log4j are not necessarily large enough. "Reasonable" values are as
+follows:</span><br style="font-family: arial;">
+<span style="text-decoration: underline;"><br>
+</span><span style="font-family: monospace;"># ROLLING FILE APPENDER
+(rolling) </span><br style="font-family: monospace;">
+<span style="font-family: monospace;">log4j.appender.rolling=org.apache.log4j.RollingFileAppender</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">log4j.appender.rolling.File=${siam.node.log}</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">log4j.appender.rolling.layout=org.apache.log4j.PatternLayout</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;"></span><span
+ style="font-family: monospace;">log4j.appender.rolling.layout.ConversionPattern=%r
+%-5p %x %c{1} [%t]: %m%n</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">log4j.appender.rolling.MaxFileSize=5000KB</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">log4j.appender.rolling.MaxBackupIndex=5</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;"><br>
+</span><span style="font-family: arial;">Note that changes to
+siam.log4j only take affect when the node service is restarted.</span><br
+ style="font-family: arial;">
+<span style="font-family: monospace;"><br>
+<br>
+<a name="backup_logs"></a></span><span
+ style="text-decoration: underline;">Backup and remove logs</span><span
+ style="font-family: monospace;"><br>
+</span>
+<p class="MsoNormal">Change directory to /mnt/hda/siam/logs. Create a
+tarfile in /mnt/hda/logs (NOT in siam/logs) containing all *.idx and
+*.dat files: <br>
+</p>
+<p class="MsoNormal">&nbsp;&nbsp; tar cvf
+/mnt/hda/logs/old-siam-logs.tar *.idx *.dat<br>
+</p>
+<p class="MsoNormal">When you are sure that all relevant files have
+tar'ed into /mnt/hda/logs, emove all files in /mnt/hda/<span
+ style="text-decoration: underline;">siam</span>/logs: <br>
+&nbsp; rm -rf /mnt/hda/siam/logs/*<br>
+<br>
+<span style="font-size: 10pt; font-family: Arial;"><br>
+</span></p>
+<p class="MsoNormal"><span style="font-size: 10pt; font-family: Arial;"><a
+ name="Portal_installation"></a></span><u><span
+ style="font-size: 10pt; font-family: Arial;">New portal installation<br>
+</span></u></p>
+<span style="font-size: 10pt; font-family: Arial;">___ Archive all
+existing logs on siam-portal-1:/home/ops/mse/logs</span><br>
+<span style="font-size: 10pt; font-family: Arial;">___ Remove
+/home/ops/mse/logs/*<br>
+___ Move siam directory<br>
+&nbsp;&nbsp; <span style="font-family: monospace;">mv
+/home/ops/mse/siam /home/ops/mse/siam.october20_2006-2</span><br>
+___ Copy new SIAM shore.tar.gz into /home/ops/mse, and unpack:<br>
+<span style="font-family: monospace;">&nbsp;&nbsp; cd /home/ops/mse</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp; scp
+ops@buildHost:shore.tar.gz .</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp; tar zxvf shore.tar.gz</span><br
+ style="font-family: monospace;">
+<br>
+Verify
+socket read timeout of 120 seconds??? (verify this through testing)</span>.
+<br>
+Verify getPacket read timeout of 30 seconds.
+<br>
+&nbsp;
+<br>
+<a name="network_troubleshooting"></a><span
+ style="text-decoration: underline; color: rgb(255, 0, 0);">Network
+troubleshooting procedures</span><br>
+<br>
+</div>
+<p class="MsoNormal"><br>
+</p>
+</body>
+</html>

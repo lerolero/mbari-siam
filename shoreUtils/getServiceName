@@ -1,0 +1,38 @@
+#!/bin/csh
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Find name of service corresponding to specified deviceID. 
+# First a small database file is searched. If a service name for the 
+# deviceID is not found there, the device logfile is searched; the retrieved
+# service name is then written to the database.
+
+if ($#argv != 2) then
+  echo usage: `basename $0` nodeID deviceID
+  exit 1
+endif
+set nodeID = $argv[1]
+set deviceID = $argv[2]
+
+if ($deviceID == $nodeID) then
+  echo "Node"
+  exit 0
+endif
+
+set serviceNameFile = $SIAM_HOME/logs/serviceNames.dat
+
+grep "$deviceID|" $serviceNameFile >& /tmp/serviceName.out
+if ($status == 0) then
+  tail -1 /tmp/serviceName.out | awk 'BEGIN{FS="|";}{print $2}'
+  exit 0
+else
+
+  set serviceName = `logView -utc $deviceID $SIAM_HOME/logs/$nodeID | grep "serviceName=" | tail -1 | awk '{printf "%s\n", substr($0, 13)}'`
+
+  # Write entry to database file
+  echo "$deviceID|$serviceName" >> $serviceNameFile
+
+  echo $serviceName
+endif
+

@@ -1,0 +1,12 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+export host=`hostname` 
+
+$JAVA $JAVA_OPTIONS \
+-cp $SIAM_CLASSPATH:$JINI/lib/jini-core.jar:$JINI/lib/jini-ext.jar:$JINI/lib/sun-util.jar \
+-Djava.rmi.server.codebase=http://${host}:8086/ \
+-Djava.security.policy=$SIAM_HOME/properties/policy \
+org.mbari.siam.distributed.jini.Discoverer $*

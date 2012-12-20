@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Getting Started with SIAM</title>
+<link href="../css/content.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+<h1>Getting Started Guide</h1>
+<h2>What is SIAM?</h2>
+<p>Software Infrastructure and Applications for Monterey Ocean Observing System (SIAM) consists of middleware and applications 
+designed to enable automated platform configuration and data collection on sensor networks. 
+SIAM has components to do data collection, archiving and telemetry. 
+</p>
+<p>Originally designed for ocean observing systems, SIAM architecture is made to be scalable and interoperable, allowing it to
+ work with a wide range of platforms, instruments and  applications. It's distributed architecture makes it possible to configure 
+ and operate SIAM remotely, even on networks with low throughput and intermittent connectivity. 
+ It scales well to relatively small processors (ARM), or to more capable hardware, and can support networks with many nodes and instruments.
+Since SIAM is also very robust, it is suitable for use in autonomous in-situ systems, or for distributed systems with centralized computing resources.
+</p>
+<p>SIAM's key features and capabilities include:</p>
+<ul>
+<li>Instrument service framework makes it easier to integrate new sensors</li>
+<li>Accurately timestamped data collection for binary, ascii and image data</li>
+<li>Supports PUCK protocol to enable automated platform and data system configuration and interoperability</li>
+<li>Supports polled and streaming instruments</li>
+<li>Data summarization scheme for low-bandwidth telemetry links</li>
+<li>Robust local data storage</li>
+<li>Support for wireless/networked data telemetry using satellite, line-of-sight RF or ethernet</li>
+<li>Supports Open Source Data Turbine data streaming middleware and clients</li>
+<li>SIAM is based on Java and open source software, making it easy to learn, use and adapt</li>
+<li>Royalty free license</li>
+</ul>
+
+<p>Though SIAM is not designed to be a highly deterministic real-time system, it does support reasonably high sampling rates; typical applications 
+to date feature polled sampling rates as frequently as 1 Hz and streaming data capture of several Hertz. SIAM uses NTP to maintain an accurate system clock
+used to timestamp data.
+ </p>
+
+<h2>What's Included</h2>
+<p>
+This guide contains documentation that enables designers and operators of observing systems and sensor networks to install and use SIAM in their application.
+SIAM does require a bit of effort to bring up - it is flexible and powerful, and its configuration and use are application-driven.
+</p>
+<p>The basic steps involved in setting up SIAM are these:</p>
+<ul>
+<li>Install 3rd party open-source software packages</li>
+<li>Build SIAM sources</li>
+<li>Configure SIAM</li>
+<li>Run SIAM</li>
+</ul>
+
+<p></p>
+<table class="altTable">
+<tr>
+<th width="25%">For help with...</th>
+<th>See</th>
+</tr>
+<tr>
+<td>Setting up SIAM</td>
+<td>System Requirements<br />Installation<br />Configuration</td>
+</tr>
+<tr class="alt">
+<td>Writing instrument services</td>
+<td>SIAM software API</td>
+</tr>
+<tr>
+<td>Configuring SIAM</td>
+<td>Configuration<br />Examples (sample configuration files)</td>
+</tr>
+<tr class="alt">
+<td>Using SIAM applications</td>
+<td>Utility reference</td>
+</tr>
+</table>
+<p></p>
+
+</body>
+</html>

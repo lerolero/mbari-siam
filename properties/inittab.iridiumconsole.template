@@ -1,0 +1,6 @@
+
+# enable Iridium console
+# source: inittab.iridiumconsole.template
+I1:2:respawn:/etc/manageIridium &> /dev/null
+
+

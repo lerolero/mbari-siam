@@ -1,0 +1,428 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# This script configures a SIAM node based on user selection
+# of primary RF link, ethernet enabled, SIAM autostart, etc.
+
+###root=~/tmp; echo; echo WARNING - DEBUG mode, putting output file in $root; echo
+
+
+baseIsiID=5000  # Need to get a reserved ID from SSDS!
+
+maxNodes=10
+
+surfaceName=surface
+ethernetAddrPrefix="134.89."
+
+# Lowest reserved third octet for MOOS IP addresses
+netNumberBase=35
+
+subnodeType=sub
+
+# Get node's ISI ID
+  echo -n "Enter node's ISI ID #: "
+  read isiID
+
+# Get network number
+while [ 1 ] ; do
+    echo -n "Enter network number (must be in range 1 - 5): "
+    read netNumber
+    if [ $netNumber -ge 1 -a $netNumber -le 5 ]; then
+      # Translate to actual network number
+      let number=$netNumber+$netNumberBase
+      ethernetAddrPrefix=$ethernetAddrPrefix$number"."
+      surfaceAddr=$ethernetAddrPrefix"200"
+      break;
+    else
+      echo "Network number must be in range 1 - 5"
+    fi    
+done
+
+# Get node type
+echo Select node type:
+select nodeName in "Surface node" "Medusa subnode" "RS422 subnode" ; do
+  if [ $REPLY -lt 1 -o $REPLY -gt 3 ]; then
+    echo Invalid reply
+  else
+    if [ $REPLY -eq 1 ]; then
+      nodeType=surface
+      parentIP=shore
+    elif [ $REPLY -eq 2 ]; then
+      nodeType=$subnodeType
+      parentIP=surface
+    else
+      nodeType=pppsub
+      parentIP=surface
+    fi 
+    break
+  fi
+done
+
+if [ "$nodeType" == "surface" ]; then
+  ethernetAddr=$surfaceAddr
+  hostName="surface"
+  # Prompt for link-to-parent 
+  echo Select TCP/IP communications link to shore:
+  select wirelessLink in globalstar freewave nullModem none; do
+    if [ $REPLY -lt 1 -o $REPLY -gt 4 ]; then
+      echo Invalid reply
+    else
+      if [ $REPLY -eq 1 ]; then
+        pppScript=globalstar
+        protocolWaitTime=15000
+        processWaitTime=240000
+        leaseRenewalInterval=3600000
+      elif [ $REPLY -eq 4 ]; then
+        # No ppp link - ethernet?
+        pppScript=""
+        protocolWaitTime=1000
+        processWaitTime=1000
+        leaseRenewalInterval=60000
+      else
+        # Freewave and null modem, invoke 'longhaul' ppp script
+        pppScript=longhaul
+        protocolWaitTime=5000
+        processWaitTime=60000
+        leaseRenewalInterval=900000
+      fi
+      break;
+    fi
+  done
+
+  echo
+  echo Enable ethernet?
+  select foo in 'Ethernet enabled' 'Ethernet disabled'; do
+    if [ $REPLY -lt 1 -o $REPLY -gt 2 ]; then
+      echo Invalid reply
+    else
+      if [ $REPLY -eq 1 ]; then
+        ethernetEnabled=TRUE
+      else
+        ethernetEnabled=FALSE
+      fi
+      break;
+    fi
+  done
+
+
+elif [ "$nodeType" == "sub" ]; then     # BIN node
+  # Link-to-parent is hard-wire
+  wirelessLink=none
+  pppScript=""
+  ethernetEnabled=TRUE
+  leaseRenewalInterval=60000    # Notify surface node once per minute
+  protocolWaitTime=1000
+  processWaitTime=1000
+
+  # Generate IP address based on sidearm OUI
+  x=`ethaddr | cut --delimiter=: --fields=6`
+  # Strip off leading 0
+  fld4=${x#0}
+  ethernetAddr=$ethernetAddrPrefix$fld4
+  hostName="node"$fld4
+
+else
+  echo "NOT YET IMPLEMENTED FOR NODE TYPE \""$nodeType"\""
+fi
+
+
+echo
+echo Autostart SIAM application on reboot?
+select foo in 'Autostart' 'Do not autostart'; do
+  if [ $REPLY -lt 1 -o $REPLY -gt 2 ]; then
+    echo Invalid reply
+  else
+    if [ $REPLY -eq 1 ]; then
+      autostart=TRUE
+    else
+      autostart=FALSE
+    fi
+    break;
+  fi
+done
+
+echo
+echo Select Log4J level:
+select log4jLevel in 'DEBUG' 'INFO'; do
+  if [ $REPLY -lt 1 -o $REPLY -gt 2 ]; then
+    echo Invalid reply
+  else
+    break;
+  fi
+done
+
+
+echo --------------------------------
+echo Your choices:
+echo Node ISI ID: $isiID
+echo Node type: $nodeType
+echo Wireless link: $wirelessLink
+echo ethernet enabled: $ethernetEnabled
+echo SIAM autostart: $autostart
+echo Log4J threshold: $log4jLevel
+echo Assigned hostname: $hostName
+echo Assigned ethernet IP address: $ethernetAddr
+### echo parent: $parentIP
+
+echo
+echo Proceed? 
+select proceed in 'Yes; THIS WILL MODIFY SYSTEM CONFIGURATION FILES' 'No, exit'; do
+  if [ $REPLY -lt 1 -o $REPLY -gt 2 ]; then
+    echo Invalid reply
+
+  elif [ $REPLY -eq 2 ]; then
+    echo "Exit..."
+    exit
+
+  else
+    break;
+  fi
+
+done
+
+echo "Configuring..."
+# Set appropriate property values in $SIAM_HOME/properties/siamPort.cfg
+properties=$SIAM_HOME/properties/siamPort.cfg
+
+
+awkFile=$root/tmp/awkFile1.$$
+
+
+cat > $awkFile <<AWKFILE1
+
+/^[ \t]*nodeID/ {
+  printf "nodeID = $isiID\n";
+  next;
+}
+/^[ \t]*NodeService.leaseRenewalInterval/ {
+  next;
+}
+/^[ \t]*CommsManager.onString/ {
+  next;
+}
+/^[ \t]*CommsManager.offString/ {
+  next;
+}
+/^[ \t]*CommsManager.protocolWaitTime/ {
+  next;
+}
+/^[ \t]*CommsManager.processWaitTime/ {
+  next;
+}
+
+
+{
+  print;
+}
+
+END {
+  printf "NodeService.leaseRenewalInterval = $leaseRenewalInterval\n";
+  printf "CommsManager.onString = pon $pppScript\n";
+  printf "CommsManager.offString = commsOff $pppScript\n";
+  printf "CommsManager.protocolWaitTime = $protocolWaitTime\n";
+  printf "CommsManager.processWaitTime = $processWaitTime\n";
+}
+AWKFILE1
+
+echo "Modifying properties file $properties..."
+
+awk -f $awkFile $properties > $root/tmp/siamPort.cfg.$$
+mv $root/tmp/siamPort.cfg.$$ $properties
+# Make sure everyone has read/write permission
+chmod a+w $properties
+
+# Create SIAM initialization file, based on user input
+rcLocal=$root/etc/init.d/rc.local
+echo "Generating $rcLocal..."
+
+cat > $rcLocal <<EOF
+#!/bin/bash
+# Called at boot time to configure node appropriately.
+# THIS FILE CREATED AUTOMATICALLY - DO NOT MODIFY
+
+# Mount everything
+mount -a
+
+# Start log size management utilities. Args are:
+#          logfile       maxBytes  checkInterval (sec)
+/etc/siam/manageLog /var/log/syslog 500000 60 &
+/etc/siam/manageLog /var/log/messages 500000 60 &
+
+# TEST MODE - RESET WATCHDOG TIMER
+/etc/siam/renewWDT.sh -t 600 -v &
+
+# Set groups and permissions for RXTX Java serial port package
+chgrp lock /var/lock
+chmod 775 /var/lock
+
+# Get time from Ricoh 
+/root/ricohRTC -s
+
+# NOTE: Don't try to synchronize time with shore yet,
+# as network link to NTP server may not be present yet
+
+# Enable packet-forwarding
+echo '1' > /proc/sys/net/ipv4/ip_forward
+
+EOF
+
+if [ "$ethernetEnabled" == "FALSE" ]; then  # User specified ethernet disabled
+cat >> $rcLocal <<EOF2
+# Disable ethernet, set hostname
+ifdown eth0
+hostname mooring
+
+EOF2
+fi
+
+
+# Modify /etc/siam/siamEnv to reflect user inputs
+siamEnv=$root/etc/siam/siamEnv
+
+awkFile=$root/tmp/awkFile2.$$
+
+cat > $awkFile <<AWKFILE2
+/SIAM_AUTOSTART/ {
+  next;
+}
+/PARENT_HOST/ {
+  next;
+}
+/LOG4J_THRESHOLD/ {
+  next;
+}
+
+{
+  print;
+}
+
+END {
+  printf "\n# SIAM_AUTOSTART indicates whether to automatically start SIAM on boot\n";
+  printf "export SIAM_AUTOSTART=$autostart\n";
+  printf "\n# PARENT_HOST is the name of the 'parent node' to contact\n";
+  printf "export PARENT_HOST=$parentIP\n";
+  printf "\n# LOG4J_THRESHOLD; DEBUG, INFO, WARN, or ERROR:\n";
+  printf "export LOG4J_THRESHOLD=$log4jLevel\n";
+  printf "\n# ppp script for wireless comms\n";
+  printf "export PARENT_LINK_SCRIPT=$pppScript\n";
+}
+AWKFILE2
+
+echo "Modifying $siamEnv ..."
+awk -f $awkFile $siamEnv > $root/tmp/siamEnv.$$
+mv $root/tmp/siamEnv.$$ $siamEnv
+# Make sure everyone has read/write permission
+chmod a+w $siamEnv
+
+
+# Write network configuration files
+echo $hostName > $root/etc/hostname
+
+networkFile=$root/etc/network/interfaces
+echo "Modifying $networkFile ..."
+
+cat > $networkFile <<EOF4
+# /etc/network/interfaces -- configuration file for ifup(8), ifdown(8)
+#
+# This configuration is for '$hostName' 
+#
+# The loopback interface
+# automatically added when upgrading
+auto lo
+     iface lo inet loopback
+                                                                                
+# Cerf Ethernet Settings - static IP
+# Please edit these numbers to reflect your network settings.
+auto eth0
+     iface eth0 inet static
+     address $ethernetAddr    # $hostName ethernet
+     netmask 255.255.255.00
+     gateway $surfaceAddr     # $surfaceName ethernet
+EOF4
+
+networkFile=$root/etc/hosts
+
+echo "Modifying $networkFile ..."
+
+cat > $networkFile <<EOF5
+# This is the '/etc/hosts' file for MOOS moored network #$netNumber
+# Third octet of ethernet IP address = network number + $netNumberBase
+# Note that this file can also be used for surface-only system ("MOOS Lite")
+
+                                                                               
+# DO NOT REMOVE THE FOLLOWING LINE
+127.0.0.1       localhost familiar local loc
+                   
+10.1.1.1        shore                # portal node's ppp interface address
+
+10.1.1.2        surface-rf mooring   # surface node's ppp interface address
+
+$surfaceAddr   $surfaceName    # surface node's ethernet address (static)
+
+# Subnode names have sidearm OUI appended                                                                               
+EOF5
+
+# Append all possible static address/names
+let i=1;
+while [ $i -le 50 ]; do
+  let subAddr=$i
+  addr=$ethernetAddrPrefix$subAddr
+  let id=$subAddr+400
+  echo "$addr     node$id  node$subAddr"    >> $networkFile     
+  let i=i+1
+done
+
+echo "Installed static IP configuration file"
+echo "(Use ifswitch-to-dhcp if you wish to use DHCP IP allocation)"
+
+if [ "$nodeType" == $subnodeType ]; then
+  # Create routing
+  routeScript=$root/etc/init.d/binRouting.sh
+  echo "Setting up routing script $routeScript"
+cat > $routeScript <<EOF6
+#!/bin/bash
+# Add route to surface-shore ppp network
+route add -net 10.1.1.0 netmask 255.255.255.0 gw surface
+EOF6
+  chmod a+x $routeScript
+  # Link for boot
+  link=$root/etc/rc2.d/S55route
+  rm $link >& /dev/null
+  ln -s $routeScript $link
+
+  # Enable power to RF port for P2 ADC
+  echo '# Enable power for benthic ADC, on RFIO channel 1' >> $rcLocal
+  echo '/etc/siam/rfpower.ops 1 on' >> $rcLocal
+fi
+
+echo "Setting privileges..."
+/root/setprivs.sh
+
+# Ensure read/write permission on /dev/tty, for 'ssh'
+chmod a+w /dev/tty
+chmod a+r /dev/tty
+
+# Ensure read/write permission on /dev/ttySA2, for Medusa service
+chmod a+r /dev/ttySA2
+chmod a+w /dev/ttySA2
+
+# Ensure read/write permission on /dev/ttySX*, for instrument services
+chmod a+w /dev/ttySX*
+chmod a+r /dev/ttySX*
+
+# Create codebase directory if it doesn't exist
+if [ ! -e /mnt/hda/codebase ]; then
+  echo Creating codebase directory
+  mkdir $root/mnt/hda/codebase
+  chmod a+w $root/mnt/hda/codebase
+  chmod a+r $root/mnt/hda/codebase
+fi
+
+echo
+echo "*** NOTE ***"
+echo System must be rebooted in order for changes to take effect.
+
+
+

@@ -1,0 +1,6 @@
+
+# Disable ethernet, set hostname
+# Note: used only if ethernet is not enabled
+ifdown eth0
+hostname <PRIMARY_PPP_HOST>
+rmmod cs8900

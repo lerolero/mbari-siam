@@ -1,0 +1,52 @@
+#!/bin/csh
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Print all CVS changes made since the specified date
+
+if ($#argv != 1) then
+  echo "Usage: $0 <date>"
+  echo "Prints out change-log messages entered since specified date,"
+  echo "where date has format 'mm/dd/yyyy hh:mm:ss'" 
+  echo "NOTE: 'date' must be enclosed in single quotes."
+  exit 1
+endif
+
+
+set awkfile=/tmp/tmp.awk
+cat > $awkfile <<'EOF'
+/Working file/ {
+  fileName=$3;
+}
+
+/---------/ {
+  # There are revisions
+  printLine = 1;
+  printf "%s\n", fileName;
+  next;
+}
+
+/========/ {
+  # End of revision description; stop printing
+  if (printLine) {
+    print "------------------------------";
+    printLine = 0;
+  }
+}
+
+{
+  if (printLine) {
+    print;
+  }
+}
+
+
+'EOF'
+
+cd $SIAM_HOME
+echo argv1 = $argv[1]
+set date=$argv[1]:q'<'
+cvs log -d$date:q | awk -f $awkfile
+
+

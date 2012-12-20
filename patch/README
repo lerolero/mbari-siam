@@ -1,0 +1,9 @@
+
+
+Place contents.tar.gz and install-patch in /
+and run install-patch as root.
+
+Known bugs:
+does not correctly set permissions on installed files
+tar seems to ignore all instructions to preserve permissions
+or force permissions and ownership on extracted files

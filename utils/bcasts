@@ -1,0 +1,12 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# bcasts - broadcast test server
+# Listens for UDP broadcast packets on a specified host address and port.
+# When a packet is received, it echoes it backe to a waiting bcast client
+# (see bcastc)
+# Use 'bcasts --help' for options
+
+$JAVA -cp $SIAM_CLASSPATH org.mbari.siam.tests.bcast.bcastsvr $*

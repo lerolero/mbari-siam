@@ -1,0 +1,5 @@
+# Options for ppp
+-detach
+defaultroute
+lock
+115200

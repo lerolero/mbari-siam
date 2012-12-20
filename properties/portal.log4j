@@ -1,0 +1,30 @@
+# $Id: portal.log4j,v 1.1 2008/11/04 22:12:17 bobh Exp $
+
+# For the general syntax of property based configuration files see the
+# documenation of org.apache.log4j.PropertyConfigurator. See also
+# http://www.vipan.com/htdocs/log4jhelp.html
+
+# set root logger level and enable appenders
+log4j.rootCategory=DEBUG,profile,stdout
+
+# Set logging level for specific packages 
+#log4j.logger.moos.operations=INFO,portal
+#log4j.logger.moos.utils=DEBUG,profile
+
+# CONSOLE APPENDER (stdout) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+#log4j.appender.stdout.layout.ConversionPattern=%d{ISO8601} [%t] %-5p %c %x - %m%n
+log4j.appender.stdout.layout.ConversionPattern=%r %-5p %x %c{1} [%t]: %m%n
+
+# FILE APPENDER ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+log4j.appender.portal=org.apache.log4j.FileAppender
+log4j.appender.portal.File=${siam.portal.log}
+log4j.appender.portal.layout=org.apache.log4j.PatternLayout
+log4j.appender.portal.layout.ConversionPattern=%r %-5p %x %c{1} [%t]: %m%n
+
+# PROFILE APPENDER ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+log4j.appender.profile=org.apache.log4j.FileAppender
+log4j.appender.profile.File=${siam.profile.log}
+log4j.appender.profile.layout=org.apache.log4j.PatternLayout
+log4j.appender.profile.layout.ConversionPattern= \# %x %c{1}: %m%n

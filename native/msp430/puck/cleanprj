@@ -1,0 +1,30 @@
+#!/bin/bash
+
+#clean up the puck project dir by deleting files genterated 
+#during puck build process        
+        
+rm -f *.lst
+rm -f *.map
+rm -f *.obj
+rm -f *.asr
+rm -f *.tmp
+rm -f *.qer
+rm -f *.trc
+rm -f *.log
+rm -f *.qtx
+rm -f *.qin
+rm -f *.pp
+
+rm -f actions.asm
+rm -f buffers.asm
+rm -f commands.asm
+rm -f flash_mem.asm
+rm -f main.asm
+rm -f parser.asm
+rm -f serial.asm
+rm -f spi.asm
+rm -f timer.asm
+rm -f version.asm
+
+
+rm -f rcxlink.rcx

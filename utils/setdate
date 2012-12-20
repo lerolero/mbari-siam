@@ -1,0 +1,20 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+#
+# Script to do an rdate to shore portal
+#
+#
+stty -F /dev/ttySX12 19200
+/mnt/hda/siam/utils/rfpower on
+sleep 5
+
+/usr/sbin/pppd nodeflate nobsdcomp novj novjccomp -detach noauth lock mooring12:shore /dev/ttySX12 19200 &
+sleep 5
+
+/usr/local/bin/rdate shore
+/usr/bin/killall pppd
+sleep 1
+

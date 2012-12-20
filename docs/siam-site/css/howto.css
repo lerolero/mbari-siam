@@ -1,0 +1,161 @@
+body{
+	font-size: 100%;
+	font-family: Arial, Helvetica, sans-serif;
+}
+h1{font-size: 1.65em;color: #00275E;}
+h2{font-size: 1.25em;color: #333333;}
+p{font-size: 1.0em;}
+pre{white-space: pre-line;}
+.nameHeader{
+position: relative;
+width: 100%;
+left: 0px;
+margin-top: 1px;
+margin-bottom: 0px;
+margin-left: 0px;
+margin-right: 2px;
+background: #6D98AB;
+min-height: 100px;
+max-height: 100px;
+font-family: Arial, Helvetica, sans-serif; 
+text-align: left;
+padding: 8px;
+}
+.nameText{
+position: relative;
+width: 95%;
+left: 50px;
+font-family: Arial, Helvetica, sans-serif; 
+color: #00275E;
+text-align: left;
+font-style: italic;
+}
+.synopsisHeader{
+position: relative;
+width: 100%;
+left: 0px;
+margin-top: 1px;
+margin-bottom: 0px;
+margin-left: 0px;
+margin-right: 2px;
+background: #AEBD63;
+min-height: 100px;
+max-height: 200px;
+font-family: Arial, Helvetica, sans-serif; 
+text-align: left;
+padding: 8px;
+}
+
+.synopsisText{
+position: relative;
+width: 95%;
+top: 0;
+left: 50px;
+font-family: Arial, Helvetica, sans-serif; 
+color: #00275E;
+text-align: left;
+font-style: italic;
+}
+.sectionHeader{
+position: relative;
+width: 100%;
+left: 0px;
+margin-top: 1px;
+margin-bottom: 0px;
+margin-left: 0px;
+margin-right: 2px;
+background: #A8B1B8;
+font-family: Arial, Helvetica, sans-serif; 
+text-align: left;
+padding: 8px;
+}
+.sectionText{
+position: relative;
+width: 95%;
+left: 50px;
+font-family: Arial, Helvetica, sans-serif; 
+color: black;
+text-align: left;
+font-style: normal;
+}
+
+.descriptionHeader{
+position: relative;
+width: 100%;
+left: 0px;
+margin-top: 1px;
+margin-bottom: 0px;
+margin-left: 0px;
+margin-right: 2px;
+background: #A8B1B8;
+font-family: Arial, Helvetica, sans-serif; 
+text-align: left;
+padding: 8px;
+}
+
+.descriptionText{
+position: relative;
+width: 95%;
+left: 50px;
+font-family: Arial, Helvetica, sans-serif; 
+color: black;
+text-align: left;
+font-style: normal;
+}
+
+.environmentHeader{
+position: relative;
+width: 100%;
+left: 0px;
+margin-top: 1px;
+margin-bottom: 0px;
+margin-left: 0px;
+margin-right: 2px;
+background: #A8B1B8;
+font-family: Arial, Helvetica, sans-serif; 
+text-align: left;
+padding: 8px;
+}
+
+.environmentText{
+position: relative;
+width: 95%;
+left: 50px;
+font-family: Arial, Helvetica, sans-serif; 
+color: black;
+text-align: left;
+font-style: italic;
+}
+.seeAlsoHeader{
+position: relative;
+width: 100%;
+left: 0px;
+margin-top: 1px;
+margin-bottom: 0px;
+margin-left: 0px;
+margin-right: 2px;
+background: #A8B1B8;
+font-family: Arial, Helvetica, sans-serif; 
+text-align: left;
+padding: 8px;
+}
+
+.seeAlsoText{
+position: relative;
+width: 95%;
+left: 50px;
+font-family: Arial, Helvetica, sans-serif; 
+color: black;
+text-align: left;
+font-style: italic;
+}
+
+/* override table background color */
+table.altTable
+{
+background-color: #EEEEEE;
+}
+table.altTable ul 
+{
+list-style-type: none;
+}

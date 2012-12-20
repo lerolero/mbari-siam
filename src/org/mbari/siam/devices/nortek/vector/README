@@ -1,0 +1,18 @@
+Following the merge of siam2 RBNB branch with the siam2 trunk, we've problems with the SIAM Vector service.
+The failure mode of the Vector service was as follows:
+
+1. Service appears to initialize properly; state goes from INIT to OK prior to first sample
+
+2. Service unable to acquire any samples. Log4j contains many messages like the following:
+33441 ERROR  StreamingInstrumentService [Thread-14]: read: timeout:port OK
+Service subsequently goes to ERROR state.
+
+Bob H. noted that  changes were made to Aquadopp and DataStructure services back in November-December in support of MUCE Aquadopp deployment, and points out that Vector depends on these components. Thus we theorized that those changes are causing problems in the Vector service. To test that theory, we replaced the nortek classes (from the siam2 trunk) with classes from the rbnb branch (which originated in July of last year in support of FOCE and DataTurbine). The Vector service generated from these branch classes appears to work, at least when running SIAM on my Mac laptop 
+
+Therefore I've done the following:
+I've created a new nortek sub-package called "vector" (org.mbari.siam.devices.nortek.vector to be exact). That package currently contains all of the classes from the rbnb branch - including Aquadopp. The Makefile.2009FOCE file now builds the Vector service using the classes in the new vector package. These changes have been checked into the siam2 trunk.
+
+At some point we should determine what broke the vector service, and eliminate the redundant classes in the vector package. In the meantime I propose we use the new vector package as is, unless we find further problems.
+
+T.O'R.
+4/2/2010

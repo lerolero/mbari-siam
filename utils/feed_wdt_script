@@ -1,0 +1,39 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# MSE maintenance 01/03/2007
+# feed WDTs
+
+export LOG4J_THRESHOLD=INFO
+
+SURFACE=surface
+
+NODE=$SURFACE
+cpuAwake 900 $NODE
+listPorts $NODE -stats
+
+NODE=node411
+# should already be awake
+wakeup $SURFACE $NODE
+renewWDT $NODE
+listPorts $NODE -stats
+
+NODE=node401
+wakeup $SURFACE $NODE
+renewWDT $NODE
+listPorts $NODE -stats
+
+NODE=node421
+wakeup $SURFACE $NODE
+renewWDT $NODE
+listPorts $NODE -stats
+
+NODE=node410
+wakeup $SURFACE $NODE
+renewWDT $NODE
+listPorts $NODE -stats
+
+
+# AUTOSCRIPT EOF

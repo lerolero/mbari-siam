@@ -1,0 +1,14 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+#
+if [ ! -n "$1" ]
+then
+  echo "usage: `basename $0` comm_port "
+  exit 1
+fi  
+
+$JAVA -cp $SIAM_CLASSPATH org.mbari.siam.utils.RXTXTest $*
+

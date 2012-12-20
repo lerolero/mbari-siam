@@ -1,0 +1,32 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+#
+if [ ! -n "$1" ]
+then
+  echo "usage: `basename $0` nodeURL portName"
+  exit 1
+fi  
+
+
+# suspend the driver
+echo "Suspending service on port $2"
+$SIAM_HOME/utils/suspendPort $*
+
+# wait a few seconds for suspend to complete
+echo "waiting for suspend to complete"
+sleep 3
+
+#start serial console
+echo "(Note: ^a for terminal options, ^x to exit)"
+$SIAM_BIN/rconsole `$JAVA -cp $SIAM_CLASSPATH \
+                   -Djava.security.policy=$SIAM_HOME/properties/policy \
+                   -Dlog4j.threshold=OFF \
+                   org.mbari.siam.operations.utils.GetRemoteSerialPortParams $1 $2`
+
+# resume the driver
+echo "Resuming service on port $2"
+$SIAM_HOME/utils/resumePort $*
+
+

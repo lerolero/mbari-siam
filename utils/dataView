@@ -1,0 +1,68 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Script that automates processing of node Log data 
+# in order to view in Microsoft Excel.
+# This script is useful for determining telemetry size
+# from all instruments and nodes on the MTM system.
+#
+# Author:  Karen A. Salamy
+# 2006, MBARI
+# 
+
+#Clear the screen.
+clear
+# Turn off Log4J comments
+export LOG4J_THRESHOLD=FATAL
+
+# Set current directory to be the one logView runs in.
+currentDir=$PWD
+echo " " 
+echo "Run Directory set to: $currentDir"
+echo " "
+
+# Find the specific isiDeviceIDs in current directory.
+ls > tmp1
+cat tmp1 | grep _0.dat > ids
+
+#Count how many devices to process.
+numLogs=`grep -c _0.dat ids`
+
+if [ -f ids ] && [ $numLogs -gt 0 ]; then
+# Display the files located in this directory.
+echo "Found the following $numLogs DeviceID(s) in $currentDir:"
+sed -e 's/_0.dat/ /' ids
+echo " " 
+else
+echo " "
+echo -e "\033[1mSorry - No isiDeviceIDs located in $currentDir!!\033[0m"
+echo " "
+echo -e "Please verify that *.dat files exist in the directory and try again."
+echo " "
+rm tmp* ids
+exit
+fi
+
+# Configure deviceIDs file to sequentially run logView on all nodeIDs.
+sed -e 's/_0.dat/ ./' ids > tmp2
+sed -e 's/^/logView -utc -statsOnly /' tmp2 > deviceIDs
+
+# Make deviceIDs script executable.
+chmod ugo+x deviceIDs
+
+echo " "
+echo -e "Processing DeviceIDs . . . . "
+echo " " 
+./deviceIDs > newDataLog
+echo -e "Done!"
+echo " "
+
+dateInfo=$(date +%m-%d-%y_%k%M%S)
+pstat newDataLog > $dateInfo.log
+echo -e "Wrote results to filename:  \033[1m$dateInfo.log.\033[0m"
+
+#Remove unnecessary files from directory.
+rm newDataLog deviceIDs tmp* ids
+echo " "

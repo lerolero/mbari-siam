@@ -1,0 +1,93 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Tom O'Reilly">
+   <meta name="GENERATOR" content="Mozilla/4.79 [en] (Windows NT 5.0; U) [Netscape]">
+   <title>Instrument Properties</title>
+</head>
+<body>
+<b>NAME</b>
+<blockquote>Instrument Service Properties</blockquote>
+<b>DESCRIPTION</b><blockquote>
+Configuration and state of a SIAM instrument service is defined by the 
+service's <i>properties</i>. Every instrument service has a set of "generic" 
+properties, as listed below. In addition, specific services can define 
+additional properties. All service properties and their values can be 
+displayed with the <a href="portProperties.html"<i>portProperties</i></a> 
+command 
+
+<p>
+The following generic properties are "configurable", and their value may be 
+specified when the service jarfile is built, or with the 
+<a href="setProperty.html"<i>setProperty</i></a> utility
+while the service is running (except for for the sampleSchedule property, 
+which must be set with the <a href="scheduler.html"<i>setSchedule</i></a> 
+utility).
+<pre>
+
+isiID               ISI-ID of device
+serviceName         Name of service
+UUID                Universal unique identifier of device
+
+nominalCurrentMa    Expected nominal instrument current draw
+peakCurrentMa       Expected maximum instrument current draw
+currentLimitMa      DPA overcurrent trip if this limit exceeded
+powerOnDelaySec     Seconds to pause before first power-on
+startDelayMsec      Pause (msec) after each power-on
+powerPolicy         Set to ALWAYS, NEVER, or SAMPLING
+commPowerPolicy     Set to ALWAYS, NEVER, or SAMPLING
+
+timeSynch           If true, try to synchronize instrument clock with 
+                    node clock when service starts
+
+sampleSchedule      Sample acquisition schedule
+maxSampleTries      Number of times to attempt per scheduled sample acquisition
+sampleTimeoutMsec   Timeout (msec) on serial read during acquisition
+
+summaryTriggerCount Generate summary packet after this many raw samples are
+                    acquired
+
+maxSummarySamples   Generate summary packet and clear statistics after this many raw samples
+                    are acquired
+
+defaultSkipInterval Number of "raw" SensorDataPackets to skip when 
+                    telemetering data; set to zero to retrieve all raw
+                    packets; set to -1 to retrieve no raw packets
+                    (e.g. during summarization)
+
+
+packetSetSize       Number of SIAM packets to retrieve per "set" by portal
+
+errCacheLimit       Generate MessagePacket after this many successive errors
+
+instrumentName      Unused
+
+</pre>
+(Summarization and telemetry subsampling properties are described 
+<a href="summariesAndFiltering.html"<i>here</i></a>).
+<p>
+The following are generic "state properties", which can be displayed but 
+cannot be modified by the user:
+<pre>
+className           Name of service class
+parentID=1446       ISI-ID of host platform
+extendedVersionK    Unused
+frameworkVersion    SIAM version of service base class
+
+serviceStatus=0     Current status of service: 0=OK, 1=ERROR, 2=INITIAL, 
+                    3=SHUTDOWN, 4=SUSPEND, 5=SAMPLING, 6=SLEEPING, 7=SAFE
+</pre>
+<p>
+Note that the current configurable property values of a running service can 
+be "cached" such that the service will assume these values the next time 
+it is started on the current port; see <a href="cachePort.html">cachePort</a>.
+
+</blockquote>
+<p><br><b>SEE ALSO</b>
+<blockquote>&nbsp;<a href="setProperty.html">setProperty</a> ,&nbsp; <a href="cachePort.html">cachePort</a>
+,&nbsp; <a href="portProperties.html">portProperties</a>
+<br>&nbsp;<a href="summariesAndFiltering.html">Instrument Data Summaries and Telemetry Subsampling</blockquote>
+</blockquote>
+</body>
+</html>

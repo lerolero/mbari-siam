@@ -1,0 +1,396 @@
+#!/bin/bash
+#
+# copyright 2006 MBARI
+# author: k. headley
+#
+# manageLog
+#
+# Maintains a specified file size to some maximum value
+# and keeps the most recent <maxBytes> bytes in a backup
+# file that will persist across system resets
+#
+# This script periodically checks the size of a specified
+# target file at a specified interval. If the file size has 
+# changed, the latest data in the target file is appended
+# to a backup file. If the target file reaches the specified
+# maximum size, it is truncated. If the backup file reaches
+# the maximum size, the oldest data is removed to make room
+# for the latest data; i.e., the backup file always contains the
+# latest <maxBytes> bytes from the target file. 
+# If the size of the target file has not changed in a given 
+# interval, no action is taken.
+#
+# Maintains an activity log in /var/log/manageLog.<targetFile>.out
+#
+
+##########################################
+# Initialize global vars, config defaults
+##########################################
+
+BACKUP_PATH=${MANAGELOG_HOME:-"/mnt/hda/logs"}
+FS_SED="/etc/siam/fs.sed"
+
+BAK_SUFFIX=".bak"
+DEBUG=0
+maxBytes=500000
+updateSec=60
+ifsize=0
+ofsize=0
+oldifsize=0
+fsRet=0
+startTime=`date`
+nCycles=0
+nFills=0
+bs=1
+lastCheck=""
+
+##########################
+# Function definitions
+##########################
+
+#
+# print use message
+#
+printUsage() {
+  echo
+  echo "usage: `/usr/bin/basename $0` targetFile <maxBytes> <updateSec>"
+  echo
+  echo "Description:"
+  echo "  Checks <targetFile> every <updateSec> seconds and"
+  echo "  incrementally backs it up."
+  echo
+  echo "  Maintains the most recent <maxBytes> bytes of <targetFile> in "
+  echo "  $BACKUP_PATH/<targetFile>$BAK_SUFFIX"
+  echo
+  echo "Parameters:"
+  echo "  targetFile: file to manage"
+  echo "    maxBytes: back up logfile if its size exceeds maxBytes bytes [$maxBytes]"
+  echo "   updateSec: check logfile's size every updateSec seconds [$updateSec]"
+  echo
+  echo "Maintains a status log in /var/log/manageLog.<targetFile>.out"
+}
+
+##################################
+# get the value of specified file
+# sets global variable fsRet
+##################################
+
+getFilesize(){
+
+    if [ -f $1 ]
+    then
+	foo=`ls -l $1 | sed -f $FS_SED`
+	let fsRet="$foo"
+    else
+	let fsRet=0
+    fi
+}
+
+#
+# Set file sizes of input and output files
+# Sets values ifsize, ofsize
+#
+getFilesizes(){
+    ifile=$1
+    ofile=$2
+
+    # check input file
+    if [ -f $ifile ]
+    then
+	getFilesize $ifile
+	let ifsize=$fsRet
+    else
+	>ifile
+	let ifsize=0
+	let oldifsize=0
+    fi
+    
+    # check output file
+    if [ -f $ofile ]
+    then
+	getFilesize $ofile
+	let ofsize=$fsRet
+    else
+	>$ofile
+	let ofsize=0
+    fi
+
+}
+
+#####################################
+# Backup source file to destination
+#####################################
+
+backupFile(){
+
+    ifile=$1
+    ofile=$2
+    let maxBytes=$3
+
+    # check args
+
+    if [ ! -e $ifile ] || [ $# -lt 3 ]
+    then
+      lastCheck="error: input file ($ifile) does not exist or too few arguments"
+      return -1
+    fi
+
+    # check maxBytes
+    if [ $maxBytes -le 0 ]
+    then
+	lastCheck="error: maxBytes <0"
+	return -1
+    fi
+    
+    # check file sizes
+    getFilesizes $ifile $ofile
+
+    #echo ifsize=$ifsize ofsize=$ofsize oldifsize=$oldifsize
+
+    if [ $ifsize -eq $oldifsize ]
+    then
+	# target file size hasn't changed; no action
+	if [ $DEBUG -ne 0 ]
+	then
+	    echo "manageLog: file size unchanged"
+	fi
+	lastCheck="input file size unchanged"
+	return -1
+    fi
+
+    # target file size has changed
+    # update backup and trim target
+    # as needed
+    if [ $ifsize -ge $maxBytes ]
+    then
+	# Input file is larger than maxBytes:
+        # truncate backup file
+	>$ofile
+
+	# backup up to maxBytes of the target file
+	let skip="$ifsize-$maxBytes"
+	if [ $DEBUG -ne 0 ]
+	then
+	    echo "case ifsize ge maxBytes (if=$ifile of=$ofile ifsize=$ifsize maxBytes=$maxBytes skip=$skip)"
+	    dd bs=$bs if=$ifile of=$ofile skip=$skip
+	else
+	    dd bs=$bs if=$ifile of=$ofile skip=$skip 1>& /dev/null
+	fi
+	lastCheck="case ifsize ge maxBytes (if=$ifile of=$ofile ifsize=$ifsize maxBytes=$maxBytes skip=$skip)"
+
+	# truncate the target file
+	# and reset size state variable
+	>$ifile
+	let oldifsize=0
+	let nFills="$nFills+1"
+    else
+	# Input file is smaller than maxBytes...
+	if [ $ofsize -ge $maxBytes ]
+	then
+	    # Backup file is larger than maxBytes:
+	    # rename backup file instead 
+	    # of doing expensive transfer
+	    mv $ofile $ofile.tmp
+
+	    # copy latest part of backup file
+	    # less the size of the newest part
+	    # of the target file
+	    getFilesize $ifile
+	    let ifsz=$fsRet
+	    let skip="($ofsize-$maxBytes)+($ifsz-$oldifsize)"
+	    if [ $DEBUG -ne 0 ]
+	    then
+		echo "case ofsize ge maxBytes (if=$ofile.tmp of=$ofile skip=$skip)"
+		dd if=$ofile.tmp of=$ofile bs=$bs skip=$skip
+	    else
+		dd if=$ofile.tmp of=$ofile bs=$bs skip=$skip 1>& /dev/null
+	    fi
+	    lastCheck="case ofsize ge maxBytes (1)if=$ofile.tmp of=$ofile ifsize=$ifsize ofsize=$ofsize oldifsize=$oldifsize maxBytes=$maxBytes skip=$skip)"
+
+	    # find newest part of target file
+	    getFilesize $ofile
+	    let seek=$fsRet
+	    let skip=$oldifsize
+	    if [ $DEBUG -ne 0 ]
+	    then
+		echo "case ofsize ge maxBytes (if=$ifile of=$ofile  skip=$oldifsize seek=$seek )"
+		dd if=$ifile of=$ofile bs=$bs skip=$skip seek=$seek
+	    else
+		dd if=$ifile of=$ofile bs=$bs skip=$skip seek=$seek  1>& /dev/null	    
+	    fi
+	    lastCheck="$lastCheck (2)if=$ifile of=$ofile  skip=$oldifsize seek=$seek)"
+	    
+	    # clear the tmp file
+	    >$ofile.tmp
+	else
+	    # Backup file is smaller than maxBytes:
+	    # trim enough from backup file to fit
+	    # newest part of target file
+	    let skip=$oldifsize
+	    let seek=$ofsize
+	    if [ $DEBUG -ne 0 ]
+	    then
+		echo "case ofsize lt maxBytes (if=$ifile of=$ofile skip=$skip seek=$seek)"
+		dd if=$ifile of=$ofile bs=$bs skip=$skip seek=$ofsize
+	    else
+		dd if=$ifile of=$ofile bs=$bs skip=$skip seek=$ofsize  1>& /dev/null	    
+	    fi
+	    lastCheck="case ofsize lt maxBytes (if=$ifile of=$ofile skip=$skip seek=$seek)"
+	fi
+
+	# update the managed file size
+	# state variable
+	let oldifsize=$ifsize
+    fi
+
+    # write changes to disk
+    sync
+    
+}
+
+
+###########################
+# check command line args
+###########################
+
+checkArgs(){
+
+    if [ $DEBUG -ne 0 ]
+    then
+	echo checkArgs $*
+    fi
+
+    if [ ! -n "$1" ]
+    then
+	printUsage
+	exit 1
+    fi
+
+    # Move logfile when size exceeds maxBytes bytes
+    if [ $# -gt 1 ]
+    then
+	maxBytes=$2
+	if [ $maxBytes -le 0 ]
+	then
+	    echo
+	    echo "Invalid maxBytes; must be > 0"
+	    echo
+	    printUsage
+	    exit 1
+	fi
+    fi
+
+    # Sleep this many seconds between checking the file size
+    if [ $# -gt 2 ]
+    then
+	updateSec=$3
+	if [ $updateSec -le 0 ]
+	then
+	    echo
+	    echo "Invalid updateSec; must be > 0"
+	    echo
+	    printUsage
+	    exit 1
+	fi
+    fi
+
+    # This is the logfile to check
+    logfile=$1
+
+    # Create the log file backup directory
+    if [ ! -e "$BACKUP_PATH" ]; then
+	mkdir $BACKUP_PATH
+	if [ $? -ne 0 ]
+	then
+	    echo
+	    echo "`/usr/bin/basename $0` Error: unable to create backup directory ($BACKUP_PATH)"
+	    echo
+	    exit 1
+	fi
+    fi
+
+    # Check for fs.sed
+    if [ ! -e "$FS_SED" ]; then
+	echo
+	echo "`/usr/bin/basename $0` Error: unable to find fs.sed ($FS_SED)"
+	echo
+	exit 1
+    fi
+
+}
+##################################
+# Update the manageLog status log
+##################################
+updateLog(){
+    echo "# `/usr/bin/basename $0` started on $startTime">$messageFile
+    echo "# logfile=$logfile ">>$messageFile
+    echo "# backupFile=$backupLogfile">>$messageFile
+    echo "# maxBytes=$maxBytes">>$messageFile
+    echo "# updateSec=$updateSec">>$messageFile
+    echo "`date`: file ($ifile) checked $nCycles times, filled $nFills times">>$messageFile
+    echo "last operation:">>$messageFile
+    echo "$lastCheck">>$messageFile
+}
+
+#######################################
+# Make a test log file
+# $1 file name $2 size
+# (test utility; not used at runtime)
+#######################################
+makeTestFile(){
+let cp=0
+let n=0
+let fs=0
+>$1
+echo -n a>$1
+while [ $fs -lt $2 ]
+do
+  cat $1>$1.bak
+  cat $1.bak>>$1
+  getFilesize $1
+  let fs="$fsRet"
+  let n="$n+1"
+done
+}
+
+
+############
+# Main loop
+############
+main(){
+    if [ $DEBUG -ne 0 ]
+    then
+	echo main $*
+    fi
+
+    # check command line args
+    checkArgs $*
+
+    # This is where to move the log
+    # (may duplicate <current target filesize> bytes of backup file initially)
+    backupLogfile=$BACKUP_PATH/`/usr/bin/basename $logfile`$BAK_SUFFIX
+
+
+    # Keep track of how many times file has been moved
+    nMoves=0
+
+    # initialize file sizes
+    getFilesizes $logfile $backupLogfile
+    getFilesize $logfile
+    let oldifsize=$fsRet
+    messageFile=/var/log/manageLog.`/usr/bin/basename $logfile`.out
+    while [ 1 ]
+    do
+	backupFile $logfile $backupLogfile $maxBytes
+	let nCycles="$nCycles+1"
+	updateLog
+	/bin/sleep $updateSec
+    done
+}
+
+######################
+# Script entry point
+######################
+
+main $*
+

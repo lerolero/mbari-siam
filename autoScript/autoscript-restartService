@@ -1,0 +1,41 @@
+#!/bin/bash
+
+# Shutdown and restart an instrument service
+
+#########################
+# Script configuration
+#########################
+export LOG4J_THRESHOLD=INFO
+
+# node host definitions
+SURFACE=surface
+SECONDARY=node21
+BIN=node2
+
+# define node and port
+NODE=$SECONDARY
+PORT=/dev/ttySX3
+
+#########################
+# Main script entry point
+#########################
+
+# keep awake 
+cpuAwake 600 $NODE
+
+# shutdown service
+shutdownPort $NODE $PORT
+
+# wait
+sleep 10
+
+# restart service
+scanPort $NODE $PORT
+
+# show port properties
+portProperties $NODE $PORT
+listPorts $NODE -stats
+samplePort $NODE $PORT
+getLastSample $NODE $PORT
+
+# AUTOSCRIPT EOF

@@ -1,0 +1,66 @@
+This document describes how to set up the shorthaul modem to run
+periodically to allow a user to login to Linux.
+
+Contents
+There is one new file (/etc/auxTelem.sh), two modifications of 
+standard Linux scripts (/etc/inittab and /etc/profile), two
+modifications of SIAM utility scripts (rfpower and rfpower.ops),
+and one new SIAM utility (rftimeout.sh).
+
+Directions
+1) Install auxTelem.sh, inittab, and profile into /etc
+2) Install rfpower, rfpower.ops, and rftimeout.sh into $SIAM_HOME/utils
+
+That's it!  The following describes what this does in more
+detail, and how to customize it.
+
+
+/etc/auxTelem.sh
+The main script is auxTelem.sh.  This script merely turns on
+RF power, calls getty (which allows the user to log in), turns
+off RF power, and goes to sleep.
+
+This script is normally called from inittab with the respawn option,
+which means it will continuously rerun the script when it's done.
+With this assumption, we can see how it works, step by step.
+1) Turns on RF power.
+2) Delay a few seconds.  This allows the radios to establish their
+   data link before getty tries to send the login prompt.
+3) Call getty with command-line arguments and timeout.  This prints
+   the "login:" prompt.  At this point, either
+   a) The user logs in.  This will run a user shell, which has the
+      TMOUT variable set due to /etc/profile.  As long as the user is
+      actively typing, the shell continues; the auxTelem.sh script is
+      blocked during this time.  If the user goes inactive, the shell
+      times out, returning to the auxTelem.sh script.  OR
+   b) The user doesn't log in; getty times out, and the script continues.
+4) Delay a few seconds to allow the final radio output to get to the
+   other side
+5) Turn off RF power.
+6) Sleep.  This sleep gives us the radio "off" time.  When the sleep is
+   finished, the script finishes; and then inittab will rerun it from
+   the beginning.
+
+The script has a number of command-line options that control the timing,
+serial port, baud, and power bit used.  They're documented in the comments
+at the beginning of auxTelem.sh
+
+
+/etc/inittab
+The inittab in this directory is the standard inittab used for SIAM,
+with the addition of the last line, which calls auxTelem.sh.  This line
+should be customized for your parameters.  Note the redirection of
+stdout and stderr.  Without this, getty sends error messages to the
+console each time it times out.
+
+/etc/profile
+Standard Linux profile, with the addition of two lines.  The TMOUT
+variable is set, which causes EVERYONE to have a timeout on their shell.
+If you don't want a timeout (e.g. when logged into the console or ssh'd in),
+execute 'unset TMOUT'.
+
+Also, it defines the alias 'rftimeout', which runs the rftimeout.sh
+script.  This provides a handy mechanism to the user to redefine the
+TMOUT variable.  Usage:  'rftimeout [seconds]'.  Alternatively, you
+can set the variable with 'export TMOUT=[seconds]', but 'rftimeout' is
+intended to be more user friendly for the non-Unix-geeks.

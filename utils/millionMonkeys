@@ -1,0 +1,26 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+#
+if [ "$#" -lt "2" ]
+then
+echo ""
+echo 'usage: millionMonkeys <number of Monkeys> <nodeURL>'
+echo So...how many monkies do you think you can handle?
+echo ""
+exit 1
+fi
+
+let monkies="$1"
+
+echo which one of you ordered $monkies monkies?
+
+while [ "$monkies" -gt "0" ]
+do
+echo turning another monkey loose...
+rmiHammer $2 &
+let monkies="$monkies-1"
+done
+

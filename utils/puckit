@@ -1,0 +1,66 @@
+#!/bin/tcsh
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Bundle specified class and properties files into a jar to
+# be blasted into puck
+
+if ($#argv != 4) then
+  echo usage: $0 serviceClassname servicePropertiesFile  serviceXMLFile outputJarfile 
+  exit 1
+endif
+
+set className = $argv[1]
+set propertyFile = $argv[2]
+set serviceXMLFile = $argv[3]
+set jarFile = $argv[4]
+
+# Copy property file to working area
+cp $propertyFile `pwd`
+
+if (! -e $serviceXMLFile) then
+  echo ERROR: $serviceXMLFile not found
+  exit 1
+endif
+
+# Copy service XML file to working area
+echo "copy $serviceXMLFile to working area"
+cp $serviceXMLFile `pwd`/service.xml
+
+# Create service class file name by replacing '.' with '/' and appending
+# ".class" to class name
+set classFile = `echo $className |  awk '{gsub("\\.", "/"); printf "%s.class", $0}'`
+
+if (! -e $JAVA_DEV_ROOT/classes/$classFile) then
+  echo ERROR: $JAVA_DEV_ROOT/classes/$classFile not found
+  exit 1
+endif
+
+set classDir = $classFile:h
+
+echo classFile: $classFile
+echo classDir: $classDir
+
+# Create manifest file
+set manifestFile = manifest.$$
+echo "Port-Service-Class: $className" > $manifestFile
+
+# Create jar file
+jar cvfm $jarFile $manifestFile -C $JAVA_DEV_ROOT/classes $classDir
+
+# Get property file and add it to jar
+jar uvf $jarFile $propertyFile:t
+
+# Get service XML file and add it to jar
+echo "add service xml to $jarFile"
+jar uvf $jarFile service.xml
+
+# Remove temporary files
+rm $manifestFile
+echo "remove service xml"
+rm service.xml
+
+
+
+

@@ -1,0 +1,199 @@
+#!/bin/bash
+
+#########################################
+# Name: startBIN
+#
+# Summary: restore BIN power at boot
+#
+# Description:
+#
+# Author: k. headley
+#
+# Copyright MBARI
+#
+#########################################
+
+#########################################
+# Script configuration defaults
+# casual users should not need to change
+# anything below this section
+#########################################
+SWITCH_BIN_ON="ON"
+HOSTNODE="surface"
+START_DELAY_SEC=90
+let SERVICE_RETRIES=3
+let POWER_RETRIES=5
+POWER_WAIT_SEC=20
+SERVICE_WAIT_SEC=20
+SWITCHBIN="/mnt/hda/siam/utils/switchBIN400V"
+LISTPORTS="/mnt/hda/siam/utils/listPorts"
+
+#################################
+# Script variable initialization
+#################################
+VERBOSE="FALSE"
+DEBUG="FALSE"
+
+#################################
+# Function Definitions
+#################################
+
+#################################
+# name: printUsage
+# description: print use message
+# args: none
+#################################
+printUsage(){
+    echo
+    echo "  usage: `basename $0` [-Vhd][-D -p -P -s -S]"
+    echo "   -d           : debug (read but don't set BIN power)    [$DEBUG]"
+    echo "   -D <sec>     : start delay seconds                     [$START_DELAY_SEC]"
+    echo "   -H           : host node                               [$HOSTNODE]"
+    echo "   -h           : print this help message"
+    echo "   -p <retries> : power retries                           [$POWER_RETRIES]"
+    echo "   -s <retries> : service retries                         [$SERVICE_RETRIES]"
+    echo "   -P <sec>     : power wait seconds                      [$POWER_WAIT_SEC]"
+    echo "   -S <sec>     : service wait seconds                    [$SERVICE_WAIT_SEC]"
+    echo "   -V           : verbose output                          [$VERBOSE]"
+    echo ""
+    echo
+}
+
+########################################
+# name: vout
+# description: print verbose message to stderr
+# args:
+#     msg: message
+########################################
+vout(){
+    if [ "$VERBOSE" == "TRUE" ]
+    then
+	echo "$1" >&2
+    fi
+}
+
+########################################
+# name: exitError
+# description: print use message to stderr
+# args:
+#     msg:        error message
+#     returnCode: exit status to return
+########################################
+exitError(){
+    echo >&2
+    echo "$1" >&2
+    echo >&2
+    exit $2
+}
+
+##########################
+# Script main entry point
+##########################
+
+# Argument processing
+if [ "$1" == "--help" ];then
+    printUsage
+    exit 0
+fi
+
+while getopts dD:hH:s:p:V Option
+do
+    case $Option in
+	d ) SWITCH_BIN_ON=""
+ 	    DEBUG="TRUE"
+	;;
+	D ) START_DELAY_SEC="$OPTARG"
+	;;
+	H ) HOSTNODE="$OPTARG"
+	;;
+	p ) let "POWER_RETRIES=$OPTARG"
+	;;
+	s ) let "SERVICE_RETRIES=$OPTARG"
+	;;
+	V ) VERBOSE="TRUE"
+	;;
+	h ) printUsage
+	  exit 0
+	;;
+	*) exit 0 # getopts outputs error message
+	;;
+    esac
+done
+
+vout "DEBUG            = $DEBUG"
+vout "SWITCH_BIN_ON    = $SWITCH_BIN_ON"
+vout "HOSTNODE         = $HOSTNODE"
+vout "SERVICE_RETRIES  = $SERVICE_RETRIES"
+vout "POWER_RETRIES    = $POWER_RETRIES"
+vout "SERVICE_WAIT_SEC = $SERVICE_WAIT_SEC"
+vout "POWER_WAIT_SEC   = $POWER_WAIT_SEC"
+vout "START_DELAY_SEC  = $START_DELAY_SEC"
+
+# pick up SIAM environment
+vout "sourcing .bashrc"
+. /home/ops/.bashrc
+
+# wait before starting to
+# let services start
+if [ "$START_DELAY_SEC" -gt 0 ]
+then
+ vout "Waiting $START_DELAY_SEC sec for service startup..."
+ sleep $START_DELAY_SEC
+fi
+
+
+# Initialize service detect loop
+powerSvcRunning="FALSE"
+
+# Detect Power Can Service
+while [ "$SERVICE_RETRIES" -gt 0 ]
+do
+ # Get power can port in:
+ # /dev/ttySX0  1594    Surface power can   OK       
+ powerSvcPort=`$LISTPORTS $HOSTNODE |grep -i power`
+ powerSvcPort=${powerSvcPort:0:12}
+ vout "powerSvcPort=$powerSvcPort"
+
+ # Break if power service is found
+ if [ "$powerSvcPort" ] 
+ then
+  powerSvcRunning="TRUE"
+  break
+ fi
+ # Wait before retry
+ sleep $SERVICE_WAIT_SEC
+ let "SERVICE_RETRIES-=1"
+done
+
+vout "powerSvcRunning=$powerSvcRunning"
+
+if [ "$powerSvcRunning" == "TRUE" ]
+then
+ while [ "$POWER_RETRIES" -gt 0 ]
+ do
+ vout "setting HV Switch Status"
+ vout "command=$SWITCHBIN $HOSTNODE $powerSvcPort $SWITCH_BIN_ON"
+ $SWITCHBIN $HOSTNODE $powerSvcPort $SWITCH_BIN_ON
+ vout "reading HV switch status"
+ vout "command=$SWITCHBIN $HOSTNODE $powerSvcPort"
+ powerOnOK=`$SWITCHBIN $HOSTNODE $powerSvcPort|grep -i "ON"|grep "HV"`
+
+ if [ "$?" -eq 0 ]
+ then
+  vout "BIN Power ON [$powerOnOK]"
+  vout "done"
+  exit 0
+ fi
+ vout "powerOn returned [$powerOnOK]"
+ sleep $POWER_WAIT_SEC
+ let "POWER_RETRIES-=1"
+ done
+
+else
+echo "Power Service Not Found"
+fi
+
+vout "startBIN failed"
+vout "done"
+exit 1
+

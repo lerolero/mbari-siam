@@ -1,0 +1,44 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Run ntpdate
+#
+# Called on each download to 
+# synchronize node system time and RTC
+# with shore NTP server.
+
+# NTP server name
+timehost=shore
+
+# path to ntpdate command
+NTPDATE=/usr/sbin/ntpdate
+
+# ntpdate options
+# be careful with -d (debug): 
+# it doesn't actually change the time
+NTP_OPTIONS=" -b -t 4"
+
+if [ $# -gt 0 ] 
+then
+  timehost=$1
+fi
+
+# try three times to sync via NTP
+retries="1 2 3"
+
+for i in $retries
+do
+ #echo "retry=$i"
+ $NTPDATE $NTP_OPTIONS $timehost
+
+ if [ $? -eq 0 ]
+ then
+    # if ntpdate was successful
+    # then set system clock and exit
+    echo "setting system clock"
+    /root/ricohRTC -t
+    break
+ fi
+done

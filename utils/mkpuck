@@ -1,0 +1,33 @@
+#!/bin/csh
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Make a puck jar-file, using specified class, service name mnemonc, isiID...
+
+if ($#argv < 5) then
+  echo usage: $0 serviceClassname  mnemonic isiID outputJarfile serviceXMLFile <optional params>
+  exit 1
+endif
+echo there are $#argv args
+echo "isiID = $argv[3]" > service.properties
+echo "serviceName = $argv[2]" >> service.properties
+
+set noglob=true
+# add additional parameters
+@ i=6;
+@ last=$#argv
+@ last++
+while ($i<$last)
+    #echo adding extra arg $i $argv[$i]
+    echo $argv[$i] >> service.properties
+    @ i++;
+end
+
+puckit $argv[1] service.properties $argv[5] $argv[4] 
+if  ($status != 0) exit $status
+rm service.properties
+
+
+
+

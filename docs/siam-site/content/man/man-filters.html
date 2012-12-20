@@ -1,0 +1,231 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>filters Manual Page</title>
+		<link href="../../css/content.css" rel="stylesheet" type="text/css" />
+		<link href="../../css/manpage.css" rel="stylesheet" type="text/css" />
+		</head>
+	
+	<body>
+		
+		<div class="nameHeader">
+			<h1>Name</h1> 
+			<div class="nameText">
+				<h2>filters <!-- name text here --></h2>
+				</div>
+			</div>
+		
+		<div class="synopsisHeader">
+			<h1>Synopsis</h1>
+			<div class="synopsisText">
+				Utilities for managing instrument service &quot;telemetry filters&quot;.
+				</div>
+			</div>
+		
+		<div class="descriptionHeader">
+			<h1>Description</h1>
+			<div class="descriptionText">
+				<p>
+				<!-- description text here -->
+				The getfilter, setfilter, and clearfilter utilities are used to manage telemetry filters 
+				associated with an instrument service's data stream. 
+				</p><p>
+				The filters are decimation filters, which allow you to send every nth packet of the data stream.
+				They may be applied separately to different types of packets (data, metadata, message, summary) or to all packets in the data stream.
+				</p><p>				
+				Filters are used when a telemetry retriever such as portal or getPackets requests packets from an instrument service.
+				The service decimates (sub-samples) the number of packets returned, returning only every nth packet. 
+				</p><p>
+				The filters are expressed as a skip interval, i.e., the number of packets to skip. For example, a filter value of 3 would 
+				indicate that every 4th sample should be sent. 
+				</p><p>				
+				Note that the filters displayed by getfilter will be applied by the service sequentially. 
+				E.g. in the above below, &quot;filter 0&quot; passes all packets of all types, but &quot;filter 1&quot; will 
+				subsequently remove all sensor data and message packets.
+				</p>
+				<div class="emphasis">Note: there is currently no way to persist telemetry filter values across service restarts besides the defaultSkipInterval property.</div>
+
+				<h2>Filter Utilities</h2>	 
+				<p>There are a number of utilities for using telemetry filters:</p>
+				<ul>
+					<li>getfilter</li>
+					<li>setfilter</li>
+					<li>clearfilter</li>
+					</ul>
+				
+				<p>
+				The following table describes the utilities and their use. The options are described in greater detail in a separate table below.
+				</p>
+				<table class="altTable">
+					<tr> 
+						<th>Name</th>
+						<th>Use Syntax</th>
+						<th>Description</th>
+						</tr>
+					<tr>
+						<td>getfilter<a name="getfilter"></a></td>
+						<td><div class="commands">getfilter nodeURL deviceID</div></td>
+						<td>Returns a listing of filters set for the specified deviceID
+							</td>
+						</tr>
+					<tr class="alt">
+						<td>setfilter<a name="setfilter"></a></td>
+						<td><div class="commands">setfilter nodeURL -types &lt;types&gt; -skip &lt;interval&gt; deviceID</div></td>
+						<td>Set filter values for an instrument service</td>
+						</tr>
+					<tr>
+						<td>clearfilter<a name="clearfilter"></a></td>
+						<td><div class="commands">Remove filters from the specified instrument service</div></td>
+						<td>Remove all filters from an instrument service's data stream.</td>
+						</tr>
+					
+						<!--
+						 <tr> 
+                         <tr>
+						 <td></td>
+						 <td></td>
+						 <td>-</td>
+						 </tr>
+						 <tr class="alt">
+						 <td></td>
+						 <td></td>
+						 <td>-</td>
+						 </tr>
+						 -->
+						</table>
+				
+				<h2>Options</h2>
+				<table class="altTable">
+					<tr>
+						<th>Option</th>
+						<th>Description</th>
+						<th>Values</th>
+						</tr>
+					<tr>
+						<td>nodeURL</td>
+						<td>IP address or host name of SIAM node</td>
+						<td>e.g. 134.89.88.1, mooring.moos.mbari.org</td>
+						</tr>
+					<tr class="alt">
+						<td>deviceID</td>
+						<td><p>long (64-bit) integer uniquely identifying the instrument service</p>
+							<div class="emphasis">filter utilities use deviceIDs instead of instrument ports to specify an instrument</div>
+							</td>
+						<td>14533,997,1003, etc.
+							</td>
+						</tr>
+					<tr>
+						<td>-types</td>
+						<td><p>Indicates what types of packets to apply the filter to. Multiple values should be separated by spaces</p></td>
+						<td><p>Valid values are 'data', 'message', 'summary','metadata' or 'all'</p></td>
+						</tr>
+					<tr class="alt">
+						<td>-skip</td>
+						<td><p>Set skip interval (sub-sampling modulus) filter value.</p></td>
+						 <td><p>valid values are integers greater than or equal to -1. </p>
+								<p> A value of -1 means skip all packets (don't return any packets of the specified type). </p>
+								<p>A value of 0 (zero) means skip no packets (return all packets of the specified type).  </p>
+								
+								</td>
+							</tr>
+					<!--
+					 <tr>
+					 <td></td>
+					 <td></td>
+					 <td>-</td>
+					 </tr>
+					 <tr class="alt">
+					 <td></td>
+					 <td></td>
+					 <td>-</td>
+					 </tr>
+					 -->
+					</table>
+				<p>
+				Example output:</p>
+				<pre>
+					
+					% clearfilter surface 1101
+					% setfilter -types data message -skip -1 1101
+					
+					A subsequent invocation of getfilter shows:
+					
+					% getfilter localhost 1101
+					SIAM version $Name:  $
+					filter 0: types: SensorData Metadata DeviceMessage Summary : skip 0
+					filter 1: types: SensorData DeviceMessage : skip -1
+					
+					Note that the filters displayed by getfilter will be applied by the service sequentially. 
+					E.g. in the above example, &quot;filter 0&quot; passes all packets of all types, but &quot;filter 1&quot; will 
+					subsequently remove all sensor data and message packets.
+					</pre>
+				<p></p>
+				</div>
+			</div>
+		
+		<div class="environmentHeader">
+			<h1>Environment</h1>
+			<div class="environmentText">
+				<p>
+				<!-- description text here -->
+				The following environment variables must be set:
+				</p>	 
+						<table class="altTable">
+							<tr>
+								<th>Variable</th>
+								<th>Description</th>
+								<th>Example</th>
+								</tr>
+							<tr>
+								<td>JAVA_HOME </td>
+								<td>location of Java installation</td>
+								<td><div class="path"> /j9, /opt/java/jdk1.3.1, etc.</div></td>
+								</tr>
+							<tr class="alt">
+								<td>JAVA</td>
+								<td>Path to JVM command</td>
+								<td>For MMC<div class="commands">$JAVA_HOME/bin/j9</div><br />For Sun JVM (e.g. linux, win32, mac OS) <div class="commands">$JAVA_HOME/bin/java</div>
+									</td>
+								</tr>
+							<tr>
+								<td>SIAM_HOME</td>
+								<td>top of the SIAM directory tree</td>
+								<td>-</td>
+								</tr>
+							<tr class="alt">
+								<td>SIAM_CLASSPATH</td>
+								<td>Path including all SIAM and supporting classes</td>
+								<td>For MMC<div class="path">$JAVA_HOME/lib/jclMax/classes.zip:$JAVA_HOME/lib/prsnlmot.jar:$JAVA_HOME/lib/RXTXcomm.jar:$SIAM_HOME/classes</div><br />
+									For linux/win32<div class="path"> $SIAM_HOME/classes</div></td>
+								</tr>
+							<!--
+							 <tr>
+							 <td></td>
+							 <td></td>
+							 <td>-</td>
+							 </tr>
+							 <tr class="alt">
+							 <td></td>
+							 <td></td>
+							 <td>-</td>
+							 </tr>
+							 -->
+							</table>
+						<p></p>
+						</div>
+			</div>
+		
+		<div class="seeAlsoHeader">
+			<h1>See Also</h1>
+			<div class="seeAlsoText">
+				<div class="command">
+                summaries and telemetry sub-sampling
+                <!--<a href="../summariesAndFiltering.html#" target="mainFrame">summaries and telemetry sub-sampling</a>-->
+                </div>
+				</div>
+			</div>
+		
+		
+		</body>
+	</html>

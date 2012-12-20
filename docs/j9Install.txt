@@ -1,0 +1,27 @@
+This document describes how to install J9 on a Sidearm.
+
+After installing Visual Age (aka "Websphere") Device Developer
+on your Windows machine, copy the following files to the Sidearm's
+/j9 directory:
+
+lib/jclMax/classes.zip from 
+
+C:\Program Files\IBM\Device Developer\wsdd5.0\ive\runtimes\common\ive\lib\jclMax
+
+lib/prnsnlmot.jar from
+
+C:\Program Files\IBM\Device Developer\wsdd5.0\ive\runtimes\linux\common\ive\lib\jclMax
+
+lib/rmip.zip from 
+
+C:\Program Files\IBM\Device Developer\wsdd5.0\ive\runtimes\common\ive\lib
+
+bin/*.so,j9 from
+
+C:\Program Files\IBM\Device Developer\wsdd5.0\ive\runtimes\mvl\arm\ive\bin
+
+lib/*.a from 
+
+C:\Program Files\IBM\Device Developer\wsdd5.0\ive\runtimes\mvl\arm\ive\bin\lib
+
+

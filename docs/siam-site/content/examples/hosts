@@ -1,0 +1,39 @@
+# Generic '/etc/hosts' file for moored networks.
+# Note that moored networks are private; thus names and addresses
+# can be duplicated across multiple moorings/networks.
+# Each moored network can contain up to three subnets:
+#    10.1.1.x - wireless subnet
+#    192.168.0.x - ethernet subnet
+#    TBD - RS422 subnet
+# Note that this file can also be used for surface-only system ("MOOS Lite")
+
+                                                                               
+# DO NOT REMOVE THE FOLLOWING LINE
+127.0.0.1   localhost familiar
+                   
+10.1.1.1    shore                # portal node's ppp interface address
+
+10.1.1.2    surface-rf mooring   # surface node's ppp interface address
+
+10.1.1.3	topnode1
+
+10.1.1.4	topnode2
+
+10.1.1.5	subnode1
+
+10.1.1.6	subnode2
+
+10.1.1.7    mooringAux           # used by node w/ globalstarAux
+
+192.168.0.200   surface    # surface node's ethernet address (static)
+                                                                               
+192.168.0.201     sub1
+192.168.0.202     sub2
+192.168.0.203     sub3
+192.168.0.204     sub4
+192.168.0.205     sub5
+192.168.0.206     sub6
+192.168.0.207     sub7
+192.168.0.208     sub8
+192.168.0.209     sub9
+192.168.0.210     sub10

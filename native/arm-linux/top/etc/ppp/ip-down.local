@@ -1,0 +1,10 @@
+#!/bin/bash
+# Executed when ppp link goes down
+logfile="/tmp/ip-down-local.out"
+
+echo "`date`: Now in ip-down.local: args=$*" > $logfile
+
+su -l -c "/mnt/hda/siam/utils/ipDownCallback localhost $* >& $logfile" ops &
+
+echo "`date`: Now leaving ip-down.local" >> $logfile
+

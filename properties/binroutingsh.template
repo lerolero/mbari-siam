@@ -1,0 +1,3 @@
+#!/bin/bash
+# Add route to surface-shore ppp network
+route add -net <PPP_ADDRESS_BASE>.<NETWORK_ID>.0 netmask 255.255.255.0 gw <PRIMARY_NODE_NAME>

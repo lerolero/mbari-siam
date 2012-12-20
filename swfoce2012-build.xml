@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id:$ -->
+<project name="swfoce2012" basedir=".">
+	
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Load property files in this order:
+
+    1. User properties
+    2. This level properties
+
+    This allows a user to have specific settings that override any other
+    settings (other than command-line, which always take precedence).
+    -->
+    <property file="${user.home}/build.properties" />
+    <property file="build.properties" />
+	
+	<!-- show FOCE2011 help  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	
+	<target name="help">
+	<local name="pname"/>
+    <property name="pname" value="swfoce2012" />
+		<echo>
+		${pname}.all            - build all FOCE service JARs and native code
+		${pname}.jars           - build all FOCE service JARs (in ${dataDir})
+		${pname}.install        - build all FOCE service JARs (in ${siam_home}/ports)
+		${pname}.dist           - SIAM instrument service tar.gz 
+		${pname}.ctd            - CTD(s)
+		${pname}.nortek         - velocimeter(s)
+		${pname}.workhorse      - ADCP(s) 
+		${pname}.ph             - pH sensor(s)
+		${pname}.analog         - analog sensor(s)
+		${pname}.water          - water sensor(s)
+		${pname}.cpu            - CPU monitor
+		${pname}.thruster       - thrusters
+		${pname}.valves         - valves
+		${pname}.control        - control system
+		${pname}.co2            - CO2 Subsystem monitor
+		foce.native             - native code
+		</echo>
+	</target>
+	
+	<!-- Initialize directories  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <target name="init" depends="init">
+		<echo>Building directory structure - ${distPortDir}/swfoce2012</echo>
+        <mkdir dir="${distPortDir}/swfoce2012" />
+	</target>
+	
+	
+	<!-- Build Everything  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="all" depends="swfoce2012.init,swfoce2012.jars,foce.native">
+		<echo>Building FOCE service ALL - complete</echo>
+	</target>
+    
+    <!-- Make services tar.gz ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <target name="dist" depends="swfoce2012.init,swfoce2012.jars">
+	  <tar destfile="${dist}/siam-services.tar">
+	    <tarfileset dir="${distPortDir}/swfoce2012" prefix="ports" username="ops" group="ops" filemode="775">
+		</tarfileset>
+	  </tar>
+	  <gzip src="${dist}/siam-services.tar" destfile="${dist}/siam-services.tar.gz" />
+	  <delete file="${dist}/siam-services.tar"/>
+    </target>
+
+    <!-- Build service jars and install in ports  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="install" depends="swfoce2012.init, swfoce2012.jars">
+        <copy todir="${siam_home}/ports/">
+            <fileset dir="${distPortDir}/swfoce2012" includes="*.jar"/>
+        </copy>
+		<echo>Installing FOCE service jars in ${distPortDir}/swfoce2012 - complete</echo>
+	</target>
+
+	<!-- Build all swFOCE Service JARs  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="jars" depends="swfoce2012.init,swfoce2012.ctd,swfoce2012.nortek,swfoce2012.workhorse,swfoce2012.ph,swfoce2012.analog,swfoce2012.water,swfoce2012.cpu,swfoce2012.thruster,swfoce2012.valves,swfoce2012.control,swfoce2012.co2">
+		<echo>Building FOCE service JARs - complete</echo>
+	</target>
+
+
+		
+	<!-- CTD Service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="ctd" depends="puckxml">
+		<echo>Building FOCE CTD service JARs (cwd=${siam_home})</echo>
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.devices.seabird.sbe52mp.SBE52MP -jar ${distPortDir}/swfoce2012/Seabird52MP-1642.jar -base ${siam_home}/classes -classdir org/mbari/siam/devices/seabird/base" />
+		</exec>
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.devices.seabird.sbe52mp.SBE52MP -mnem 'Seabird SBE52MP' -id 1642 -jar ${distPortDir}/swfoce2012/Seabird52MP-1642.jar -xml ${siam_home}/puckxml/1642.xml -add -classdir org/mbari/siam/devices/seabird/sbe52mp 'sampleSchedule = 60' 'powerPolicy = always' 'commPowerPolicy = sampling' 'currentLimitMa = 3000' 'log = false' 'defaultSkipInterval = -1' 'registryName = CTD1' 'rbnbServer=localhost' 'UUID = 1c79e112-2068-11dd-ac90-4fe18c62afe0'" />
+		</exec>
+		
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.devices.seabird.sbe52mp.SBE52MP -jar ${distPortDir}/swfoce2012/Seabird52MP-1733.jar -base ${siam_home}/classes -classdir org/mbari/siam/devices/seabird/base" />
+		</exec>
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.devices.seabird.sbe52mp.SBE52MP -mnem 'Seabird SBE52MP' -id 1733 -jar ${distPortDir}/swfoce2012/Seabird52MP-1733.jar -xml ${siam_home}/puckxml/1733.xml -add -classdir org/mbari/siam/devices/seabird/sbe52mp  'sampleSchedule = 60' 'powerPolicy = always' 'commPowerPolicy = sampling' 'currentLimitMa = 3000' 'log = false' 'defaultSkipInterval = -1' 'registryName = CTD2' 'rbnbServer=localhost' 'UUID = c56f6f75-4700-11de-af5a-f79e6eea29f6'" />
+		</exec>
+	</target>
+
+	<!-- Nortek Service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="nortek" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.nortek.vector.Vector 'Vector Velocimeter' 1644 ${distPortDir}/swfoce2012/NortekVector-1644.jar ${siam_home}/puckxml/1644.xml 'powerPolicy = always' 'commPowerPolicy = always' 'registryName = Velocity' 'sampleSchedule = 300' 'limitSamplesPerSession=false' 'currentLimitMa = 5000' 'defaultSkipInterval = -1' 'burstMode=false' 'listenOnly = false' 'rbnbServer=localhost' 'rbnbExcludeRecordTypes = 1 2' 'UUID = 7dbd0ff6-2069-11dd-ac90-4fe18c62afe0'" />
+		</exec>
+	</target>
+
+	<!-- Workhorse Service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="workhorse" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.workhorse.WorkhorseADCP 'WH Sentinel ADCP 600kHz' 1645 ${distPortDir}/swfoce2012/Workhorse-1645.jar ${siam_home}/puckxml/1645.xml 'powerPolicy = always' 'commPowerPolicy = sampling' 'currentLimitMa = 9000' 'preemptionSec = 10' 'powerOnDelaySec = 5' 'warmupSec = 5' 'internalLog = false' 'sampleSchedule=30' 'pingsPerEnsemble = 140' 'secPerPing = 0' 'msecPerPing = 210' 'timeSynch = true' 'exCommand = 01010' 'registryName = ADCP' 'defaultSkipInterval = -1' 'summaryTriggerCount = -1' 'maxSummarySamples = -1' 'rbnbServer=localhost' 'UUID = 07752a0a-207e-11dd-ac90-4fe18c62afe0'" />
+		</exec>
+	</target>
+	
+	<!-- pH  Service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="ph" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.phDigital.PhDigital 'MBARI digital pH Sensor' 1724 ${distPortDir}/swfoce2012/HRPH-1724.jar ${siam_home}/puckxml/1724.xml 'sampleSchedule = 10' 'powerPolicy = always' 'commPowerPolicy =always' 'defaultSkipInterval = -1' 'currentLimitMa = 3000' 'registryName = pH1' 'temperatureLookup = CTD1' 'offset = 2.6499' 'slope = 9.2832' 'rbnbServer=localhost' 'UUID = 32849e96-292e-11de-af5a-f79e6eea29f6'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.phDigital.PhDigital 'MBARI digital pH Sensor' 1735 ${distPortDir}/swfoce2012/HRPH-1735.jar ${siam_home}/puckxml/1735.xml 'sampleSchedule = 10' 'powerPolicy = always' 'commPowerPolicy =always' 'defaultSkipInterval = -1' 'currentLimitMa = 3000' 'registryName = pH2' 'temperatureLookup = CTD1' 'offset = 2.6891' 'slope = 9.4292' 'rbnbServer=localhost' 'UUID = 9be11e10-4af8-11de-af5a-f79e6eea29f6'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.phDigital.PhDigital 'MBARI digital pH Sensor' 1722 ${distPortDir}/swfoce2012/HRPH-1722.jar ${siam_home}/puckxml/1722.xml 'sampleSchedule = 10' 'powerPolicy = always' 'commPowerPolicy =always' 'defaultSkipInterval = -1' 'currentLimitMa = 3000' 'registryName = pH3' 'temperatureLookup = CTD1' 'offset = 2.7088' 'slope = 9.3743' 'rbnbServer=localhost' 'UUID = f4c2ebf4-2924-11de-af5a-f79e6eea29f6'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.phDigital.PhDigital 'MBARI digital pH Sensor' 1749 ${distPortDir}/swfoce2012/HRPH-1749.jar ${siam_home}/puckxml/1749.xml 'sampleSchedule = 10' 'powerPolicy = always' 'commPowerPolicy =always' 'defaultSkipInterval = -1' 'currentLimitMa = 3000' 'registryName = pH4' 'temperatureLookup = CTD1' 'offset = 2.6442' 'slope = 9.4360' 'rbnbServer=localhost' 'UUID = 281815f0-3e7f-11df-8c3f-a9ee76057a53'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.phDigital.PhDigital 'MBARI digital pH Sensor' 1734 ${distPortDir}/swfoce2012/HRPH-1734.jar ${siam_home}/puckxml/1734.xml 'sampleSchedule = 10' 'powerPolicy = always' 'commPowerPolicy =always' 'defaultSkipInterval = -1' 'currentLimitMa = 3000' 'registryName = pH5' 'temperatureLookup = CTD2' 'offset = 2.6735' 'slope = 9.3481' 'rbnbServer=localhost' 'UUID = 95dc9690-4af8-11de-af5a-f79e6eea29f6'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.phDigital.PhDigital 'MBARI digital pH Sensor' 1751 ${distPortDir}/swfoce2012/HRPH-1751.jar ${siam_home}/puckxml/1751.xml 'sampleSchedule = 10' 'powerPolicy = always' 'commPowerPolicy =always' 'defaultSkipInterval = -1' 'currentLimitMa = 3000' 'registryName = pH6' 'temperatureLookup = CTD2' 'offset = 2.6637' 'slope = 9.3729' 'rbnbServer=localhost' 'UUID = a6b45911-3e7f-11df-8c3f-a9ee76057a53'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.phDigital.PhDigital 'MBARI digital pH Sensor' 1753 ${distPortDir}/swfoce2012/HRPH-1753.jar ${siam_home}/puckxml/1753.xml 'sampleSchedule = 10' 'powerPolicy = always' 'commPowerPolicy =always' 'defaultSkipInterval = -1' 'currentLimitMa = 3000' 'registryName = pH7' 'temperatureLookup = CTD2' 'offset = 2.5560' 'slope = 4.9195' 'rbnbServer=localhost' 'UUID = 64c8f55e-798f-11df-bd0c-f92b5f483427'" />
+		</exec>
+	</target>
+	
+	<!-- Analog Service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="analog" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.foce.devices.analog.Sensoray518 'Enclosure Monitor' 1721 ${distPortDir}/swfoce2012/EnvironmentalMonitor-1721.jar ${siam_home}/puckxml/1721.xml 'sampleSchedule = 10' 'powerPolicy = always' 'commPowerPolicy =always' 'defaultSkipInterval = -1' 'currentLimitMa = 3000' 'registryName = EMonitor' 'parseNames=Temp_HE104 Temp_36V Temp_24V Temp_12V Humidity Temp_HTM2500 Temp_Heatsink Pressure' 'parseUnits=degC degC degC degC %RH degC degC psia' 'range = 1' 'polarity = 0' 'gain = 1' 'samplesToAvg = 1' 'avgDelayMs = 50' 'slopes = 1.0 1.0 1.0 1.0 37.52 1.0 1.0 10.0' 'offsets = 0.0 0.0 0.0 0.0 -37.75 0.0 0.0 0.0' 'rbnbServer=localhost' 'UUID = cd0ed6ac-1d7e-11de-af5a-f79e6eea29f6'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.foce.devices.analog.ScaledAnalog 'Power Monitor' 1730 ${distPortDir}/swfoce2012/PowerMonitor-1730.jar ${siam_home}/puckxml/1730.xml 'sampleSchedule = 10' 'powerPolicy = always' 'commPowerPolicy =always' 'defaultSkipInterval = -1' 'currentLimitMa = 3000' 'registryName = PMonitor' 'range = 10' 'polarity = 0' 'gain = 2' 'samplesToAvg = 10' 'avgDelayMs = 50' 'slopes = 5.6604 5.6604 2.7778 2.7778 2.7778 8.3026 8.3026 1.0303 2.0631 2.0649 1.0233 0.2025 1.0678 1.0678' 'offsets = 0 0 0 0 0 0 0 0.0021 0.0055 0.0088 0.0054 -0.0026 0.0171 0.0171' 'parseNames = StackVoltage_24 ScienceVoltage_24 PrimaryVoltage_12 SecondaryVoltage_12 pHVoltage_12 Motor1Voltage_36 Motor2Voltage_36 StackCurrent_24 ScienceCurrent_24 PrimaryCurrent_12 SecondaryCurrent_12 pHCurrent_12 Motor1Current_36 Motor2Current_36' 'parseUnits = V V V V V V V A A A A A A A'  'rbnbServer=localhost' 'UUID = 90d4b2d4-39d1-11de-af5a-f79e6eea29f6'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.foce.devices.analog.ScaledAnalog 'Humidity Monitor' 1737 ${distPortDir}/swfoce2012/HumidityMonitor-1737.jar ${siam_home}/puckxml/1737.xml 'sampleSchedule = 10' 'powerPolicy = always' 'commPowerPolicy =always' 'defaultSkipInterval = -1' 'currentLimitMa = 3000' 'registryName = HMonitor' 'range = 10' 'polarity = 0' 'gain = 2' 'samplesToAvg = 10' 'avgDelayMs = 50' 'slopes = 20.0 20.0 20.0 20.0 20.0' 'offsets = 0 0 0 0 0' 'parseNames = Humidity1 Humidity2 Humidity3 Humidity4 Humidity5' 'parseUnits = %RH %RH %RH %RH %RH'  'rbnbServer=localhost' 'UUID = c83fe329-8cdb-11de-808b-ef2948057e60'" />
+		</exec>
+	</target>
+	
+	<!-- Water Service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="water" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.foce.devices.digital.DigitalInputService 'Water Monitor' 1757 ${distPortDir}/swfoce2012/WaterMonitor-1757.jar ${siam_home}/puckxml/1757.xml 'sampleSchedule = 10' 'powerPolicy = always' 'commPowerPolicy =always' 'defaultSkipInterval = -1' 'currentLimitMa = 3000' 'registryName = WMonitor' 'parseNames = Water1 Water2 Water3 Water4' 'rbnbServer=localhost' 'UUID = 5504d6b5-79a1-11df-bd0c-f92b5f483427'" />
+		</exec>
+	</target>
+	
+	<!-- CPU Service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="cpu" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.foce.devices.cpuTemp.CPUTempService 'CPU Temp' 1726 ${distPortDir}/swfoce2012/CPUTemp-1726.jar ${siam_home}/puckxml/1726.xml 'sampleSchedule = 30' 'powerPolicy = always' 'commPowerPolicy =always' 'defaultSkipInterval = -1' 'currentLimitMa = 3000' 'registryName = CPUTemp' 'rbnbServer=localhost' 'UUID = 7732aba5-35ac-11de-af5a-f79e6eea29f6'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.foce.devices.cpuTemp.CPUTempService 'CPU Temp' 1761 ${distPortDir}/swfoce2012/CPUTemp-1761.jar ${siam_home}/puckxml/1761.xml 'sampleSchedule = 30' 'powerPolicy = always' 'commPowerPolicy =always' 'defaultSkipInterval = -1' 'currentLimitMa = 3000' 'registryName = CPUTemp' 'rbnbServer=localhost' 'UUID = 9cc5b7d5-894b-11df-9c92-a91b79403d44'" />
+		</exec>
+	</target>
+	
+	<!-- Thruster Service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="thruster" depends="puckxml">
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.foce.devices.elmo.thruster.ElmoThruster -jar ${distPortDir}/swfoce2012/ElmoThruster-1728.jar -base ${siam_home}/classes -classdir org/mbari/siam/foce/devices/elmo/base" />
+		</exec>
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.foce.devices.elmo.thruster.ElmoThruster -xml ${siam_home}/puckxml/1728.xml  -mnem 'Elmo Thruster Controller' -id 1728 -jar ${distPortDir}/swfoce2012/ElmoThruster-1728.jar -add -classdir org/mbari/siam/foce/devices/elmo/thruster 'sampleSchedule = 2' 'sampleTimeoutMsec = 1000'  'powerPolicy = always' 'commPowerPolicy =always' 'defaultSkipInterval = -1' 'currentLimitMa = 3000' 'registryName = motor1' 'encoderSamples=1' 'powerBit=7' 'rbnbServer=localhost' 'rbnbArchiveFrames=50000' 'UUID = 00ab7c0c-39d1-11de-af5a-f79e6eea29f6'" />
+		</exec>
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.foce.devices.elmo.thruster.ElmoThruster -jar ${distPortDir}/swfoce2012/ElmoThruster-1729.jar -base ${siam_home}/classes -classdir org/mbari/siam/foce/devices/elmo/base" />
+		</exec>
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.foce.devices.elmo.thruster.ElmoThruster -xml ${siam_home}/puckxml/1729.xml  -mnem 'Elmo Thruster Controller' -id 1729 -jar ${distPortDir}/swfoce2012/ElmoThruster-1729.jar -add -classdir org/mbari/siam/foce/devices/elmo/thruster 'sampleSchedule = 2' 'sampleTimeoutMsec = 1000'  'powerPolicy = always' 'commPowerPolicy =always' 'defaultSkipInterval = -1' 'currentLimitMa = 3000' 'registryName = motor2' 'encoderSamples=1' 'powerBit=6' 'rbnbServer=localhost' 'rbnbArchiveFrames=50000' 'UUID = 4290134f-39d1-11de-af5a-f79e6eea29f6'" />
+		</exec>
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.foce.devices.elmo.thruster.ElmoThruster -jar ${distPortDir}/swfoce2012/ElmoThruster-1763.jar -base ${siam_home}/classes -classdir org/mbari/siam/foce/devices/elmo/base" />
+		</exec>
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.foce.devices.elmo.thruster.ElmoThruster -xml ${siam_home}/puckxml/junk.xml  -mnem 'Elmo Thruster Controller' -id 1763 -jar ${distPortDir}/swfoce2012/ElmoThruster-1763.jar -add -classdir org/mbari/siam/foce/devices/elmo/thruster 'sampleSchedule = 2' 'sampleTimeoutMsec = 1000'  'powerPolicy = always' 'commPowerPolicy =always' 'defaultSkipInterval = -1' 'currentLimitMa = 3000' 'registryName = motor1' 'encoderSamples=1' 'powerBit=7' 'rbnbServer=localhost' 'rbnbArchiveFrames=50000' 'UUID = 5b848f82-a0d0-11df-b420-8d932187c6f9'" />
+		</exec>
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.foce.devices.elmo.thruster.ElmoThruster -jar ${distPortDir}/swfoce2012/ElmoThruster-9999.jar -base ${siam_home}/classes -classdir org/mbari/siam/foce/devices/elmo/base" />
+		</exec>
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.foce.devices.elmo.thruster.ElmoThruster -xml ${siam_home}/puckxml/junk.xml  -mnem 'Elmo Thruster Controller' -id 9999 -jar ${distPortDir}/swfoce2012/ElmoThruster-9999.jar -add -classdir org/mbari/siam/foce/devices/elmo/thruster 'sampleSchedule = 2' 'sampleTimeoutMsec = 1000'  'powerPolicy = never' 'commPowerPolicy =always' 'defaultSkipInterval = -1' 'currentLimitMa = 3000' 'registryName = motor1' 'encoderSamples=1' 'powerBit=7' 'rbnbServer=localhost' 'rbnbArchiveFrames=50000' 'UUID = 5b848f82-a0d0-11df-b420-8d932187c6f9'" />
+		</exec>
+	</target>
+	
+	<!-- Valve Service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="valves" depends="puckxml">
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.devices.valve.ValveService -jar ${distPortDir}/swfoce2012/ValveService-1788.jar -base ${siam_home}/classes -classdir org/mbari/siam/devices/bbElec" />
+		</exec>
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.devices.valve.ValveService -mnem 'Valve Controller' -id 1788 -jar ${distPortDir}/swfoce2012/ValveService-1788.jar -xml ${siam_home}/puckxml/junk.xml -add -classdir org/mbari/siam/devices/valve 'sampleSchedule = 60' 'sampleTimeoutMsec = 1000'  'powerPolicy = always' 'commPowerPolicy =always' 'defaultSkipInterval = -1' 'currentLimitMa = 3000' 'rbnbServer=localhost' 'registryName = ValveService' 'UUID = 28ec0b72-54d5-11e0-a709-8bfb2ac3237e'" />
+		</exec>
+	</target>
+	
+	<!-- Control Service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="control" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.foce.devices.controlLoop.ControlLoopService 'pH Control Service' 1787 ${distPortDir}/swfoce2012/ControlLoop-1787.jar ${siam_home}/puckxml/junk.xml 'sampleSchedule = 10' 'sampleTimeoutMsec = 1000'  'powerPolicy = never' 'commPowerPolicy = never' 'defaultSkipInterval = -1' 'registryName = ControlLoop' rbnbServer='localhost' 'UUID = 1a5bd2fc-54d4-11e0-a709-8bfb2ac3237e'" />
+		</exec>
+	</target>
+	
+	<!-- co2 Service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="co2" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.foce.devices.co2subsys.CO2SubsystemMonitor 'CO2 Subsystem' 1786 ${distPortDir}/swfoce2012/CO2SubsystemMonitor-1786.jar ${siam_home}/puckxml/junk.xml 'sampleSchedule = 10' 'sampleTimeoutMsec = 10000'  'powerPolicy = never' 'commPowerPolicy = never' 'defaultSkipInterval = -1' 'registryName = co2Subsys' 'rbnbServer=localhost' 'UUID = c1704db1-54d3-11e0-a709-8bfb2ac3237e'" />
+		</exec>
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.foce.devices.elmo.eswPump.ESWPump -jar ${distPortDir}/swfoce2012/ESWPump-1791.jar -base ${siam_home}/classes -classdir org/mbari/siam/foce/devices/elmo/base" />
+		</exec>
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.foce.devices.elmo.eswPump.ESWPump -jar ${distPortDir}/swfoce2012/ESWPump-1791.jar -add -classdir org/mbari/siam/foce/devices/elmo/thruster" />
+		</exec>
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.foce.devices.elmo.eswPump.ESWPump -xml ${siam_home}/puckxml/1791.xml  -mnem 'ESW Pump' -id 1791  -jar ${distPortDir}/swfoce2012/ESWPump-1791.jar -add -classdir org/mbari/siam/foce/devices/elmo/eswPump   'sampleSchedule = 2' 'sampleTimeoutMsec = 1000'  'powerPolicy = never' 'commPowerPolicy =always' 'defaultSkipInterval = -1' 'currentLimitMa = 3000' 'registryName = eswPump' 'encoderSamples=1' 'powerBit=6'  'rbnbServer=localhost' 'rbnbArchiveFrames=50000' 'UUID = b0de9702-5fbd-11e0-b1b7-05c1826f595d' 'serialMode=1' 'gearRatio=15.0' 'minMotorCounts=0' 'maxMotorCounts=450'" />
+		</exec>
+	</target>
+    
+
+	</project>

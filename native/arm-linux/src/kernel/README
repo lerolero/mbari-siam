@@ -1,0 +1,5 @@
+ remember to source env.sh in the instrinsyc dir
+ add the following to the Makefile:
+   obj-m += sa1100lpio.o  <or whatever your module name is>
+ make dep
+ make modules

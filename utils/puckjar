@@ -1,0 +1,49 @@
+#!/bin/csh
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Make a puck jar-file, using specified class, service name mnemonc, isiID...
+
+if ($#argv != 4) then
+  echo usage: $0:t serviceClassname mnemonic isiID outputJarfile
+  echo "e.g.,"
+  echo "   $0:t moos.devices.kvh.CompassKVHC100 'KVH compass' 5002 Compass.jar"
+  exit 1
+endif
+
+cat > service.properties << END_PROPERTIES
+
+# Unique ISI ID
+isiID = $argv[3]
+
+# Mnemonic name for service
+serviceName = $argv[2]
+
+###################################################################3
+# The following properties are commented out; to override default,
+# uncomment and fill in desired value.
+
+# Sampling schedule period (in seconds)
+### sampleSchedule = 10
+
+# Instrument power policy ('never', 'sampling', or 'always')
+### powerPolicy = always
+
+# Instrument power policy ('never', 'sampling', or 'always')
+### commsPolicy = always
+
+END_PROPERTIES
+
+if ($?EDITOR) then
+  $EDITOR service.properties
+else
+  vi service.properties
+endif
+
+puckit $argv[1] service.properties $argv[4]
+rm service.properties
+
+
+
+

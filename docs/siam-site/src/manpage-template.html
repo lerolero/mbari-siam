@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Simple CSS Manual Page</title>
+<link href="../css/simple-content.css" rel="stylesheet" type="text/css" />
+<link href="../css/manpage.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+<div class="nameHeader">
+	<h1>Name</h1> 
+ <div class="nameText">
+	<h2>name <!-- name text here --></h2>
+ </div>
+</div>
+
+<div class="synopsisHeader">
+	<h1>Synopsis</h1>
+ <div class="synopsisText">
+				<div class="commands">command <em class="options">nodeURL port</em></div>
+ </div>
+</div>
+
+<div class="descriptionHeader">
+	<h1>Description</h1>
+ <div class="descriptionText">
+	<p>
+	<!-- description text here -->
+	description text
+	</p>	 
+	 <h2>Options</h2>
+	 <table class="altTable">
+		 <tr>
+			 <th>Option</th>
+			 <th>Description</th>
+			 <th>Values</th>
+			 </tr>
+		 <tr>
+			 <td>nodeURL</td>
+			 <td>IP address or host name of SIAM node</td>
+			 <td>e.g. 134.89.88.1, mooring.moos.mbari.org</td>
+			 </tr>
+		 <tr class="alt">
+			 <td>portName</td>
+			 <td>Name of instrument port (or alias) defined in siamPort.cfg</td>
+			 <td>/dev/ttyS8, COM1, /dev/tty.KeySerial1</td>
+			 </tr>
+		 <!--
+		  <tr>
+		  <td></td>
+		  <td></td>
+		  <td>-</td>
+		  </tr>
+		  <tr class="alt">
+		  <td></td>
+		  <td></td>
+		  <td>-</td>
+		  </tr>
+		  -->
+		 </table>
+		 <p>
+		Example output:
+        </p>
+		<pre>
+		none
+		</pre>
+		 <p></p>
+	 </div>
+</div>
+
+<div class="environmentHeader">
+	<h1>Environment</h1>
+ <div class="environmentText">
+	<p>
+	<!-- description text here -->
+	The following environment variables must be set:
+	</p>	 
+			 <table class="altTable">
+				 <tr>
+					 <th>Variable</th>
+					 <th>Description</th>
+					 <th>Example</th>
+					 </tr>
+				 <tr>
+					 <td>JAVA_HOME </td>
+					 <td>location of Java installation</td>
+					 <td><div class="path"> /j9, /opt/java/jdk1.3.1, etc.</div></td>
+					 </tr>
+				 <tr class="alt">
+					 <td>JAVA</td>
+					 <td>Path to JVM command</td>
+					 <td>For MMC<div class="commands">$JAVA_HOME/bin/j9</div><br />For Sun JVM (e.g. linux, win32, mac OS) <div class="commands">$JAVA_HOME/bin/java</div>
+						 </td>
+					 </tr>
+				 <tr>
+					 <td>SIAM_HOME</td>
+					 <td>top of the SIAM directory tree</td>
+					 <td>-</td>
+					 </tr>
+				 <tr class="alt">
+					 <td>SIAM_CLASSPATH</td>
+					 <td>Path including all SIAM and supporting classes</td>
+					 <td>For MMC<div class="path">$JAVA_HOME/lib/jclMax/classes.zip:$JAVA_HOME/lib/prsnlmot.jar:$JAVA_HOME/lib/RXTXcomm.jar:$SIAM_HOME/classes</div><br />
+						 For linux/win32<div class="path"> $SIAM_HOME/classes</div></td>
+					 </tr>
+				 <!--
+				  <tr>
+				  <td></td>
+				  <td></td>
+				  <td>-</td>
+				  </tr>
+				  <tr class="alt">
+				  <td></td>
+				  <td></td>
+				  <td>-</td>
+				  </tr>
+				  -->
+				 </table>
+			 <p></p>
+ </div>
+</div>
+
+<div class="seeAlsoHeader">
+	<h1>See Also</h1>
+ <div class="seeAlsoText">
+  <div class="command"><a href=".html#" target="mainFrame">link1</a></div>
+ </div>
+</div>
+
+
+</body>
+</html>

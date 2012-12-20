@@ -1,0 +1,24 @@
+#
+# Dial-up configuration for calling mbari via the globalstar modem
+#
+linkname globalstarAux
+<AUX_PPP_HOST>:
+ipparam mbari
+#logfile /var/log/globalstar.log
+#record /tmp/pppd.record
+#debug
+noauth
+user <AUX_PAP_CLIENT>
+usepeerdns
+maxconnect 3600         #disconnect after one hour
+noipdefault
+defaultroute
+deflate 14
+updetach
+
+globalstar
+38400
+modem
+crtscts
+lock
+connect /etc/ppp/dialMBARI

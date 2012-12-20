@@ -1,0 +1,20 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Shore messaging service, implemented with NAL9601 Iridium modem
+
+if [ ! -n "$2" ]
+then
+  echo "usage: `basename $0` thisHostName serialPort"
+  exit 1
+fi
+
+echo "NOTE: Modem must be powered on before running this script"
+
+$JAVA $JAVA_OPTIONS -cp $SIAM_CLASSPATH \
+-Djava.security.policy=$SIAM_HOME/properties/policy \
+-Dsiam_home=$SIAM_HOME -Dlog4j.threshold=$LOG4J_THRESHOLD \
+-Dgnu.io.rxtx.SerialPorts=$2 \
+org.mbari.siam.devices.nalModem.NAL9601MessagingService $*

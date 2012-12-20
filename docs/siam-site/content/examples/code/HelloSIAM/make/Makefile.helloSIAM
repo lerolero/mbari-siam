@@ -1,0 +1,19 @@
+
+#######################################
+# This file contains 
+# dummy PUCK targets
+#######################################
+
+# <!-- $Header:$	--> #
+
+dummies.help:
+	echo "hello        - build HelloSIAM service JAR"
+
+hello:puckxml hello.service 
+
+hello.service:
+	mkpuck org.mbari.siam.devices.hello.HelloSIAM 'Hello Service' 9999 $(JAVA_DEV_ROOT)/ports/Hello-9999.jar $(JAVA_DEV_ROOT)/puckxml/hello.xml 'sampleSchedule = 30' 'registryName = Hello' 'dataIncrement=2' 'UUID = 00000000-0000-0000-0000-000000000000';
+
+
+
+

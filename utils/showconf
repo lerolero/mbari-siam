@@ -1,0 +1,293 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+#
+# chkCfg - Check SIAM files for missing configuration parameters
+#          and report current parameter values.
+# 
+# ToDo:
+# sample schedules
+# power policies
+
+# configuration defaults for config file paths
+CDFLT=$SIAM_HOME/properties/siamPort.cfg
+EDFLT=/etc/siam/siamEnv
+SDFLT=/root/suspend.sh
+RCDFLT=/etc/init.d/rc.local
+LXDFLT=/etc/init.d/loadxr
+ITDFLT=/etc/inittab
+AXDFLT=/etc/auxTelem.sh
+GBDFLT=/etc/gbversion
+SIAMVER=/etc/siam/siamversion
+
+# Use these for local testing
+LCDFLT=$SIAM_HOME/properties/siamPort.cfg.basic
+LEDFLT=$SIAM_HOME/native/arm-linux/top/etc/siam/siamEnv
+LSDFLT=$SIAM_HOME/native/arm-linux/top/root/suspend.sh
+LRCDFLT=$SIAM_HOME/native/arm-linux/top/etc/init.d/rc.local
+LLXDFLT=$SIAM_HOME/native/arm-linux/top/etc/init.d/loadxr
+LITDFLT=$SIAM_HOME/native/arm-linux/top/etc/inittab
+LAXDFLT=$SIAM_HOME/native/arm-linux/top/etc/auxTelem.sh
+LGBDFLT=$SIAM_HOME/native/arm-linux/top/etc/gbversion
+LSIAMVER=$SIAM_HOME/native/arm-linux/top/etc/siam/siamversion
+
+# set default config paths
+SIAMPORTCFG="$CDFLT"
+SIAMENV="$EDFLT"
+SUSPENDSH="$SDFLT"
+RCLOCAL="$RCDFLT"
+LOADXR="$LXDFLT"
+INITTAB="$ITDFLT"
+AUXTELEM="$AXDFLT"
+GBVERSION="$GBDFLT"
+
+ERR=0
+
+printUsage(){
+	echo
+	echo "Check SIAM files for missing configuration parameters"
+	echo "and report current parameter values"
+	echo
+	echo "Usage: `basename $0` [-L] [-E <siamEnv>] [-C <siamPortCfg>] [-S <suspendsh>]"
+	echo "  L           - local test (must edit script)"
+	echo "  siamEnv     - path to siamEnv      [$CDFLT]"
+	echo "  siamPortCfg - path to siamPort.cfg [$EDFLT]"
+	echo "  suspendsh   - path to suspend.sh   [$SDFLT]"
+	echo
+	exit $ERR
+}
+
+while [ "$#" -ge 1 ]
+do
+case "$1" in
+-E)
+	shift
+	SIAMENV="$1"
+	shift
+;;
+-C)
+	shift
+	SIAMPORTCFG="$1"
+	shift
+;;
+-S)
+	shift
+	SUSPENDSH="$1"
+	shift
+;;
+-L)
+	shift
+	SIAMPORTCFG="$LCDFLT"
+	SIAMENV="$LEDFLT"
+	SUSPENDSH="$LSDFLT"
+	RCLOCAL="$LRCDFLT"
+	LOADXR="$LLXDFLT"
+	INITTAB="$LITDFLT"
+	AUXTELEM="$LAXDFLT"
+	GBVERSION="$LGBDFLT"
+;;
+--help)
+	printUsage
+;;
+*) shift
+;;
+esac
+done
+
+
+if [ ! -e "$SIAMENV" ]
+then
+    ERR=1
+	echo
+	echo "File not found: $SIAMENV"
+	echo
+fi
+
+if [ ! -e "$SIAMPORTCFG" ]
+then
+    ERR=1
+	echo
+	echo "File not found: $SIAMPORTCFG"
+	echo
+fi
+if [ ! -e "$SUSPENDSH" ]
+then
+    ERR=1
+	echo
+	echo "File not found: $SUSPENDSH"
+	echo
+fi
+
+if [ "$ERR" -ne 0 ]
+then
+    printUsage
+    exit $ERR
+fi
+
+check(){
+foo=`grep -e "$2" "$3"`
+if [ "$?" -ne 0 ]
+then
+	echo "Error: $1 not found in $3"
+	ERR=1
+else
+	echo "$foo"
+fi
+}
+
+# show SIAM tag
+$SIAMVER
+
+# check siamPort.cfg
+echo
+echo "check $SIAMPORTCFG:"
+echo
+check "nodeID" "^[ \t]*nodeID[ \t]*=" "$SIAMPORTCFG"
+check "nodeType" "^[ \t]*nodeType[ \t]*=" "$SIAMPORTCFG"
+check "networkNumberBase" "^[ \t]*networkNumberBase[ \t]*=" "$SIAMPORTCFG"
+check "networkNumber" "^[ \t]*networkNumber[ \t]*=" "$SIAMPORTCFG"
+check "ethernetAddressBase" "^[ \t]*ethernetAddressBase[ \t]*=" "$SIAMPORTCFG"
+check "ethernet" "^[ \t]*ethernet[ \t]*=" "$SIAMPORTCFG"
+check "pppAddressBase" "^[ \t]*pppAddressBase[ \t]*=" "$SIAMPORTCFG"
+check "pppHostName" "^[ \t]*pppHostName[ \t]*=" "$SIAMPORTCFG"
+check "DHCP" "^[ \t]*DHCP[ \t]*=" "$SIAMPORTCFG"
+check "lrrConnection" "^[ \t]*lrrConnection[ \t]*=" "$SIAMPORTCFG"
+check "lrrDevice" "^[ \t]*lrrDevice[ \t]*=" "$SIAMPORTCFG"
+check "srrConnection" "^[ \t]*srrConnection[ \t]*=" "$SIAMPORTCFG"
+check "srrDevice" "^[ \t]*srrDevice[ \t]*=" "$SIAMPORTCFG"
+check "advertiseService" "^[ \t]*advertiseService[ \t]*=" "$SIAMPORTCFG"
+
+check "jarLocation" "^[ \t]*jarLocation[ \t]*=" "$SIAMPORTCFG"
+check "logLocation" "^[ \t]*logLocation[ \t]*=" "$SIAMPORTCFG"
+#check "platformSerialPorts" "^[ \t]*platformSerialPorts[ \t]*=[ \t]*.*tty.*" "$SIAMPORTCFG"
+check "platformSerialPorts" "^[ \t]*[^#].*[tTcC][tToO][yYmM].*:" "$SIAMPORTCFG"
+check "codeBaseLocation" "^[ \t]*codeBaseLocation[ \t]*=" "$SIAMPORTCFG"
+
+check "SleepManager.enabled" "^[ \t]*SleepManager.enabled[ \t]*=" "$SIAMPORTCFG"
+check "SleepManager.sleepString" "^[ \t]*SleepManager.sleepString[ \t]*=" "$SIAMPORTCFG"
+check "SleepManager.sleepDelay" "^[ \t]*SleepManager.sleepDelay[ \t]*=" "$SIAMPORTCFG"
+check "SleepManager.minAwakeSeconds" "^[ \t]*SleepManager.minAwakeSeconds[ \t]*=" "$SIAMPORTCFG"
+
+check "NodeService.leaseRenewalInterval" "^[ \t]*NodeService.leaseRenewalInterval[ \t]*=" "$SIAMPORTCFG"
+check "NodeService.auxLeaseRenewalInterval" "^[ \t]*NodeService.auxLeaseRenewalInterval[ \t]*=" "$SIAMPORTCFG"
+
+check "NodeService.leaseInterval" "^[ \t]*NodeService.leaseRenewalInterval[ \t]*=" "$SIAMPORTCFG"
+check "NodeService.auxLeaseInterval" "^[ \t]*NodeService.auxLeaseRenewalInterval[ \t]*=" "$SIAMPORTCFG"
+
+check "CommsManager.enabled" "^[ \t]*CommsManager.enabled[ \t]*=" "$SIAMPORTCFG"
+check "CommsManager.parentLinkOn" "^[ \t]*CommsManager.parentLinkOn[ \t]*=" "$SIAMPORTCFG"
+check "CommsManager.parentLinkOff" "^[ \t]*CommsManager.parentLinkOff[ \t]*=" "$SIAMPORTCFG"
+check "CommsManager.parentLinkStatus" "^[ \t]*CommsManager.parentLinkStatus[ \t]*=" "$SIAMPORTCFG"
+check "CommsManager.protocolWaitTime" "^[ \t]*CommsManager.protocolWaitTime[ \t]*=" "$SIAMPORTCFG"
+check "CommsManager.processWaitTime" "^[ \t]*CommsManager.processWaitTime[ \t]*=" "$SIAMPORTCFG"
+check "CommsManager.reassert" "^[ \t]*CommsManager.reassert[ \t]*=" "$SIAMPORTCFG"
+check "CommsManager.maxReassertTries" "^[ \t]*CommsManager.maxReassertTries[ \t]*=" "$SIAMPORTCFG"
+
+check "CommsManager.auxEnabled" "^[ \t]*CommsManager.auxEnabled[ \t]*=" "$SIAMPORTCFG"
+check "CommsManager.auxLinkOn" "^[ \t]*CommsManager.auxLinkOn[ \t]*=" "$SIAMPORTCFG"
+check "CommsManager.auxLinkOff" "^[ \t]*CommsManager.auxLinkOff[ \t]*=" "$SIAMPORTCFG"
+check "CommsManager.auxProtocolWaitTime" "^[ \t]*CommsManager.auxProtocolWaitTime[ \t]*=" "$SIAMPORTCFG"
+check "CommsManager.auxProcessWaitTime" "^[ \t]*CommsManager.auxProcessWaitTime[ \t]*=" "$SIAMPORTCFG"
+
+check "" "^[ \t]*serviceJar0[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*serialPort0[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*powerPort0[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*commsMode0[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*serviceJar1[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*serialPort1[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*powerPort1[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*commsMode1[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*serviceJar2[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*serialPort2[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*powerPort2[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*commsMode2[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*serviceJar3[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*serialPort3[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*powerPort3[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*commsMode3[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*serviceJar4[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*serialPort4[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*powerPort4[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*commsMode4[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*serviceJar5[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*serialPort5[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*powerPort5[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*commsMode5[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*serviceJar6[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*serialPort6[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*powerPort6[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*commsMode6[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*serviceJar7[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*serialPort7[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*powerPort7[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*commsMode7[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*serviceJar8[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*serialPort8[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*powerPort8[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*commsMode8[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*serviceJar9[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*serialPort9[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*powerPort9[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*commsMode8[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*serviceJar10[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*serialPort10[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*powerPort10[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*commsMode10[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*serviceJar11[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*serialPort11[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*powerPort11[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*commsMode11[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*serviceJar12[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*serialPort12[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*powerPort12[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*commsMode12[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*serviceJar13[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*serialPort13[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*powerPort13[ \t]*=" "$SIAMPORTCFG"
+check "" "^[ \t]*commsMode13[ \t]*=" "$SIAMPORTCFG"
+
+#check "" "^[ \t]*[ \t]*=" "$SIAMPORTCFG"
+
+# check siamEnv
+echo
+echo "check $SIAMENV:"
+echo
+#echo `basename $SIAMENV`:
+check "JAVA" "^[ \t]*export[ \t]*JAVA[ \t]*=" "$SIAMENV"
+check "JAVA_OPTIONS" "^[ \t]*export[ \t]*JAVA_OPTIONS[ \t]*=" "$SIAMENV"
+check "SIAM_BIN" "^[ \t]*export[ \t]*SIAM_BIN[ \t]*=" "$SIAMENV"
+check "SIAM_CODEBASE" "^[ \t]*export[ \t]*SIAM_CODEBASE[ \t]*=" "$SIAMENV"
+check "PARENT_HOST" "^[ \t]*export[ \t]*PARENT_HOST[ \t]*=" "$SIAMENV"
+check "SIAM_CLASSPATH" "^[ \t]*export[ \t]*SIAM_CLASSPATH[ \t]*=" "$SIAMENV"
+check "PATH" "^[ \t]*export[ \t]*PATH[ \t]*=" "$SIAMENV"
+check "SIAM_AUTOSTART" "^[ \t]*export[ \t]*SIAM_AUTOSTART[ \t]*=" "$SIAMENV"
+check "PARENT_LINK_ON_SCRIPT" "^[ \t]*export[ \t]*PARENT_LINK_ON_SCRIPT[ \t]*=" "$SIAMENV"
+check "PARENT_LINK_OFF_SCRIPT" "^[ \t]*export[ \t]*PARENT_LINK_OFF_SCRIPT[ \t]*=" "$SIAMENV"
+check "SIAM_EXIT_SCRIPT" "^[ \t]*export[ \t]*SIAM_EXIT_SCRIPT[ \t]*=" "$SIAMENV"
+check "ETHERNET_ADDRESS_PREFIX" "^[ \t]*export[ \t]*ETHERNET_ADDRESS_PREFIX[ \t]*=" "$SIAMENV"
+check "SECONDARY_RADIO_ENABLED" "^[ \t]*export[ \t]*SECONDARY_RADIO_ENABLED[ \t]*=" "$SIAMENV"
+check "LOG4J_THRESHOLD" "^[ \t]*export[ \t]*LOG4J_THRESHOLD[ \t]*=" "$SIAMENV"
+
+# check suspend and others
+echo
+echo "$SUSPENDSH:"
+check "setPWER" "setPWER[ /t]*[xX0-9]" "$SUSPENDSH"
+echo
+echo "$RCLOCAL:"
+check "fsck" "fsck" "$RCLOCAL"
+check "setPWER" "setPWER[ /t]*[xX0-9]" "$RCLOCAL"
+echo
+echo "$LOADXR:"
+check "LOADXR" "insmod" "$LOADXR"
+echo
+echo "$AUXTELEM:"
+check "AUXSLEEP" "sleepTime" "$AUXTELEM"
+echo
+echo "$INITTAB:"
+check "AUXINIT" "auxTelem" "$INITTAB"
+echo
+echo "$GBVERSION:"
+check "GBVERSION" ".*" "$GBVERSION"
+exit $ERR

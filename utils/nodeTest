@@ -1,0 +1,66 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Script executes moos.deployed.NodeTest.main()
+# $Revision: 1.4 $";
+
+if [ -n "$1" ]
+then
+    case $1 in \
+      ALL | DEBUG | INFO | WARN | ERROR | FATAL | OFF | NULL ) \
+	LOG_THRESHOLD=$1 ;;
+      * ) echo "usage: `basename $0` [ ALL | DEBUG | INFO | WARN | ERROR | FATAL | OFF | NULL ]" ;
+          exit 1;;
+    esac
+else
+  LOG_THRESHOLD=INFO
+fi
+
+# Define the node log file name, if it isn't defined.
+# Normally defined by startnode
+DFLT_NODE_LOG=$SIAM_HOME/logs/`hostname`.`/bin/date +%Y%m%d%H%M`
+SIAM_NODE_LOG=${SIAM_NODE_LOG:-"$DFLT_NODE_LOG"}
+
+# define log4j config, if not defined
+# Normally be defined by siamEnv
+SIAM_LOG4J=${SIAM_LOG4J:="$SIAM_HOME/properties/siam.log4j"}
+
+# Define the exit script, if it isn't defined.
+# Should be defined in /etc/siam/siamEnv.
+exitScript=${SIAM_EXIT_SCRIPT:="/etc/siam/postSIAM"}
+
+# Remove the post SIAM script.
+# If it is needed, it will be generated
+# automatically by the SIAM app before
+# it exits.
+if [ -f "$exitScript" ]
+then
+    rm -f $exitScript
+fi
+
+# SIAM app starts here
+echo "Starting at $(date) [ Log Level @ " $LOG_THRESHOLD " ]"
+echo "siam.exit.script=$exitScript"
+
+$JAVA $JAVA_OPTIONS -cp $SIAM_CLASSPATH \
+-Djava.security.policy=$SIAM_HOME/properties/policy \
+-Djava.rmi.server.codebase=$SIAM_CODEBASE \
+-Dsiam_home=$SIAM_HOME -Dlog4j.threshold=$LOG4J_THRESHOLD \
+-Dsiam.exit.script=$exitScript \
+-Dsiam.node.log=$SIAM_NODE_LOG \
+-Dsiam.log4j=$SIAM_LOG4J \
+org.mbari.siam.core.NodeMain \
+ -config org.mbari.siam.moos.deployed.MOOSNodeConfigurator $*
+
+# If the SIAM app has created a
+# script to be executed after shutdown,
+# execute it now
+if [ -f "$exitScript" ]
+then
+    chmod 4775 $exitScript
+    echo "executing $exitScript as `whoami`"    
+    export MANAGELOG_DIR=${MANAGELOG_HOME:-"/mnt/hda/logs"}
+    $exitScript 1>& /etc/siam/postExit.out
+fi

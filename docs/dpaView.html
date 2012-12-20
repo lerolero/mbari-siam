@@ -1,0 +1,52 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Tom O'Reilly">
+   <meta name="GENERATOR" content="Mozilla/4.79 [en] (Windows NT 5.0; U) [Netscape]">
+   <title>nodeTest</title>
+</head>
+<body>
+<b>NAME</b>
+<blockquote>dpaView - manipulate DPA ports</blockquote>
+
+<p><br><b>SYNOPSIS</b>
+<blockquote>
+<pre>DPA test and configuration tool</pre>
+</blockquote>
+
+<p><br><b>DESCRIPTION</b>
+<blockquote>The dpaView utility is a (bash) script-based utility that provides
+a control and status interface to DPA hardware. dpaView exposes several
+layers of status and control information, allowing the user to perform
+a range of tasks from setting register bits to initializing all installed
+DPAs using a few commands. The utility is implemented as a thin shell wrapper,
+allowing the user to execute shell commands from within dpaView, and to
+place instructions in a text file and use them as input for batch operations.
+As a shell script, it may be used in a minimal environment, and is easily
+modified without special tools.
+<p>dpaView provides built in help for the commands; (type 'help') at the
+prompt for assistance.</blockquote>
+
+<p><br><b>ENVIRONMENT</b>
+<ul>dpaView is intended for use on a sideArm board, connected to DPAs via
+a backplane. The following components must be on the sidearm:
+<ul>
+<li>
+sa1110spi kernel module must be installed</li>
+
+<li>
+sa1110gpio c. kernel module must be installed</li>
+
+<li>
+bash shell</li>
+
+<li>
+A text editor is optional (for creating script files)</li>
+</ul>
+</ul>
+<b>SEE ALSO</b>
+<blockquote><a href="lspi.html">lspi</a>,&nbsp; <a href="lgpio.html">lgpio</a></blockquote>
+
+</body>
+</html>

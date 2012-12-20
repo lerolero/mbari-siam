@@ -1,0 +1,18 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Simple RMI server. Used in conjunction with rmiclient script.
+
+if [ ! -n "$1" ]
+then
+  echo "usage: `basename $0` thisHostName"
+  exit 1
+fi
+
+$JAVA $JAVA_OPTIONS -cp $SIAM_CLASSPATH \
+-Djava.security.policy=$SIAM_HOME/properties/policy \
+-Dsiam_home=$SIAM_HOME -Dlog4j.threshold=$LOG4J_THRESHOLD \
+org.mbari.siam.tests.linkBenchmarks.server.Benchmark1Impl $1
+

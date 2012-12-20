@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>autoScript Manual Page</title>
+		<link href="../../css/content.css" rel="stylesheet" type="text/css" />
+		<link href="../../css/manpage.css" rel="stylesheet" type="text/css" />
+		</head>
+	
+	<body>
+		
+		<div class="nameHeader">
+			<h1>Name</h1> 
+			<div class="nameText">
+				<h2>autoScript <!-- name text here --></h2>
+				</div>
+			</div>
+		
+		<div class="synopsisHeader">
+			<h1>Synopsis</h1>
+			<div class="synopsisText">
+				Automatically transfer a script to a primary SIAM node and execute it.
+				<!--<div class="commands">autoScript <em class="options">nodeURL port</em></div>-->
+				</div>
+			</div>
+		
+		<div class="descriptionHeader">
+			<h1>Description</h1>
+			<div class="descriptionText">
+				<p>
+				<!-- description text here -->
+				The autoscript utilities automatically transfer a shell script from shore to the SIAM primary node during a telemetry connection.
+				A component on the node (runAutoscript) automatically execute the script there, and returns the script output on a subsequent connection.
+				</p><p>
+				These utilities are very useful in cases where the telemetry link is intermittent and unpredictable, 
+				making it difficult to sustain a connection long enough to perform maintenance or troubleshooting operations.
+				</p><p>
+				To automatically transfer and execute a script, follow these steps:</p>
+				<ul>
+					<li>Write the script
+					<ul>
+						<li>autoscripts must be implemented as 'bash' shell scripts</li>
+						<li>autoscript does not validate the script, so it is critical to adequately test the script before deploying it.</li>
+						<li>Note that the last line of an autoscript must be the following special comment:
+							
+							<div class="commands"># AUTOSCRIPT EOF</div>
+							
+							<div class="emphasis">The '#' character must appear in the first column.</div>
+							</li>
+						</ul>
+                    </li>
+					<li>Set up the transfer on the SIAM portal.
+					<ul>
+						<li>Copy the script to the portal</li>
+						<li>Log on to the portal and become root user</li>
+						<li>Set script permissions 775 (rwxrwxrx)</li>
+						<li>As root, copy the script to the autoscript directory with the name 'autoscript':
+							<div class="commands">cp myScript $SIAM_HOME/autoScript/pending/autoscript</div></li>
+						<li><div class="emphasis">Note the following</div>
+							<ul>
+								<li> Execution of the autoscript is NOT synchronized with telemetry retrieval by the portal utility</li>
+								<li> Only one autoscript is recognized and executed in surface node's &quot;pending&quot; directory</li>
+								<li> Execution of an autoscript is one-time only</li>
+								<li> ssh MUST be configured such that user 'ops' is not prompted for a password when transferring files via 'scp' to and from the SIAM primary node</li>
+								</ul>
+							</li>
+						</ul>
+                    a</li>
+					<li>Get the results
+					<ul>	
+						<li>Each time the node makes a connection to the portal, pending scripts are transferred to the node,<br />
+							and results from previous scripts are returned and emailed to users. To receive results from autoscript, edit <div class="path">/etc/ppp/ip-up.local</div> and find the call to manageAutoscript; add your email address to the list of recipients.</li>
+						<li>autoscript results will be sent by email when the script has completed execution</li>
+						</ul>
+                    </li>
+					</ul>
+				
+				<p>
+				The scripts that implement autoscript include:</p>
+				<ul>
+				<li>manageAutoscript - Executes on the portal host; invoked by /etc/ppp/ip-up.local. Automatically transfers a pending autoscript from shore to SIAM primary node. Retrieves results of previous autoscript from SiAM primary node to shore and emails it to users.</li>
+				<li>runAutoscript -  Executes on the SIAM primary node. Automatically executes autoscript transferred from shore, captures script output (stdout, stderr).</li>
+				</ul>	 
+				<h2>Options</h2>
+				none
+				
+				<!--
+				 <table class="altTable">
+				 <tr>
+				 <th>Option</th>
+				 <th>Description</th>
+				 <th>Values</th>
+				 </tr>
+				 <tr>
+				 <td>nodeURL</td>
+				 <td>IP address or host name of SIAM node</td>
+				 <td>e.g. 134.89.88.1, mooring.moos.mbari.org</td>
+				 </tr>
+				 <tr class="alt">
+				 <td>portName</td>
+				 <td>Name of instrument port (or alias) defined in siamPort.cfg</td>
+				 <td>/dev/ttyS8, COM1, /dev/tty.KeySerial1</td>
+				 </tr>
+				 <tr>
+				 <td></td>
+				 <td></td>
+				 <td>-</td>
+				 </tr>
+				 <tr class="alt">
+				 <td></td>
+				 <td></td>
+				 <td>-</td>
+				 </tr>
+				 </table>
+				 -->
+				<p>
+				Example output:</p>
+				<pre>
+					none
+					</pre>
+				<p></p>
+				</div>
+			</div>
+		
+		<div class="environmentHeader">
+			<h1>Environment</h1>
+			<div class="environmentText">
+				<p>
+				<!-- description text here -->
+			    The following environment variables must be set:
+				</p>	 
+						<table class="altTable">
+							<tr>
+								<th>Variable</th>
+								<th>Description</th>
+								<th>Example</th>
+								</tr>
+							<tr>
+								<td>JAVA_HOME </td>
+								<td>location of Java installation</td>
+								<td><div class="path"> /j9, /opt/java/jdk1.3.1, etc.</div></td>
+								</tr>
+							<tr class="alt">
+								<td>JAVA</td>
+								<td>Path to JVM command</td>
+								<td>For MMC<div class="commands">$JAVA_HOME/bin/j9</div><br />For Sun JVM (e.g. linux, win32, mac OS) <div class="commands">$JAVA_HOME/bin/java</div>
+									</td>
+								</tr>
+							<tr>
+								<td>SIAM_HOME</td>
+								<td>top of the SIAM directory tree</td>
+								<td>-</td>
+								</tr>
+							<tr class="alt">
+								<td>SIAM_CLASSPATH</td>
+								<td>Path including all SIAM and supporting classes</td>
+								<td>For MMC<div class="path">$JAVA_HOME/lib/jclMax/classes.zip:$JAVA_HOME/lib/prsnlmot.jar:$JAVA_HOME/lib/RXTXcomm.jar:$SIAM_HOME/classes</div><br />
+									For linux/win32<div class="path"> $SIAM_HOME/classes</div></td>
+								</tr>
+							<!--
+							 <tr>
+							 <td></td>
+							 <td></td>
+							 <td>-</td>
+							 </tr>
+							 <tr class="alt">
+							 <td></td>
+							 <td></td>
+							 <td>-</td>
+							 </tr>
+							 -->
+							</table>
+						<p></p>
+						</div>
+			</div>
+		
+		<div class="seeAlsoHeader">
+			<h1>See Also</h1>
+			<div class="seeAlsoText">
+			None
+			<!--
+				<div class="command"><a href=".html#" target="mainFrame">link1</a></div>
+				</div>
+				-->
+			</div>
+			</div>
+		</body>
+	</html>

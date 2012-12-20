@@ -1,0 +1,471 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>Index of SIAM user documentation</title>
+  <meta content="Tom O'Reilly" name="author">
+</head>
+<body>
+<h1>Index of SIAM user documentation</h1>
+<br>
+<a href="#nodeService">Node service management</a><br>
+<br>
+<a href="#serviceJarsAndPucks">Service jar files and PUCKs</a><br>
+<br>
+<a href="#instrumentsAndPorts">Instruments and ports</a><br>
+<br>
+<a href="#cpuAndComms">CPU, power, timekeeping, and communications
+management</a><br>
+<br>
+<a href="#AllUtilities">All utilities</a><br>
+<br>
+<a href="MMC-SIAM-UsersGuide.html">MMC
+and SIAM Users Guide</a><br>
+<br>
+<h2><a name="nodeService"></a>Node service management</h2>
+<a href="enableSleep-disableSleep.html">enableSleep/disableSleep</a> -
+enable/disable sleep management on specified MOOS node<br>
+<pre style="margin-left: 40px;">enableSleep nodeHost<br>disableSleep nodeHost<br></pre>
+<a href="exitNode.html">exitNode</a> -
+shutdown each instrument service and exit the SIAM application
+<blockquote>
+  <pre>exitNode nodeHost</pre>
+</blockquote>
+<span style="text-decoration: underline;"><a href="listSubnodes.html">listSubnodes</a>
+</span>- list subnodes of specified MOOS node<br>
+<blockquote>
+  <pre>listSubnodes nodeHost</pre>
+</blockquote>
+<a href="node.html">node</a> - start a
+MOOS node service
+<blockquote>
+  <pre>node portalHost [verbosity]</pre>
+</blockquote>
+<a href="nodeInfo.html">nodeInfo</a> - display basic information for
+specified MOOS node and its subnodes<br>
+<pre style="margin-left: 40px;">nodeInfo nodeHost</pre>
+<a href="nodeStatus.html">nodeStatus</a>
+- list diagnostic information for specified MOOS node
+<pre style="margin-left: 40px;">nodeStatus nodeHostname</pre>
+<br>
+<h2><a name="serviceJarsAndPucks"></a>Service jar files and PUCKs<br>
+</h2>
+<a href="catPuck.html">catPuck</a> - quickly identify the cotents of a
+puck
+<pre style="margin-left: 40px;">catPuck portName</pre>
+<a href="puckit.html">puckit </a>- create "jar file" for instrument
+service
+<blockquote>
+  <pre>puckit serviceClassName propertiesFile jarFile<br></pre>
+</blockquote>
+<a href="readPuck.html">readPuck</a> - extract the contents of the puck
+and store it in a local file
+<pre style="margin-left: 40px;">readPuck portName</pre>
+<br>
+<a href="writePuck.html">writePuck</a> - write service code and
+metadata to the pucks non-volatile memory
+<blockquote>
+  <pre>writePuck jarFile portName [-id]<br></pre>
+</blockquote>
+<br>
+<h2><a name="instrumentsAndPorts"></a>Instruments and ports</h2>
+<a href="annotatePort.html">annotatePort</a> - annotate instrument data
+stream on specified port of specified MOOS node
+<pre style="margin-left: 40px;">annotatePort nodeHost portName(s)</pre>
+<br>
+<a href="cachePort.html">cachePort</a> - cache current property values,
+or clear the cache, for service on specified node and port
+<pre style="margin-left: 40px;">cachePort nodeHost portName(s) [-clear]</pre>
+<br>
+<a href="conPort.html">conPort</a> - acquire a console to a specific
+port
+<blockquote>
+  <pre>conPort nodeHost portName<br></pre>
+</blockquote>
+<br>
+<a href="dpaView.html">dpaView</a> - manipulate DPA ports
+<pre style="margin-left: 40px;">DPA test and configuration tool</pre>
+<a href="filters.html">getfilter, setfilter, clearfilter</a> -
+manipulate telemetry
+filters<br>
+<pre style="margin-left: 40px;">getfilter nodeHostname deviceID<br>setfilter nodeHostname -types <span
+ style="font-style: italic;">type(s)</span> -skip <span
+ style="font-style: italic;">interval</span> deviceID<br>clearfilter nodeHostname deviceID<br></pre>
+<a href="getLastSample.html">getLastSample</a> - retrieve and display
+latest data sample from instrument on specified port of specified MOOS
+node
+<pre style="margin-left: 40px;">getLastSample nodeHost portName(s)</pre>
+<br>
+<a href="getLeases.html">getLeases</a> - list cpu and comms leases
+established on specified node
+<blockquote>
+  <pre>getLeases nodeHostname<br></pre>
+</blockquote>
+<a href="getMetadata.html">getMetadata</a> - retrieve and display
+metadata from instrument service on specified port of specified MOOS
+node
+<blockquote>
+  <pre>getMetadata nodeHost portName(s) <br></pre>
+</blockquote>
+<a href="getPackets.html">getPackets</a> - retrieve packets from
+specified instrument service on specified host<br>
+<pre style="margin-left: 40px;">getPackets nodeHostname [options] deviceID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <br></pre>
+<a href="summariesAndFiltering.html">Instrument Data Summaries and
+Telemetry Subsampling</a> <br>
+<a href="instrumentProperties.html"><br>
+Instrument Service Properties</a><br>
+<br>
+<br>
+<a href="logView.html">logView</a> - Display packets from specified
+SIAM log to stdout
+<pre style="margin-left: 40px;">logView [options] ISI-ID directory</pre>
+<br>
+<a href="portProperties.html">portProperties</a> - display properties
+of device service on specified host and port MOOS node
+<blockquote>
+  <pre>portProperties nodeHost portName(s)<br></pre>
+</blockquote>
+<a href="portStatus.html">portStatus</a> - display status of node
+instrument port MOOS node
+<blockquote>
+  <pre>portStatus nodeHost portName(s)<br></pre>
+</blockquote>
+<a href="powerDownPort.html">powerDownPort</a> - power down and isolate
+an instrument port
+<blockquote>
+  <pre>powerDownPort portName<br></pre>
+</blockquote>
+<a href="powerUpPort.html">powerUpPort </a>- power up and enable comms
+on an instrument port
+<pre style="margin-left: 40px;">powerUpPort portName</pre>
+<a href="restartPort.html">restartPort</a> -&nbsp;restart device
+service
+on specified host and port MOOS node
+<pre style="margin-left: 40px;">restartPort nodeHost portName(s)</pre>
+<a href="samplePort.html"> samplePort</a> - trigger acquisition and
+display data sample from instrument on specified port of specified MOOS
+node
+<blockquote>
+  <pre>samplePort nodeHost portName(s)<br></pre>
+</blockquote>
+<a href="scanPort.html">scanPort</a> - load instrument service for
+specified port on specified MOOS node
+<blockquote>
+  <pre>scanPort nodeHost portName(s)<br></pre>
+</blockquote>
+<a href="scheduler.html">Scheduling utilties</a><br>
+<br>
+<a href="setProperty.html">setProperty</a> - set device service
+properties to specified values on specified host and port
+<blockquote>
+  <pre>setProperty nodeHost portName(s)<br></pre>
+</blockquote>
+<a href="shutdownPort.html">shutdownPort</a> - shutdown the service
+on specified port(s) on specified MOOS node
+<blockquote>
+  <pre>shutdownPort nodeHost portName(s)<br></pre>
+</blockquote>
+<br>
+<h2><a name="cpuAndComms"></a>CPU, power, timekeeping, and
+communications management<br>
+</h2>
+<a href="cpuAwake.html">cpuAwake</a> (alias "a") - Keep the CPU awake
+(veto sleep mode), or schedule a wakeup in the future.
+<blockquote>
+  <pre>cpuAwake [when] [howLong] [-r rqstID] [nodeHost]<br></pre>
+</blockquote>
+<br>
+<a href="getLeases.html">getLeases</a> - list cpu and comms leases
+established on specified node
+<blockquote>
+  <pre>getLeases nodeHostname</pre>
+</blockquote>
+<a href="killj9.html"><br>
+killj9</a> - kill j9 JVM parent process and children
+<pre style="margin-left: 40px;">killj9</pre>
+<a href="killBIN.html">killBIN</a> -
+"safe" and shutdown instruments, and prepare for node shutdown
+<blockquote>
+  <pre>  killBIN node [-bkqrs][-D quitDelaySec][-H haltDelaySec]<br></pre>
+</blockquote>
+<a href="lease.html">lease</a> - get a lease on the node's
+communications link
+<pre style="margin-left: 40px;">lease</pre>
+<a href="ricohRTC.html">ricohRTC</a> - get/set time maintained by the
+Ricoh RTC; or interactively set its registers
+<pre style="margin-left: 40px;">ricohRTC [-i] [-s] [-t] [-a <oscadj>] [-k &lt;0|1&gt;] [-m &lt;12|24&gt;] [-h]</oscadj></pre>
+<a href="switchBIN400V.html">switchBIN400V</a> - get status of HV
+switch, or toggle HV power to subnodes
+<blockquote>
+  <pre>switchBIN400V node portName [ON|OFF|channelON|channelOFF|ALLON|ALLOFF]<br></pre>
+</blockquote>
+<a href="switchHiVoltage.html">switchHiVoltage</a> - enable the high
+voltage converters on the MOOS Power System
+<pre style="margin-left: 40px;">switchHiVoltage nodeHost portName [ON|OFF]</pre>
+<br>
+<a href="suspend.html">suspend</a> - put the CPU into suspend (sleep)
+mode
+<blockquote>
+  <pre>suspend [-n] [-v] [<seconds>]<br></seconds></pre>
+</blockquote>
+<a href="wakeup.html">wakeup</a> - wakeup suspended node(s) via Medusa
+broadcast<br>
+<br>
+<div style="margin-left: 40px;">wakeup bcastOrigin <br>
+</div>
+<pre><br></pre>
+<h2><a name="AllUtilities"></a>All documented utilities<br>
+</h2>
+<br>
+<a href="addService.html">addService</a> - add a service Jar file to
+the service code directory for use with an ID only puck
+<blockquote>
+  <pre>addService jarFile<br></pre>
+</blockquote>
+<a href="annotatePort.html">annotatePort</a> - annotate instrument data
+stream on specified port of specified MOOS node
+<blockquote>
+  <pre>annotatePort nodeHost portName(s)<br></pre>
+</blockquote>
+<a href="auxTelem.html">auxTelem.sh</a> - Shell script passed to
+/etc/inittab to enable the secondary radio port as a Linux tty
+<blockquote>
+  <pre>auxTelem.sh [-d device] [-b baud] [-t timeout] [-s sleep_time]<br></pre>
+</blockquote>
+<a href="binBackups.html">binBackups</a> - manipulate backup batteries
+and capacitors in MOOS power system
+<blockquote>
+  <pre>binBackups node portName option<br></pre>
+</blockquote>
+<a href="cachePort.html">cachePort</a> - cache current property values,
+or clear the cache, for service on specified node and port
+<blockquote>
+  <pre>cachePort nodeHost portName(s) [-clear]<br></pre>
+</blockquote>
+<a href="catJar.html">catJar</a> - list the contents of a jar file
+<blockquote>
+  <pre>catJar jarFile [x]<br></pre>
+</blockquote>
+<a href="catPuck.html">catPuck</a> - quickly identify the cotents of a
+puck
+<blockquote>
+  <pre>catPuck portName<br></pre>
+</blockquote>
+<a href="conPort.html">conPort</a> - acquire a console to a specific
+port
+<blockquote>
+  <pre>conPort nodeHost portName<br></pre>
+</blockquote>
+<a href="cpuAwake.html">cpuAwake</a> (alias "a") - Keep the CPU awake
+(veto sleep mode), or schedule a wakeup in the future.
+<blockquote>
+  <pre>cpuAwake [when] [howLong] [-r rqstID] [nodeHost]<br></pre>
+</blockquote>
+<a href="dpaView.html">dpaView</a> - manipulate DPA ports
+<blockquote>
+  <pre>DPA test and configuration tool<br></pre>
+</blockquote>
+<a href="enableSleep-disableSleep.html">enableSleep/disableSleep</a> -
+enable/disable sleep management on specified MOOS node<br>
+<pre style="margin-left: 40px;">enableSleep nodeHost<br>disableSleep nodeHost<br></pre>
+<a href="exitNode.html">exitNode</a> - shutdown each instrument service
+and exit the SIAM application
+<blockquote>
+  <pre>exitNode nodeHost<br></pre>
+</blockquote>
+<a href="filters.html">getfilter, setfilter, clearfilter</a> -
+manipulate telemetry
+filters<br>
+<pre style="margin-left: 40px;">getfilter nodeHostname deviceID<br>setfilter nodeHostname -types <span
+ style="font-style: italic;">type(s)</span> -skip <span
+ style="font-style: italic;">interval</span> deviceID<br>clearfilter nodeHostname deviceID<br></pre>
+<a href="getLastSample.html">getLastSample</a> - retrieve and display
+latest data sample from instrument on specified port of specified MOOS
+node
+<blockquote>
+  <pre>getLastSample nodeHost portName(s)<br></pre>
+</blockquote>
+<a href="getLeases.html">getLeases</a> - list cpu and comms leases
+established on specified node
+<blockquote>
+  <pre>getLeases nodeHostname<br></pre>
+</blockquote>
+<a href="getMetadata.html">getMetadata</a> - retrieve and display
+metadata from instrument service on specified port of specified MOOS
+node
+<blockquote>
+  <pre>getMetadata nodeHost portName(s) <br></pre>
+</blockquote>
+<a href="getPackets.html">getPackets</a> - retrieve packets from
+specified instrument service on specified host<br>
+<pre style="margin-left: 40px;">getPackets nodeHostname [options] deviceID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  </pre>
+<a href="instrumentProperties.html">Instrument Service Properties</a><br>
+<br>
+<a href="killj9.html">killj9</a> - kill j9 JVM parent process and
+children
+<blockquote>
+  <pre>killj9<br></pre>
+</blockquote>
+<a href="killBIN.html">
+killBIN</a> - "safe" and shutdown instruments, and prepare for node
+shutdown <br>
+<blockquote>
+  <pre>  killBIN node [-bkqrs][-D quitDelaySec][-H haltDelaySec]<br></pre>
+</blockquote>
+<a href="lease.html">
+lease</a> - get a lease on the node's communications link
+<blockquote>
+  <pre>lease<br></pre>
+</blockquote>
+<a href="listPorts.html">listPorts</a> - list ports and services
+associated with a specified MOOS node
+<blockquote>
+  <pre>listPorts nodeHostname<br></pre>
+</blockquote>
+<a href="listServices.html">listServices</a> - list the services that
+have been added to a node using the addService command
+<blockquote>
+  <pre>listServices<br></pre>
+</blockquote>
+<span style="text-decoration: underline;"><a href="listSubnodes.html">listSubnodes</a>
+</span>- list subnodes of specified MOOS node<br>
+<blockquote>
+  <pre>listSubnodes nodeHost</pre>
+</blockquote>
+<a href="listSwitches.html">listSwitches</a> - list DPA power switches
+associated with a specified MOOS node
+<blockquote>
+  <pre>listSwitches nodeHost<br></pre>
+</blockquote>
+<a href="logPublish.html">logPublish</a> - publish contents of device
+log to SSDS<br>
+<pre style="margin-left: 40px;">logPublish logDirectory deviceID</pre>
+<a href="logView.html">logView</a> - Display packets from specified
+SIAM log to stdout
+<blockquote>
+  <pre>logView [options] ISI-ID directory<br></pre>
+</blockquote>
+<a href="node.html">node</a> - start
+a MOOS node service
+<blockquote>
+  <pre>node portalHost [verbosity]</pre>
+</blockquote>
+<a href="nodeInfo.html">nodeInfo</a> - display basic information for
+specified MOOS node and its subnodes<br>
+<pre style="margin-left: 40px;">nodeInfo nodeHost</pre>
+<a href="nodeStatus.html">nodeStatus</a> - list diagnostic information
+for specified MOOS node
+<blockquote>
+  <pre>nodeStatus nodeHostname<br></pre>
+</blockquote>
+<a href="portal.html">portal</a> - launch a portal server
+<blockquote>
+  <pre>portal [options] [nodeHost [nodeHost2 [...]]]<br></pre>
+</blockquote>
+<a href="portProperties.html">portProperties</a> - display properties
+of device service on specified host and port MOOS node
+<blockquote>
+  <pre>portProperties nodeHost portName(s)<br></pre>
+</blockquote>
+<a href="portStatus.html">portStatus</a> - display status of node
+instrument port MOOS node
+<blockquote>
+  <pre>portStatus nodeHost portName(s)<br></pre>
+</blockquote>
+<a href="powerDownPort.html">powerDownPort</a> - power down and isolate
+an instrument port
+<blockquote>
+  <pre>powerDownPort portName<br></pre>
+</blockquote>
+<a href="powerUpPort.html">powerUpPort </a>- power up and enable comms
+on an instrument port
+<blockquote>
+  <pre>powerUpPort portName<br></pre>
+</blockquote>
+<a href="puckit.html">puckit </a>- create "jar file" for instrument
+service
+<blockquote>
+  <pre>puckit serviceClassName propertiesFile jarFile<br></pre>
+</blockquote>
+<a href="readPuck.html">readPuck</a> - extract the contents of the puck
+and store it in a local file
+<blockquote>
+  <pre>readPuck portName<br></pre>
+</blockquote>
+<a href="removeService.html">removeService</a> - remove a service that
+has been added to a node using the addService command
+<blockquote>
+  <pre>removeService UUID<br></pre>
+</blockquote>
+<a href="restartPort.html">restartPort </a>- restart device service
+on specified host and port MOOS node
+<blockquote>
+  <pre>restartPort nodeHost portName(s)<br></pre>
+</blockquote>
+<a href="ricohRTC.html">ricohRTC</a> - get/set time maintained by the
+Ricoh RTC; or interactively set its registers
+<blockquote>
+  <pre>ricohRTC [-i] [-s] [-t] [-a <oscadj>] [-k &lt;0|1&gt;] [-m &lt;12|24&gt;] [-h]<br></oscadj></pre>
+</blockquote>
+<a href="samplePort.html">samplePort</a> - trigger acquisition and
+display data sample from instrument on specified port of specified MOOS
+node
+<blockquote>
+  <pre>samplePort nodeHost portName(s)<br></pre>
+</blockquote>
+<a href="scanPort.html">scanPort</a> - load instrument service for
+specified port on specified MOOS node
+<blockquote>
+  <pre>scanPort nodeHost portName(s)<br></pre>
+</blockquote>
+<a href="scheduler.html">Scheduling utilties</a><br>
+<br>
+<a href="setProperty.html">setProperty</a> - set device service
+properties to specified values on specified host and port
+<blockquote>
+  <pre>setProperty nodeHost portName(s)<br></pre>
+</blockquote>
+<a href="shutdownPort.html">shutdownPort</a> - shutdown the service
+on specified port(s) on specified MOOS node
+<blockquote>
+  <pre>shutdownPort nodeHost portName(s)<br></pre>
+</blockquote>
+<a href="summariesAndFiltering.html">Instrument Data Summaries and
+Telemetry Subsampling</a> <br>
+<br>
+<a href="suspend.html">suspend</a> - put the CPU into suspend (sleep)
+mode
+<blockquote>
+  <pre>suspend [-n] [-v] [<seconds>]<br></seconds></pre>
+</blockquote>
+<a href="switchBIN400V.html">switchBIN400V</a> - get status of HV
+switch, or toggle HV power to subnodes
+<blockquote>
+  <pre>switchBIN400V node portName [ON|OFF|channelON|channelOFF|ALLON|ALLOFF]<br></pre>
+</blockquote>
+<a href="switchHiVoltage.html">switchHiVoltage</a> - enable the high
+voltage converters on the MOOS Power System
+<blockquote>
+  <pre>switchHiVoltage nodeHost portName [ON|OFF]<br></pre>
+</blockquote>
+<a href="wakeup.html">wakeup</a> - wakeup suspended node(s) via Medusa
+broadcast
+<blockquote>
+  <pre>wakeup bcastOrigin <bcastdestination>
+</bcastdestination></pre>
+</blockquote>
+<a href="writePuck.html">writePuck</a> - write service code and
+metadata to the pucks non-volatile memory
+<blockquote>
+  <pre>writePuck jarFile portName [-id]<br></pre>
+</blockquote>
+<pre><br><br><br><br><br><br></pre>
+<blockquote>
+  <pre><seconds></seconds><seconds></seconds></pre>
+</blockquote>
+<br>
+<br>
+<br>
+<br>
+<br>
+</body>
+</html>

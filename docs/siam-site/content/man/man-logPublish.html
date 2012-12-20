@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>logPublish Manual Page</title>
+		<link href="../../css/content.css" rel="stylesheet" type="text/css" />
+		<link href="../../css/manpage.css" rel="stylesheet" type="text/css" />
+		</head>
+	
+	<body>
+		
+		<div class="nameHeader">
+			<h1>Name</h1> 
+			<div class="nameText">
+				<h2>logPublish <!-- name text here --></h2>
+				</div>
+			</div>
+		
+		<div class="synopsisHeader">
+			<h1>Synopsis</h1>
+			<div class="synopsisText">
+				<div class="commands">logPublish <em class="options">nodeURL -[hsntp] [-start startTime] [-stop stopTime] deviceID logDirectory</em></div>
+				</div>
+			</div>
+		
+		<div class="descriptionHeader">
+			<h1>Description</h1>
+			<div class="descriptionText">
+				<p>
+				<!-- description text here -->
+				The logPublish utility reads packets from the device log for deviceID, stored in logDirectory.
+				The packets are published to the Shore Side Data System (SSDS) database. The SSDS ingest server 
+				must be accessible from the host on which logPublish is executed.
+				</p><p>
+				The device log consists of two files, one the .dat extension and one with .idx extension.
+				The .dat file contains the data, and the .idx is an index to enable effient searches of the data file.
+				</p><p>	 
+				The file names use the format</p>
+				<div class="path">&lt;deviceID&gt;_0.dat, &lt;deviceID&gt;_0.idx</div>
+				<p>	 
+				For example, the log for device 1473 consists of files 1473_0.dat and 1473_0.idx. If the log files for the 
+				specified device already exist, getPackets will append to the log.
+				</p><p>	 
+				The logged packets can subsequently be displayed with the logView utility.
+				</p>
+				<h2>Options</h2>
+				<table class="altTable">
+					<tr>
+						<th width="15%">Option</th>
+						<th>Description</th>
+						<th>Values</th>
+						</tr>
+					<tr>
+						<td>nodeURL</td>
+						<td>IP address or host name of SIAM node</td>
+						<td>e.g. 134.89.88.1, mooring.moos.mbari.org</td>
+						</tr>
+					<tr class="alt">
+						<td>logDirectory</td>
+						<td>Path to log files</td>
+						<td>$SIAM_HOME/logs</td>
+						</tr>
+					<tr>
+						<td>-h</td>
+						<td>Print usage message</td>
+						<td>-</td>
+						</tr>
+					<tr class="alt">
+						<td>-s</td>
+						<td>Sticky - record last sequence number in file (1).
+							On subsequent sticky calls, publish sequence numbers
+							</td>
+						<td>-</td>
+						</tr>
+					<tr>
+						<td>-n</td>
+						<td>No wrap - do not use Exportable wrapper</td>
+						<td>-</td>
+						</tr>
+					<tr class="alt">
+						<td>-t</td>
+						<td>Test mode, i.e., do everything but publish</td>
+						<td>-</td>
+						</tr>
+					<tr>
+						<td>-p</td>
+						<td>Print, i.e., print packets (w/ -test only)</td>
+						<td>-</td>
+						</tr>
+					<tr>
+						<td><p>-start startTime</p><p>-stop stopTime</p></td>
+						<td>Publish packets from within the specified time window. startTime and stopTime are date/time strings using the format:
+							<div class="commands">mm/dd/yyyy[Thh:mm[:ss]]</div>
+							
+							The time should be specified in UTC(?)
+							</td>
+						<td>04/01/2010, 03/15/2009T11:34</td>
+						</tr>
+					<tr class="alt">
+						<td>deviceID</td>
+						<td><p>long (64-bit) integer uniquely identifying the instrument service</p>
+							
+							<div class="emphasis">log utilities specify instruments using deviceIDs instead of instrument ports</div>
+							</td>
+						<td>14533,997,1003, etc.
+							</td>
+						</tr>
+						<!--
+						 <tr>
+						 <td></td>
+						 <td></td>
+						 <td>-</td>
+						 </tr>
+						 <tr class="alt">
+						 <td></td>
+						 <td></td>
+						 <td>-</td>
+						 </tr>
+						 -->
+						</table>
+				<p>
+				Example output:</p>
+				<pre>
+					none
+					</pre>
+				<p></p>
+				</div>
+			</div>
+		
+		<div class="environmentHeader">
+			<h1>Environment</h1>
+			<div class="environmentText">
+				<p>
+				<!-- description text here -->
+				The following environment variables must be set:
+				</p>	 
+						<table class="altTable">
+							<tr>
+								<th>Variable</th>
+								<th>Description</th>
+								<th>Example</th>
+								</tr>
+							<tr>
+								<td>JAVA_HOME </td>
+								<td>location of Java installation</td>
+								<td><div class="path"> /j9, /opt/java/jdk1.3.1, etc.</div></td>
+								</tr>
+							<tr class="alt">
+								<td>JAVA</td>
+								<td>Path to JVM command</td>
+								<td>For MMC<div class="commands">$JAVA_HOME/bin/j9</div><br />For Sun JVM (e.g. linux, win32, mac OS) <div class="commands">$JAVA_HOME/bin/java</div>
+									</td>
+								</tr>
+							<tr>
+								<td>SIAM_HOME</td>
+								<td>top of the SIAM directory tree</td>
+								<td>-</td>
+								</tr>
+							<tr class="alt">
+								<td>SIAM_CLASSPATH</td>
+								<td>Path including all SIAM and supporting classes</td>
+								<td>For MMC<div class="path">$JAVA_HOME/lib/jclMax/classes.zip:$JAVA_HOME/lib/prsnlmot.jar:$JAVA_HOME/lib/RXTXcomm.jar:$SIAM_HOME/classes</div><br />
+									For linux/win32<div class="path"> $SIAM_HOME/classes</div></td>
+								</tr>
+							<!--
+							 <tr>
+							 <td></td>
+							 <td></td>
+							 <td>-</td>
+							 </tr>
+							 <tr class="alt">
+							 <td></td>
+							 <td></td>
+							 <td>-</td>
+							 </tr>
+							 -->
+							</table>
+						<p></p>
+						</div>
+			</div>
+		
+		<div class="seeAlsoHeader">
+			<h1>See Also</h1>
+			<div class="seeAlsoText">
+				<div class="command"><a href="man-logView.html#" target="mainFrame">logView</a>,
+				<a href="man-repubBatch.html#" target="mainFrame">repubBatch</a>
+				</div>
+				</div>
+			</div>
+		
+		
+		</body>
+	</html>

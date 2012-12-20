@@ -1,0 +1,144 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+#
+# configt
+# Configure SIAM via http locally
+#
+# Invokes configTooland uses 
+# links text-based web browser to 
+# configure SIAM over a serial console
+#
+
+########################
+# Variable definitions
+########################
+opts="-m"
+DFLTLOG="/dev/null"
+DBGLOG=configt.out
+LOGFILE=$DFLTLOG
+DELAY=20
+CONFIGTOOL=$SIAM_HOME/utils/configTool
+RUID=0
+
+########################
+# Function definitions #
+########################
+
+#
+# printUsage
+#
+printUsage(){
+echo
+echo " Usage: `basename $0` [-d] [-s <delaySec>] [-r <id>] [<configTool options>] "
+echo "  -d     : send output to $DBGLOG    [$DFLTLOG]"
+echo "  -s     : start delay               [$DELAY]"
+echo "  -r     : required uid (Win32 only) [$RUID]"
+echo "  --help : display use message"
+echo
+echo " Notes:"
+echo "       - configt must be run as root under Linux or the -r option must"
+echo "         be used under Win32/Cygwin."
+echo
+echo "       - The SIAM application may not be run concurrently with configt."
+echo
+}
+
+
+# Start node configuration server and surf to configuration web page
+
+while [ "$#" -ge 1 ]
+do
+case "$1" in
+-d)
+   echo setting logfile=$DBGLOG
+   LOGFILE=$DBGLOG
+   shift
+;;
+-r)shift
+   echo setting ruid=$1
+   RUID=$1
+   shift
+;;
+-s)
+   shift
+   echo setting sleep=$1
+   DELAY=$1
+   if [ "$DELAY" -lt 0 ]
+   then
+       echo
+       echo "Invalid sleep interval"
+       echo
+       printUsage
+       exit
+   fi
+   shift
+;;
+--help)
+   printUsage
+   exit 0
+;;
+*)
+   # don't eat the args for configTool 
+   # stop parsing as soon as an unrecognized 
+   # option is encountered
+   opts="$*"
+   break
+;;
+esac
+done
+
+checkSiam
+if [ "$?" -eq 0 ]
+then
+    echo 
+    echo " #"
+    echo " # The configuration tool may not be run concurrently with the SIAM application."
+    echo " #"
+    echo " # Please stop SIAM before calling `basename $0`."
+    echo " # Use configt --help for options"
+    echo " #"
+    echo 
+    printUsage
+    exit 1
+fi
+
+userID=`id -u`
+
+if [ "$userID" -ne "$RUID" ]
+    then
+    echo
+    echo " #"
+    echo " # `basename $0` must be run as root (uid=$RUID) or the -r option must be used."
+    echo " #"
+    echo " # Use su -m before running configt (Linux) or use -r option (Win32/Cygwin)"
+    echo " # Use configt --help for options"
+    echo " #"
+    echo
+    printUsage
+
+    exit 1
+fi
+
+if [ "$#" -ge 1 ]
+then
+    opts=$*
+else
+    opts="-m"
+fi
+
+echo "starting $CONFIGTOOL, output to $LOGFILE delay=$DELAY"
+echo "opts: $opts"
+
+# Run configTool
+$CONFIGTOOL $opts >& $LOGFILE &
+
+# If user kills this script, be sure to kill servlet as well
+trap "echo killing configTool; kill $!" SIGINT SIGTERM
+
+echo "Have to wait a bit... standby..."
+sleep $DELAY
+
+links http://localhost:8181/config

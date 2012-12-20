@@ -1,0 +1,43 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Enable/Disable uplink xcvr
+
+# open a file to gpio device
+declare GPIO_dev=/dev/gpio
+
+# Configure GPDR uplink bits as outputs
+echo "1800O"
+echo "1800O" >$GPIO_dev
+
+# uplink xcvr bits to set/clear
+let uplink_bits=0x1800
+
+# set uplink bits
+case "$1" in
+[Oo][Nn] ) 
+        
+        echo `printf "%X+" $uplink_bits` >$GPIO_dev
+        echo
+	echo "Uplink Enabled ON"
+	echo
+;;
+[Oo][Ff][Ff] )
+        
+        echo `printf "%X-" $uplink_bits` >$GPIO_dev
+        echo
+	echo "Uplink Disabled OFF"
+	echo
+;;
+* )
+echo
+echo "Usage rs485.ops [on|off]"
+echo
+;;
+esac
+
+exit 0
+
+

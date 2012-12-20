@@ -1,0 +1,99 @@
+#!/bin/csh
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Launch the MMC portal service. The portal has two IP interfaces;
+# the "public address" is the IP address used by shore-based clients
+# of the portal. The "private address" is the address used by the
+# deployed at-sea platform (e.g. a PPP-RF interfaces). 
+#
+# This script accepts a "-start" option, which allows the user to
+# specify a packet retrieval criterion based on sensor packet timestamp.
+# The portal will only attempt to retrieve packets that have a timestamp
+# which is later than the "-start" time.
+
+# script configuration defaults
+set LOGLINK = "$SIAM_HOME/logs/portal.out"
+set PROFILELINK = "$SIAM_HOME/logs/profile.out"
+
+echo "portal process ID: $$"
+
+if (!($?LOG4J_THRESHOLD)) setenv LOG4J_THRESHOLD DEBUG
+
+if (!($?JAVA_OPTIONS)) setenv JAVA_OPTIONS
+
+# By default, retrieve all packets from beginning of time.
+set startTime = "0"
+set publish = ""
+set logDirectory = "$SIAM_HOME/logs"
+set first = ""
+set preferred = ""
+
+# Process leading options
+while ($#argv > 0)
+  if ("$argv[1]" == "-since" || "$argv[1]" == "-start") then
+    shift  # Get start time
+    set startTime = $argv[1]:q
+
+  else if ("$argv[1]" == "-publish") then
+    set publish = "-publish"
+
+  else if ("$argv[1]" == "-logdir") then
+    shift  # Get log directory
+    set logDirectory = $argv[1]:q
+  else if ("$argv[1]" == "-first") then
+    shift # Get preferred node(s)
+    set first = "-first"
+    set preferred = $argv[1]:q
+  else
+    break  # End of options
+  endif
+
+  shift   # Check next argument
+
+end
+
+# Maximum interval for DGC of local heap
+set dgcClientInterval = 7200000  # 2 hours
+
+# Minimum download interval in seconds
+set downloadInterval = 1
+
+# Set wireless lease interval
+set leaseTimeMsec = 3600000
+
+# Set system command to run after download session
+set systemCommand = runNtpDate
+
+# Set packet server port (default is 4567)
+set packetServerPort=4568
+
+echo "Starting MMC portal service"
+#set CP=`cygpath -w "$SIAM_HOME/jars/log4j-1.2.8.jar:$SIAM_HOME/classes:.:$SIAM_HOME/jars/ssds-client-pub-bob.jar"`
+#echo $SIAM_HOME $CP
+set LOGFILE="$SIAM_HOME/logs/portal-`date +%m%d%y-%H%M`.out"
+set PROFILELOG="$SIAM_HOME/logs/profile-`date +%m%d%y-%H%M`.out"
+echo LOGFILE=$LOGFILE
+echo PROFILELOG=$PROFILELOG
+
+rm $LOGLINK
+rm $PROFILELINK
+
+ln -s $LOGFILE $LOGLINK
+ln -s $PROFILELOG $PROFILELINK
+
+$JAVA $JAVA_OPTIONS \
+-cp ${SIAM_CLASSPATH}:$SIAM_HOME/jars/ssds-client-pub-bob.jar \
+-Djava.security.policy=$SIAM_HOME/properties/policy \
+-Dsun.rmi.dgc.client.gcInterval=$dgcClientInterval \
+-Dlog4j.threshold=$LOG4J_THRESHOLD \
+-DminDownloadIntervalSec=$downloadInterval \
+-DleaseTimeMsec=$leaseTimeMsec \
+-DsystemCommand=$systemCommand \
+-DpacketServerPort=$packetServerPort \
+-Dprofiler.log4j=$SIAM_HOME/properties/profiler.log4j \
+-Dsiam_home=$SIAM_HOME \
+-Dsiam.portal.log=$LOGFILE \
+-Dsiam.profile.log=$PROFILELOG \
+org.mbari.siam.operations.portal.Portal  $publish -start $startTime:q $first $preferred:q -logdir $logDirectory $argv >& $LOGFILE &

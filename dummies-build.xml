@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id:$ -->
+<project name="dummies" basedir=".">
+	
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Load property files in this order:
+
+    1. User properties
+    2. This level properties
+
+    This allows a user to have specific settings that override any other
+    settings (other than command-line, which always take precedence).
+    -->
+    <property file="${user.home}/build.properties" />
+    <property file="build.properties" />
+	
+	<!-- show Dummies help  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	
+	<target name="help">
+	<local name="pname"/>
+    <property name="pname" value="dummies" />
+		<echo>
+	${pname}.sine  - sine output test instruments
+	${pname}.ctd   - ctd test instruments
+	${pname}.adcp  - adcp test instruments
+	${pname}.co2   - CO2 test instruments
+	${pname}.no3   - nitrate test instruments
+	${pname}.fluor - fluorometer test instruments
+	${pname}.met   - meteorological test instruments
+	${pname}.rad   - radiometer test instruments
+	${pname}.sum   - summarizer test instruments
+	${pname}.gps   - GPS test instruments
+	${pname}.o2    - Dissolved oxygen test instruments
+		</echo>
+	</target>
+		
+	<!-- Build all Dummy service JARs  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	
+	<target name="all" depends="sine,test,ctd,adcp,co2,no3,fluor,met,rad,sum,gps,o2,shmoo">
+		<echo>Dummy service JARs complete</echo>
+	</target>
+		
+	<!-- sine service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="sine" depends="puckxml">
+		<echo>Building FOCE sine pucks (cwd=${siam_home})</echo>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.dummy.SineDummyInstrument 'Dummy' 1029 ${siam_home}/ports/SineDummyInstrument-1029.jar ${siam_home}/puckxml/blank_comments.xml 'powerPolicy = never' 'commPowerPolicy = never' 'sampleSchedule = 2' 'registryName = dummy-1029' 'rbnbServer=localhost' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.dummy.SineDummyInstrument 'Dummy' 1028 ${siam_home}/ports/SineDummyInstrument-1028.jar ${siam_home}/puckxml/blank_comments.xml 'powerPolicy = never' 'commPowerPolicy = never' 'sampleSchedule = 2' 'registryName = dummy-1028' 'rbnbServer=localhost' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.dummy.SineDummyInstrument 'Dummy' 1027 ${siam_home}/ports/SineDummyInstrument-1027.jar ${siam_home}/puckxml/blank_comments.xml 'powerPolicy = never' 'commPowerPolicy = never' 'sampleSchedule = 2' 'registryName = dummy-1027' 'rbnbServer=localhost' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.dummy.SineDummyInstrument 'Dummy' 1026 ${siam_home}/ports/SineDummyInstrument-1026.jar ${siam_home}/puckxml/blank_comments.xml 'powerPolicy = never' 'commPowerPolicy = never' 'sampleSchedule = 2' 'registryName = dummy-1026' 'rbnbServer=localhost' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.dummy.SineDummyInstrument 'Dummy' 1025 ${siam_home}/ports/SineDummyInstrument-1025.jar ${siam_home}/puckxml/blank_comments.xml 'powerPolicy = never' 'commPowerPolicy = never' 'sampleSchedule = 2' 'registryName = dummy-1025' 'rbnbServer=localhost' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.dummy.SineDummyInstrument 'Dummy' 1024 ${siam_home}/ports/SineDummyInstrument-1024.jar ${siam_home}/puckxml/blank_comments.xml 'powerPolicy = never' 'commPowerPolicy = never' 'sampleSchedule = 2' 'registryName = dummy-1024' 'rbnbServer=localhost' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.dummy.SineDummyInstrument 'Dummy' 1023 ${siam_home}/ports/SineDummyInstrument-1023.jar ${siam_home}/puckxml/blank_comments.xml 'powerPolicy = never' 'commPowerPolicy = never' 'sampleSchedule = 2' 'registryName = dummy-1023' 'rbnbServer=localhost' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.dummy.SineDummyInstrument 'Dummy' 1022 ${siam_home}/ports/SineDummyInstrument-1022.jar ${siam_home}/puckxml/blank_comments.xml 'powerPolicy = never' 'commPowerPolicy = never' 'sampleSchedule = 2' 'registryName = dummy-1022' 'rbnbServer=localhost' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.dummy.SineDummyInstrument 'Dummy' 1021 ${siam_home}/ports/SineDummyInstrument-1021.jar ${siam_home}/puckxml/blank_comments.xml 'powerPolicy = never' 'commPowerPolicy = never' 'sampleSchedule = 2' 'registryName = dummy-1021' 'rbnbServer=localhost' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.dummy.SineDummyInstrument 'Dummy' 1020 ${siam_home}/ports/SineDummyInstrument-1020.jar ${siam_home}/puckxml/blank_comments.xml 'powerPolicy = never' 'commPowerPolicy = never' 'sampleSchedule = 2' 'registryName = dummy-1020' 'rbnbServer=localhost' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+	</target>
+
+	<!-- Build test service JARs  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="test" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.dummy.DummyInstrument 'Dummy' 1151 ${siam_home}/ports/DummyInstrument-1151.jar ${siam_home}/puckxml/blank_comments.xml 'sampleSchedule = 30' 'registryName = Dummy' 'UUID = 00000000-0000-0000-0000-000000000000' " />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.dummy.DummyInstrument 'Dummy' 1150 ${siam_home}/ports/DummyInstrument-1150.jar ${siam_home}/puckxml/junk.xml 'sampleSchedule = 5' 'defaultSkipInterval=12' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.dummy.DummyInstrument 'Dummy' 1151 ${siam_home}/ports/DummyInstrument-1151.jar ${siam_home}/puckxml/DummyInstrument-1151.xml 'sampleSchedule = 5' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+	</target>
+
+	<!-- Build CTD service JARs  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="ctd" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.dummy.VarDummyInstrument 'DummySeabird37' 1025 ${siam_home}/ports/VarDummyInstrument-1025.jar ${siam_home}/puckxml/blank_comments.xml  'sampleSchedule = 600' 'dataLength = 100' 'registryName = DummySeabird37' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.dummy.VarDummyInstrument 'DummySeabird' 1035 ${siam_home}/ports/VarDummyInstrument-1035.jar ${siam_home}/puckxml/blank_comments.xml  'sampleSchedule = 600' 'dataLength = 72' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+	</target>
+
+	<!-- Build ADCP service JARs  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="adcp" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.dummy.VarDummyInstrument 'DummyWorkhorse' 1022 ${siam_home}/ports/VarDummyInstrument-1022.jar ${siam_home}/puckxml/blank_comments.xml  'sampleSchedule = 3600' 'dataLength = 1348' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+	</target>
+
+	<!-- Build CO2 service JARs  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="co2" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.dummy.VarDummyInstrument 'DummypCO2' 1020 ${siam_home}/ports/VarDummyInstrument-1020.jar ${siam_home}/puckxml/blank_comments.xml 'sampleSchedule = 3600' 'dataLength = 182' 'registryName = DummypCO2' 'UUID = 00000000-0000-0000-0000-000000000000' " />
+		</exec>
+	</target>
+
+	<!-- Build NO3 service JARs  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="no3" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.dummy.VarDummyInstrument 'DummyISUS' 1036 ${siam_home}/ports/VarDummyInstrument-1036.jar ${siam_home}/puckxml/blank_comments.xml  'sampleSchedule = 3600' 'dataLength = 4861' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+	</target>
+
+	<!-- Build O2 service JARs  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="o2" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.dummy.VarDummyInstrument 'DummyAanderaa' 1039 ${siam_home}/ports/VarDummyInstrument-1039.jar ${siam_home}/puckxml/blank_comments.xml  'sampleSchedule = 600' 'dataLength = 290' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+	</target>
+
+	<!-- Build fluor service JARs  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="fluor" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="mkpuck org.mbari.siam.devices.dummy.VarDummyInstrument 'DummyWETLabs' 1038 ${siam_home}/ports/VarDummyInstrument-1038.jar ${siam_home}/puckxml/blank_comments.xml  'sampleSchedule = 600' 'dataLength = 452' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+	</target>
+
+	<!-- Build met service JARs  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="met" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.dummy.VarDummyInstrument 'DummyAsimet' 1021 ${siam_home}/ports/VarDummyInstrument-1021.jar ${siam_home}/puckxml/blank_comments.xml 'sampleSchedule = 600' 'dataLength = 34' 'UUID = 00000000-0000-0000-0000-000000000000' " />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.dummy.VarDummyInstrument 'DummyASIMET' 1037 ${siam_home}/ports/VarDummyInstrument-1037.jar ${siam_home}/puckxml/blank_comments.xml  'sampleSchedule = 600' 'dataLength = 142' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+	</target>
+
+	<!-- Build rad service JARs  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="rad" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.dummy.VarDummyInstrument 'DummyOCR' 1023 ${siam_home}/ports/VarDummyInstrument-1023.jar ${siam_home}/puckxml/blank_comments.xml 'sampleSchedule = A */0 */10 6-18 * * * * GMT-7 *' 'dataLength = 2488' 'acquireSleepSec = 10' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.dummy.VarDummyInstrument 'DummyOCR' 1024 ${siam_home}/ports/VarDummyInstrument-1024.jar ${siam_home}/puckxml/blank_comments.xml 'sampleSchedule = A */0 */10 6-18 * * * * GMT-7 *' 'dataLength = 2488' 'acquireSleepSec = 10' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.dummy.VarDummyInstrument 'DummyOCR' 1033 ${siam_home}/ports/VarDummyInstrument-1033.jar ${siam_home}/puckxml/blank_comments.xml 'sampleSchedule = A */0 */10 6-18 * * * * GMT-7 *' 'dataLength = 2488' 'acquireSleepSec = 10' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+	</target>
+
+	<!-- Build sum service JARs  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="sum" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.dummy.VarDummyInstrument 'DummyWETLabsSummarizer' 1026 ${siam_home}/ports/VarDummyInstrument-1026.jar ${siam_home}/puckxml/blank_comments.xml  'sampleSchedule = 3600' 'dataLength = 1450' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.dummy.VarDummyInstrument 'DummyAquadoppSummarizer' 1027 ${siam_home}/ports/VarDummyInstrument-1027.jar ${siam_home}/puckxml/blank_comments.xml  'sampleSchedule = 3600' 'dataLength = 719' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.dummy.VarDummyInstrument 'DummySeabirdSummarizer' 1028 ${siam_home}/ports/VarDummyInstrument-1028.jar ${siam_home}/puckxml/blank_comments.xml  'sampleSchedule = 3600' 'dataLength = 1500' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.dummy.VarDummyInstrument 'DummyWETLabsSummarizer' 1029 ${siam_home}/ports/VarDummyInstrument-1029.jar ${siam_home}/puckxml/blank_comments.xml  'sampleSchedule = 3600' 'dataLength = 900' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.dummy.VarDummyInstrument 'DummyAquadoppSummarizer' 1030 ${siam_home}/ports/VarDummyInstrument-1030.jar ${siam_home}/puckxml/blank_comments.xml  'sampleSchedule = 3600' 'dataLength = 236' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.dummy.VarDummyInstrument 'DummyAanderaaSummerizer' 1031 ${siam_home}/ports/VarDummyInstrument-1031.jar ${siam_home}/puckxml/blank_comments.xml  'sampleSchedule = 3600' 'dataLength = 300' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.dummy.VarDummyInstrument 'DummyWorkhorseSummarizer' 1032 ${siam_home}/ports/VarDummyInstrument-1032.jar ${siam_home}/puckxml/blank_comments.xml  'sampleSchedule = 3600' 'dataLength = 10100' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+	</target>
+
+	<!-- Build GPS service JARs  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="gps" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.dummy.VarDummyInstrument 'DummyGPS' 1034 ${siam_home}/ports/VarDummyInstrument-1034.jar ${siam_home}/puckxml/blank_comments.xml  'sampleSchedule = 600' 'dataLength = 70' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+	</target>
+
+	<!-- Build shmoo service JARs  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="shmoo" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.shmoo.ShmooInstrumentService '8 amp load' 1020 ${siam_home}/ports/HiPowerLoad-1020.jar ${siam_home}/puckxml/HiPowerLoad-1020.xml 'sampleSchedule = A 0 0 * * * * * * GMT *' 'powerPolicy = sampling' 'powerDuration = 30000' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.shmoo.ShmooInstrumentService '8 amp load' 1021 ${siam_home}/ports/HiPowerLoad-1021.jar ${siam_home}/puckxml/HiPowerLoad-1021.xml 'sampleSchedule = A 30 1 * * * * * * GMT *' 'powerPolicy = sampling' 'powerDuration = 30000' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.shmoo.ShmooInstrumentService '2 amp load' 1022 ${siam_home}/ports/LoPowerLoad-1022.jar' ${siam_home}/puckxml/LoPowerLoad-1022.xml sampleSchedule = A 0 3 * * * * * * GMT *' 'powerPolicy = sampling' 'powerDuration = 120000' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.shmoo.ShmooInstrumentService '2 amp load' 1023 ${siam_home}/ports/LoPowerLoad-1023.jar ${siam_home}/puckxml/LoPowerLoad-1023.xml 'sampleSchedule = A 0 6 * * * * * * GMT *' 'powerPolicy = sampling' 'powerDuration = 120000' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.shmoo.ShmooInstrumentService '2 amp load' 1024 ${siam_home}/ports/LoPowerLoad-1024.jar ${siam_home}/puckxml/LoPowerLoad-1024.xml 'sampleSchedule = A 0 9 * * * * * * GMT *' 'powerPolicy = sampling' 'powerDuration = 120000' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.shmoo.ShmooInstrumentService '2 amp load' 1025 ${siam_home}/ports/LoPowerLoad-1025.jar ${siam_home}/puckxml/LoPowerLoad-1025.xml 'sampleSchedule = A 0 12 * * * * * * GMT *' 'powerPolicy = sampling' 'powerDuration = 120000' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.shmoo.ShmooInstrumentService '2 amp load' 1026 ${siam_home}/ports/LoPowerLoad-1026.jar ${siam_home}/puckxml/LoPowerLoad-1026.xml 'sampleSchedule = A 0 15 * * * * * * GMT *' 'powerPolicy = sampling' 'powerDuration = 120000' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.shmoo.ShmooInstrumentService '2 amp load' 1027 ${siam_home}/ports/LoPowerLoad-1027.jar ${siam_home}/puckxml/LoPowerLoad-1027.xml 'sampleSchedule = A 0 18 * * * * * * GMT *' 'powerPolicy = sampling' 'powerDuration = 120000' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.shmoo.ShmooInstrumentService '2 amp load' 1028 ${siam_home}/ports/LoPowerLoad-1028.jar ${siam_home}/puckxml/LoPowerLoad-1028.xml 'sampleSchedule = A 0 21 * * * * * * GMT *' 'powerPolicy = sampling' 'powerDuration = 120000' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.shmoo.ShmooInstrumentService '2 amp load' 1029 ${siam_home}/ports/LoPowerLoad-1029.jar ${siam_home}/puckxml/LoPowerLoad-1029.xml 'sampleSchedule = A 0 24 * * * * * * GMT *' 'powerPolicy = sampling' 'powerDuration = 120000' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.shmoo.ShmooInstrumentService '2 amp load' 1030 ${siam_home}/ports/LoPowerLoad-1030.jar ${siam_home}/puckxml/LoPowerLoad-1030.xml 'sampleSchedule = A 0 27 * * * * * * GMT *' 'powerPolicy = sampling' 'powerDuration = 120000' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.shmoo.ShmooInstrumentService '2 amp load' 1031 ${siam_home}/ports/LoPowerLoad-1031.jar ${siam_home}/puckxml/LoPowerLoad-1031.xml 'sampleSchedule = A 0 30 * * * * * * GMT *' 'powerPolicy = sampling' 'powerDuration = 120000' 'UUID = 00000000-0000-0000-0000-000000000000'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.shmoo.ShmooInstrumentService 'MMC Power Cycle Test' 4242 ${siam_home}/ports/PowerCycle-4242.jar ${siam_home}/puckxml/4242.xml 'powerPolicy = sampling' 'commPowerPolicy = sampling' 'sampleSchedule = 600' 'powerDuration = 120000' 'randPowerDuration = 60000' 'UUID = 00000000-0000-0000-0000-00000000000'" />
+		</exec>
+	</target>
+
+	</project>

@@ -1,0 +1,28 @@
+#!/bin/csh
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Summarize communication sessions from portal log
+
+if ($#argv != 1) then
+  echo "usage: $0:t portalLog"
+  exit 1
+endif
+
+# Create temporary awk file
+set awkfile=/tmp/showcomms.$$
+cat > $awkfile << 'ENDFILE'
+/INFO.*Portal got connection from/ {
+  printf "Connected at %s %s %s %s %s\n", $11, $12, $13, $14, $15;
+  next;
+}
+
+/^Link terminated at/ {
+  printf "Disconnected at %s %s %s %s %s\n", $4, $5, $6, $7, $8;
+}
+'ENDFILE'
+
+awk -f $awkfile $argv[1]
+rm $awkfile
+

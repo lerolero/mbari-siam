@@ -1,0 +1,68 @@
+//  msp430F149C.XCL
+//
+//  Texas Instruments, Revision: 1.1
+//
+//  XLINK command file for the ICC430 C-compiler and the MSP430F149
+//
+//  Usage: xlink your_file(s) -f msp430F149C
+//
+//  The following segments are used by the compiler:
+//
+//  Data read/write segments (RAM)
+//  ==============================
+//  segment     address range   max size        usage (compiler option)
+//  -------     -------------   --------        --------------------------
+//  UDATA0      0200-09FF       2 Kbytes        Uninitialized variables
+//  IDATA0      0200-09FF       2 Kbytes        Initialized variables
+//  CSTACK      0200-09FF       2 Kbytes        Run-time stack/auto variables
+//  ECSTR       0200-09FF       2 Kbytes        Writeable string literals (-y)
+//
+//  Program and non-volatile segments (FLASH)
+//  =========================================
+//  segment     address range   max size        usage (compiler option)
+//  -------     -------------   --------        --------------------------
+//  INFO        1000-10FF       256 bytes       Information memory
+//  CODE        1100-FFDF       <60 Kbytes      Program code
+//  CONST       1100-FFDF       <60 Kbytes      Constant "const" variables
+//  CSTR        1100-FFDF       <60 Kbytes      String literals (not -y)
+//  CDATA0      1100-FFDF       <60 Kbytes      Initializers for IDATA0
+//  CCSTR       1100-FFDF       <60 Kbytes      Initializers for ECSTR (-y)
+//  INTVEC      FFE0-FFFF       32 bytes        Interrupt vectors (-e)
+//
+//  Note:
+//  Option -y stores strings in ECSTR (init value in CCSTR) instead of CSTR,
+//  Option -e enables language extensions
+//  Special function registers and peripheral modules occupy addresses 0-01FFh
+//
+//
+//  Define CPU
+
+-cMSP430
+
+//  RAM
+//  Note: The stack is allocated from the top of RAM downward
+
+-Z(DATA)UDATA0,IDATA0,ECSTR=0200-09FF
+-Z(DATA)CSTACK#0200-0A00
+
+//  Information memory (FLASH)
+
+-Z(CODE)INFO=1000-10FF
+
+//  Main memory (FLASH)
+
+-Z(CODE)CODE,CONST,CSTR,CDATA0,CCSTR=1100-FFDF
+
+//  Interrupt vectors (FLASH)
+
+-Z(CODE)INTVEC=FFE0-FFFF
+
+//  See configuration section concerning printf/sprintf
+-e_medium_write=_formatted_write
+
+//  See configuration section concerning scanf/sscanf
+-e_medium_read=_formatted_read
+
+//  Load the C library with support for the hardware multiplier
+cl430m.r43
+

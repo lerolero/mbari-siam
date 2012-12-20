@@ -1,0 +1,59 @@
+#!/bin/csh
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Determine offset of GPS time from accompanying ISI timestamp, and
+# output in format suitable for plotting.
+
+if ($#argv != 2) then
+  echo "usage: $0 <GPS-ID><GPS-log-dir>"
+  exit 1
+endif
+
+set logFile=/tmp/clockCheck-$$.log
+
+logView $1 $2 > $logFile
+
+set awkFile1=/tmp/clockCheck1-$$.awk
+cat > $awkFile1 <<'EOF1'
+/^devid=/ || /^\$GPRMC/ {
+  gsub(",", " ");
+  print;
+}
+
+'EOF1'
+
+set awkFile2=/tmp/clockCheck2-$$.awk
+cat > $awkFile2 <<'EOF2'
+BEGIN {
+
+}
+
+/^devid=/ {
+  # ISI timestamp; epoch time in millisec
+  timeStr = substr($2, 3, 13);
+
+  # Convert to sec
+  isiSec = timeStr / 1000;
+  if (startTime == 0) {
+    startTime = isiSec;
+  }
+  ### printf "isiSec=%d\n", isiSec;
+}
+
+/^\$GPRMC/ {
+  tstring = $2;
+  date = $10;
+  cmd = "ut2et -format '%d%m%y%H%M%S' " date tstring;
+  ### printf "%s\n", cmd;
+  cmd | getline gpsSec
+  close(cmd);
+  printf "%f %d\n", (isiSec - startTime)/3600., isiSec - gpsSec;
+}
+'EOF2'
+
+awk -f $awkFile1 $logFile | awk -f $awkFile2
+
+
+

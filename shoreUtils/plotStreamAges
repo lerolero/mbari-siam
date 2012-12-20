@@ -1,0 +1,86 @@
+#!/bin/csh
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Generate plot showing ages of all datalogs within specified directory
+
+if ($#argv != 3) then
+  echo usage: `basename $0` logDirectory title outputFileName
+  exit 1
+endif
+
+set directory=$1
+set title=$2:q
+set plotFile=$3
+
+
+# Create awk script to convert stream ages from seconds to hours
+set awkscript=/tmp/tmp$$.awk
+cat > $awkscript << 'EOF'
+
+{
+  if ($2 > 0) {
+    # Only deal with 'positive' age
+    age = $2 / 3600.;
+  }
+  else {
+    # Age was negative - but must put SOMETHING here for gnuplot
+    age = -1.;
+  }
+  printf "%d    %.1f\n", $1, age;
+
+}
+
+'EOF'
+
+set now=`date +%s`
+
+set devices=""
+foreach file ($directory/*.dat) 
+  set deviceID=`echo $file:r:t | cut -d _ -f 1`
+  set devices="$devices $deviceID"
+  ### echo "Processing $deviceID"
+  set outfile=$directory/${deviceID}.age
+  if (! -e $outfile) then
+    echo "# Age of device $deviceID telemetry" > $outfile
+    echo '# epochSec    age(hours)' >> $outfile
+  endif
+
+  echo "$now  `logView -age $deviceID $directory`" | awk -f $awkscript >> $outfile
+  # Keep track of last device in list for later...
+  set lastDevice=$deviceID
+end
+
+
+# Create gnuplot script to plot stream ages as function of time
+set plotscript=/tmp/gnuplot-script
+cat > $plotscript << EOF2
+
+set xdata time
+set timefmt "%s"
+set terminal png
+set output "$plotFile"
+set title "$title"
+# Need place-holder for xlabel for proper spacing...
+set xlabel "Time"
+set format x "%m/%d"
+set ylabel "Age (hours)"
+set yrange [0:*]
+
+EOF2
+
+echo "plot \" >> $plotscript
+foreach deviceID ($devices)
+  echo -n \"$directory/${deviceID}.age\" using 1:2 title \"$deviceID\" with linespoints >> $plotscript
+  if ($deviceID != $lastDevice) then
+    echo ",\" >> $plotscript
+  else
+    echo " " >> $plotscript
+  endif
+end
+
+
+cat $plotscript | gnuplot
+
+

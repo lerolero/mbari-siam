@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>SSH Keygen HOWTO</title>
+		<link href="../../css/content.css" rel="stylesheet" type="text/css" />
+		<link href="../../css/howto.css" rel="stylesheet" type="text/css" />
+	</head>
+	
+	<body>
+		
+		<div class="nameHeader">
+			<h1>Name</h1> 
+			<div class="nameText">
+				<h2>SSH Keygen HOWTO <!-- name text here --></h2>
+			</div>
+		</div>
+		
+		<div class="synopsisHeader">
+			<h1>Synopsis</h1>
+			<div class="synopsisText">
+				<div class="commands">Configure security keys for password-less SSH. 
+					This enables trusted processes to transfer files from node to node or between portal and node.
+				</div>
+			</div>
+		</div>
+		
+		<div class="sectionHeader">
+			<h1>Configure portal - node</h1>
+			<div class="sectionText">
+				<p>
+				<!-- description text here -->
+				Set up 'no password' login from user1@portal to user2@node
+				</p>
+				<div class="commands">
+					cd
+					ssh-keygen -t dsa
+					chmod 0644 ~/.ssh/id_dsa.pub
+					scp ~/.ssh/id_dsa.pub user2@node:.ssh/id_dsa.pub 
+				</div> 
+				
+				<p>Then log onto node as user2:</p>
+				<div class="commands">
+					ssh user2@node 
+					cd ~/.ssh
+					cat id_dsa.pub &gt;&gt; authorized_keys2
+				</div>
+				<p></p>
+			</div>
+		</div>
+		<div class="sectionHeader">
+			<h1>Configure node - node</h1>
+			<div class="sectionText">
+				<p>
+				<!-- description text here -->
+				Set up 'no password' login from user1@ node1 to user2@node2
+				</p>	 
+				<p>On node1, as user1:</p>
+				<div class="commands">
+					cd
+					ssh-keygen -d
+					chmod 0644 ~/.ssh/id_dsa.pub
+					scp ~/.ssh/id_dsa.pub user2@node2:.ssh/id_dsa.pub 
+				</div>
+				
+				<p>Then log onto node2 as user2:</p>
+				<div class="commands">
+					ssh user2@node2  
+					cd .ssh
+					cat id_dsa.pub &gt;&gt; authorized_keys2
+				</div>
+				<p></p>
+			</div>
+		</div>
+		<div class="seeAlsoHeader">
+			<h1>See Also</h1>
+			<div class="seeAlsoText">
+				<div class="command"><!--<a href=".html#" target="mainFrame">link1</a>--></div>
+			</div>
+		</div>
+		
+		
+	</body>
+</html>

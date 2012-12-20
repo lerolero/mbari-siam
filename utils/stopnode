@@ -1,0 +1,18 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+#
+# Script to run the 'node' application 
+#
+
+#source ops bashrc so SIAM environement is setup
+### . /home/ops/.bashrc
+
+# swtich to SIAM_HOME dir
+### cd $SIAM_HOME
+
+# stop the node
+### ./utils/exitNode //localhost/node
+

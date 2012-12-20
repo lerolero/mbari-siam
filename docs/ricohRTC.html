@@ -1,0 +1,176 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Bob Herlien">
+   <meta name="GENERATOR" content="Mozilla/4.79 [en] (Windows NT 5.0; U) [Netscape]">
+   <title>ricohRTC</title>
+</head>
+<body>
+<b>NAME</b>
+<blockquote>ricohRTC - get/set time maintained by the Ricoh RTC; or interactively
+set its registers</blockquote>
+<b>SYNOPSIS</b>
+<blockquote>
+<pre>ricohRTC [-i] [-s] [-t] [-a &lt;oscadj>] [-k &lt;0|1>] [-m &lt;12|24>] [-h]</pre>
+</blockquote>
+<b>DESCRIPTION</b>
+<ul><b>ricohRTC </b>is a utility to manipulate the Ricoh RTC clock on Sidearm
+version 4 (and later).&nbsp; Note that the Ricoh RTC is <b>separate </b>and
+<b>distinct</b> from the RTC built into the SA-1100 StrongArm processor
+(dubbed the SA1100 RTC).&nbsp; The Ricoh RTC was added to the hardware
+to maintain time across power outages -- the SA1100 RTC doesn't do this.&nbsp;
+The Ricoh has its own backup battery.
+<p>Clearly, for the Ricoh to become a useful resource, the chip must first
+be properly set up, including having the proper date &amp; time set.&nbsp;
+This utility allows that maintenance to take place; and is also the utility
+used by various system shell scripts that manage the system time.
+<p>To be clear, with the addition of the Ricoh RTC hardware, the system
+has 3 concepts of time:
+<ul>
+<li>
+The system time - this is the time maintained in the Linux software, driven
+by a periodic interrupt.&nbsp; It's volatile; it goes away when the system
+boots.&nbsp; The resolution is dependent on the frequency of the clock
+interrupt, but typically it's on the order of 10 ms.</li>
+
+<li>
+The SA1100 RTC - the RTC built into the StrongArm processor chip.&nbsp;
+It persists through reboot cycles, but will be cleared if the system is
+powered down.&nbsp; It has a resolution of 1 second.</li>
+
+<li>
+The Ricoh RTC, which this utility manages.&nbsp; It persists forever, as
+long as its battery is alive.&nbsp; It has a resolution of 1 second.</li>
+</ul>
+
+<p><br>This utility manipulates the Ricoh RTC time, and optionally the
+system time.&nbsp; It has no effect on SA1100 RTC time.</ul>
+<b>OPTIONS</b>
+<blockquote>With no options specified (i.e. running "ricohRTC", this utility
+simply displays the time &amp; date maintained by the Ricoh RTC.&nbsp;
+The options are:
+<ul>
+<li>
+<b>-i</b> - This runs the utility in interactive mode.&nbsp; It displays
+an ASCII menu which allows the user to perform various high- and low-level
+functions on the chips registers.&nbsp; These range from getting &amp;
+setting time (Ricoh RTC time or system time) to setting individual registers
+on the chip.&nbsp; Before manipulating the individual on-chip registers,
+it's recommended that you read the <a href="5c348ab-e.pdf">Rx5C348 data
+sheet</a>.</li>
+
+<li>
+<b>-s</b> - Set the system (Linux) time from the Ricoh RTC time.&nbsp;
+The user <b>must have root privileges</b>.</li>
+
+<li>
+<b>-t </b>- Set tje RicohRTC time from the system (Linux) time.</li>
+
+<li>
+<b>-a &lt;oscadj></b> - Set the Ricoh's oscillator adjustment register,
+based on &lt;oscadj>, expressed in parts per million.&nbsp; See "Oscillator
+Adjustment" below.</li>
+
+<li>
+<b>-k &lt;0|1></b> - Disable (0) or enable (1) the 32 kHz output from the
+Ricoh RTC chip.</li>
+
+<li>
+<b>-m &lt;12|24></b> - Set 12 hour (AM/PM) mode or 24 hour of operation.&nbsp;
+24 hour mode is recommended, as it is most compatible with how Linux keeps
+its time.</li>
+
+<li>
+<b>-h </b>- Print a help (usage) message and exit.</li>
+</ul>
+</blockquote>
+<b>OSCILLATOR ADJUSTMENT</b>
+<blockquote>The Ricoh RTC chip has an oscillator adjustment register, which
+allows the user to trim out errors in crystal frequency up to an error
+of approximately +/- 192 ppm (parts per million), in steps of 3.05 ppm.&nbsp;
+It is recommended that you perform the following calibration/adjustment
+steps on each Sidearm CPU.&nbsp; However, please take into account that
+the frequency deviation is dependent on many environmental conditions,
+including:
+<ul>
+<li>
+temperature</li>
+
+<li>
+operating voltage</li>
+
+<li>
+CPU operating mode (sleep vs. awake)</li>
+</ul>
+It seems particularly sensitive to the last (sleep vs awake), which makes
+it difficult to properly calibrate the oscillator.&nbsp; It's best to calibrate
+when running the CPU in a manner as close as possible to its final deployment
+(e.g., SIAM app, number of instruments, sampling schedules, etc).&nbsp;
+This is to run it as closely as possible to the intended duty cycle of
+sleep vs awake.
+<p>To adjust the oscillator, do the following:
+<ul>
+<li>
+Set the Ricoh clock as accurately as possible.&nbsp; A good way to do this
+is to set the system clock from NTP using '<b>ntpdate -b &lt;NTP server></b>';
+and then run '<b>ricohRTC -t'</b>.</li>
+
+<li>
+Set the oscillator adjustment to 0 adjustment by running '<b>ricohRTC</b>
+<b>-a 0</b>'.</li>
+
+<li>
+Run the system in its deployed mode for as long as possible - 24 hours
+at a minimum, but 3 to 7 days will give greater accuracy.&nbsp; <b>Make
+sure to disable any scripts that manipulate the Ricoh RTC.</b></li>
+
+<li>
+Find the error in the Ricoh time.&nbsp; A good way to do this is to run:</li>
+
+<ul>
+<li>
+'<b>ricohRTC -s</b>' to set the system time/date from the Ricoh RTC, and
+then run</li>
+
+<li>
+'<b>ntpdate -b &lt;NTP server></b>'.&nbsp; This sets the system time/date
+accurately, and prints out the offset of the the previous time from accurate
+time.&nbsp; Make a note of this offset, but change the sign (NTP needs
+to step the time in the opposite direction from the time drift; e.g. if
+the clock was fast, it needs to step it in the negative direction).</li>
+</ul>
+
+<li>
+Divide the time error (with sign, positive if the clock is fast, negative
+if the clock is slow) by the total elapsed time (in seconds) over which
+you ran the test.&nbsp; Multiply by 1000000 to get ppm.</li>
+
+<li>
+Use the calculated offset in ppm as a parameter to '<b>ricohRTC -a &lt;offset></b>'</li>
+</ul>
+</blockquote>
+<b></b>
+<p><br><b>BUGS</b>
+<blockquote>The options to set the RTC time (-a, and menu options 4 &amp;
+5 of interactive mode) should really also set the clock to 24 hour mode.&nbsp;
+Right now, you must manually set either 24 hour mode or AM/PM mode, and
+the time set functions do the right things based on that.</blockquote>
+
+<p><br><b>ENVIRONMENT</b>
+<blockquote>This utiltity does not depend on any environment variables.
+<p>In order to set the system time using this utility, the user must have
+root privileges.</blockquote>
+
+<p><br><b>SEE ALSO</b>
+<blockquote>
+<li>
+The <a href="5c348ab-e.pdf">Ricoh Rx5C348 data sheet</a></li>
+
+<li>
+Log onto any Linux workstation and do a "<b>man hwclock</b>" to see how
+to manipulate the SA1100 RTC.</li>
+</blockquote>
+
+</body>
+</html>

@@ -1,0 +1,29 @@
+License Agreement
+
+Terms of Use
+
+MBARI grants to the user (RECIPIENT) a royalty-free, nonexclusive, and nontransferable license to use the PUCK Reference Design Kit (PRDK) architecture, hardware, software code and documentation to be furnished hereunder, upon the terms and conditions set out below.
+
+RECIPIENT acknowledges that the is a research tool and that the architecture, hardware code and documentation are being supplied "as is," without any accompanying services or improvements from MBARI.
+
+MBARI MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR IMPLIED. BY WAY OF EXAMPLE, BUT NOT LIMITATION, MBARI MAKES NO REPRESENTATIONS OR WARRANTIES OF MERCHANTABILITY OR FITNESS FOR ANY PARTICULAR PURPOSE OR THAT THE USE OF THE DRAWINGS OR DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS. MBARI SHALL NOT BE HELD LIABLE FOR ANY LIABILITY NOR FOR ANY DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIM BY RECIPIENT OR ANY THIRD PARTY ON ACCOUNT OF OR ARISING FROM THIS AGREEMENT OR USE OF THE PUCK REFERENCE DESIGN KIT
+
+RECIPIENT agrees to use the PRDK solely for internal, non-commercial purposes and shall not distribute or transfer them to another location or to any other person without prior written permission from MBARI.
+
+Title and copyright to the PRDK and to any associated documentation shall at all times remain with MBARI, and RECIPIENT agrees to preserve same. RECIPIENT agrees not to make any copies except for its internal use without prior written consent of MBARI. RECIPIENT agrees to place the appropriate MBARI copyright notice on any such copies.
+
+Copyright Information
+
+    Copyright 2000, Monterey Bay Aquarium Research Institute.
+    Licensed for PUCK-enabled oceanographic instrumentation field-of-use.
+
+    Intellectual Property Disclaimer
+
+    MBARI MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR IMPLIED. BY WAY OF
+    EXAMPLE, BUT NOT LIMITATION, MBARI MAKES NO REPRESENTATIONS OR WARRANTIES OF
+    MERCHANTABILITY OR FITNESS FOR ANY PARTICULAR PURPOSE OR THAT THE USE OF THE
+    LICENSED SOFTWARE COMPONENTS OR DOCUMENTATION WILL NOT INFRINGE ANY PATENTS,
+    COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS. MBARI SHALL NOT BE HELD LIABLE FOR
+    ANY LIABILITY NOR FOR ANY DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH
+    RESPECT TO ANY CLAIM BY RECIPIENT OR ANY THIRD PARTY ON ACCOUNT OF OR
+    ARISING FROM THIS AGREEMENT OR USE OF THE SOFTWARE OR SPECIFICATION.

@@ -1,0 +1,74 @@
+This file describes which versions of SIAM software have been installed on 
+each "deployed" MSE node. A "deployed" node is a node already at sea, or a
+node which will be imminently deployed at sea; this file does NOT apply to 
+test-bed or spare nodes in the lab.
+
+This file should be updated when any of the following 
+occur on an MSE deployed node:
+
+1. A SIAM release is installed 
+
+2. A SIAM class is added or replaced 
+
+3. A SIAM script is added or replaced
+
+4. An instrument jarfile is added or replaced
+
+5. An instrument PUCK is updated
+
+When any of the above events occur, a note should be made for the appropriate 
+node entry, below. The note should include the following:
+
+  Date and time
+  Path of affected file
+  New CVS version of affected file
+  Reason for update
+  Person who updated the file
+
+----------------------------------------------------------------
+Node name(s): surface
+SideARM MAC address: 00:0C:06A:00:04:19
+ISI ID: 1446
+10/20/2006: Installed SIAM october20_2006-2
+01/02/2007: classes/moos/operations/utils/FilterClearer.class,v1.3; oreilly
+01/02/2007: classes/moos/operations/utils/FilterGetter.class,v1.3; oreilly
+01/09/2007: utils/startnode, v1.23; oreilly;invokes runAutoScript
+01/29/2007: utils/runAutoScript, v1.6: oreilly; fixed 'grep' status check 
+04/27/2007: Installed SIAM april26_2007 (untagged!)
+05/02/2007: Installed boa-19.14 in /usr/bin
+----------------------------------------------------------------
+Node name(s): secondary, node421
+SideARM MAC address: 00:0C:06A:00:04:15
+ISI ID: 1481
+10/20/2006: Installed SIAM october20_2006-2
+04/27/2007: Installed SIAM april26_2007 (untagged!)
+----------------------------------------------------------------
+Node name(s): snubber, node410
+SideARM MAC address: 00:0C:06A:00:04:0A
+ISI ID: 1482
+6/9/2006: Installed SIAM june09_2006
+04/27/2007: Installed SIAM april26_2007 (untagged!)
+----------------------------------------------------------------
+Node name(s): shelf, node401
+SideARM MAC address: 00:0C:06A:00:04:01
+ISI ID: 1520
+6/9/2006: Installed SIAM june09_2006
+----------------------------------------------------------------
+Node name(s): "spare" shelf, node402
+SideARM MAC address: 00:0C:06A:00:04:02
+ISI ID: 1598
+6/9/2006: Installed SIAM june09_2006
+04/27/2007: Installed SIAM april26_2007 (untagged!)
+----------------------------------------------------------------
+Node name(s): axis, node411
+SideARM MAC address: 00:0C:06A:00:04:0B
+ISI ID: 1522
+10/20/2006: Installed SIAM october20_2006-2
+01/15/2006: Installed BaseInnstrumentService, v1.76; oreilly
+04/27/2007: Installed SIAM april25_2007 
+
+
+
+
+
+

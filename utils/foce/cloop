@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# run Closed Loop Control Service Remote Client
+
+# Script executes org.mbari.siam.foce.utils.ControlClient.main()
+$JAVA -cp $SIAM_CLASSPATH \
+-Djava.security.policy=$SIAM_HOME/properties/policy \
+-Dsiam_home=$SIAM_HOME \
+-Dsiam.node.log=$SIAM_HOME/logs/cloop.log \
+-Dsiam.log4j=$SIAM_HOME/properties/siam.log4j \
+-Dlog4j.threshold=$LOG4J_THRESHOLD \
+-Dexec_name=`basename "$0"` \
+org.mbari.siam.foce.utils.ControlClient $*

@@ -1,0 +1,147 @@
+	PPP, Hardware Handshaking, and Sleep Management
+	     Bob Herlien
+	     Sept. 23, 2003
+
+NOTE  - THIS DOCUMENT IS OBSOLETE with the new (Brent's) way of managing
+ppp (pon/poff).  I've left it in CVS for hysterical purposes.
+Bob Herlien, May 20 2004.
+
+
+There are some subtleties in running the PPP daemon, pppd, that occur
+when running in a power-managed environment (i.e., when the processor
+goes into sleep mode for a significant percentage of time).  This
+requires careful consideration of hardware handshaking, pppd command-line
+arguments, and tuning parameters (system properties) in the SIAM
+application.  This document tries to explain these considerations.
+
+THE PROBLEM
+The basic problem is that PPP needs to know when the link to the shore
+node has been severed, due to turning off power to the RF modem.
+In the best case, a full handshaking interface using /CD (carrier
+detect) would inform PPP of this fact.  Two problems -- turning
+off the RF modem de-energizes the entire interface, so /CD floats
+(is indeterminate), and it appears that the FreeWave modems don't
+deassert /CD when the link is broken anyway (contrary to their documentation).
+(see HANDSHAKING)
+
+THE FIX
+The fix that has been and continues to be used is to use PPP options
+lcp-echo-interval and lcp-echo failure.  These are set in the ppp
+options file /etc/ppp/options.  Currently, interval is 5 (seconds)
+and failure is 3.  Thus ideally we'll discover the ppp failure in
+15 seconds.
+
+ENTER SLEEP MODE
+This works well when the CPU is always powered.  But when you introduce
+sleep mode, the situation changes.  This mechanism suffers the same
+problems we've seen with Java Timers -- the system doesn't recognize
+the time we spend in sleep mode, and thus doesn't "time out" as expected.
+For example, if we're only awake 6 seconds every minute (10% duty cycle),
+the detection time is increased, presumably by a factor of 10 to 
+150 seconds, though the relationship appears to be non-linear (i.e.,
+it may not detect the dropped packets *at all* until we're on for
+a long-enough duration).
+
+So, ppp doesn't discover the link disconnect during the quick, 6 second
+power-on cycles.  Typically this discovery is finally made when the
+system comes on for an extended period of time.  And when is that?
+Typically, it's not until the next cycle of powering on the RF and
+waiting for a ppp connect.  That is, it's not until we turn RF power on
+that ppp discovers the previous disconnect due to RF power off!
+
+Right now, the tuning is such that we actually do find the disconnect
+just before ppp manages to reconnect.  Note that it's tuned to work
+in the lab, but that doesn't guarantee working in the field.  And if
+it misses, ppp will be trying to tear down its connection exactly when
+we're trying to use the "new" connection to send RMI calls.  Fortunately,
+it appears that the software is now robust enough to simply fail when
+that happens, and recovers for the next attempt.
+
+There are two optimizations that allow it to work in the lab, and 
+they may need to be tuned further based on experience gained in the
+lab and in the field.
+
+First the system property CommsManager.radioAcquireTime is currently
+set to 10 seconds.  This appears to be enough time for ppp to detect
+the power off and still be able to do the next connect.  But it's
+possible that this may need to increase further, especially when
+deployed in a remote situation with unreliable radio transmission.
+
+Second, I've changed the ppp launch script.  The old one, 'runppp',
+would run pppd until it detected the broken link; it would then
+delay a few seconds and relaunch it.  I've rewritten the script
+and called it runpppPersist.  It now launches pppd once, but with
+the 'passive' and 'persist' options on; so pppd should never exit,
+but just wait until it can re-establish the link.  This seems to
+work better, as we don't have the delay to kill one ppp connection,
+do an intentional delay, and launch another.
+
+
+TWEAKING
+I think the system needs more testing, tuning, and tweaking.
+I'd suggest playing with the following:
+
+- ppp parameters.  Are both 'passive' and 'persist' necessary, or
+  is it better to have just one of them on?  Also play with the
+  handshake options, such as nocdtrcts, to verify my assertion that
+  handshaking doesn't work with Freewave.  Also try a shorter (or
+  longer, if bad radio connection?) lcp-echo-interval, and/or
+  changing lcp-echo-failure.  And others....
+
+- System properties, especially CommsManager.radioAcquireTime.
+  The converse property, CommsManager.protocolWaitTime, is the
+  time we wait after sending the last RMI call until we power off
+  the RF modem.  It should be OK, but may be worth playing with, too.
+
+- Handshaking.  Does it really not work?  How about with other radio
+  modems, such as Globalstar?
+
+
+OTHER POSSIBILITIES
+Can we send a signal to the pppd daemon (SIGHUP) to indicate the
+link's broken?  The appropriate time would be when we turn off
+the RF power.  Would probably require a JNI routine written in C.
+
+
+HANDSHAKING
+My lab setup includes cables with full hardware handshaking on the
+portal side, and as full as possible (CD, RTS/CTS) on the deployed
+side.
+
+There are two needs that handshaking should address:  detection of
+valid carrier (CD), and flow control (RTS/CTS).  As noted above,
+it appears that the CD mechanism doesn't work, though someone should
+check my cables and take a scope to the signals to verify this.  If
+it could be made to work, it would resolve these problems nicely.
+
+A second area that handshaking should address is flow control.  Right
+now, we're talking to the modems at 115200 baud.  But the radio
+link is set to a maximum of 38400 baud.  In the absence of flow-control
+handshaking, one would think that we'd overflow the channel.  But
+I've tested, verified no hardware flow control, and yet we're getting
+data through just fine.  Indeed, it appears we're dropping no link
+packets, judging by my measurement of net throughput rates.
+
+The secret here is that TCP has its own flow control mechanisms,
+and they're handling things just fine, thank you.  As long as
+the input buffer on the radio modems are larger than the total
+TCP receive window size (defined as the number of un-acked packets
+allowed times the maximum packet size), TCP will assert flow control
+at the transport level before the data link (RF modems) will assert
+it using RTS/CTS.  You can prove this to yourself by imagining
+that one side has sent the receive-window number of maximum-sized
+packets to its local modem, and that the modem has not sent any of
+it to the other side yet.  All the data resides in the local modem
+buffer, and yet TCP believes there are enough outstanding un-acked
+packets that it will send no more until at least one is acked.  But
+of course, none can be acked until the at least one packet is
+successfully transmitted to the other side, which frees up a
+corresponding amount of space in the modem buffer.  Etc.
+
+Thus, it appears that hardware handshaking is superfluous for
+flow-control purposes.  It would be very useful for carrier detect,
+but unless that can be made to work, we'll have to make due with
+the tuning parameters mentioned in this article.  All of which is
+a very verbose way of saying that, as it currently stands,
+a three-wire connection (Rx, Tx, Gnd) works as well as one with
+full handshaking.

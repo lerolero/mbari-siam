@@ -1,0 +1,21 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Erase Nortek Aquadopp recorder. Aquadopp recorder contains a maximum of
+# 31 data files - can not acquire more data when this limit is reached. Hence
+# you should use this utility to erase the recorder.
+# NOTE: you must have moos.devices.nortek in SIAM_CLASSPATH
+if [ ! -n "$3" ]
+then
+  echo "usage: `basename $0` nodeURL portName classpath-to-nortek"
+  echo "e.g., classpath-to-nortek can be a Aquadopp jarfile"
+  exit 1
+fi  
+
+$JAVA -cp ${3}:$SIAM_CLASSPATH \
+-Djava.security.policy=$SIAM_HOME/properties/policy \
+-Dlog4j.threshold=$LOG4J_THRESHOLD \
+org.mbari.siam.devices.nortek.RecorderUtility $1 $2
+

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd ~ops/pub
+
+publishToRBNB foce.mars.mbari.org -pubSize 30m >> pub.out &

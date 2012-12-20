@@ -1,0 +1,205 @@
+
+# ToDo
+ - add user ops setup
+ - add environment variable config (.bashrc)
+	# Set Java environment
+	export JAVA_HOME=/opt/java/jdk1.3.1_11
+
+	export SIAM_HOME=$HOME/2007M0/siam
+	export SIAM_BIN=$SIAM_HOME/bin/x86-linux
+	export SIAM_CLASSPATH=$SIAM_HOME/classes:$SIAM_HOME/jars/javax.jar:$SIAM_HOME/jars/log4j-1.2.13.jar
+	export PATH=$JAVA_HOME/bin:$SIAM_HOME/utils:$SIAM_HOME/shoreUtils:/sbin:/usr/sbin:$PATH
+	export JAVA=java
+	export JAVA_OPTIONS=""
+
+#######################################################
+install siam shore distribution
+#######################################################
+(as ops, in /home/ops, e.g.)
+tar xzvf shore.tar.gz
+mkdir siam/logs
+
+#######################################################
+make modem dev link:
+#######################################################
+
+ln -s /dev/ttyS1 /dev/modem
+chown root:root /dev/modem
+chmod 777 /dev/modem
+
+#######################################################
+install mgetty:
+#######################################################
+(as root) use rpm (e.g., rpm -i /package/mgetty-1.1.30-0.8.0.i386.rpm)
+
+
+#######################################################
+/etc/mgetty+sendfax/mgetty.config (only these lines):
+#######################################################
+
+# ----- global section -----
+#
+# In this section, you put the global defaults, per-port stuff is below
+
+
+# set the global debug level to "4" (default from policy.h)
+debug 4
+
+# access the modem(s) with 115200 bps
+speed 115200
+modem-type data
+
+#######################################################
+/etc/mgetty+sendfax/login.config (only these lines uncommented):
+#######################################################
+/AutoPPP/ -     a_ppp   /usr/sbin/pppd call siam-portal
+
+#######################################################
+/etc/mgetty+sendfax/dialin.config (all commented out):
+#######################################################
+
+#######################################################
+/etc/inittab (include):
+#######################################################
+# SIAM portal server's PPP dialin link
+siam:35:respawn:/sbin/mgetty -i /etc/siam/issue -p "" /dev/modem
+
+#######################################################
+/etc/ppp/peers/siam-portal (set local ppp endpoint name, eg. portal-mtm1):
+#######################################################
+
+##################
+modem link
+##################
+#
+# configuration for mbari SIAM portal server
+#
+linkname siam-portal
+noipdefault
+portal-mtm1:
+ipparam mbari
+logfile /var/log/siam-portal-1.log
+#record /var/log/siam-portal-1.pppd
+debug
+auth
+require-pap
+maxconnect 3600         #disconnect after one hour
+deflate 14
+
+modem
+crtscts
+lock
+
+##################
+Serial link
+##################
+#
+# configuration for mbari SIAM portal server
+#
+linkname siam-portal
+portal-mse:
+ipparam mbari
+logfile /var/log/longhaul.log
+#record /tmp/pppd.record
+debug
+#noauth
+auth
+require-pap
+#user ops
+#usepeerdns
+#maxconnect 3600         #disconnect after one hour
+noipdefault
+#defaultroute
+deflate 14
+#noccp  #disable compression negotiation with the proprietary ADUS server
+updetach
+
+ttyS0
+57600
+#modem # can use device modem if sym link set up
+local
+#crtscts
+nocrtscts
+lock
+passive
+persist
+#lcp-echo-interval 5
+#lcp-echo-failure 3
+#proxyarp
+
+
+#######################################################
+/etc/hosts (set ppp names and ips)
+#######################################################
+10.1.1.1        shore portal-mtm1 portal    # portal node's ppp interface address
+10.1.1.2        surface-rf mooring   # surface node's ppp interface address
+
+# Subnode names have sidearm OUI appended
+10.1.36.2       mse                  # surface node's ppp interface address
+10.1.36.3       mse-aux               # mse aux globalstar
+
+#######################################################
+/etc/ppp/pap-secrets (add logins)
+#######################################################
+
+# Secrets for authentication using PAP
+# client        server  secret                  IP addresses
+M00r1nG~sVr     *       'I!r@A#b$M005'          mooring
+mse-pap         *       'mse-secret'            mse
+mse-aux-pap     *       'mse-aux-secret'        mse-aux
+#MSE000aBc1$    *       'DeAdBeEf000$'          mse
+#MSEAUX000a$    *       'cAfEbAbE000$'          mseAux
+####### redhat-config-network will overwrite this part!!! (begin) ##########
+####### redhat-config-network will overwrite this part!!! (end) ############
+
+
+#######################################################
+/etc/ppp/ip-up.local (add routes)
+#######################################################
+#!/bin/bash
+# Executed when ppp link comes up
+
+# Add route to moored network nodes
+#/sbin/route add -net 134.89.36.0 netmask 255.255.255.0 gw mooring
+/sbin/route add -net 134.89.36.0 netmask 255.255.255.0 gw mse
+/sbin/route add -net 10.1.36.0 netmask 255.255.0.0 gw mse
+
+
+#######################################################
+$SIAM_HOME/utils/portal (set port different from other SIAM installations)
+#######################################################
+packetServerPort=4568
+
+#######################################################
+Potential problems
+#######################################################
+
+Problem: 
+  The portal is able to connect to the node when it (the portal) 
+  is started while the ppp link is up, but the node will fail to connect 
+  and to initiate subsequent downloads.
+
+Possible Solutions:
+- at this writing, the portal server port is hard coded for both remote and portal code.
+  If the port numbers don't match, the node will not be able connect to the portal (an 
+  exception will be thrown in the node logs). The portal prints the socket number it is
+  using in its log when it starts. Check the node log for an error message (can't connect
+  to shore/10.1.1.1:5510, e.g.) and make sure the portal is listening on the same socket.
+
+- Firewalls sometimes prevent the node from contacting the portal. Try temporarily disabling
+  the firewall and iniating a download (*)
+
+(*) Note - initiate a download by establishing a communications lease on the node:
+           (from the node)
+
+           Terminate any leases using 
+           (Note: a download will not be started if there are existing leases)
+           $ lease -terminate <leaseID>
+
+           Lease IDs may be determined using
+           $ getLeases loc
+
+           Establish a communications lease
+           $ lease -establish <nodeURL>
+
+           This will enable the PPP link and a download should begin

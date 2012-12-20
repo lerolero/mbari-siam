@@ -1,0 +1,46 @@
+#!/bin/bash
+
+## sleep 30
+## echo "just exit manageIridium without doing anything"
+## exit 0
+
+# Turn on modem
+/etc/siam/rfpower.ops 1 on >& /dev/null
+
+# Get these values from command line?
+timeout=300
+device=/dev/ttySX12
+baud=19200
+term=ansi
+
+# Allow this much time for SBD connection
+sbdTimeout=60
+
+# Dispatch SBD messages at this loop interval
+let sbdInterval=1
+let count=1
+
+while [ 1 ]; do
+
+  # Make sure modem is powered
+  /etc/siam/rfpower.ops 1 on >& /dev/null
+
+  # Attach terminal session to modem port for a while
+  /sbin/getty -w -t $timeout -h $device $baud $term >& /dev/null
+
+  # Sleep for a bit so that modem terminates call
+  sleep 1
+
+  if [ $count -eq $sbdInterval ] 
+  then
+     # Time to check for queued downlink messages
+
+     # Make sure non-root application can access port
+     chmod 666 $device
+
+    /etc/manageSBD | /usr/bin/tee -a /mnt/hda/logs/manageSBD.out
+    let count=0
+  fi
+
+  let count=$count+1
+done

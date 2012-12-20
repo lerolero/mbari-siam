@@ -1,0 +1,18 @@
+#!/bin/bash
+# Start the shore messaging service
+
+export SIAM_HOME=/mnt/hda/siam
+. /etc/siam/siamEnv
+
+date >> /mnt/hda/logs/shoreMsgService.out
+echo start runShoreMsgSErvice >> /mnt/hda/logs/shoreMsgService.out
+serialPort=/dev/ttySX12
+chmod a+w $serialPort
+chmod a+r $serialPort
+
+# Make sure modem is powered
+/etc/siam/rfpower.ops 1 on >& /dev/null
+
+/mnt/hda/siam/utils/a3la localhost $serialPort >> /mnt/hda/logs/shoreMsgService.out
+
+echo done starting a3la >> /tmp/tom.log

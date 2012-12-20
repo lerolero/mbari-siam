@@ -1,0 +1,153 @@
+#!/bin/csh
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Plot sampling error rates
+
+set terminal=
+set output=
+set xrange=
+set yrange=
+
+# Process leading options
+while ($#argv > 0)
+  if ("$argv[1]" == "-xrange") then
+    shift
+    set xrange = "set xrange $argv[1]"
+  else if ("$argv[1]" == "-yrange") then
+    shift
+    set yrange = "set yrange $argv[1]"
+  else if ("$argv[1]" == "-terminal") then
+    shift  
+    set terminal = `echo set terminal $argv[1]`
+  else if ("$argv[1]" == "-output") then
+    shift
+    set output = `echo set output \"$argv[1]\"`
+  else
+    break  # End of options
+  endif
+
+  shift   # Check next argument
+
+end
+
+if ($#argv != 1) then
+  echo usage: `basename $0` nodeLogFile
+  exit 1
+endif
+
+set nodeLogFile=$argv[1]
+
+# Get list of all instrument IDs on this node
+set idListScript=/tmp/listIDs.awk
+cat > $idListScript << 'EOF'
+BEGIN {
+  FS="|";
+}
+
+
+/port=.*\|id=.*samples=.*\|err=.*retries=.*/ { 
+  # Assign associative array element for instrument ID
+  idName[$2] = $3;
+}
+
+END {
+  # Print list of IDs
+  for (id in idName) {
+    printf "%s ", substr(id, 4);
+  }
+  printf "\n";
+}
+
+'EOF'
+
+set ids = `awk -f $idListScript $nodeLogFile`
+
+set samplingErrorScript=/tmp/samplingError.awk
+cat > $samplingErrorScript <<'EOF2'
+BEGIN {
+  FS = ",";
+  deviceID = "id=" ARGV[1];
+  ARGV[1] = "";
+}
+
+/devid=.*t=.*/ {
+  timeStampSec = substr($2, 4, 14)/1000.;
+}
+
+/port=.*id=.*samples=.*err=.*retries=.*/ {
+  if (index($0, deviceID) == 0) {
+    next;
+  }
+
+  # New format; "|" delimiter
+  split($0, fields, "|");
+  id = substr(fields[2], 4);
+  name = substr(fields[3], 6);
+  nSamples = substr(fields[4], 9);
+  nErrors = substr(fields[5], 5);
+  idName[id] = name;
+
+  if (nSamples > 0 || nErrors > 0) {
+    errorRate = 100. * nErrors / (nSamples + nErrors);
+    printf "%d %.1f\n", timeStampSec, errorRate;
+  }
+}
+
+END {
+  for (id in idName) {
+    printf "#|%s|%s\n", id, idName[id];
+  }
+}
+ 
+'EOF2'
+
+# Generate time-series of sampling error rates for each instrument
+ foreach id ($ids)
+  set dataFile=${id}.errRate
+  awk -f $samplingErrorScript $id $nodeLogFile > $dataFile
+  @ lines = `wc -l $dataFile | awk '{print $1}'`
+  if ($lines < 2) then
+    rm $dataFile
+  endif
+end
+
+set dataFiles=(*.errRate)
+
+set plotScript = /tmp/plotSamplingErrors.gnuplot
+cat > $plotScript << EOF3
+
+set xdata time
+set timefmt "%s"
+set format x "%m/%d\n%H:%M"
+$terminal
+$output
+set title "Cumulative Sampling Error Rates"
+set xlabel "Time (UTC)"
+set ylabel "% Cumulative sampling error"
+$xrange
+$yrange
+### set key bmargin
+EOF3
+
+# Add plot commands
+
+echo -n "plot " >> $plotScript
+@ n = 1
+foreach id ($ids)
+ set file={$id}.errRate
+ set title=`tail -1 $file | awk 'BEGIN{FS="|"}{print $2 ": " $3}'`
+## set title=`tail -1 $file | awk 'BEGIN{FS="|"}{printf "%s: %s", $2 $3}'`
+ echo -n \"$file\" 'using 1:2 title ' \"$title\" ' with linespoints' >> $plotScript
+ if ($n < $#ids) echo -n ", " >> $plotScript
+ @ n = $n + 1
+end
+echo "" >> $plotScript
+
+
+gnuplot -persist $plotScript 
+
+
+ 
+

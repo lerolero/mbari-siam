@@ -1,0 +1,121 @@
+#!/bin/csh
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Manage autoscript system on shore. This script can be invoked whenever a 
+# shore-mooring link is available.
+
+if ($#argv != 3) then
+  set script=`basename $0`
+  echo usage: $script localSiamHome remoteSiamHome emailRecipient
+  echo "remoteSiamHome is of form nodeAddr:path," 
+  echo "e.g. 'mooring:/mnt/hda/siam/'"
+  exit 1
+endif
+
+set siamHome=$argv[1]
+set remoteSiamHome=$argv[2]
+set recipients=$argv[3]:q
+
+echo siamHome=$siamHome
+echo remoteSiamHome=$remoteSiamHome
+echo recipients=$recipients
+
+# Save email message text in temporary file
+set emailMsg=/tmp/manageAutoScript.$$
+
+# Parse IP address of remote node
+set ipAddr=`echo $remoteSiamHome | cut -d: -f1`
+
+# Try to ping specified address
+ping -c 3 -w 15 $ipAddr >& /dev/null
+
+if ($status == 0) then
+  # Specified IP is connected
+  echo "$ipAddr is CONNECTED; `date`" >> $emailMsg
+
+else
+  echo $ipAddr is not connected; 
+  exit 1
+endif
+
+
+
+set autoScriptHome=$siamHome/autoScript
+set nodeAutoScriptHome=$remoteSiamHome/autoScript
+
+
+# Ensure that local autoscript directories exist
+mkdir $autoScriptHome >& /dev/null
+mkdir $autoScriptHome/pending >& /dev/null
+mkdir $autoScriptHome/copied >& /dev/null
+mkdir $autoScriptHome/logs >& /dev/null
+
+set logDir=$autoScriptHome/logs
+
+@ sendMail = 0
+### @ sendMail = 1    # TEST - always send mail
+
+
+# Get latest log from mooring
+echo Retrieve latest auto-script output from remote node
+scp ops@$nodeAutoScriptHome/logs/latest $logDir/.
+
+@ new = 0
+
+# Make sure that log message is complete
+tail -1 $logDir/latest | grep "AUTOSCRIPT OUTPUT EOF" >& /dev/null
+
+if ($status == 0) then
+  # Retrieved a complete message
+  if (! -e $logDir/previous) then
+    # This must be the first log message we've retrieved - 
+    # so want to mail it
+    @ new = 1    
+  else
+
+    diff  $logDir/previous $logDir/latest >& /dev/null
+    if ($status != 0) then
+      # This is a new log message
+      @ new = 1      
+    else
+      echo "No new auto-script log msg from node" | tee -a $emailMsg
+    endif
+  endif
+
+  cp $autoScriptHome/logs/latest $autoScriptHome/logs/previous
+
+  if ($new != 0) then
+    # New log message
+    # Add to mail message
+    @ sendMail = 1    
+    echo "Retrieved auto-script log from node:" >> $emailMsg
+    cat $logDir/latest >> $emailMsg
+
+    # Concatenate to log
+    cat $logDir/latest >> $logDir/log
+  endif
+
+else
+  @ sendMail = 1  
+  echo "*** Retrieved incomplete log message from autoscript; command still running or blocked?" | tee -a $emailMsg
+  cat $logDir/latest >> $emailMsg
+endif
+
+echo "" >> $emailMsg
+
+# Transfer any pending autoscript to the mooring
+$siamHome/shoreUtils/copyAutoScript $autoScriptHome $nodeAutoScriptHome >& /tmp/copyAutoScript.$$
+if ($status != 2) then
+  # Found a pending file on shore; transferred to node, or general error
+  @ sendMail = 1  
+endif
+cat /tmp/copyAutoScript.$$ >> $emailMsg
+
+if ($sendMail != 0) then
+  mail -s "auto-script management on `hostname`" $recipients < $emailMsg
+else 
+  echo "No need to send mail"
+endif
+

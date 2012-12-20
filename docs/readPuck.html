@@ -1,0 +1,54 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Mike Risi">
+   <meta name="GENERATOR" content="Mozilla/4.79 [en] (Windows NT 5.0; U) [Netscape]">
+   <title>readPuck</title>
+</head>
+<body>
+<b>NAME</b>
+<blockquote>readPuck - extract the contents of the puck and store it in a local file </blockquote>
+<b>SYNOPSIS</b>
+<blockquote>
+<pre>readPuck portName</pre>
+</blockquote>
+<b>DESCRIPTION</b>
+<blockquote>The readPuck utility can be used to extract the contents of a puck and store it in a local file 'puck.jar'.  To use readPuck attach the puck to the appropriate serial port and power it up. After the puck has been powered up enter the readPuck command followed by the necessary arguments, for example
+<blockquote>
+<pre>$ readPuck /dev/ttySX3</pre>
+</blockquote>
+This utility may be run on the MMC as well as a Windows or Linux PC. Though the utility may be used on the MMC it should not be used on a port that has an active instrument service.
+<blockquote>
+<pre></pre>
+</blockquote>
+</blockquote>
+<b>ENVIRONMENT</b>
+<blockquote>The following environment variables must be set:</blockquote>
+
+<ul>
+<li>
+JAVA_HOME - location of Java installation, e.g.<i> /j9</i> or <i>/opt/java/jdk1.3.1</i></li>
+
+<li>
+JAVA - name of the JVM. E.g. on a Sidearm, JAVA should be set to <i>j9.
+</i>On
+a workstation with Sun's Java installed, JAVA could be set to <i>java</i>.</li>
+
+<li>
+SIAM_HOME - top of the SIAM directory tree</li>
+
+<li>
+SIAM_CLASSPATH - on a Sidearm, SIAM_CLASSPATH should be set to <i>SIAM_CLASSPATH=$JAVA_HOME/lib/jclMax/classes.zip:$JAVA_HOME/lib/prsnlmot.jar:$JAVA_HOME/lib/RXTXcomm.jar:$SIAM_HOME/classes:$SIAM_HOME/jars/log4j-1.2.8.jar</i>.&nbsp;
+On X86 system, SIAM_CLASSPATH should be set to<i> $SIAM_HOME/classes;$SIAM_HOME/jars/RXTXcomm.jar;$SIAM_HOME/jars/log4j-1.2.8.jar</i></li>
+</ul>
+
+<p><br><b>SEE ALSO</b>
+<blockquote>
+&nbsp;
+<a href="writePuck.html">writePuck</a>,&nbsp; 
+<a href="catPuck.html">catPuck</a>
+</blockquote>
+
+</body>
+</html>

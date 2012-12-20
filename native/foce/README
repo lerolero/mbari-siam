@@ -1,0 +1,11 @@
+This directory contains executables that must run as root.
+To build them, su to root and then run make.
+
+Failure to build them as root may cause SIAM to hang.
+
+The only utility we need in this directory is foceio.
+The others (relay, ioport) are now deprecated.
+
+In particular, relay.c manipulates the power relays
+without taking into account the state that FOCE wants
+to maintain.  Use this for testing only!

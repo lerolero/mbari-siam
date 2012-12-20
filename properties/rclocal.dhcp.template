@@ -1,0 +1,67 @@
+#=====================================================
+# Enable DHCP, set hostname
+# Note: used only if ethernet is enabled and DHCP is enabled
+# Uncomment source lines to enable DHCP BOOT
+#=====================================================
+source /root/.bashrc
+source /etc/siam/siamEnv
+
+HOSTS_DIR=/etc
+HOSTS=$HOSTS_DIR/hosts
+HOSTS_TEMPLATE=$SIAM_HOME/properties/hosts.template
+TMP_HOSTS=$HOSTS_DIR/hosts.dhcp
+
+#=====================================================
+# Bring up eth0 using DHCP
+#=====================================================
+/usr/bin/ifswitch-to-dhcp
+let testDHCP="$?"
+
+#=====================================================
+# Get the hostname and new IP address
+#=====================================================
+hostname=`hostname`
+ipaddr=`$SIAM_HOME/bin/arm-linux/ipaddr`
+ethAddrPrefix=$ETHERNET_ADDRESS_PREFIX
+echo "hostname: $hostname IP addr: $ipaddr"
+
+#=====================================================
+# If DHCP successful, modify /etc/hosts to reflect
+# changes
+#=====================================================
+#if [ "$test" -eq 0 ] 
+#then
+
+	#=====================================================
+	# Modify /etc/hosts to reference the new IP address...
+	# Regenerate /etc/hosts
+	#
+	# !! The following are also required to regenerate 
+	# etc/hosts from the template:
+	# PORTAL_PPP_ADDRESS,  PORTAL_PPP_HOST, 
+	# PRIMARY_PPP_ADDRESS, PRIMARY_PPP_HOST 
+	# AUX__PPP_ADDRESS, AUX__PPP_HOST !!
+	#=====================================================
+	#cat $HOSTS_TEMPLATE | sed -e "s/<PRIMARY_NODE_ADDRESS>/$ipaddr/I" -e "s/<PRIMARY_NODE_NAME>/$hostname/I" -e "s/<ETHERNET_ADDRESS_PREFIX>/$ethAddrPrefix/I"> $TMP_HOSTS
+	
+	#=====================================================
+	# Double check the new etc/hosts for errors
+	# and swap if OK
+	#=====================================================
+	# grep -e "PRIMARY_NODE_ADDRESS" -e "PRIMARY_NODE_NAME" -e "ETHERNET_ADDRESS_PREFIX"
+
+	#=====================================================
+	# Replace the hosts file
+	#=====================================================
+	#mv $HOSTS $HOSTS_DIR/hosts.BAK
+	#mv $TMP_HOSTS $HOSTS
+#fi
+
+#=====================================================
+# Restart the interface
+#=====================================================
+ifdown eth0
+ifup eth0
+
+#echo "$HOSTS setup complete"
+

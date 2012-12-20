@@ -1,0 +1,5 @@
+#!/bin/bash
+# Test DevicePacketAggregator
+#
+$JAVA -cp $SIAM_CLASSPATH -Djava.security.policy=$SIAM_HOME/properties/policy \
+-Dlog4j.threshold=$LOG4J_THRESHOLD org.mbari.siam.tests.Aggregator.AggregatorTest $*

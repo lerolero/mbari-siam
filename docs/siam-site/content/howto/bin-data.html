@@ -1,0 +1,191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>BIN data transfer HOWTO</title>
+		<link href="../../css/content.css" rel="stylesheet" type="text/css" />
+		<link href="../../css/howto.css" rel="stylesheet" type="text/css" />
+	</head>
+	
+	<body>
+		
+		<div class="nameHeader">
+			<h1>Name</h1> 
+			<div class="nameText">
+				<h2>Transfer Data from BIN to primary node <!-- name text here --></h2>
+			</div>
+		</div>
+		
+		<div class="synopsisHeader">
+			<h1>Synopsis</h1>
+			<div class="synopsisText">
+				<div class="commands"><p>Prior to recovering the MSE SHELF BIN, its data should be transferred to the ship.</p>
+				 <p>For efficiency and data safety, the data should first be copied from the SHELF BIN to the surface via ethernet.</p> 
+				 <p>Once it is safely located on the surface, the transfer of the data to the ship can progress concurrently with the recovery of the SHELF BIN.</p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="sectionHeader">
+			<!-- Section description -->
+			<h1>Connect to primary surface node</h1>
+			<div class="sectionText">
+				<p>
+				<!-- description text here -->
+				Establish radio console to SURFACE
+				</p>				
+			</div>
+			<div class="sectionText">
+				<p>
+				<!-- description text here -->
+				Login to SURFACE via radio console
+				</p>				
+			</div>
+			<div class="sectionText">
+				<p></p>
+				<!-- description text here -->
+				Modify radio console timeout
+				<div class="commands">
+				TMOUT=3600
+				</div>
+								
+			</div>
+			<div class="sectionText">
+				<p>
+				<!-- description text here -->
+				Establish CPU lease on SURFACE
+				</p>				
+				<div class="commands">
+				a 3600
+				</div>
+			</div>
+		</div>
+			
+		<div class="sectionHeader">
+			<!-- Section description -->
+			<h1>Connect to BIN</h1>
+			<div class="sectionText">
+				<p>
+				<!-- description text here -->
+				Wake up SHELF BIN
+				</p>				
+				<div class="commands">
+				 bcastc
+				</div>
+			</div>
+			<div class="sectionText">
+				<p>
+				<!-- description text here -->
+				Establish lease on SHELF BIN
+				</p>				
+				<div class="commands">
+				 lease –establish 3600 node1 
+				</div>
+			</div>
+			<div class="sectionText">
+				<p>
+				<!-- description text here -->
+				SSH to SHELF BIN
+				</p>				
+				<div class="commands">
+				 ssh ops@node1
+				 gosiam
+				</div>
+			</div>
+			<div class="sectionText">
+				<p>
+				<!-- description text here -->
+				Verify that the SIAM application is not running
+				</p>				
+				<div class="commands">
+				 ps –ef
+				</div>
+				<p>
+				<!-- description text here -->
+				look for j9 processes; if there are still many, terminate them
+				</p>				
+				<div class="commands">
+				 killj9
+				</div>
+			</div>
+		</div>
+		<div class="sectionHeader">
+			<!-- Section description -->
+			<h1>Prepare to transfer</h1>
+			<div class="sectionText">
+				<p>
+				<!-- description text here -->
+				Make sure that there is enough (&gt; 50%) disk space on /dev/hda1 to store compressed logs
+				</p>				
+				<div class="commands">
+				 df -Th
+				</div>
+			</div>
+			<div class="sectionText">
+				<p>
+				<!-- description text here -->
+				Make a directory to store compressed logs
+				</p>				
+				<div class="commands">
+				 mkdir xfer
+				</div>
+			</div>
+			<div class="sectionText">
+				<p>
+				<!-- description text here -->
+				stop instrument services (for each instrument)
+				</p>				
+				<div class="commands">
+				 shutdownPort loc &lt;portName&gt;
+				</div>
+			</div>
+			<div class="sectionText">
+				<p>
+				<!-- description text here -->
+				Compress the data directories into tar files, e.g.,
+				</p>				
+				<div class="commands">
+				tar czvf xfer/mse-shelf-siam1520.tar.gz logs/1520*<br />
+				tar czvf xfer/mse-shelf-power1554.tar.gz logs/1554*<br />
+				tar czvf xfer/mse-shelf-seabird1533.tar.gz logs/1533*<br />
+				tar czvf xfer/mse-shelf-wetlabs1535.tar.gz logs/1535*<br />
+				tar czvf xfer/mse-shelf-aquadopp1474.tar.gz logs/1474*<br />
+				tar czvf xfer/mse-shelf-aanderaa1444.tar.gz logs/1444*<br />
+				tar czvf xfer/mse-shelf-workhorse1525.tar.gz logs/1525*<br />
+				tar czvf xfer/mse-shelf-msp4301527.tar.gz logs/1527*<br />
+				tar czvf xfer/mse-shelf-medusa1526.tar.gz logs/1526*
+				</div>
+			</div>
+			<div class="sectionText">
+				<p>
+				<!-- description text here -->
+				start instrument services 
+				</p>				
+				<div class="commands">
+				 scanPort loc &lt;portName&gt; (suspend/resume/restartPort…resumePort leaves services in SHUTDOWN state)
+				</div>
+			</div>
+		</div>
+		<div class="sectionHeader">
+			<!-- Section description -->
+			<h1>Transfer files</h1>
+			<div class="sectionText">
+				<p>
+				<!-- description text here -->
+				Transfer the tar files to the SURFACE (log results)
+				</p>				
+				<div class="commands">
+				 scp xfer/*.tar.gz ops@surface:/mnt/hda/.|tee fileTransfer.out
+				</div>
+			</div>
+		</div>
+		
+		<div class="seeAlsoHeader">
+			<h1>See Also</h1>
+			<div class="seeAlsoText">
+				<div class="command"><!-- <a href=".html#" target="mainFrame">link1</a>--></div>
+			</div>
+		</div>
+		
+		
+	</body>
+</html>

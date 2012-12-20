@@ -1,0 +1,12 @@
+#!/bin/bash
+#
+
+DEV_IDS="1730"
+STREAM_NAME="power"
+# use -k to keep going on error
+KEEP_GOING="$1"
+MONITOR=$SIAM_HOME/utils/foce/monitor
+
+# ---- should not need to configure anything below this line ----
+$MONITOR $KEEP_GOING $STREAM_NAME $DEV_IDS
+

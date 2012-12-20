@@ -1,0 +1,72 @@
+<!DOCTYPE doctype PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+  <meta name="Author" content="Tom O'Reilly">
+  <meta name="GENERATOR"
+ content="Mozilla/4.79 [en] (Windows NT 5.0; U) [Netscape]">
+  <title>setProperty</title>
+</head>
+<body>
+<b>NAME</b>
+<blockquote>setProperty - set device service properties to specified
+values
+on specified host and port</blockquote>
+<b>SYNOPSIS</b>
+<blockquote>
+  <pre>setProperty nodeHost portName name=value[ name=value...]</pre>
+</blockquote>
+<b>DESCRIPTION</b>
+<blockquote>The <i>setProperty</i> utility sets one or more SIAM <a
+ href="instrumentProperties.html"><i>instrument service property values</i></a>
+of the service running on the specified node and port. Each property
+setting
+as specified as a 'key=value' pair. If a whitespace must be included in
+the key=value string, the entire string must be enclosed by single or
+double
+quotes. Multiple key=value pairs may be specifed in a single invocation
+of <i>setProperty</i>. For example, to set the power and communication
+policies
+of the device service running on port /dev/ttySX11 on the "surface"
+node:
+  <blockquote>
+    <pre>% setProperty surface /dev/ttySX11 powerPolicy=ALWAYS commPowerPolicy=SAMPLING<br>NOTE: property change will take effect when restartPort is executed<br></pre>
+  </blockquote>
+As the message indicates, the user should use the <a
+ href="restartPort.html"><i>restartPort</i></a> utility after making
+desired
+property modifications, to guarantee that the changes take effect.
+  <p> The portName can be abbreviated as an integer, i.e.
+"/dev/ttySX11"
+can be abbreviated as simply "11". Thus the above example is equivalent
+to </p>
+  <blockquote>
+    <pre>% setProperty surface 11 powerPolicy=ALWAYS commPowerPolicy=SAMPLING<br></pre>
+  </blockquote>
+  <p> This utility may be run on the same host as the node, or on any
+networked host from which the node host is accessible. If run on the
+node's host, then <i>nodeHost</i> should be specified as "localhost". </p>
+</blockquote>
+<p><br>
+<b>ENVIRONMENT</b> </p>
+<blockquote>The following environment variables must be set:</blockquote>
+<ul>
+  <li> JAVA_HOME - location of Java installation, e.g.<i> /j9</i> or <i>/opt/java/jdk1.3.1</i></li>
+  <li> JAVA - name of the JVM. E.g. on a Sidearm, JAVA should be set to
+    <i>j9. </i>On a workstation with Sun's Java installed, JAVA could
+be set to <i>java</i>.</li>
+  <li> SIAM_HOME - top of the SIAM directory tree</li>
+  <li> SIAM_CLASSPATH - on a Sidearm, SIAM_CLASSPATH should be set to <i>$JAVA_HOME/lib/jclMax/classes.zip:$JAVA_HOME/lib/prsnlmot.jar:$JAVA_HOME/lib/RXTXcomm.jar:$SIAM_HOME/classes</i>.&nbsp;
+On X86 system, SIAM_CLASSPATH should be set to<i> $SIAM_HOME/classes</i></li>
+</ul>
+<p><br>
+<b>SEE ALSO</b> </p>
+<blockquote><a href="instrumentProperties.html">Instrument service
+properties</a>,&nbsp; <a href="portProperties.html">portProperties</a>
+,&nbsp; <a href="cachePort.html">cachePort</a> ,&nbsp; <a
+ href="restartPort.html">restartPort</a> <br>
+&nbsp;</blockquote>
+<br>
+</body>
+</html>

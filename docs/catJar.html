@@ -1,0 +1,51 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Mike Risi">
+   <meta name="GENERATOR" content="Mozilla/4.79 [en] (Windows NT 5.0; U) [Netscape]">
+   <title>catJar</title>
+</head>
+<body>
+<b>NAME</b>
+<blockquote>catJar - list the contents of a jar file </blockquote>
+<b>SYNOPSIS</b>
+<blockquote>
+<pre>catJar jarFile [x]</pre>
+<pre>x - the 'x' option displays contents of service.xml if present</pre>
+</blockquote>
+<b>DESCRIPTION</b>
+<blockquote>The catJar utility lists the contents of a jar file including the 
+entries in the jar file, the entries in the service.properties file if it 
+exists, and the manifest entries.  To use catJar enter the command
+followed by the name of the jar file, for example
+<blockquote>
+<pre>$ catJar puck.jar</pre>
+</blockquote>
+This utility may be run on the MMC as well as a Windows or Linux PC.
+<blockquote>
+<pre></pre>
+</blockquote>
+</blockquote>
+<b>ENVIRONMENT</b>
+<blockquote>The following environment variables must be set:</blockquote>
+
+<ul>
+<li>
+JAVA_HOME - location of Java installation, e.g.<i> /j9</i> or <i>/opt/java/jdk1.3.1</i></li>
+
+<li>
+JAVA - name of the JVM. E.g. on a Sidearm, JAVA should be set to <i>j9.
+</i>On
+a workstation with Sun's Java installed, JAVA could be set to <i>java</i>.</li>
+
+<li>
+SIAM_HOME - top of the SIAM directory tree</li>
+
+<li>
+SIAM_CLASSPATH - on a Sidearm, SIAM_CLASSPATH should be set to <i>SIAM_CLASSPATH=$JAVA_HOME/lib/jclMax/classes.zip:$JAVA_HOME/lib/prsnlmot.jar:$JAVA_HOME/lib/RXTXcomm.jar:$SIAM_HOME/classes:$SIAM_HOME/jars/log4j-1.2.8.jar</i>.&nbsp;
+On X86 system, SIAM_CLASSPATH should be set to<i> $SIAM_HOME/classes:$SIAM_HOME/jars/log4j-1.2.8.jar</i></li>
+</ul>
+
+</body>
+</html>

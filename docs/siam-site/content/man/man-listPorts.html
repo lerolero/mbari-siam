@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>listPorts Manual Page</title>
+		<link href="../../css/content.css" rel="stylesheet" type="text/css" />
+		<link href="../../css/manpage.css" rel="stylesheet" type="text/css" />
+		</head>
+	
+	<body>
+		
+		<div class="nameHeader">
+			<h1>Name</h1> 
+			<div class="nameText">
+				<h2>listPorts <!-- name text here --></h2>
+				</div>
+			</div>
+		
+		<div class="synopsisHeader">
+			<h1>Synopsis</h1>
+			<div class="synopsisText">
+				<div class="commands">listPorts <em class="options">nodeURL [-stats]</em></div>
+				</div>
+			</div>
+		
+		<div class="descriptionHeader">
+			<h1>Description</h1>
+			<div class="descriptionText">
+				<p>
+				<!-- description text here -->
+				The listPorts utility displays a listing of all configured serial ports on
+				a specified node, the service (if any) associated with each port, and the 
+				status of that service.
+				</p>
+				<h2>Options</h2>
+				<table class="altTable">
+					<tr>
+						<th>Option</th>
+						<th>Description</th>
+						<th>Values</th>
+						</tr>
+					 <tr>
+					 <td>nodeURL</td>
+					 <td>IP address or host name of SIAM node</td>
+					 <td>e.g. 134.89.88.1, mooring.moos.mbari.org</td>
+					 </tr>
+					 <tr class="alt">
+					 <td>-stats</td>
+					 <td>Show samples, error, retry counts</td>
+					 <td>-</td>
+					 </tr>
+					<!--
+					 <tr>
+					 <td></td>
+					 <td></td>
+					 <td>-</td>
+					 </tr>
+					 <tr class="alt">
+					 <td></td>
+					 <td></td>
+					 <td>-</td>
+					 </tr>
+					 -->
+					</table>
+				<p> 
+				Example output:</p>
+				<pre>
+$ listPorts foce.mars.mbari.org -stats
+SIAM version $Name:  $
+
+Node 1726 has 19 ports
+
+  Port Name ISI-ID                  Service   Status      S   E   R  
+  --------- ------                  -------   ------     --- --- --- 
+   PMonitor   1730            Power Monitor       OK   60585   0   0 
+   EMonitor   1721        Enclosure Monitor       OK   60585   0   0 
+   HMonitor   1737         Humidity Monitor       OK   60584   0   0 
+   WMonitor   1738            Water Monitor       OK   60584   0   0 
+ /dev/ttyS4   1642          Seabird SBE52MP SAMPLING   10097   0   0 
+ /dev/ttyS6   1733          Seabird SBE52MP       OK   10097   0   0 
+/dev/ttyS11   1644       Vector Velocimeter SAMPLING 1817335   2   0 
+/dev/ttyS12   1724  MBARI digital pH Sensor       OK   60578   0   0 
+/dev/ttyS13   1735  MBARI digital pH Sensor       OK   60578   0   0 
+/dev/ttyS14   1722  MBARI digital pH Sensor       OK   60577   0   0 
+/dev/ttyS15   1749  MBARI digital pH Sensor       OK   60576   0   0 
+/dev/ttyS16   1734  MBARI digital pH Sensor       OK   60575   0   0 
+/dev/ttyS17      -                        -        -       -         
+ /dev/ttyS8   1728 Elmo Thruster Controller SAMPLING  302870   0   0 
+/dev/ttyS10   1729 Elmo Thruster Controller       OK  302866   0   0 
+ /dev/ttyS9   1645  WH Sentinel ADCP 600kHz       OK   20169   0   0 
+ /dev/ttyS7   1739          SAMI CO2 Sensor       OK     168   0   0 
+    CPUTemp   1761                 CPU Temp       OK   20190   0   0 
+  CO2subsys      -                        -        -       -         
+				
+				</pre>
+				</div>
+			</div>
+		
+		<div class="environmentHeader">
+			<h1>Environment</h1>
+			<div class="environmentText">
+				<p>The following environment variables must be set:</p>
+				<table class="altTable">
+					<tr>
+						<th>Variable</th>
+						<th>Description</th>
+						<th>Example</th>
+						</tr>
+					<tr>
+						<td>JAVA_HOME </td>
+						<td>location of Java installation</td>
+						<td><div class="path"> /j9, /opt/java/jdk1.3.1, etc.</div></td>
+						</tr>
+					<tr class="alt">
+						<td>JAVA</td>
+						<td>Path to JVM command</td>
+						<td>For MMC<div class="commands">$JAVA_HOME/bin/j9</div><br />For Sun JVM (e.g. linux, win32, mac OS) <div class="commands">$JAVA_HOME/bin/java</div>
+							</td>
+						</tr>
+					<tr>
+						<td>SIAM_HOME</td>
+						<td>top of the SIAM directory tree</td>
+						<td>-</td>
+						</tr>
+					<tr class="alt">
+						<td>SIAM_CLASSPATH</td>
+						<td>Path including all SIAM and supporting classes</td>
+						<td>For MMC<div class="path">$JAVA_HOME/lib/jclMax/classes.zip:$JAVA_HOME/lib/prsnlmot.jar:$JAVA_HOME/lib/RXTXcomm.jar:$SIAM_HOME/classes</div><br />
+							For linux/win32<div class="path"> $SIAM_HOME/classes</div></td>
+						</tr>
+					<!--
+					 <tr>
+					 <td></td>
+					 <td></td>
+					 <td>-</td>
+					 </tr>
+					 <tr class="alt">
+					 <td></td>
+					 <td></td>
+					 <td>-</td>
+					 </tr>
+					 -->
+					</table>
+				</div>
+			</div>
+		
+		<div class="seeAlsoHeader">
+			<h1>See Also</h1>
+			<div class="seeAlsoText">
+				<div class="command"><a href="man-scanPort.html">scanPort</a>, <a href="man-shutdownPort.html">shutdownPort</a>, <a href="man-nodeTest.html">nodeTest</a></div>
+				</div>
+			</div>
+		</body>
+	</html>

@@ -1,0 +1,82 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Run 'auto' script if it exists
+sleepTime=30
+leaseTime=60
+
+autoScriptHome=$SIAM_HOME/autoScript  
+
+pendingDir=$autoScriptHome/pending
+logDir=$autoScriptHome/logs
+
+scriptName=autoscript
+
+# Tag should be last line of autoscript
+completeTag="# AUTOSCRIPT EOF"
+outputCompleteTag="AUTOSCRIPT OUTPUT EOF"
+
+# Complete path to pending autoscript
+scriptPath=$pendingDir/$scriptName
+
+# Output from latest autoscript execution
+latestLog=$logDir/latest
+
+# Output of all autoscript executions
+scriptLogs=$logDir/log
+
+# Ensure that autoscript directories exist at startup
+mkdir $autoScriptHome >& /dev/null
+mkdir $pendingDir >& /dev/null
+mkdir $logDir >& /dev/null
+
+while [ 1 ]
+do
+  # Check for script existence
+  if [ -e $scriptPath ]
+  then
+    echo $scriptPath exists
+
+    lastLine=`tail -1 $scriptPath`
+
+    # Check that script is 'complete' - last line should be special tag
+    tail -1 $scriptPath | grep "$completeTag"
+    result=$?
+    if [ $result -eq 0 ] 
+    then
+      echo script is complete
+
+      # Get a CPU lease; use lease ID 99, so as not to conflict with typical
+      # user lease (ID=1)
+      cpuAwake $leaseTime -r 99 localhost 
+
+      # Execute the script, and log output
+      echo `date` " AUTOSCRIPT execute:" > $latestLog
+      cat $scriptPath >> $latestLog
+      echo "" >> $latestLog
+      echo "AUTOSCRIPT OUTPUT:" >> $latestLog
+      echo "execute script"
+      $scriptPath >& $pendingDir/autoscript.out
+      cat $pendingDir/autoscript.out >> $latestLog
+      echo `date` $outputCompleteTag >> $latestLog
+
+      # Concatentate latest log to full logs file
+      cat $latestLog >> $scriptLogs
+
+      # Remove autoscript
+      rm $scriptPath 
+
+    else
+      echo `date` " script not complete; lastLine=\'$lastLine\', looking for \'$completeTag\', result=$result" >> $scriptLogs
+    fi
+  else
+    echo "No pending autoscript ($scriptPath not found)"
+  fi
+
+  # Wait a bit before checking again
+  echo "Sleep a bit"
+  sleep $sleepTime
+done
+end

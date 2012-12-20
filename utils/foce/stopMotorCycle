@@ -1,0 +1,118 @@
+#!/bin/bash
+
+#
+# Stop all motorCycle tests
+#
+# This script uses only the PIDs files
+# in the current directory; it does not 
+# recursively find PID files anywhere other than /tmp
+#
+#  CAUTION: This does NOT guarantee that:
+#  - all motorCycle instances will stop
+#  - all test scripts will stop
+#  - their sub-processes
+#  Motors may still start automatically after this script executes.
+
+# For motor safety, ensure that all script sub-processes 
+# have also stopped before working with motors
+
+# TEST command prefix
+TEST=""
+# stop motors on exit if false
+NO_KILL="FALSE"
+# enable verbose output if TRUE
+# (-V option)
+VERBOSE="FALSE"
+# stop motor command
+PROFILE_DIR="$SIAM_HOME/utils/foce/motorScripts"
+STOP_MOTOR_CMD="$PROFILE_DIR/runProfile.mc killMotors"
+
+#
+# print use message
+#
+printUsage(){
+echo
+echo "#"
+echo "# Stop all scripts and sub-scripts running under motorCycle"
+echo "# By default, tries to stop motors before exiting"
+echo "#"
+echo
+echo "usage: `basename $0` [-h -k -t -V]"
+echo 
+echo "  -k        : don't kill motors              [$NO_KILL]"
+echo "  -t        : test mode (echo but do not execute commands)"
+echo "  -h        : print this help message"
+echo "  -V        : verbose output                 [$VERBOSE]"
+echo
+}
+
+#
+# print args if VERBOSE=TRUE
+#
+vout(){
+ if [ "$VERBOSE" == "TRUE" ]
+ then
+ echo "$*"
+ fi
+}
+
+let "scount=0"
+while getopts hktV Option
+do
+    case $Option in
+	k ) NO_KILL="TRUE"
+	    let "scount=$scount+1"
+	;;
+	t ) TEST="echo"
+	    let "scount=$scount+1"
+	;;
+	V ) VERBOSE="TRUE"
+	    let "scount=$scount+1"
+	;;
+	h)printUsage
+	  exit 0
+	;;
+	*) # getopts outputs error message
+          exit -1
+	;;
+    esac
+done
+
+vout ""
+vout "[ stopMotorCycle config ]"
+vout "  NO_KILL = $NO_KILL"
+vout "  TEST    = $TEST"
+vout "  VERBOSE = $VERBOSE"
+vout "  STOP_MOTOR_CMD = $STOP_MOTOR_CMD"
+vout ""
+
+vout "Looking for motorCycle PIDs"
+# kill all motorCycle PIDs
+ PID_LIST=`cat /tmp/mcycle-*.pid 2>/dev/null`
+if [ "$PID_LIST" ]
+then
+ echo
+ echo "  CAUTION: Running this script does NOT guarantee that:"
+ echo "  - all motorCycle instances will stop executing"
+ echo "  - all test scripts will stop executing"
+ echo "  - their sub-processes will stop executing"
+ echo ""
+ echo "  Motors may still start automatically after this script executes."
+ echo
+ echo "PID_LIST: "
+ echo "$PID_LIST"
+ 
+vout "Killing motorcycle PIDs"
+ $TEST kill $PID_LIST
+ echo
+else
+ echo
+ echo "No motorCycle PIDs found"
+ echo
+fi
+
+if [ "$NO_KILL" == "FALSE" ]
+then
+ vout "Stopping all motors"
+ $TEST $STOP_MOTOR_CMD
+fi

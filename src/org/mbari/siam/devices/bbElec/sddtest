@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# sddtest - Test program for BB232SDD16
+
+$JAVA -cp $SIAM_CLASSPATH:$SIAM_HOME/classes \
+-Djava.security.policy=$SIAM_HOME/properties/policy \
+ org.mbari.siam.devices.bbElec.BBSDDTest $*

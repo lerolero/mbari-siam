@@ -1,0 +1,743 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>SIAM Installation Guide</title>
+<link href="../css/content.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<a name="top"></a>
+<h1>SIAM Installation Guide</h1>
+
+
+<a name="siam"></a>
+<h2>Types of installation</h2>
+
+<p>
+Depending on the capabilities of the target application hardware and software, 
+SIAM may be installed and built directly on the target platform, or built on a host
+machine as a binary distribution and installed on the target.
+</p>
+<p>
+It is recommended to build directly on the target platform if possible. However, many embedded platforms
+do not have compilers and other tools for the target environment; these would be candidates for host installations.
+</p>
+<p>Regardless of which type of installation used, you may find it convenient to set up a special user account for system administration (e.g. &quot;ops&quot;), especially if there will be more than one
+system operator.
+</p>
+
+<h3>Install on host</h3>
+<p>Installing SIAM on the host requires the following steps: </p>
+<ul>
+	<li>Configure host</li>
+	<li>Install 3rd party software</li>
+	<li>Install SIAM source code</li>
+	<li>Configure build environment</li>
+	<li>Build SIAM Java sources</li>
+	<li>Build SIAM native sources for host</li>
+	<li>Configure SIAM</li>
+	<li>Configure instrument service JAR files</li>
+	<li>Build instrument service JAR files</li>
+</ul>
+
+<h3>Install on target</h3>
+<p>Building SIAM on a host and installing  on the target requires the following steps: </p>
+<ul>
+	<li>Configure host</li>
+	<li>Install 3rd party software</li>
+	<li>Install SIAM source code</li>
+	<li>Configure build environment</li>
+	<li>Build SIAM Java sources</li>
+	<li>Build SIAM native sources for target</li>
+	<li>Configure instrument service JAR files</li>
+	<li>Build instrument service JAR files</li>
+	<li>Make SIAM binary distribution package</li>
+	<li>Install SIAM binary distribution on target</li>
+	<li>Configure target</li>
+	<li>Configure SIAM on target</li>
+</ul>
+
+<a name="packages"></a>
+<h2>3rd Party Packages</h2>
+
+
+<p>
+SIAM depends on a number of open-source third-party software packages.<br />
+The following table describes the packages and shows where to obtain them.
+</p>
+
+<a name="required"></a>
+<h2>Required Packages</h2>
+
+<table class="altTable">
+<tr>
+  <th>Package</th>
+  <th>Description</th>
+  <th>Source</th>
+  <th>Notes</th>
+</tr>
+<tr class="alt">
+<td>Java SDK</td>
+<td>
+SIAM runs using Java SE Virtual Machine v1.3 or higher.<br />
+To build SIAM, a Java Developer Kit version 1.3 or higher is required.<br /> 
+We have successfully used JDK 6.x, J2SE 1.3.1, J2SE 1.4.2, J2SE 5.0
+</td>
+<td><a href="http://www.oracle.com/technetwork/java" target="blank">http://www.oracle.com/technetwork/java</a></td>
+<td>All SIAM code maintains compatibility with Java 1.3 to support older embedded JVMs</td>
+</tr>
+<tr>
+<td>Gnu Utilities</td>
+<td>
+SIAM is built using the Gnu tool chain (make, gcc).<br />
+The SIAM utilities use various shells and scripts, primarily  
+bash, csh, Perl
+</td>
+<td><a href="http://www.gnu.org" target="blank">http://www.gnu.org</a></td>
+<td>GNU make 3.81 (version 3.80 for Cygwin)<br />
+gcc version 4.2.1<br />
+Other versions may work, but have not been tested<br />
+Cygwin can provide these for Windows users<br />
+(see optional packages below)
+</td>
+</tr>
+<tr class="alt">
+<td>RXTX</td>
+<td>
+Version 2.1-7r2<br />
+RXTX is a native library (using JNO) providing serial and parallel communication for the Java Software Development Toolkit (JSDK) for Linux, Win32 and Mac OS
+</td>
+<td>
+<a href="http://rxtx.qbang.org" target="blank">http://rxtx.qbang.org</a><br />
+<a href="http://users.frii.com/jarvi/rxtx/" target="blank">http://users.frii.com/jarvi/rxtx</a>
+</td>
+<td> A version of RXTXcomm.jar is currently in the SIAM repository, but a platform-specific binary library is also required.<br />
+We do not have a license to distribute RXTX, so it is necessary to obtain and install RXTX from the developers.<br />
+The RXTX website has been undergoing some changes and availability has been spotty<br />if the first URL is not working, try the listed alternatives</td>
+</tr>
+<tr>
+<td>Open Source Data Turbine (OSDT)</td>
+<td>Streaming data middleware system that lets you stream live data from
+experiments, labs, webcams, etc. <br />
+SIAM uses OSDT to provide a data stream pub/sub mechanism for other applications, including other SIAM services and visualization tools like RDV.
+ </td>
+<td><a href="http://www.dataturbine.org" target="blank">http://www.dataturbine.org</a></td>
+<td>
+</td>
+</tr>
+<tr class="alt">
+<td>log4j</td>
+<td>
+Version 1.2<br />
+log4j enables selective debug logging, that enables debug output to be prioritized and set at run time without modifying source code.
+</td>
+<td>
+<a href="http://logging.apache.org/log4j/1.2/" target="blank">http://logging.apache.org/log4j/1.2/</a><br />
+The log4 JAR file resides with other 3rd party JARS in SIAM_HOME/jars.
+</td>
+<td></td>
+</tr>
+</table>
+<h3>Installation Notes</h3>
+<p>See the following pages for installation notes for these packages:</p>
+	<ul>
+		<li><a href="installNotes.html#java" target="mainFrame">Java SDK</a></li>
+		<li><a href="installNotes.html#gnu" target="mainFrame">Gnu Utilities</a></li>
+		<li><a href="installNotes.html#rxtx" target="mainFrame">RXTX</a></li>
+		<li><a href="installNotes.html#osdt" target="mainFrame">Open Source Data Turbine</a></li>
+		
+	</ul>
+<a name="optional"></a>
+<h2>Optional Packages</h2>
+
+<p>
+The following table describes optional software packages for SIAM
+</p>
+<table class="altTable">
+<tr>
+  <th>Package</th>
+  <th>Description</th>
+  <th>Source</th>
+  <th>Notes</th>
+</tr>
+<tr class="alt">
+<td>Apache Ant</td>
+<td>Ant may be used to build SIAM as an alternative to make. Also used to build PUCK classes.</td>
+<td><a href="http://ant.apache.org" target="blank">http://ant.apache.org</a></td>
+<td>-</td>
+</tr>
+<tr>
+<td>Cygwin</td>
+<td>Cygwin provides an environment similar to Unix/Linux for Win32, including ports for a wide range of Gnu software</td>
+<td><a href="http://www.cygwin.com" target="blank">http://www.cygwin.com</a></td>
+<td>An editor capable of saving files in Unix format (no DOS line ends) is needed, e.g. vi, emacs, etc. several are available as optional Cygwin packages.</td>
+</tr>
+<tr class="alt">
+<td>Real-time Data Viewer<br />(RDV)</td>
+<td>RDV is a visualization environment for scientific and engineering data. <br />
+Built on top of the Data Turbine  dynamic data server, it supports local and remote data sources and can visualize numeric, video, image, and audio data in a number of different ways. 
+</td>
+<td>
+Download from google code:<br />
+<a href="http://code.google.com/p/rdv/" target="blank">http://code.google.com/p/rdv</a><br /><br />
+Support and more information may be found at Palta Software:
+<a href="http://www.paltasoftware.com/rdv/" target="blank">http://www.paltasoftware.com/rdv/</a>
+</td>
+<td>-</td>
+</tr>
+<!--
+<tr>
+<td></td>
+<td></td>
+<td><a href="http://" target="blank">http://</a></td>
+<td>-</td>
+</tr>
+<tr class="alt">
+<td></td>
+<td></td>
+<td><a href="http://" target="blank">http://</a></td>
+<td>-</td>
+</tr>
+-->
+</table>
+
+<a name="users"></a>
+<h2>User Accounts and Groups</h2>
+
+<p>If you are installing SIAM for deployment, it is convenient to install and run SIAM from an administrative account.<br />
+This step is not strictly necessary if you are installing SIAM for development.
+Typically, this is done before installing SIAM; the following steps are used to set up an administrative account called &quot;ops&quot;.<br />
+</p>
+<ul>
+<li>Create a user account that will be used for SIAM administration and operation (which we refer to as &quot;ops&quot;)* </li>
+<li>Add a user group call also &quot;ops&quot;</li>
+<li>Add user ops to groups ops, uucp, lock, wheel (no need to create these if they don't exist)</li>
+<!--
+<li></li>
+<li></li>
+-->
+</ul>
+<p class="emphasis">*You may also choose to use your own account as the operator account. 
+In this case, use group &quot;users&quot; (Linux) (or &quot;staff&quot; (Mac OS)); no need to create an &quot;ops&quot; group.
+Make sure that you belong to the groups users, uucp, wheel and lock.
+To make things less confusing, we'll refer to this user as &quot;ops&quot; or &quot;user ops&quot; as well.
+</p>
+
+
+<a name="siam"></a>
+<h2>SIAM Source</h2>
+
+<p>
+The SIAM code is currently shared under royalty-free license through collaborator agreements.
+To obtain a license, please contact the <a href="mailto:itd@mbari.org">Director of Information and Technology Dissemination</a> at MBARI.
+</p>
+<p>
+SIAM is distributed as a tar.gz archive. As user ops, the distribution should be unpacked on the computer that will be used to build the source tree. 
+This will create a directory named siam2.<br />
+</p>
+<div class="emphasis">Win32 note: do not install siam in a path whose name contains any whitespace (e.g. &quot;My Documents&quot;), as it will interfere with make and javac</div><br />
+The top-level directory structure under siam2 is described in the following table:
+<table class="altTable">
+<tr>
+  <th>Directory</th>
+  <th>Description</th>
+</tr>
+<tr>
+<td>atp</td>
+<td>Automated test scripts to exercise a few key test scripts</td>
+</tr>
+<tr class="alt">
+<td>autoScript</td>
+<td>Scripts and code related to store-and-forward scripting feature</td>
+</tr>
+<tr>
+<td>bin</td>
+<td>Binary build output for platform-specific native C code</td>
+</tr>
+
+<tr class="alt">
+<td>build</td>
+<td>Scripts that may be used modified and used to configure build environment</td>
+</tr>
+
+<tr>
+<td>classes</td>
+<td>Binary build output for SIAM Java classes</td>
+</tr>
+
+<tr class="alt">
+<td>docs</td>
+<td>SIAM documentation</td>
+</tr>
+<tr>
+<td>images</td>
+<td>Documentation image files</td>
+</tr>
+<tr class="alt">
+<td>jars</td>
+<td>3rd Party JAR files</td>
+</tr>
+<tr>
+<td>logs</td>
+<td>SIAM data and logfile</td>
+</tr>
+<tr  class="alt">
+<td>make</td>
+<td>SIAM build configuration</td>
+</tr>
+<tr>
+<td>native</td>
+<td>Native platform-specific C sources</td>
+</tr>
+<tr class="alt">
+<td>patch</td>
+<td>revision-controlled binary patches [deprecated]</td>
+</tr>
+<tr>
+<td>ports</td>
+<td>Instrument service JAR files and service/PUCK content sandbox</td>
+</tr>
+<tr class="alt">
+<td>properties</td>
+<td>SIAM configuration files</td>
+</tr>
+<tr>
+<td>releases</td>
+<td>revision-controlled SIAM releases [deprecated]</td>
+</tr>
+<tr class="alt">
+<td>rootsrv</td>
+<td>Platform-specific native C server that performs priviledged system operations</td>
+</tr>
+<tr>
+<td>shoreUtils</td>
+<td>Scripts for SIAM utilities used on &quot;shore&quot; (i.e., not strictly needed on target platform]</td>
+</tr>
+<tr class="alt">
+<td>src</td>
+<td>SIAM Java sources</td>
+</tr>
+<tr>
+<td>test</td>
+<td>Test code</td>
+</tr>
+<tr class="alt">
+<td>utils</td>
+<td>SIAM utilities</td>
+</tr>
+<!--
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr class="alt">
+<td></td>
+<td></td>
+</tr>
+-->
+</table>
+
+<p> The top level siam directory will be referred to as SIAM_HOME. The directory containing SIAM_HOME will be referred to as INSTALL.
+Create a directory in the same directory that contains SIAM_HOME called &quot;codebase&quot; (referred to as CODEBASE).
+</p
+><a name="permissions"></a>
+<h3>Setting permissions</h3>
+
+<p>
+Once the SIAM sources are installed, it is important to ensure that ownership and access permissions are set correctly for the SIAM files.
+For the most part, files in the SIAM distribution TAR file should have permissions set correctly; there are some files for which permissions and ownership need to be set to or by root.<br />
+The following listing summarizes SIAM file permissions and ownership.
+</p>
+
+<pre class="indented">
+
+# &quot;ops&quot; is the SIAM operator/administrator user account
+# &quot;ROOT&quot; is the system root directory (&quot;/&quot;)
+# &quot;SIAM&quot; is the SIAM_HOME directory
+# &quot;INSTALL&quot; is the directory containing SIAM_HOME
+
+$CHOWN ops:root $ROOT/home/ops/.bashrc
+$CHMOD 775 $ROOT/home/ops/.bashrc
+
+$CHOWN -R ops:root $SIAM
+$CHMOD -R 775  $SIAM/utils
+$CHMOD -R 775  $SIAM/bin
+$CHMOD -R 775  $SIAM/properties
+$CHMOD -R 775  $SIAM/atp
+$CHMOD -R 775  $SIAM/ports
+$CHMOD -R 664  $SIAM/src
+
+$CHOWN -R ops:users $INSTALL/codebase
+$CHMOD -R 775 $INSTALL/codebase
+
+</pre>
+<p>
+For typical host installations, the ownership and permissions
+for system files are correctly set. If you are installing to an 
+embedded target (e.g. MMC), the distribution may include system files
+that override default versions in flash memory.
+</p>
+<p>If this is the case, the permissions and ownership may be changed during 
+the installation process; these must be correctly set for the system to 
+function properly after the installation. Embedded targets may also require
+SIAM to run system executables, some with priviledged access.
+The following list (though not exact or comprehensive) includes some system 
+files and ownership/permissions that may need to be set for embedded targets.
+</p>
+<pre class="indented">
+# Some system files
+$CHOWN root:root $ETC/hosts
+$CHMOD 664 $ETC/hosts
+$CHOWN root:root $ETC/hostname
+$CHMOD 664 $ETC/hostname
+$CHOWN root:root $ETC/inittab
+$CHMOD 664 $ETC/inittab
+$CHOWN root:root $ETC/profile
+$CHMOD 664 $ETC/profile
+$CHOWN root:root $ETC/fstab
+$CHMOD 664 $ETC/fstab
+$CHOWN root:root $ETC/resolv.conf
+$CHMOD 664 $ETC/resolv.conf
+$CHMOD 775 $ETC/init.d/*
+$CHOWN root:root $ETC/init.d/binRouting.sh
+$CHOWN root:root $ETC/init.d/rc.local
+$CHOWN -R root:root $ETC/network
+$CHMOD 775 $ETC/network
+$CHMOD 664 $ETC/network/interfaces
+
+# SIAM files
+$CHOWN root:root $ETC/init.d/siamapp
+$CHOWN -R ops:root $ETC/siam
+$CHOWN root:root $ETC/siam/siamEnv
+
+# Serial ports and other devices
+$CHOWN root:lock $ROOT/dev/ttySA*
+$CHMOD 666 $ROOT/dev/ttySA*
+$CHOWN root:lock $ROOT/dev/ttySX*
+$CHMOD 666 $ROOT/dev/ttySX*
+$CHOWN root:root $ROOT/dev/null
+$CHMOD 666 $ROOT/dev/null
+
+# Example: boa webserver (for MMC)
+$CHOWN -R ops:root $ETC/boa
+$CHMOD 775 $ETC/boa
+$CHMOD 664 $ETC/boa/boa.conf
+
+# SIAM telemetry scripts
+$CHOWN root:root $ETC/auxTelem.sh
+$CHMOD 775 $ETC/auxTelem.sh
+$CHOWN -R root:root $ETC/*ShoreMsgService
+$CHMOD 775 $ETC/*ShoreMsgService
+
+# PPP configurations
+$CHOWN root:root $ETC/ppp/pap-secrets
+$CHMOD 664 $ETC/ppp/pap-secrets
+$CHOWN ops:root $ETC/ppp/peers/globalstar
+$CHMOD 664 $ETC/ppp/peers/globalstar
+$CHOWN ops:root $ETC/ppp/peers/globalstarAux
+$CHMOD 664 $ETC/ppp/peers/globalstarAux
+$CHOWN ops:root $ETC/ppp/peers/longhaul
+$CHMOD 664 $ETC/ppp/peers/longhaul
+$CHOWN ops:root $ETC/ppp/peers/shorthaul
+$CHMOD 664 $ETC/ppp/peers/shorthaul
+$CHOWN ops:root $ETC/ppp/peers/downlink7
+$CHMOD 664 $ETC/ppp/peers/downlink7
+$CHOWN ops:root $ETC/ppp/peers/subnode*
+$CHMOD 664 $ETC/ppp/peers/subnode*
+$CHOWN ops:root $ETC/ppp/peers/topnode*
+$CHMOD 664 $ETC/ppp/peers/topnode*
+$CHOWN ops:root $ETC/ppp/peers/uplink
+$CHMOD 664 $ETC/ppp/peers/uplink
+</pre>
+
+<a name="build"></a>
+<h2>Building SIAM</h2>
+
+<p>SIAM is comprised of several major components:</p>
+<ul>
+<li>SIAM application: main SIAM package for data collection, logging and telemetry</li>
+<li>Native: platform-specific native code</li>
+<li>PUCK: Instrument service JAR archives</li>
+<li>Utilities: Java and (platform-specific) C applications for SIAM operations, accompanied by wrapper scripts written mostly in bash and csh</li>
+<li>Portal: Shore side telemetry, logging and archiving (used for MOOS)</li>
+<li>Shore Utils: Java and (platform-specific) C applications for SIAM operations, accompanied by wrapper scripts written mostly in bash, csh and Perl</li>
+</ul>
+
+<p>
+These are mostly built using Gnu make, and the procedure is managed through a system of Makefiles (developed by GeoSoft: http://geosoft.no/development/javamake.html). 
+The build procedure outlined below describes key steps to building SIAM software: setting up the environment and building various make targets.
+</p>
+<a name="install_env"></a>
+<h3>Environment</h3>
+<p>
+There are several environment variables that must be set correctly in order to build SIAM.<br />
+These are outlined in the table below:
+</p>
+<table class="altTable">
+<tr>
+  <th>Environment Variable</th>
+  <th>Description</th>
+  <th>Example</th>
+</tr>
+<tr>
+<td>SIAM_HOME</td>
+<td>Path to the SIAM installation directory</td>
+<td>
+<p>
+Linux, MacOS<br />
+<em class="path">/Users/someUser/cvs/siam2</em>
+</p>
+<p>
+Win32/Cygwin<br />
+<em class="path">c:/foo/bAR/Baz/siam2</em><br />
+<em class="emphasis">note the Cygwin-style mixed DOS/unix path separators</em>
+</p>
+
+</td>
+</tr>
+<tr class="alt">
+<td>SIAM_CLASSPATH</td>
+<td>Classpath variable containing appropriate 3rd party jars and all classes needed to build and run SIAM<br />
+Note that siam.jar is created after compiling the SIAM sources, so is not included in the SIAM repository.
+</td>
+<td>
+<p>
+Linux, MacOS<br />
+<em class="path">$JUNIT_HOME/junit-4.5.jar:$SIAM_HOME/jars/rbnb-java1_3
+.jar:$SIAM_HOME/jars/siam.jar:$SIAM_HOME/classes:$SIAM_HOME/jars/gnu-re
+gexp-1.1.4.jar:$SIAM_HOME/jars/RXTXcomm.jar:$SIAM_HOME/jars/jcommon.kh.jar
+:$SIAM_HOME/jars/javax.jar:$SIAM_HOME/jars/log4j-1.2.13.jar:$SIAM_HOME/
+jars/ssds-client-pub-bob.jar:$SIAM_HOME/jars/commons-logging.jar:$SIAM_HOM
+E/jars/javax.servlet.jar:$SIAM_HOME/jars/org.mortbay.jetty-jdk1.2.jar:$SIA
+M_HOME/jars/jddac-common.jar:$SIAM_HOME/jars/jddac-probe-j2me.jar</em>
+</p>
+<p>
+Win32/Cygwin<br />
+<em class="path">$JUNIT_HOME/junit-4.5.jar;$SIAM_HOME/classes;$SIAM_HOME/jars/jakarta-regexp-1.5.jar
+;$SIAM_HOME/jars/RXTXcomm.jar;$SIAM_HOME/jars/jcommon.kh.jar;$SIAM_HOME/jars/jav
+ax.jar;$SIAM_HOME/jars/log4j-1.2.13.jar;$SIAM_HOME/jars/ssds-client-pub-bob.jar;
+$SIAM_HOME/jars/commons-logging.jar;$SIAM_HOME/jars/javax.servlet.jar;$SIAM_HOME
+/jars/org.mortbay.jetty-jdk1.2.jar;$SIAM_HOME/jars/jddac-common.jar;$SIAM_HOME/j
+ars/jddac-probe-j2me.jar</em><br /></p>
+<div class="emphasis">note the Cygwin-style mixed DOS/unix path separators</div>
+</td>
+</tr>
+<tr>
+<td>JAVA_HOME</td>
+<td>Path to Java developers kit (containing javac, java, jre extensions etc.)</td>
+<td>
+<p>
+Linux, MacOS<br />
+<em class="path">/System/Library/Frameworks/JavaVM.framework/Versions/Current/Commands/java_home</em>
+<em class="emphasis">This may vary, depending on your intstallation</em>
+</p>
+<p>
+Win32/Cygwin<br />
+<em class="path">c:/j2sdk-1.4.2_5</em><br />
+<em class="emphasis">note the Cygwin-style mixed DOS/unix path separators</em>
+</p>
+</td>
+</tr>
+<tr class="alt">
+<td>JAVA_DEV_ROOT</td>
+<td>Path to directory containing top Java source (src) directory</td>
+<td>should be same as SIAM_HOME</td>
+</tr>
+<tr>
+<td>IS_UNIX</td>
+<td>Set to 1 if system is Linux or MacOS, otherwise 0</td>
+<td>-</td>
+</tr>
+<tr class="alt">
+<td>SIAM_BIN</td>
+<td>Path to directory containing native SIAM binaries (e.g. rconsole, ipaddr, ethaddr, etc. )</td>
+<td>typically SIAM_HOME/bin/&lt;platform&gt;, e.g. SIAM_HOME/bin/x86_win32</td>
+</tr>
+<!--
+<tr>
+<td></td>
+<td></td>
+<td>-</td>
+</tr>
+<tr class="alt">
+<td></td>
+<td></td>
+<td>-</td>
+</tr>
+-->
+</table>
+<p>
+It is often convenient to set the environment during login initialization (using .bashrc) or through scripts that may be sourced prior to building.
+Example scripts are included in the SIAM source package (siam2/build/siam-env.*).
+</p>
+
+<h3>Makefiles</h3>
+<p>
+There is a system of Makefiles used to build SIAM. The Java classes for each 
+package are built by Makefiles in the package directory. These are invoked by two top-level Makefiles that also define build targets and compilation options.<br />
+Another set of Makefiles for building instrument service JAR files are used to configure instrument service defaults; these are organized by deployment.<br />
+The native C code applications (many of which are application- or platform-specific) also have Makefiles associated with them. <br />
+All of these are summarized below:<br />
+</p>
+
+<table class="altTable">
+<tr>
+  <th>Makefile Location</th>
+  <th>Description</th>
+</tr>
+<tr>
+<td>SIAM_HOME/Makefile</td>
+<td>top level Makefile - defines which packages are built</td>
+</tr>
+<tr class="alt">
+<td>SIAM_HOME/make/Makefile</td>
+<td>Rules, build targets and compilation options are all defined here - invokes package-level Makefiles</td>
+</tr>
+<tr>
+<td>SIAM_HOME/make/Makefile.[deployment]</td>
+<td>Makefiles for deployment-specific PUCK targets</td>
+</tr>
+<tr class="alt">
+<td>SIAM_HOME/src/[package]/Makefile</td>
+<td>Each Java package has a Makefile - defines source files for javac and rmic compilation </td>
+</tr>
+<tr>
+<td>SIAM_HOME/native/[platform]/src/[package]/Makefile</td>
+<td>Makefiles for building platform-specific native C applications</td>
+</tr>
+</table>
+
+<div class="emphasis">
+<p>
+Although the name of the siam repository is &quot;siam2&quot; SIAM makefiles rely on the SIAM_HOME directory name being named &quot;siam&quot;. 
+Create a symbolic link to with this name to the siam2 directory as follows before building SIAM:
+</p>
+</div>
+<div class="commands">
+ln -s siam2 siam
+</div>
+<p></p>
+
+<h3>Build targets</h3>
+The table below defines various targets that may be built using the SIAM makefiles:
+<table class="altTable">
+<tr>
+  <th>Build Target</th>
+  <th>Description</th>
+</tr>
+<tr>
+<td>default</td>
+<td>Builds all SIAM Java classes</td>
+</tr>
+<tr class="alt">
+<td>deployed</td>
+<td>
+<p>Build deployed system binary package (in ipkg format), configured for MOOS Mooring Controller (MMC), but may be modified for other platforms.<br /> 
+Includes all core SIAM components needed to configure and run SIAM (on MMC). <br />
+Includes patches that overwrite system files in the (linux) root file system.<br />
+Does not include documentation, portal, shoreUtils, instrument service classes (which are provided by instrument service JARS) or other components not required by MMC. 
+</p>
+</td>
+</tr>
+<tr>
+<td>shore</td>
+<td>
+<p>SIAM shore side distribution, typically used for portal installation (for MOOS).
+Includes shoreUtils, portal, documentation, etc.
+</p>
+</td>
+</tr>
+<tr class="alt">
+<td>siamjar</td>
+<td>
+<p>Builds a SIAM JAR file (siam.jar) with core SIAM classes.<br />
+Does not include instrument service classes (which are obtained dynamically from instrument services running on the SIAM node).
+</p>
+</td>
+</tr>
+<tr>
+<td>javadoc</td>
+<td><p>Builds SIAM JavaDoc documentation.</p></td>
+</tr>
+<tr class="alt">
+<td>Instrument Service JAR (PUCK) targets</td>
+<td>Targets to build instrument service packages for deployment.<br />
+Instrument service JARs may be configured and built using Makefiles or shell scripts. <br />
+Depends on instrument service XML not included with SIAM; you may make your own using examples, or supply a placeholder document.  (see below)
+</td>
+</tr>
+
+</table>
+
+<h4>Make siamjar</h4>
+<p>
+If you plan to build and run SIAM on the target, you will need to build the default (build SIAM classes) and siamjar (archive SIAM classes into siam.jar) targets:<br /></p>
+<div class="commands">
+make<br />
+make siamjar
+</div>
+
+<a name="make_jars"></a>
+<h4>Make Instrument Service JAR files</h4>
+<p>
+Once the SIAM classes have been built, instrument service JAR files may be configured and built.<br />
+There are a couple of ways to do this: using make or a shell script.<br />
+
+The instrument service JAR files (PUCK JARs) are configured in Makefiles/scripts organized by deployment.<br />
+The Makefiles use the mkpuck and mksiamjar utilities, passing in instrument service default configuration parameters, and generate instrument service JAR files in SIAM_HOME/ports.<br />
+The instrument service JARs used by MBARI include an XML file containing metadata describing the instrument and it's data stream. <br />
+This XML document that accompanies the instrument service may be extracted by the host and used to automatically configure the data handling system.<br />
+This metadata is typically maintained separately from the SIAM repository, since it is instrument-specific.
+</p>
+<p>
+Using Makefiles<br />
+The main makefile (<em class="darkpath">SIAM_HOME/make/Makefile</em>) contains lines that may be uncommented to include the instrument service Makefiles.<br />
+In these files, targets are defined for building related groups of instruments. The targets are given names prepended with the deployment name to prevent target naming conflicts.<br />
+For example a target named &quot;2009FOCE.ctd&quot; builds a set of CTD instrument service JAR files with different IDs and configurations.<br />
+There is generally a default target (e.g. focepucks) for building all of the instrument groups, or targets may be built individually.<br />
+</p>
+<p>
+Using shell scripts<br />
+Since there are not really any dependencies to be managed, using make is not strictly required.<br />
+The script to configure and build instrument service JAR files may be called by a shell script as well.<br />
+<em class="darkpath">SIAM_HOME/docs/siam-site/examples/makeJars-example.sh</em> is an example of one way to do this that allows groups of JAR files to be built.
+</p>
+<p>
+Sample Makefiles and JAR-building scripts are included in the documentation in the <em class="darkpath">SIAM_HOME/docs/siam-site/content/examples</em> directory.
+There are example XML files containing only comments, which are used in the example Makefiles. An example of the MBARI XML schema is also included.
+Additional Makefile examples (that reference XML not found in the SIAM repository) are included in the SIAM_HOME/make/ directory, e.g. Makefile.2009FOCE, pucks.ALOHA2010 etc.<br />
+</p>
+Here are sample command lines showing how to use the example Makefile and script (execute from SIAM_HOME after uncommenting the appropriate line in make/Makefile):<br /><br />
+<div class="commands">
+# show available example targets<br />
+make example.help<br /><br />
+# build example ctd and adcp dummy services<br />
+make example.ctd example.adcp<br />
+<br />
+# show available example targets using script<br />
+makeJars-example.sh --help<br /><br />
+# build example ctd and camera services using script<br />
+makeJars-example.sh ctd cam<br />
+</div>
+
+<p>
+If you are targeting a SIAM application or Portal* build for another machine, you also need to build a distribution using the deployed or shore targets:<br />
+Build an ipkg SIAM distribution for MOOS mooring controller:<br />
+</p>
+<div class="commands">
+make deployed<br />
+</div>
+<br />
+Build SIAM tar distribution for a Portal:<br /><br />
+<div class="commands">
+make shore<br />
+</div>
+<p><br />
+* a Portal is a telemetry endpoint for a SIAM node that is not continuously connected, e.g., a mooring with satellite communications<br />
+A portal manages connections and telemetry for the mooring and services as the access point to the remote SIAM node.
+</p>
+<p>
+</p>
+</body>
+</html>

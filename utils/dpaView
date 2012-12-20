@@ -1,0 +1,2178 @@
+#!/bin/bash
+
+# Copyright 2003 MBARI
+# Author: Kent Headley
+#
+# dpaView
+# Description: This script wraps a bash shell with a set of commands
+# used to provide a complete interface to the DPA hardware
+#
+# Designed to be used on the sidearm processesor board, running
+# linux. It also requires that the sa1100spi and sa1100gpio kernel
+# modules be loaded.
+
+# Constants
+VERSION="1.8"
+## SPI device
+SPI_DEV="/dev/spi"
+GPIO_DEV="/dev/gpio"
+#SPI_DEV="/dev/null"
+#GPIO_DEV="/dev/null"
+
+# For backplane Rev 2, gpio offset is 8. For older backplanes, offset is 4
+let SPI_SLAVE_SELECT_GPIO_OFFSET=0x8
+
+## Commands
+let UNUSED=0x8000
+let START_ADC=0x4000
+let R_ADC=0xB000
+W_CONTROL=( 0x6000 0x7000 )
+R_CONTROL=( 0xD000 0xE000 )
+W_RELAY=( 0x2000 0x3000 )
+R_RELAY=( 0x9000 0xA000 )
+let W_INTERRUPT_REG=0x5000
+let R_INTERRUPT_REG=0xC000
+let BUSY=0xF000
+W_DPOT=( 0x0000 0x1000 )
+
+## Configuration Masks
+let RELAY_485_CON=0x0004
+let RELAY_COMM_ISO=0x0002
+let RELAY_IPOWER_ISO=0x0001
+let CONTROL_STATUS_FAULT=0x0080
+let CONTROL_SDIR_ON=0x0020
+let CONTROL_DUP_HALF=0x0010
+let CONTROL_MODE_485=0x0008
+let CONTROL_SLEW_FAST=0x0004
+let CONTROL_CPOWER_ON=0x0002
+let CONTROL_IPOWER_ON=0x0001
+IFLAGS_OCE[0]=0x0020
+IFLAGS_OCE[1]=0x0010
+let IFLAGS_GLOBAL_EN=0x0008
+IFLAGS_OCF[0]=0x0002
+IFLAGS_OCF[1]=0x0004
+let IFLAGS_GLOBAL_FLAG=0x0001
+let DPOT_SAVE=0x0080
+let DPOT_UP=0x0100
+let DPOT_FULL_COUNTS=0x0063
+let ADC_PD_FULL=0x0000
+let ADC_PD_STBY=0x0040
+let ADC_PD_INT=0x0080
+let ADC_PD_EXT=0x00C0
+let ADC_ACQMOD_EXT=0x0020
+let ADC_SGL=0x0010
+let ADC_UNI=0x0008
+let ADC_CH_VBAT=0x0007
+let ADC_CH_VINSTR1=0x0006
+let ADC_CH_VTRIP1=0x0005
+let ADC_CH_ISENSE1=0x0004
+let ADC_CH_HEATSINK=0x0003
+let ADC_CH_VINSTR0=0x0002
+let ADC_CH_VTRIP0=0x0001
+let ADC_CH_ISENSE0=0x0000
+let VALID_SPI_CS=0x7
+let VALID_RELAYS=0x7
+let VALID_CONTROLS=0xFF
+let VALID_INTERRUPTS=0x3F
+
+let DFLT_ILIMIT=480
+let DFLT_CONTROL_MASK=0x0020
+let DFLT_RELAY_MASK=0x0003
+let DFLT_INTERRUPT_MASK=0x0038
+
+let REG16=0xFFFF
+
+## DPA busy response
+let DPA_BUSY=0x7FFF
+
+## Variables
+
+## Functions place DPA return 
+# Global DEBUG info mask
+let DEBUG=0x0000
+
+# Max Number of DPAs
+let MAX_DPA=6
+let MAX_CHAN=2
+
+# current SPI chip Select
+let SPI_CS=0x00
+
+## value in this variable
+let DPA_RTN=0x0000
+
+# Register write values
+let DPOT_REG=0x0000
+let RELAY_REG=0x0000
+let CONTROL_REG=0x0000
+let INTERRUPT_REG=0x0000
+let ADC_REG=0x0000
+
+# Register read values
+let DPOT_STAT=0x0000
+RELAY_STAT[0]=0x0000
+RELAY_STAT[1]=0x0000
+CONTROL_STAT[0]=0x0000
+CONTROL_STAT[1]=0x0000
+let INTERRUPT_STAT=0x0000
+let ADC_STAT=0x0000
+
+# DPOT value
+let DPOT_VALUE=0x0000
+
+# DPA detected
+DPA_FOUND=( true true true true true true )
+
+# ADC Channel Names
+adcChannels=( "Ch 1 Current" "Ch 1 Trip" "Ch 1 Voltage"  "Heatsink Temp" "Ch 2 Current" "Ch 2 Trip" "Ch 2 Voltage" "Battery Supply Voltage" )
+
+# state
+probeDone=false
+interruptsDone=false
+
+## Functions
+
+# dbg()
+# alias for debug
+dbg()
+{
+    debug $*
+}
+
+# debug(on|off)
+# enable debugging
+debug()
+{
+  if [ $# -lt 1 ]
+  then
+    echo;echo "  Use: debug <on|off>"
+    echo "  alias: dbg"
+   return
+  fi
+  case "$1" in 
+  [Oo][Ff][Ff] )
+    let "DEBUG=0"
+  ;;
+
+  [Oo][Nn] )
+    let "DEBUG=1"
+  ;;
+  esac
+
+}
+
+## printDebug(msg)
+printDebug()
+{
+  if [ $DEBUG -gt 0 ]
+  then
+    echo $@
+  fi
+}
+
+# initSpi(initString)
+# Initialize SPI bus
+
+initSpi(){
+  printDebug "initializing SPI using $1"
+  echo $1 > $SPI_DEV
+
+  # Deselect all chip selects
+  setSpiCs 7
+
+  # Send some commands to sync up
+  # the DPA SPI state machine
+  echo `printf "%04X=" $BUSY` > $SPI_DEV  
+  echo `printf "%04X=" $BUSY` > $SPI_DEV  
+  echo `printf "%04X=" $BUSY` > $SPI_DEV  
+}
+
+# busyWait()
+# Send busy query to DPA and wait
+# until return value indicates that
+# the DPA is ready
+
+busyWait(){
+  # send BUSY command
+  echo `printf "%04X=" $BUSY` > $SPI_DEV
+
+  # read response, exit when not BUSY
+  read DPA_RTN <$SPI_DEV
+  DPA_RTN="0x$DPA_RTN"
+  while (( DPA_RTN == $DPA_BUSY  ))
+  do
+    printDebug "BUSY"
+    echo `printf "%04X=" $BUSY` > $SPI_DEV
+    read DPA_RTN <$SPI_DEV    
+    DPA_RTN="0x$DPA_RTN"
+  done
+}
+
+# writeReadSpi(16BitValue)
+# Perform a single write/read cycle
+# on the SPI bus
+
+writeReadSpi()
+{
+  # wait till not busy
+  busyWait
+
+  # write command
+  printDebug "WRSPI writing `printf "%04X=" $1` to $SPI_DEV"
+  echo `printf "%04X=" $1` > $SPI_DEV
+
+  # read response
+  read DPA_RTN <$SPI_DEV    
+  DPA_RTN="0x$DPA_RTN"
+  printDebug "WRSPI read `printf "0x%04x" $DPA_RTN`"
+}
+
+# setSpiCs(dpa)
+# Set Chip Select to address of a
+# desired DPA
+
+setSpiCs()
+{
+  if [ $# -lt 1 ]
+  then
+    echo " Use: setSpiCs <dpa>"
+  fi
+  if [ $SPI_CS != $1 ]
+  then
+    printDebug "setting spi CS `printf "0x%02X -> %s" $1 $GPIO_DEV`"
+    let newVal="$1&$VALID_SPI_CS"
+    printDebug "setSpiCs: newVal=$newVal"
+    let newVal="$newVal<<$SPI_SLAVE_SELECT_GPIO_OFFSET"
+    printDebug "setSpiCs: newVal=$newVal"
+
+    # set output value
+    let outputValue="`printf "%02X" $newVal`"
+
+    # clear chip select gpio mask so that our write doesn't clobber radio power and friends
+    let clearAll="$VALID_SPI_CS<<$SPI_SLAVE_SELECT_GPIO_OFFSET"
+    echo "$clearAll""-" > $GPIO_DEV
+
+# set the chip select
+    echo "$outputValue""+" > $GPIO_DEV
+    printDebug "setSpiCs: outputValue=$outputValue"
+    let "SPI_CS=$1"
+  fi
+}
+
+## Many functions affecting one or more DPAs/Channels
+## take dpa and channel arguments, which may be set to
+## some number or all. Functions are broken into
+## two parts, so that they may share a looping 
+## routine, looper. The first part is the routine
+## that is called from the command line. It checks
+## the arguments and calls looper, passing the name
+## of the working function (e.g., somenameFunc()) as
+## well as the arguments. the working function,
+## invoked by looper with different values of dpa/channel,
+## does the operation for a specific dpa/channel
+#
+# Example:
+#
+# blarg(dpa,chan,arg1,arg2)
+# calls looper, a shared routine that
+# loops through the dpas and channels,
+# invoking a function and its args.
+# note that the function's args are 
+# bundled together in quotes. 
+# May be invoked using all for dpa and/or chan.
+blarg(){
+  if [ $# -lt 4 ]
+  then
+    echo;echo "  Use: blarg <dpa> <channel> <arg1> <arg2>"
+    return
+  fi
+  eval "looper $1 $2 blargFunc \"$3 $4\""
+  return
+}
+# blargFunc(dpa,chan,arg1,arg2)
+# does the work for blarg, for a specific
+# dpa and channel; Invoked by looper, but may be 
+# invoked directly.
+blargFunc(){
+  echo blargFunc $1 $2 $4 $3
+}
+
+# pro()
+# alias for probe
+#    echo "  alias:"
+pro(){
+ probe $*
+}
+
+# probe(dpa|a)
+# Detect installed DPAs
+
+probe(){
+  if [ $# -lt 1 ]
+  then
+    echo;echo "  Use: probe <dpa|a]> [q]"
+    echo "       q -  quiet, don't display output"
+    echo "  alias: pro"
+   return
+  fi
+
+  quiet=${2-"loud"}
+
+  if [ "$1" = "a" ]
+  then
+    eval "looper $1 0 probeFunc \"$quiet\" "
+  else
+    probeFunc $1 $quiet
+  fi
+}
+
+
+# probeFunc(dpa)
+# Implementation of probe.
+# Detects DPA by writing a pattern to
+# the interrupt register. Original
+# value is preserved.
+
+probeFunc(){
+  let "slot=$1"
+  let "found=1"
+
+  printDebug "probing $slot q=$2"
+
+  # Select DPA
+  setSpiCs $slot
+
+  # Save current value 
+  printDebug "Saving INT_EN register..."
+  getInterrupts $slot q
+  let "saveReg=$INTERRUPT_STAT"
+
+  # Clear interrupt reg
+  printDebug "disabling interrupts..."
+  clearInterruptReg $REG16
+  writeInterruptReg $slot
+
+  # write pattern
+  printDebug "writing 0x10 to INTERRUPT_REG..."
+  clearInterruptReg $REG16
+  setInterruptReg 0x10
+  writeInterruptReg $slot
+
+  # read and  test
+  printDebug "reading INTERRUPT_REG..."
+  getInterrupts $slot q
+  printDebug "INTERRUPT_STAT=`printf "0x%04X" $INTERRUPT_STAT` INTERRUPT_REG=`printf "0x%04X" $INTERRUPT_REG`"
+  if [ $INTERRUPT_STAT -eq 63 ]
+  then
+    let "pattern=0x0"
+  else
+    let "pattern=$INTERRUPT_STAT&0x10"
+  fi
+
+  let "test=0x10"
+  if [ $pattern -ne $test ]
+  then
+   let "found=0"
+  fi
+
+  # if first test OK, write another pattern,
+  # then do readback and test.
+  if [ $found -ne 0 ]
+  then 
+   printDebug "writing 0x20 to INTERRUPT_REG..."
+   clearInterruptReg $REG16
+   setInterruptReg 0x20
+   writeInterruptReg $slot
+
+   printDebug "reading INTERRUPT_REG..."
+   getInterrupts $slot q
+  printDebug "INTERRUPT_STAT=`printf "0x%04X" $INTERRUPT_STAT` INTERRUPT_REG=`printf "0x%04X" $INTERRUPT_REG`"
+   if [ $INTERRUPT_STAT -eq 63 ]
+   then
+    let "pattern=0x0"
+   else
+    let "pattern=$INTERRUPT_STAT&0x20"
+   fi
+   let "test=0x20"
+    if [ $pattern -ne $test ]
+    then
+      let "found=0"
+    fi
+  fi
+
+  # display results  
+  if [ $found -eq 1 ]
+  then
+    if [ "$2" = "loud" ] || [ "$3" = "loud" ]
+    then
+	echo;echo "Probe: DPA detected at slot $slot";echo
+    fi
+    DPA_FOUND[$slot]=true
+  else
+    if [ "$2" = "loud" ] || [ "$3" = "loud" ]
+    then
+	echo;echo "Probe: DPA not found at slot $slot";echo
+    fi
+    DPA_FOUND[$slot]=false
+  fi
+
+  # restore results
+  printDebug "Restoring InterruptRegister..."
+  clearInterruptReg $REG16
+  setInterruptReg $saveReg
+  writeInterruptReg $slot
+  getInterrupts $slot q
+  printDebug "InterruptRegister restored to `printf "0x%04X" $INTERRUPT_STAT`..."
+
+}
+
+# ini()
+# alias for init
+#    echo "  alias:"
+ini(){
+ init $*
+}
+
+# init(dpa,chan,CurrentLimitMilliamps[0-12000],ChannelControlMask,RelayMask,IntEnMask)
+# Initialize one or all DPAs. Will use defaults indicated, or
+# specified values.
+init()
+{
+  if [ $# -lt 2 ]
+  then
+    dl=`printf "0x%04X" $DFLT_ILIMIT`
+    dc=`printf "0x%04X" $DFLT_CONTROL_MASK`
+    dr=`printf "0x%04X" $DFLT_RELAY_MASK`
+    di=`printf "0x%04X" $DFLT_INTERRUPT_MASK`
+    echo;echo "  Use: init <dpa[0|1|a]> <chan[0|1|a]> [<iLimit mA>"
+         echo "            <chControlMask>  <relayMask> <intEnableMask>]"
+         echo
+         echo "       Defaults:"
+         echo "         iLimit        (dec) - $dl ($DFLT_ILIMIT mA)"
+         echo "         chControl     (hex) - $dc"
+         echo "         relayMask     (hex) - $dr"
+         echo "         interruptMask (hex) - $di"
+         echo "  alias: ini"
+   return
+  fi
+  eval "looper $1 $2 initFunc \"$3 $4 $5 $6\""
+}
+
+# initFunc(dpa,chan(unused),CurrentLimitMilliamps[0-12000],ChannelControlMask,RelayMask,IntEnMask)
+# Implementation of init.
+initFunc()
+{
+  printDebug "initFunc $1 $2 ${3-$DFLT_ILIMIT} ${4-$DFLT_CONTROL_MASK} ${5-$DFLT_RELAY_MASK} ${6-$DFLT_INTERRUPT_MASK}"
+
+  let "iLimit=${3-$DFLT_ILIMIT}"
+  let "chControl=${4-$DFLT_CONTROL_MASK}"
+  let "relayMask=${5-$DFLT_RELAY_MASK}"
+  let "intMask=${6-$DFLT_INTERRUPT_MASK}"
+
+  # set SPI chip select
+  setSpiCs $1
+ 
+  #clear overcurrents, disable interrupts
+  printDebug "clearing interrupts..."
+  clearInterruptReg $REG16
+  writeInterruptReg $1
+
+  # put ADC in Standby mode
+  printDebug "setting ADC standby..."
+  clearAdcReg $REG16
+  let "PARAM=$ADC_PD_STBY|$ADC_SGL|$ADC_UNI"
+  setAdcReg $PARAM
+  printDebug "AdcReg is `printf "0x%04X" $ADC_REG` param is `printf "0x%04X" $PARAM`"
+  writeAdcReg $1
+
+  # toggle relays closed, open
+  printDebug "clearing relays..."
+  clearRelayReg $REG16
+  setRelayReg $RELAY_485_CON
+  setRelayReg $RELAY_COMM_ISO
+  setRelayReg $RELAY_IPOWER_ISO
+  writeRelayReg $1 $2
+
+  clearRelayReg $REG16
+  setRelayReg $RELAY_COMM_ISO
+  setRelayReg $RELAY_IPOWER_ISO
+  writeRelayReg $1 $2
+
+  # set relays in specified state
+  printDebug "setting relays...$relayMask"
+  clearRelayReg $REG16
+  setRelayReg $relayMask
+  writeRelayReg $1 $2
+
+  # Set current limit to specified value
+  printDebug "setting current limit...$iLimit"
+  setCurrentMa $1 $2 $iLimit
+
+  # Set channel control parameters
+  # mode, slew, duplex, ipower, cpower
+  printDebug "setting channel controls...$chControl"
+  clearControlReg $REG16
+  setControlReg $chControl
+  writeControlReg $1 $2
+
+  # Set interrupts
+  printDebug "setting interrupts...$intMask"
+  clearInterruptReg $REG16
+  writeInterruptReg $1
+  setInterruptReg $intMask
+  writeInterruptReg $1
+
+  echo;echo initialization complete;echo
+
+}
+
+# scl()
+# alias for setCurrentLimit
+#    echo "  alias:"
+scl(){
+ setCurrentLimit $*
+}
+
+# setCurrentLimit(dpa,channel,counts)
+# Set DPA overcurrent limit. The value is specified
+# as counts, 0-99; Each count is approximately 0.12 A.
+
+setCurrentLimit()
+{
+  if [ $# -lt 3 ]
+  then
+    echo;echo "  Use: setCurrentLimit <dpa|a> <channel[0|1|a]> <counts>"
+    echo;echo "  counts: 0.12 Amps/count (0-12 Amps, 0-99 counts full scale)"
+    echo;echo "  alias: scl"
+   return
+  fi
+  eval "looper $1 $2 setCurrentLimitFunc \"$3\""
+}
+
+# scm()
+# alias for setCurrentMa
+#    echo "  alias:"
+scm(){
+ setCurrentMa $*
+}
+
+# setCurrentMa(dpa,channel,milliamps)
+# Set DPA overcurrent limit. The value is specified
+# as milliamps, 0-1200.
+
+setCurrentMa()
+{
+  if [ $# -lt 3 ]
+  then
+    echo;echo "  Use: setCurrentMa <dpa|a> <channel[0|1|a]> <milliamps>"
+    echo;echo "  milliamps: 0-12000"
+    echo;echo "  alias: scm"
+   return
+  fi
+
+  if [ "$3" -gt "12000" ] || [ "$3" -lt "0" ]
+  then
+    echo;echo "  Use: setCurrentMa <dpa|a> <channel[0|1|a]> <milliamps>"
+    echo;echo "  milliamps: 0-12000"
+    return
+  fi
+  let "macounts=99*$3/12000"
+  echo "milliamps = $3 counts = $macounts"
+  eval "looper $1 $2 setCurrentLimitFunc \"$macounts\""
+}
+
+#setCurrentLimitFunc(dpa,channel,counts)
+# Implementation of setCurrentLimit
+
+setCurrentLimitFunc()
+{
+  printDebug "setting $1.$2 current limit to `printf "0x%04X" $3`..."
+
+  # Select DPA
+  setSpiCs $1
+
+  # set DPOT full off
+  clearDpotReg $REG16
+  setDpotReg $DPOT_FULL_COUNTS
+  writeDpotReg $1 $2
+
+  # turn up by amount and save
+  clearDpotReg $REG16
+  setDpotReg $3
+  setDpotReg $DPOT_UP
+  setDpotReg $DPOT_SAVE
+  writeDpotReg $1 $2 
+  let "DPOT_VALUE=$3"
+  printDebug "set current limit $1:$2 set to `printf "0x%04X" $DPOT_VALUE`"
+}
+
+# radc()
+# alias for readAdcChannel
+#    echo "  alias:"
+radc(){
+ readAdcChannel $*
+}
+
+# readAdcChannel(dpa,AdcChan[01234567])
+# Read one or more ADC channels on one or all
+# DPAs. The ADC channels monitor various parameters
+# of the DPA, indicated below.
+
+readAdcChannel()
+{
+  if [ $# -lt 2 ]
+  then
+    echo;echo "  Use: readAdcChannel <dpa|a> <AdcChannels[01234567a]>"
+         echo "       AdcChannels:"
+         echo "         0: Ch 1 Current" 
+         echo "         1: Ch 1 Trip" 
+         echo "         2: Ch 1 Voltage" 
+         echo "         3: Heatsink Temp"
+         echo "         4: Ch 2 Current" 
+         echo "         5: Ch 2 Trip" 
+         echo "         6: Ch 2 Voltage" 
+         echo "         7: Battery Supply Voltage"
+         echo "         a: all"
+    #    echo "  alias: radc"
+   return
+  fi
+  eval "looper $1 0 readAdcChannelFunc \"$2\""
+}
+
+# readAdcChannelFunc(dpa,AdcChan[01234567a])
+# Implementation of readAdcChannel
+
+readAdcChannelFunc()
+{
+  # init vars
+  doList=( 0 0 0 0 0 0 0 0 )
+
+  # get options
+  opts=( ${3:0:1} ${3:1:1} ${3:2:1} ${3:3:1} ${3:4:1} ${3:5:1} ${3:6:1} ${3:7:1} )
+
+  # select which operations to do
+  # based on given options
+  for arg in ${opts[@]}
+  do 
+    case $arg in
+    [Aa] )
+      doList[0]=1
+      doList[1]=1
+      doList[2]=1
+      doList[3]=1
+      doList[4]=1
+      doList[5]=1
+      doList[6]=1
+      doList[7]=1
+    ;;
+    0 )
+      doList[0]=1
+    ;;
+    1 )
+      doList[1]=1
+    ;;
+    2 )
+      doList[2]=1
+    ;;
+    3 )
+      doList[3]=1
+    ;;
+    4 )
+      doList[4]=1
+    ;;
+    5 )
+      doList[5]=1
+    ;;
+    6 )
+      doList[6]=1
+    ;;
+    7 )
+      doList[7]=1
+    ;;
+    esac  
+  done 
+
+  let "chan=0"
+
+  # Now do the selected operations
+  for flag in ${doList[@]}
+  do
+    if [ $flag -eq 1 ]
+    then
+      setSpiCs $1
+      clearAdcReg $REG16
+      setAdcReg $ADC_PD_EXT
+      setAdcReg $ADC_SGL
+      setAdcReg $ADC_UNI
+      setAdcReg $chan
+      writeAdcReg $1
+      clearAdcReg $ADC_PD_EXT
+      setAdcReg $ADC_PD_INT
+      writeAdcReg $1
+      getAdc $1
+      echo; echo "DPA $1 ADC channel $chan (${adcChannels[$chan]}) is $ADC_STAT"
+    fi
+    let "chan=$chan+1"
+  done
+}
+
+# pow()
+# alias for power
+#    echo "  alias:"
+pow(){
+ power $*
+}
+
+# power(dpa,chan,on|off)
+# Turn instrument power on|off on
+# one or more channels on one or
+# all DPAs
+
+power()
+{
+  if [ $# -lt 3 ]
+  then
+    echo;echo "  Use: power <dpa|a> <channel[0|1|a]> <on|off>"
+    echo "  alias: pow"
+    return
+  fi
+  eval "looper $1 $2 powerFunc \"$3\""
+  return
+}
+
+# powerFunc(dpa,chan,on|off)
+# implementation of power
+
+powerFunc()
+{
+  printDebug powerFunc: $1 $2 $3
+
+  # select DPA
+  setSpiCs $1
+
+  # Read relay reg
+  getRelays $1 $2 q
+  let "RELAY_REG=${RELAY_STAT[$2]}"
+
+  # Read control reg
+  getControls $1 $2 q
+  let "CONTROL_REG=${CONTROL_STAT[$2]}"
+
+  # Do indicated operation
+  case "$3" in 
+  [Oo][Ff][Ff] )
+    # Disconnect instrument power
+    clearControlReg $CONTROL_IPOWER_ON
+    writeControlReg $1 $2
+
+    # Open relays
+    setRelayReg $RELAY_IPOWER_ISO
+    writeRelayReg $1 $2
+  ;;
+
+  [Oo][Nn] )
+    # Close relays
+    clearRelayReg $RELAY_IPOWER_ISO
+    writeRelayReg $1 $2
+
+    # Connect instrument power
+    setControlReg $CONTROL_IPOWER_ON
+    writeControlReg $1 $2
+  ;;
+  esac
+}
+
+# com()
+# alias for comms
+#    echo "  alias:"
+com(){
+ comms $*
+}
+
+# comms(dpa,chan,on|off)
+# Enable|disable comms for one or more
+# channels on one or all DPAs
+
+comms()
+{
+  if [ $# -lt 3 ]
+  then
+    echo;echo "  Use: comms <dpa|a> <channel[0|1|a]> <on|off>"
+    echo "  alias: com"
+    return
+  fi
+  eval "looper $1 $2 commsFunc \"$3\""
+  return
+}
+
+# commsFunc(dpa,chan,on|off)
+# Implementation of comms
+
+commsFunc()
+{
+  printDebug "commsFunc: $1 $2 $3"
+
+  # select DPA
+  setSpiCs $1
+
+  # Read relay reg
+  getRelays $1 $2 q
+  let "RELAY_REG=${RELAY_STAT[$2]}"
+
+  # Read control reg
+  getControls $1 $2 q
+  let "CONTROL_REG=${CONTROL_STAT[$2]}"
+
+  # do indicated operation
+  # Now only change CPOWER bit, not SDIR, SLEW - klh 10/12/2005
+  case "$3" in 
+  [Oo][Ff][Ff] )
+    # Disconnect comm power
+    clearControlReg $CONTROL_CPOWER_ON
+    #clearControlReg $CONTROL_SDIR_ON
+    #clearControlReg $CONTROL_SLEW_FAST
+    writeControlReg $1 $2
+
+    # Open relays
+    setRelayReg $RELAY_COMM_ISO
+    writeRelayReg $1 $2
+  ;;
+
+  [Dd][Oo][Ww][Nn] )
+    # Disconnect comm power
+    clearControlReg $CONTROL_CPOWER_ON
+    #clearControlReg $CONTROL_SDIR_ON
+    #clearControlReg $CONTROL_SLEW_FAST
+    writeControlReg $1 $2
+
+    # Open relays
+    setRelayReg $RELAY_COMM_ISO
+    writeRelayReg $1 $2
+  ;;
+
+  [Uu][Pp] )
+    # Close relays
+    clearRelayReg $RELAY_COMM_ISO
+    writeRelayReg $1 $2
+
+    # Connect comm power
+    #setControlReg $CONTROL_SDIR_ON
+    #setControlReg $CONTROL_SLEW_FAST
+    setControlReg $CONTROL_CPOWER_ON
+    writeControlReg $1 $2
+  ;;
+
+  [Oo][Nn] )
+    # Close relays
+    clearRelayReg $RELAY_COMM_ISO
+    writeRelayReg $1 $2
+
+    # Connect comm power
+    #setControlReg $CONTROL_SDIR_ON
+    #setControlReg $CONTROL_SLEW_FAST
+    setControlReg $CONTROL_CPOWER_ON
+    writeControlReg $1 $2
+  ;;
+  esac
+}
+
+# ocr()
+# alias for ocReset
+#    echo "  alias:"
+ocr(){
+ ocReset $*
+}
+
+# ocReset(dpa,chan)
+# Reset overcurrent condition
+# for one or more DPA channels
+ocReset()
+{
+  if [ $# -lt 2 ]
+  then
+    echo;echo "  Use: ocReset <dpa|a> <0|1|a>"
+    echo "  alias: ocr"
+    return
+  fi
+  power $1 $2 off
+  interrupts $1 $2 dis
+  interrupts $1 $2 en
+  echo DPA $1 Chan $2 OC interrupt reset
+  getRelays $1 $2
+  return
+}
+
+# ocResetFunc()
+# Implementation of resetOC
+ocResetFunc()
+{
+ printDebug "do nothing"
+}
+
+# ocs()
+# alias for ocStatus
+#    echo "  alias:"
+ocs(){
+ ocStatus $*
+}
+
+# ocStatus(dpa)
+# Get overcurrent status for 
+# one of more dpa
+ocStatus()
+{
+  if [ $# -lt 1 ]
+  then
+    echo;echo "  Use: ocStatus <dpa|a> "
+    echo "  alias: ocs, gints"
+    return
+  fi
+  eval "looper $1 0 ocStatusFunc"
+  return
+}
+
+# ocStatusFunc()
+# Implementation of ocStat
+ocStatusFunc()
+{
+  printDebug "ocStatusFunc: $1 "
+  probe $1 q 
+  if [ ${DPA_FOUND[$1]} = false ]
+  then
+    echo "DPA not installed in slot $1"
+    return
+  fi
+  getInterrupts $1 
+   
+}
+
+# scom()
+# alias for setComms
+#    echo "  alias:"
+scom(){
+ setComms $*
+}
+
+# setComms(dpa,chan,[(2)32|(4)85],[f|s],[o|l],f|h)
+# Set communications modes on one or more
+# channels for one or all DPAs
+
+setComms()
+{
+  if [ $# -lt 2 ]
+  then
+    echo;echo "  Use: setComms <dpa|a> <channel[0|1|a]>"
+    echo "                [<mode [(2)32|(4)85]>] [<slew[f|s]>] [<dir[o|l]>] [<dup [f|h]>] "
+    echo "  alias: scom"
+    return
+  fi
+  eval "looper $1 $2 setCommsFunc \"${3-"2"} ${4-"f"} ${5-"o"} ${6-"f"}\""
+  return
+}
+
+# setCommsFunc(dpa,chan,232|485,f|s,o|l,f|h)
+# Implementation or setComm
+
+setCommsFunc()
+{
+  printDebug "setCommsFunc: $1 $2 $3 $4 $5 $6"
+
+  # select DPA
+  setSpiCs $1
+
+  # Read control reg
+  getControls $1 $2 q
+  let "CONTROL_REG=${CONTROL_STAT[$2]}"
+
+  # Modify control register
+
+  # Set Mode bits
+  case "$3" in 
+  [2] )
+    clearControlReg $CONTROL_MODE_485
+  ;;
+  [4] )
+    setControlReg $CONTROL_MODE_485
+  ;;
+  esac
+
+  # Set SlewRate bits
+  # SRL=Slew Rate Limited
+  case "$4" in 
+  [Ff] )
+    setControlReg $CONTROL_SLEW_FAST
+  ;;
+  [Ss] )
+    clearControlReg $CONTROL_SLEW_FAST
+  ;;
+  esac
+
+  # Set SerialDirection bits
+  case "$5" in 
+  [Oo] )
+    setControlReg $CONTROL_SDIR_ON
+  ;;
+  [Ll] )
+    clearControlReg $CONTROL_SDIR_ON
+  ;;
+  esac
+
+  # Set Duplex bits
+  case "$6" in 
+  [Hh] )
+    setControlReg $CONTROL_DUP_HALF
+  ;;
+  [Ff] )
+    clearControlReg $CONTROL_DUP_HALF
+  ;;
+  esac
+
+  # Write Changes
+  writeControlReg $1 $2
+
+}
+
+# rel()
+# alias for relays
+#    echo "  alias:"
+rel(){
+ relays $*
+}
+
+# relays(dpa,chan,tcp,con|iso)
+# Connect or isolate relays on one or
+# both channels of one or all DPAs.
+
+relays()
+{
+  if [ $# -lt 4 ]
+  then
+    echo;echo "  Use: relays <dpa|a> <channel[0|1|a]> <options[tcpa]> <con|iso>"
+         echo "    t - RS485 terminations"
+         echo "    c - Communications isolation"
+         echo "    p - Power isolation"
+         echo "    a - all"
+    echo "  alias: rel"
+    return
+  fi
+  eval "looper $1 $2 relaysFunc \"$3 $4\""
+  return
+}
+
+# relaysFunc(dpa,chan,con|iso)
+# Implements relays
+
+relaysFunc()
+{
+  printDebug relaysFunc: $1 $2 $3 $4
+  doTermIso=false
+  doComIso=false
+  doPowIso=false
+  doProbe=true
+
+  # get options
+  opts=( ${3:0:1} ${3:1:1} ${3:2:1} )
+
+  printDebug opts= ${opts[@]}
+
+  # select operations
+  for arg in ${opts[@]}
+  do 
+    case $arg in
+    a )
+      doTermIso=true
+      doComIso=true
+      doPowIso=true
+    ;;
+    t )
+      doTermIso=true
+    ;;
+    c )
+      doComIso=true
+    ;;
+    p )
+      doPowIso=true
+    ;;
+    esac  
+  done 
+
+  printDebug "doT=$doTermIso doC=$doComIso doP=$doPowIso"
+
+  # probe
+  if [ $doProbe = true ]
+  then
+    if [ $probeDone = false ]
+    then
+      probe $1 q
+      probeDone=true
+    fi
+  fi
+
+  # do only if DPA installed
+  if [ ${DPA_FOUND[$1]} = false ] && [ "$2" == "0" ]
+  then
+    echo "DPA not installed in slot $1"
+    return
+  else
+
+    # select DPA
+    setSpiCs $1
+
+    # Read indicated relay reg
+    getRelays $1 $2 q
+    let "RELAY_REG=${RELAY_STAT[$2]}"
+
+    # perform indicated operation
+    if [ $doTermIso = true ] 
+    then
+	case "$4" in 
+	    [Ii][Ss][Oo] )
+	    # Open relays
+	    clearRelayReg $RELAY_485_CON
+	    ;;
+	    [Cc][Oo][Nn] )
+	    # Close relays
+	    setRelayReg $RELAY_485_CON
+	    ;;
+	esac
+    fi
+    if [ $doComIso = true ] 
+    then
+	case "$4" in 
+	    [Ii][Ss][Oo] )
+	    # Open relays
+	    setRelayReg $RELAY_COMM_ISO
+	    ;;
+	    [Cc][Oo][Nn] )
+	    # Close relays
+	    clearRelayReg $RELAY_COMM_ISO
+	    ;;
+	esac
+    fi
+    if [ $doPowIso = true ] 
+    then
+	case "$4" in 
+	    [Ii][Ss][Oo] )
+	    # Open relays
+	    setRelayReg $RELAY_IPOWER_ISO
+	    ;;
+	    [Cc][Oo][Nn] )
+	    # Close relays
+	    clearRelayReg $RELAY_IPOWER_ISO
+	    ;;
+	esac
+    fi
+
+    # write Relay Register
+    writeRelayReg $1 $2
+
+  fi
+}
+
+# ints()
+# alias for interrupts
+#    echo "  alias:"
+ints(){
+  interrupts $*
+}
+
+# interrupts(dpa|a,0|1|g|a,set|clear|en|dis)
+# Set, clear, enable or disable interrupts
+# for one or both channels on one or all
+# DPAs. Set/Clear operations do not 
+# automatically turn any interrupts on, unless
+# (g)lobal interrupts is specified, which 
+# sets/clears only the global interrupt(s).
+
+interrupts()
+{
+  if [ $# -lt 3 ]
+  then
+    echo;echo "  Use: interrupts <dpa|a> <interrupt[0|1|g|a]> <set|clr|en|dis>"
+    echo "  alias: ints"
+    return
+  fi
+  eval "looper $1 0 interruptsFunc \"$2 $3\""
+  return
+}
+
+# interruptsFunc(dpa,chan,0|1|g|a,set|clr|en|dis)
+# Implements interrupts.
+
+interruptsFunc()
+{
+  printDebug  interruptsFunc: 1=$1 2=$2 3=$3 4=$4
+  setSpiCs $1
+
+  # Read interrupt reg
+  getInterrupts $1 q
+  let "INTERRUPT_REG=$INTERRUPT_STAT"
+  case "$4" in 
+  [Ee][Nn] )
+    # Enable specified interrupts
+    case "$3" in
+    [Aa] )
+      setInterruptReg ${IFLAGS_OCE[0]}
+      setInterruptReg ${IFLAGS_OCE[1]}
+      setInterruptReg $IFLAGS_GLOBAL_EN
+      writeInterruptReg $1
+    ;;
+    [01] )
+      setInterruptReg ${IFLAGS_OCE[$3]}
+      setInterruptReg $IFLAGS_GLOBAL_EN
+      writeInterruptReg $1
+    ;;
+    [g] )
+      setInterruptReg $IFLAGS_GLOBAL_EN
+      writeInterruptReg $1
+    ;;
+    esac
+  ;;
+  [Dd][Ii][Ss] )
+    # Disable specified interrupts
+    case "$3" in
+    [Aa] )
+      clearInterruptReg ${IFLAGS_OCE[0]}
+      clearInterruptReg ${IFLAGS_OCE[1]}
+      clearInterruptReg $IFLAGS_GLOBAL_EN
+      writeInterruptReg $1
+    ;;
+    [01] )
+      clearInterruptReg ${IFLAGS_OCE[$3]}
+      writeInterruptReg $1
+    ;;
+    [g] )
+      clearInterruptReg $IFLAGS_GLOBAL_EN
+      writeInterruptReg $1
+    ;;
+    esac
+  ;;
+  [Ss][Ee][Tt] )
+    # Set specified interrupts
+    case "$3" in
+    [Aa] )
+      setInterruptReg ${IFLAGS_OCE[0]}
+      setInterruptReg ${IFLAGS_OCE[1]}
+      writeInterruptReg $1
+    ;;
+    [01] )
+      setInterruptReg ${IFLAGS_OCE[$3]}
+      writeInterruptReg $1
+    ;;
+    [g] )
+      setInterruptReg $IFLAGS_GLOBAL_EN
+      writeInterruptReg $1
+    ;;
+    esac
+  ;;
+  [Cc][Ll][Rr] )
+    # Clear specified interrupts
+    case "$3" in
+    [Aa] )
+      clearInterruptReg ${IFLAGS_OCE[0]}
+      clearInterruptReg ${IFLAGS_OCE[1]}
+      writeInterruptReg $1
+    ;;
+    [01] )
+      clearInterruptReg ${IFLAGS_OCE[$3]}
+      writeInterruptReg $1
+    ;;
+    [g] )
+      clearInterruptReg $IFLAGS_GLOBAL_EN
+      writeInterruptReg $1
+    ;;
+    esac
+  ;;
+  esac
+}
+
+# sta()
+# alias for status
+#    echo "  alias:"
+sta(){
+ status $*
+}
+
+# status(dpa|a,chan[0|1|a],[prcia])
+# Returns the status or one or more
+# parameters for one or more DPAs/channels.
+# (p)robe: DPA installed; 
+# (r)elays: relay status;
+# (c)ontrol: control reg status; 
+# (i)nterrupts: interrupt reg status;
+# (a) all 
+
+status()
+{
+  if [ $# -lt 3 ]
+  then
+    echo;echo "  Use: status <dpa|a> <channel[0|1|a]> <options[prcia]>"
+         echo "    p - probe"
+         echo "    r - relays"
+         echo "    c - control"
+         echo "    i - interrupts"
+         echo "    a - all"
+         echo "  alias: sta"
+    return
+  fi
+  
+  eval "looper $1 $2 statusFunc \"$3\""
+
+  return
+}
+
+# statusFunc(dpa,chan,[prcia])
+# Implements status
+
+statusFunc()
+{
+
+  printDebug statusFunc: $1 $2 $3
+  doProbe=false
+  doRelays=false
+  doControl=false
+  doInterrupts=false
+
+  # get options
+  opts=( ${3:0:1} ${3:1:1} ${3:2:1} ${3:3:1} ${3:4:1} ${3:5:1} )
+
+  printDebug opts= ${opts[@]}
+
+  # select operations
+  for arg in ${opts[@]}
+  do 
+    case $arg in
+    a )
+      doProbe=true
+      doRelays=true
+      doControl=true
+      doInterrupts=true
+    ;;
+    c )
+      doControl=true
+    ;;
+    i )
+      doInterrupts=true
+    ;;
+    p )
+      doProbe=true
+    ;;
+    r )
+      doRelays=true
+    ;;
+    esac  
+  done 
+
+  printDebug doI=$doInterrupts doC=$doControl doP=$doProbe doR=$doRelays
+
+  # Now do the selected operations
+
+  ## Note the prescence of ...Done variables being checked
+  ## These are set in looper, to make sure that 
+  ## things that should only be done once per DPA
+  ## are done only once
+  ## Do things that only get done once per DPA first
+  ## so that the 'done' state doesn't get trashed (if
+  ## something calls getInterrupts,e.g., after the
+  ## interrupts are 'done', the state could revert back
+  ## to !'done'
+
+  # probe
+  if [ $doProbe = true ]
+  then
+    if [ $probeDone = false ]
+    then
+      probe $1
+      probeDone=true
+    fi
+  fi
+
+  # do only if DPA installed
+  if [ ${DPA_FOUND[$1]} = true ]
+  then
+    # interrupts
+    if [ $doInterrupts = true ]
+    then
+      if [ $interruptsDone = false ] 
+      then 
+        getInterrupts $1
+        interruptsDone=true
+      fi
+    fi
+
+    # relays
+    if [ $doRelays = true ]
+    then
+      getRelays $1 $2 
+    fi
+
+    # controls
+    if [ $doControl = true ]
+    then
+      getControls $1 $2 
+    fi
+  fi
+}
+
+# grel()
+# alias for getRelays
+#    echo "  alias:"
+grel(){
+  getRelays $*
+}
+
+# getRelays(dpa|a, chan[0|1|a]) 
+# Read and display current value of
+# relay register for one or both channels
+# on one or all DPAs.
+
+getRelays()
+{
+  if [ $# -lt 2 ]
+  then
+    echo;echo "  Use: getRelays <dpa|a> <channel[0|1|a]> [q]"
+    echo "       q -  quiet, don't display output"
+    echo "  alias: grel"
+   return
+  fi
+  quiet=${3-"loud"}
+  eval "looper $1 $2 getRelaysFunc \"$quiet\" "
+}
+
+# getRelaysFunc(dpa|a, chan[0|1|a]) 
+# Implements getRelays.
+
+getRelaysFunc()
+{
+  # select DPA
+  setSpiCs $1
+
+  printDebug "reading relay positions..."
+
+  # read ch 0 relay reg 
+  if  [ $2 == 0 ] || [ $2 == "a" ]
+  then
+    let "CMD = ${R_RELAY[0]}"
+    writeReadSpi $CMD
+    let "foo=$DPA_RTN&$VALID_RELAYS"
+    RELAY_STAT[0]=$foo
+    let "rel485=$foo&$RELAY_485_CON"
+    let "rel485=$rel485>>2"
+    let "crel=$foo&$RELAY_COMM_ISO"
+    let "crel=$crel>>1"
+    let "prel=$foo&$RELAY_IPOWER_ISO"
+
+    if [ "$3" = "loud" ]
+    then
+    echo;echo "getRelays: DPA $1 Channel 0 relay status:`printf "0x%04X" ${RELAY_STAT[0]}`"
+    if [ $rel485 -eq 0 ]
+    then
+      echo;echo "485 Terminators ISOLATED"
+    else
+      echo;echo "485 Terminators CONNECTED"
+    fi
+    if [ $crel -eq 0 ]
+    then
+      echo;echo "communications relay CONNECTED"
+    else
+      echo;echo "communications relay ISOLATED"
+    fi
+    if [ $prel -eq 0 ]
+    then
+      echo;echo "power relay CONNECTED"
+    else
+      echo;echo "power relay ISOLATED"
+    fi
+    fi
+  fi
+
+  # read ch 1 relay reg 
+  if [ $2 == 1 ] || [ "$2" == "a" ]
+  then
+    let "CMD = ${R_RELAY[1]}"
+    writeReadSpi $CMD
+    let "foo=$DPA_RTN&$VALID_RELAYS"
+    RELAY_STAT[1]=$foo
+
+    let "rel485=$foo&$RELAY_485_CON"
+    let "rel485=$rel485>>2"
+    let "crel=$foo&$RELAY_COMM_ISO"
+    let "crel=$crel>>1"
+    let "prel=$foo&$RELAY_IPOWER_ISO"
+
+    if [ "$3" = "loud" ]
+    then
+    echo;echo "getRelays: DPA $1 Channel 1 relay status is `printf "0x%04X" ${RELAY_STAT[1]}`"
+    if [ $rel485 -eq 0 ]
+    then
+      echo;echo "485 Terminators ISOLATED"
+    else
+      echo;echo "485 Terminators CONNECTED"
+    fi
+    if [ $crel -eq 0 ]
+    then
+      echo;echo "communications relay CONNECTED"
+    else
+      echo;echo "communications relay ISOLATED"
+    fi
+    if [ $prel -eq 0 ]
+    then
+      echo;echo "power relay CONNECTED"
+    else
+      echo;echo "power relay ISOLATED"
+    fi
+    fi
+  fi
+}
+
+# gcon()
+# alias for getControls
+#    echo "  alias:"
+gcon(){
+  getControls $*
+}
+
+# getControls(dpa|a,chan[0|1|a],[q])
+# Read and display current value of
+# channel control register for one 
+# or both channels on one or all DPAs.
+# Supports a (q)uiet option, allowing
+# it to be called without displaying
+# results.
+
+getControls()
+{
+  if [ $# -lt 2 ]
+  then
+    echo;echo "  Use: getControls <dpa|a> <chan[0|1|a]> [q]"
+    echo "       q -  quiet, don't display output"
+    echo "  alias: gcon"
+   return
+  fi
+
+  quiet=${3-"loud"}
+
+  eval "looper $1 $2 getControlsFunc \"$quiet\" "
+}
+
+# getControlsFunc(dpa,chan)
+# Implements getControls.
+
+getControlsFunc(){
+
+  # select DPA
+  setSpiCs $1
+
+  printDebug "reading control registers..."
+  
+  # read channel 0 control reg
+  if [ $2 == 0 ] || [ "$2" == "a" ]
+  then
+    let "CMD = ${R_CONTROL[0]}"
+    writeReadSpi $CMD
+    let "foo=$DPA_RTN&$VALID_CONTROLS"
+    CONTROL_STAT[0]=$foo
+
+    let "stat=$foo&$CONTROL_STATUS_FAULT"
+    let "sdir=$foo&$CONTROL_SDIR_ON"
+    let "cfst=$foo&$CONTROL_SLEW_FAST"
+    let "cmod=$foo&$CONTROL_MODE_485"
+    let "cdup=$foo&$CONTROL_DUP_HALF"
+    let "cpwr=$foo&$CONTROL_CPOWER_ON"
+    let "ipwr=$foo&$CONTROL_IPOWER_ON"
+
+    printDebug "stat=$stat sdir=$sdir cfst=$cfst cmod=$cmod cdup=$cdup cpwr=$cpwr ipwr=$ipwr"
+
+    if [ "$3" = "loud" ]
+    then
+      echo;echo "getControls: DPA $1 Channel 0 control status is `printf "0x%04X" ${CONTROL_STAT[0]}`"
+      if [ "$stat" -gt 0 ]
+      then
+        echo Ch 0 status: OK
+      else
+        echo Ch 0 status: FAULT
+      fi
+      if [ "$sdir" -gt 0 ]
+      then
+        echo Ch 0 serial direction: ON
+      else
+        echo Ch 0 serial direction: LO
+      fi
+      if [ "$cfst" -gt 0 ]
+      then
+        echo Ch 0 Comm Fast: FAST
+      else
+        echo Ch 0 Comm Fast: SRL
+      fi
+      if [ "$cmod" -gt 0 ]
+      then
+        echo Ch 0 Comm Mode: RS485
+      else
+        echo Ch 0 Comm Mode: RS232
+      fi
+      if [ "$cdup" -gt 0 ]
+      then
+        echo Ch 0 Comm Duplex: HALF
+      else
+        echo Ch 0 Comm Duplex: FULL
+      fi
+      if [ "$cpwr" -gt 0 ]
+      then
+        echo Ch 0 Comm Power: ON
+      else
+        echo Ch 0 Comm Power: OFF
+      fi
+      if [ "$ipwr" -gt 0 ]
+      then
+        echo Ch 0 Instrument Power: ON
+      else
+        echo Ch 0 Instrument Power: OFF
+      fi
+     fi
+  fi
+ 
+  # read channel 1 control reg
+  if [ $2 == 1 ] || [ "$2" == "a" ]
+  then
+    let "CMD = ${R_CONTROL[1]}"
+    writeReadSpi $CMD
+    let "foo=$DPA_RTN&$VALID_CONTROLS"
+    CONTROL_STAT[1]=$foo
+
+    let "stat=$foo&$CONTROL_STATUS_FAULT"
+    let "sdir=$foo&$CONTROL_SDIR_ON"
+    let "cfst=$foo&$CONTROL_SLEW_FAST"
+    let "cmod=$foo&$CONTROL_MODE_485"
+    let "cdup=$foo&$CONTROL_DUP_HALF"
+    let "cpwr=$foo&$CONTROL_CPOWER_ON"
+    let "ipwr=$foo&$CONTROL_IPOWER_ON"
+
+    printDebug "stat=$stat sdir=$sdir cfst=$cfst cmod=$cmod cdup=$cdup cpwr=$cpwr ipwr=$ipwr"
+
+    if [ "$3" = "loud" ]
+    then
+      echo;echo "getControls: DPA $1 Channel 1 control status is `printf "0x%04X" ${CONTROL_STAT[1]}`"
+      if [ "$stat" -gt 0 ]
+      then
+        echo Ch 1 status: OK
+      else
+        echo Ch 1 status: FAULT
+      fi
+      if [ "$sdir" -gt 0 ]
+      then
+        echo Ch 1 serial direction: ON
+      else
+        echo Ch 1 serial direction: LO
+      fi
+      if [ "$cfst" -gt 0 ]
+      then
+        echo Ch 1 Comm Fast: FAST
+      else
+        echo Ch 1 Comm Fast: SRL
+      fi
+      if [ "$cmod" -gt 0 ]
+      then
+        echo Ch 1 Comm Mode: RS485
+      else
+        echo Ch 1 Comm Mode: RS232
+      fi
+      if [ "$cdup" -gt 0 ]
+      then
+        echo Ch 1 Comm Duplex: HALF
+      else
+        echo Ch 1 Comm Duplex: FULL
+      fi
+      if [ "$cpwr" -gt 0 ]
+      then
+        echo Ch 1 Comm Power: ON
+      else
+        echo Ch 1 Comm Power: OFF
+      fi
+      if [ "$ipwr" -gt 0 ]
+      then
+        echo Ch 1 Instrument Power: ON
+      else
+        echo Ch 1 Instrument Power: OFF
+      fi
+    fi
+  fi
+}
+
+# gints()
+# alias for getInterrupts
+#    echo "  alias:"
+gints(){
+  getInterrupts $*
+}
+
+# getInterrupts(dpa|a,[q])
+# Read and display current value of
+# interrupt register for one 
+# or both channels on one or all DPAs.
+# Supports a (q)uiet option, allowing
+# it to be called without displaying
+# results.
+
+getInterrupts()
+{
+  if [ $# -lt 1 ]
+  then
+    echo;echo "  Use: getInterrupts <dpa|a> [q]"
+    echo "       q -  quiet, don't display output"
+    echo "  alias: gints"
+   return
+  fi
+
+  quiet=${2-"loud"}
+
+  if [ "$1" = "a" ]
+  then
+    eval "looper $1 0 getInterruptsFunc \"$quiet\" "
+  else
+    getInterruptsFunc $1 $quiet
+  fi
+}
+
+# getInterruptsFunc(dpa,q)
+# Implements getInterrupts.
+
+getInterruptsFunc()
+{
+  # select DPA
+  setSpiCs $1
+
+  printDebug "reading interrupt flags..."
+
+  # read interrupt reg
+  let "CMD=$R_INTERRUPT_REG"
+  writeReadSpi $CMD
+
+  let "INTERRUPT_STAT=$DPA_RTN&$VALID_INTERRUPTS"
+  if [ "$2" = "loud" ] || [ "$3" = "loud" ]
+  then
+    let "oce1=$INTERRUPT_STAT&${IFLAGS_OCE[0]}"
+    let "oce2=$INTERRUPT_STAT&${IFLAGS_OCE[1]}"
+    let "ge=$INTERRUPT_STAT&$IFLAGS_GLOBAL_EN"
+    let "ocf1=$INTERRUPT_STAT&${IFLAGS_OCF[0]}"
+    let "ocf2=$INTERRUPT_STAT&${IFLAGS_OCF[1]}"
+    let "gf=$INTERRUPT_STAT&$IFLAGS_GLOBAL_FLAG"
+
+    let "oce1=$oce1>>5"
+    let "oce2=$oce2>>4"
+    let "ge=$ge>>3"
+    let "ocf1=$ocf1>>1"
+    let "ocf2=$ocf2>>2"
+
+    ch1tripped=FALSE
+    ch2tripped=FALSE
+    if [ "$ge" -gt "0" ] && [ "$oce1" -gt "0" ] && [ "$ocf1" -gt "0" ]
+    then
+      ch1tripped=TRUE
+    fi
+
+    if [ "$ge" -gt "0" ] && [ "$oce2" -gt "0" ] && [ "$ocf2" -gt "0" ]
+    then
+      ch2tripped=TRUE
+    fi
+
+    echo;echo "DPA $1 interrupt flag status is `printf "0x%04X" $INTERRUPT_STAT`"
+    echo;echo "Channel 0: OC Enable=$oce1 OC Flag=$ocf1 tripped=$ch1tripped"
+    echo;echo "Channel 1: OC Enable=$oce2 OC Flag=$ocf2 tripped=$ch2tripped"
+    echo;echo "Global   :    Enable=$ge    Flag=$gf"
+  fi
+}
+
+
+# getAdc(dpa)
+# Read ADC register, store the value
+# in ADC_STAT
+getAdc(){
+  let "CMD=$R_ADC"
+  writeReadSpi $CMD
+  let "ADC_STAT=$DPA_RTN"
+}
+
+# The following functions implement
+# set,clear and write operations for
+# the relay, control, ADC, DPOT
+# and interrupt registers.
+
+# Relay Reg
+# set (mask)
+setRelayReg(){
+  let "RELAY_REG|=$1"
+}
+# clear(mask)
+clearRelayReg(){
+  let "RELAY_REG&=~$1"
+}
+# write(dpa,chan)
+writeRelayReg(){
+  setSpiCs $1
+  let "CMD=${W_RELAY[$2]}|$RELAY_REG"
+  writeReadSpi $CMD
+}
+
+# Control Reg
+# set (mask)
+setControlReg(){
+  let "CONTROL_REG|=$1"
+}
+# clear(mask)
+clearControlReg(){
+  let "CONTROL_REG&=~$1"
+}
+# write(dpa,chan)
+writeControlReg(){
+  setSpiCs $1
+  let "CMD=${W_CONTROL[$2]}|$CONTROL_REG"
+  writeReadSpi $CMD
+}
+
+# Interrupt Reg
+# set (mask)
+setInterruptReg(){
+  let "INTERRUPT_REG|=$1"
+}
+# clear(mask)
+clearInterruptReg(){
+  let "INTERRUPT_REG&=~$1"
+}
+# write(dpa)
+writeInterruptReg(){
+  setSpiCs $1
+  let "CMD=$W_INTERRUPT_REG|$INTERRUPT_REG"
+  writeReadSpi $CMD
+}
+
+# ADC Reg
+# set (mask)
+setAdcReg(){
+  let "ADC_REG|=$1"
+}
+# clear(mask)
+clearAdcReg(){
+  let "ADC_REG&=~$1"
+}
+# write(dpa)
+writeAdcReg(){
+  setSpiCs $1
+  let "CMD=$START_ADC|$ADC_REG"
+  writeReadSpi $CMD
+}
+
+# DPOT Reg
+# set (mask)
+setDpotReg(){
+  let "DPOT_REG|=$1"
+}
+# clear(mask)
+clearDpotReg(){
+  let "DPOT_REG&=~$1"
+}
+# write(dpa,chan)
+writeDpotReg(){
+  setSpiCs $1
+  let "CMD=${W_DPOT[$2]}|$DPOT_REG"
+  writeReadSpi $CMD
+}
+
+# help([cmd])
+# Display help info
+
+help()
+{
+
+  if [ $# -ge 1 ]
+  then
+   case $1 in
+   [Rr][Ee][Gg] )
+     echo "  ## Control Reg Map   ##"
+     echo "     <11:8> 0"
+     echo "     <7> Status               1=OK         0=Fault"
+     echo "     <6> Reserved             undefined"
+     echo "     <5> SerialDirection      1=On         0=LowPower"
+     echo "     <4> CommSlewRate         1=Fast       0=SRL"
+     echo "     <3> CommMode             1=485        0=232"
+     echo "     <2> CommDuplex           1=Half       0=Full"
+     echo "     <1> CommPower            1=On         0=Off"
+     echo "     <0> Instrument Power     1=On         0=Off"
+     echo
+     echo "  ## Relays Reg Map    ##"
+     echo "     <11:3> unused"
+     echo "     <2> 485 Terminators      1=Connected  0=Isolated"
+     echo "     <1> CommPowerRelay       1=Isolated   0=Connected"
+     echo "     <0> InstrumentPowerRelay 1=Isolated   0=Connected"
+     echo
+     echo "  ## DPOT Reg Map      ##"
+     echo "     <11:9>                   unused"
+     echo "     <8> Direction            1=Up         0=Down"
+     echo "     <7> SavePosition         1=Save       0=NOOP"
+     echo "     <6:0> Counts             (range 0 to 99d)"
+     echo
+     echo "  ## Interrupt Reg Map ##"
+     echo "     <11:6> 0"
+     echo "     <5> Ch1OverCurrentIntEn 1=Enabled     0=Disabled"
+     echo "     <4> Ch2OverCurrentIntEn 1=Enabled     0=Disabled"
+     echo "     <3> GlobalEnable        1=Enabled     0=Disabled"
+     echo "     <2> Ch2OverCurrentFlag  1=Overcurrent 0=OK"
+     echo "     <1> Ch1OverCurrentFlag  1=Overcurrent 0=OK"
+     echo "     <0> GlobalFlag          1=Overcurrent 0=OK"
+     echo
+     echo "  ## ADC Reg Map       ##"
+     echo "     <11:8> 0"
+     echo "     <7> PowerDownMode1      (see notes)"
+     echo "     <6> PowerDownMode0      (see notes)"
+     echo "     <5> AcquisitionMode     0=Ext         1=Int"
+     echo "     <4> MeasurementType     0=Single      0=Differential"
+     echo "     <3> Polarity            0=Unipolar    1=Bipolar"
+     echo "     <2> Channel Address     2"
+     echo "     <1> Channel Address     1"
+     echo "     <0> Channel Address     0"
+     echo
+     echo "     Notes:"
+     echo "     PowerDownModes:" 
+     echo "       00=Full"
+     echo "       01=Stby"
+     echo "       10=Normal,IntClock"
+     echo "       11=Normal,ExtClock"
+     echo
+     echo "     ADC Channels:"
+     echo "       0:      VBat   (5.8*Vin)"
+     echo "       1: Ch 2 Vsense (6*Vin)"
+     echo "       2: Ch 2 Trip Level Sense"
+     echo "       3: Ch 2 Current Sense"
+     echo "       4:      Heat Sink Temp"
+     echo "       5: Ch 1 Vsense (6*Vin)"
+     echo "       6: Ch 1 Trip Level Sense"
+     echo "       7: Ch 1 Current Sense"
+     echo
+    ;;
+    esac
+  else  
+  echo
+  echo
+  echo "    ## Control Commands ##"
+  echo
+  echo "    comms           (com)   enable/disable comms"
+  echo "    setComms        (scom)  set comm parameters"
+  echo "    power           (pow)   turn instrument power on/off"
+  echo "    relays          (rel)   connect/isolate relays"
+  echo "    interrupts      (ints)  enable/disable interrupts"
+  echo "    init            (ini)   initialize DPAs"
+  echo "    setCurrentLimit (scl)   set DPA current limit (counts)"
+  echo "    setCurrentMa    (scm)   set DPA current limit (mA)"
+  echo "    ocReset         (ocr)   reset overcurrent interrupt"
+  echo
+  echo "    ## Status Commands ##"
+  echo
+  echo "    probe           (pro)   detect installed DPAs"
+  echo "    status          (sta)   get current state of hardware"
+  echo "    ocStatus        (ocs)   get overcurrent status (aliases getInterrupts)"
+  echo "    readAdcChannel  (radc)  read ADC channels"
+  echo "    getRelays       (grel)  get relay state"
+  echo "    getControls     (gcon)  get channel control state"
+  echo "    getInterrupts   (gints) get interrupt state"
+  echo
+  echo
+  echo "    ## Information Commands ##"
+  echo
+  echo "    help                    print this message"
+  echo "    show                    show variable value"
+  echo "    debug           (dbg)   enable or disable debug messages"
+  echo
+  echo "    ## Program Commands ##"
+  echo
+  echo "    prev            (pre)  executes previous command"
+  echo "    exit                   quits dpaView"
+  echo
+  echo "    ## Tips ##"
+  echo
+  echo "    * Type command name with no options for info"
+  echo "    * Type help reg to see register map"
+  echo "    * Bash shell commands are also available"
+  fi
+}
+
+# show(var)
+# Echo dpaView variables
+# User may also use echo from command line
+
+show()
+{
+  if [ $# -ge 1 ]
+  then
+   echo $1
+  else
+   echo Use: show '$<variable>'
+   echo Variables:
+   echo "  ADC_REG"
+   echo "  ADC_STAT"
+   echo "  CONTROL_REG"
+   echo "  CONTROL_STAT"
+   echo "  DEBUG"
+   echo "  DPA_RTN"
+   echo "  DPOT_REG"
+   echo "  DPOT_STAT"
+   echo "  INTERRUPT_REG"
+   echo "  INTERRUPT_STAT"
+   echo "  RELAY_REG"
+   echo "  RELAY_STAT"
+   echo "  SPI_CS"
+  fi
+}
+
+# looper( dpa chan "func" args)
+# Shared routine used by all functions that
+# take dpa and chan arguments. Iterates through
+# dpas and channels, executing "func dpa chan args"
+
+## Note the prescence of ...Done variables being set
+## These are checked in status, to make sure that 
+## things that should only be done once per DPA
+## are done only once
+
+looper()
+{
+  if [ $# -lt 3 ]
+  then
+    echo;echo "  Use: looper <dpa|a> <channel[0|1|a]> \"<func>\""
+    return
+  fi
+  func=$3
+  printDebug "looper executing $func $1 $2 $4"
+
+  # if all DPAs
+  if [ "$1" == "a" ]
+  then
+    let "dpa=0"
+    while [ $dpa -lt $MAX_DPA ]
+    do
+      probeDone=false
+      interruptsDone=false
+
+      # if all channels
+      if [ "$2" == "a" ]
+      then
+        let "chan=0"        
+        while [ $chan -lt $MAX_CHAN ]
+        do
+          printDebug "  ## DPA $dpa Channel $chan"
+          eval "$3 $dpa $chan $4"
+          let "chan+=1"
+          probeDone=true
+          interruptsDone=true
+        done
+      else
+
+        # if specified channel
+        let "chan=$2"
+        printDebug "  ## DPA $dpa Channel $chan"
+        eval "$3 $dpa $chan $4"
+        probeDone=true
+        interruptsDone=true
+      fi
+    let "dpa+=1"
+    echo
+    done
+  else
+
+  # If Specified DPA
+    let "dpa=$1"
+
+    # If all channels
+    if [ "$2" == "a" ]
+    then
+      let "chan=0"
+      probeDone=false
+      interruptsDone=false
+      while [ $chan -lt $MAX_CHAN ]
+      do
+        printDebug "  ## DPA $dpa Channel $chan"
+        eval "$3 $dpa $chan $4"
+        let "chan+=1"
+        probeDone=true
+        interruptsDone=true
+      done
+      echo
+    else
+
+      # if specified channel
+      probeDone=false
+      interruptsDone=false
+      # if specified channel
+      let "chan=$2"
+      printDebug "  ## DPA $dpa Channel $chan"
+      eval "$3 $dpa $chan $4"
+      probeDone=true
+      interruptsDone=true
+    fi
+  fi
+
+  # return ...Done variables to false
+  # or probe,interrupt funcs won't work
+  # after this
+  probeDone=false
+  interruptsDone=false
+}
+
+# main
+# main entry point
+
+main()
+{
+  # echo startup blather
+  echo;echo `basename $0` version $VERSION
+  echo MBARI 2003;echo
+  echo "Type help for assistance"
+  echo "Type exit to quit"
+  echo
+
+  # save tty settings
+  old_stty=`stty -g`
+
+  # setup terminal (bkspc, history)
+  # history doesn't work yet
+  stty sane
+  stty erase "^H"
+  set -o history
+
+  # initialize the SPI bus
+  initSpi "10W0G100S0L0I0P"
+  
+  # set restricted mode (can't redirect output
+  # and so is too restrictive, so don't)
+  #set -r
+
+  line=""
+  prev=""
+
+  # read and process commands
+  while [ 1 ]
+  do
+    echo
+    read -p "`basename $0`> " line <&0
+    if [ "$line" = "prev" ] || [ "$line" = "pre" ]
+    then
+      eval "$prev"
+    else
+      eval "$line"
+    fi
+    prev=$line
+  done
+
+      # restore tty settings
+      # before exiting
+      stty "$old_stty"
+
+  exit 0
+}
+
+####################################
+# Main entry point
+####################################
+
+# Yep, this is it. Jump into the main loop
+# and don't come back.
+main
+

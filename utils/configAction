@@ -1,0 +1,300 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+############################################################
+# configAction: 
+# Script called by configuration servlet (via commandRunner
+# after writing configuration files.
+# Use caution when modifying this script, as differences
+# between arm-linux and win32/cygwin could break the script
+# on one side or the other
+#############################################################
+
+################
+# Declarations #
+################
+
+root=""
+verbose="false"
+nodeType=""
+siamPortCfg=""
+siamEnv=""
+binRouting=""
+rcLocal=""
+inittab=""
+loadxr=""
+globalstar=""
+globalstaraux=""
+longhaul=""
+longhaulaux=""
+papsecrets=""
+routeLink=$root/etc/rc2.d/S55route
+setprivs=$root/root/setprivs.sh
+codebase=$root/mnt/hda/codebase
+hosts=$root/etc/hosts
+hostname=$root/etc/hostname
+
+################
+# Functions    #
+################
+
+printUsage(){
+echo
+echo "Usage: `basename $0` [options] -t <nodeType> -p <siamPortCfg> -e <siamEnv> -r <binRouting> -l <rcLocal> -i <inittab> -x <loadxr> -G <globalstar> -g <globalstaraux> -H <longhaul> -h <longhaulaux> -P <papsecrets>"
+echo
+echo "Where:"
+echo
+echo "<nodeType>      = [primary|subnode]     [required]"
+echo "<siamPortCfg>   = path to siamPort.cfg  [required]"
+echo "<siamEnv>       = path to siamEnv       [required]"
+echo "<binRouting>    = path to binRouting.sh [required if nodeType=subnode]"
+echo "<rcLocal>       = path to rc.local      [required]"
+echo "<inittab>       = path to inittab       [required]"
+echo "<loadxr>        = path to loadxr        [required]"
+echo "<loadxr>        = path to loadxr        [required]"
+echo "<globalstar>    = path to globalstar    [required]"
+echo "<globalstaraux> = path to globalstaraux [required]"
+echo "<longhaul>      = path to longhaul      [required]"
+echo "<longhaulaux>   = path to longhaulaux   [required]"
+echo "<papsecrets>    = path to papsecrets    [required]"
+echo
+echo "Options:"
+echo "  -R <root>  Set root directory for testing"
+echo "  -v         Verbose output [$verbose]"
+echo
+exit 0
+}
+
+########################
+# Process command line #
+########################
+
+while [ "$#" -ge 1 ]
+do
+case "$1" in
+[-][t])
+shift
+nodeType="$1"
+if [ "$nodeType" != "subnode" ] && [ "$nodeType" != "primary" ]
+then
+ printUsage
+fi
+shift
+;;
+[-][p])
+shift
+
+siamPortCfg="$1"
+shift
+;;
+[-][e])
+shift
+siamEnv="$1"
+shift
+;;
+[-][r])
+shift
+binRouting="$1"
+shift
+;;
+[-][l])
+shift
+rcLocal="$1"
+shift
+;;
+[-][i])
+shift
+inittab="$1"
+shift
+;;
+[-][R])
+shift
+root="$1"
+shift
+;;
+[-][v])
+verbose="true"
+shift
+;;
+[-][x])
+shift
+loadxr="$1"
+shift
+;;
+[-][G])
+shift
+globalstar="$1"
+shift
+;;
+[-][g])
+shift
+globalstaraux="$1"
+shift
+;;
+[-][H])
+shift
+longhaul="$1"
+shift
+;;
+[-][h])
+shift
+longhaulaux="$1"
+shift
+;;
+[-][P])
+shift
+papsecrets="$1"
+shift
+;;
+
+* )
+shift
+esac
+
+done
+
+if [ "$verbose" == "true" ]
+then
+ echo " nodeType $nodeType"
+ echo " siamPortCfg $siamPortCfg"
+ echo " siamEnv $siamEnv"
+ echo " binRouting $binRouting"
+ echo " rcLocal $rcLocal"
+ echo " inittab $inittab"
+ echo " loadxr $loadxr"
+fi
+
+
+######################
+# Required parameters #
+######################
+
+if [ "$nodeType" == "" ] || [ "$siamPortCfg" == "" ] || [ "$siamEnv" == "" ] || [ "$rcLocal" == "" ] || [ "$inittab" == "" ] || [ "$loadxr" == "" ]
+then
+ printUsage
+fi
+
+if [ "$globalstar" == "" ] || [ "$globalstaraux" == "" ] || [ "$longhaul" == "" ] || [ "$longhaulaux" == "" ] || [ "$papsecrets" == "" ]
+then
+ printUsage
+fi
+
+#####################################
+# Conditionally required parameters #
+#####################################
+
+if [ "$nodeType" == "subnode" ] && [ "$binRouting" == "" ]
+then
+ printUsage
+fi
+
+##############
+# Operations #
+##############
+
+if [ "$nodeType" == "subnode" ]
+then
+  if [ -e "$binRouting" ]
+  then
+   chmod a+x $binRouting  
+   # Link for boot
+   rm $routeLink  
+   ln -s $binRouting $routeLink 
+  fi
+fi
+
+
+if [ "$verbose" == "true" ]
+then
+ echo "Setting privileges..."
+fi
+
+
+if [ -e "$siamPortCfg" ]
+then
+    chown ops:root $siamPortCfg
+    chmod 775 $siamPortCfg
+fi
+
+if [ -e "$siamEnv" ]
+then
+    chown root:root $siamEnv
+    chmod 775 $siamEnv
+fi
+
+if [ -e "$hosts" ]
+then
+    chown root:root $hosts
+    chmod 664 $hosts
+fi
+
+if [ -e "$hostname" ]
+then
+    chown root:root $hostname
+    chmod 664 $hostname
+fi
+
+if [ -e "$rcLocal" ]
+then
+    chown root:root $rcLocal
+    chmod 775 $rcLocal
+fi
+
+if [ -e "$inittab" ]
+then
+    chown root:root $inittab
+    chmod 664 $inittab
+fi
+
+if [ -e "$loadxr" ]
+then
+    chown root:root $loadxr
+    chmod 775 $loadxr
+fi
+
+if [ -e "$globalstar" ]
+then
+    chown ops:root $globalstar
+    chmod 664 $globalstar
+fi
+
+if [ -e "$globalstaraux" ]
+then
+    chown ops:root $globalstaraux
+    chmod 664 $globalstaraux
+fi
+
+if [ -e "$longhaul" ]
+then
+    chown ops:root $longhaul
+    chmod 664 $longhaul
+fi
+
+if [ -e "$longhaulaux" ]
+then
+    chown ops:root $longhaulaux
+    chmod 664 $longhaulaux
+fi
+
+if [ -e "$papsecrets" ]
+then
+    chown ops:root $papsecrets
+    chmod 664 $papsecrets
+fi
+
+if [ -e "$binRouting" ]
+then
+ chown root:root $binRouting  
+ chmod 775  $binRouting  
+fi
+
+if [ -e "$routeLink" ]
+then
+ chown root:root $routeLink  
+ chmod 775  $routeLink  
+fi
+
+
+exit 0

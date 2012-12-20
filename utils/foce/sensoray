@@ -1,0 +1,44 @@
+#!/bin/bash
+
+#
+# sensoray - wrapper script for testSensoray
+#
+
+printUsage(){
+echo
+echo "usage: `basename $0` [options]"
+echo
+echo "options:"
+echo "  --help : print use message"
+echo "  -r : inhibit Reset"
+echo "  -i : inhibit Init"
+echo "  -p : inhibit ProductId"
+echo "  -b : inhibit BoardTemp"
+echo "  -f : inhibit FirmwareVersion"
+echo 
+}
+
+SENSORAY="$SIAM_HOME/native/foce/testSensoray"
+
+if [ "$1" == "--help" ]
+then
+  printUsage
+  exit 1
+fi
+export CHECKPROC_SEARCH="foceio"
+checkProc -s 
+if [ "$?" -eq 0 ]
+then
+    echo
+    echo " #"
+    echo " # The sensoray utility may not be run concurrently with the foceio application."
+    echo " #"
+    echo " # Please stop foceio and SIAM before calling `basename $0`."
+    echo " #"
+    echo
+    printUsage
+    exit 1
+fi
+
+$SENSORAY "$*"
+

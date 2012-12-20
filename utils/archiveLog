@@ -1,0 +1,89 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Retrieve and archive log from specified instrument service on 
+# specified target node.
+# Note that this script assumes that ssh/scp does not require a 
+# password input (e.g. see http://hacks.oreilly.com/pub/h/66).
+
+if [ $# -ne 3 ]
+then
+  echo usage: $0 nodeName deviceID portName  
+  exit 1
+fi
+
+node=$1
+id=$2
+port=$3
+
+
+# SIAM root directory - hard-wired for now!
+siamHome=/mnt/hda/siam/
+
+
+# Suspend instrument service
+echo Suspend instrument service on $port
+suspendPort $node $port
+
+# Generate timestamp suffix for log files
+timestamp=`date +%b%d-%Y-%H:%M:%S`
+
+# Rename instrument 'dat' log file
+echo "Rename log files on target node"
+
+datName=${siamHome}/logs/${id}_0.dat
+newDatName=${siamHome}/logs/${id}-${timestamp}_0.dat
+cmd="mv $datName $newDatName"
+ssh ops@$node ${cmd}
+
+# Rename instrument 'idx' log file
+idxName=${siamHome}/logs/${id}_0.idx
+newIdxName=${siamHome}/logs/${id}-${timestamp}_0.idx
+cmd="mv $idxName $newIdxName"
+ssh ops@$node $cmd
+
+# Now can resume instrument service (since rename 'moved' 
+# log files out of the way...)
+echo Resume instrument service on $port
+resumePort $node $port
+
+# Retrieve log files
+echo "Retrieve log files from target node"
+scp ops@${node}:$newDatName ops@${node}:$newIdxName .
+
+# Check for successful completion
+if [ $? -ne 0 ] 
+then
+  echo Retrieval failed.
+  exit 1
+else
+  echo Retrieval succeeded.
+fi
+
+# Insure that files were actually transferred
+file=`basename $newDatName`
+if [ ! -e $file ] 
+then
+  echo $newDatName was not retrieved
+  exit 1
+else
+  echo Retrieved $file
+fi
+
+file=`basename $newIdxName`
+if [ ! -e $file ] 
+then
+  echo $newIdxName was not retrieved
+  exit 1
+else
+  echo Retrieved $file
+fi
+
+
+# Remove the files from the source node
+cmd="rm $newDatName $newIdxName"
+ssh ops@$node ${cmd}
+
+

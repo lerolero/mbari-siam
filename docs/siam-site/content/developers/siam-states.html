@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>SIAM Instrument Service States</title>
+<link href="../../css/content.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+<h1>SIAM Instrument Service States</h1>
+<p>State transitions for SIAM instrument services</p>
+
+<div class="img"> 
+ <a target="_blank" href="../../img/ISFServiceStates.jpg"><img src="../../img/ISFServiceStates.jpg" alt="" /></a> 
+ <!--<a target="_blank" href="../../img/ISFServiceStates.jpg"><img src="../../img/ISFServiceStates_tn.jpg" alt="" width="330" height="270" /></a> -->
+ <div class="descwide">Instrument Service Framework: Instrument Service States</div> 
+</div> 
+<div class="text_line"></div>
+
+<!--
+<p> 
+ <a target="_blank" href="../../img/ISFServiceStates.jpg"><img src="../../img/ISFServiceStates.jpg" alt="" /></a> 
+</p>
+-->
+<p></p>
+<table class="altTable">
+<tr>
+  <th>SIAM Service State</th>
+  <th>Description</th>
+</tr>
+<tr>
+<td>INITIAL</td>
+<td>Instrument service and device are initializing</td>
+</tr>
+<tr class="alt">
+<td>OK</td>
+<td>Instrument is ready to sample</td>
+</tr>
+<tr>
+<td>SAMPLING</td>
+<td>Instrument is acquiring a sample</td>
+</tr>
+<tr class="alt">
+<td>SLEEPING</td>
+<td>The instrument service is sleeping for a predetermined amount of time (cpu may safely go to sleep if service is SLEEPING)</td>
+</tr>
+<tr>
+<td>SAFE</td>
+<td>Instrument device is in a state compatible with system power loss. Service does not interact with device while in this state (Few instruments implement Safeable)</td>
+</tr>
+<tr class="alt">
+<td>SUSPEND</td>
+<td>Corresponds to a &quot;direct mode&quot;; service will not interact with device while in this state</td>
+</tr>
+<tr>
+<td>ERROR</td>
+<td>Latest sampling attempt encountered an error</td>
+</tr>
+<tr class="alt">
+<td>SHUTDOWN</td>
+<td>The instrument service and device are shutting down</td>
+</tr>
+</table>
+
+</body>
+</html>

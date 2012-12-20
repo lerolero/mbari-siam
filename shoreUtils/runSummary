@@ -1,0 +1,49 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Run the summary utility, and copy results to 'abalone' web server
+# directory. This script can be invoked from a 'cron' job.
+#
+# NOTE: this script does NOT expect a password prompt from 'scp' - thus
+# ssh/scp should be configured to allow password-less operation!
+
+if [ "$#" -ne "2" ] 
+then
+  echo "usage: $0 pppAddress destinationi"
+  echo "pppAddress is as it appears in /var/log/messages, e.g. \"10.1.36.2\""
+  echo "destination is 'scp' destination directory, e.g. \"abalone:/var/www/html/siam2/mseSummaries\"" 
+  echo
+  echo "NOTE: This script does not expect a password prompt from scp!"
+  exit 1
+fi
+
+pppAddress=$1
+destination=$2
+
+export CHECKPROC_SEARCH="summarize"
+/home/ops/siam/utils/checkProc -s 
+if [ "$?" -eq 0 ]
+then
+   echo "`date` The runSummary script is already running - exiting" 
+   exit 1
+fi
+
+
+. /etc/profile
+. $HOME/.bash_profile
+export PATH=$PATH:/usr/local/bin
+
+cd $SIAM_HOME/logs
+# Run summary on portal log named 'portal.out' (which may be a symbolic link)
+$SIAM_HOME/shoreUtils/summarize portal.out $pppAddress > summary.html
+echo `date` > junk
+
+# parse events from the last 100k lines of portal.out
+#awk -f $SIAM_HOME/shoreUtils/portalEvents.awk portal.out > portalEvents.html
+tail -100000 portal.out|awk -f $SIAM_HOME/shoreUtils/portalEvents.awk > portalEvents.html
+
+scp portalEvents.html summary.html *.gif *.png $destination
+
+

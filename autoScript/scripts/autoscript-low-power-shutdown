@@ -1,0 +1,54 @@
+#!/bin/bash
+#
+
+# MSE low power shutdown 01/30/2007
+
+export LOG4J_THRESHOLD=INFO
+
+SURFACE=surface
+
+NODE=$SURFACE
+cpuAwake 900 $NODE
+
+
+# shutdown snubber
+NODE=node410 # node410 deployed
+wakeup $SURFACE $NODE
+cpuAwake 900 $NODE
+killBIN $NODE -q
+shutdownPort $SURFACE 1 # shutdown snubber's DPA on surface
+
+
+NODE=$SURFACE # shutdown ports on surface
+shutdownPort $NODE 4
+shutdownPort $NODE 5
+shutdownPort $NODE 6
+shutdownPort $NODE 7
+shutdownPort $NODE 8
+shutdownPort $NODE 9
+shutdownPort $NODE 10
+listPorts $NODE -stats
+
+
+#Shutdown ports on secondary
+NODE=node421 # node421 deployed
+wakeup $SURFACE $NODE
+cpuAwake 900 $NODE
+shutdownPort $NODE 0
+shutdownPort $NODE 1
+shutdownPort $NODE 2
+shutdownPort $NODE 4
+shutdownPort $NODE 7
+shutdownPort $NODE 9
+listPorts $NODE -stats
+
+
+#Shutdown ports on shelf BIN
+NODE=node401 #node401 deployed
+wakeup $SURFACE $NODE
+cpuAwake 900 $NODE
+safeNode $NODE   # safe all ports
+scanPort $NODE 1 # reset normal sampling on port 1 (CTD)
+listPorts $NODE -stats
+
+# AUTOSCRIPT EOF

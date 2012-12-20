@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# run remote (RMI) version of motor utility
+# (interacts with SIAM motor services)
+
+# Script executes org.mbari.siam.foce.utils.ElmoRMI.main()
+$JAVA -cp $SIAM_CLASSPATH \
+-Djava.security.policy=$SIAM_HOME/properties/policy \
+-Dlog4j.threshold=$LOG4J_THRESHOLD \
+-Dexec_name=`basename "$0"` \
+org.mbari.siam.foce.utils.ElmoRMI $*
+

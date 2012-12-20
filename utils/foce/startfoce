@@ -1,0 +1,72 @@
+#!/bin/bash
+#
+# Script to run the 'foce' application 
+#
+
+# stdout dump location
+# must specify a file, since allowing stdout
+# to go to the console may cause the system to
+# lock up if the console cable is unplugged.
+# Also, be aware that setting this to a file
+# other than /dev/null will consume disk space
+# since the file's size is not managed
+#STDOUT_DUMP="/dev/null"
+STDOUT_DUMP=$SIAM_HOME/logs/foce.startup.log
+
+# Following was lifted in place from /home/ops/.bashrc
+# For some reason, just sourcing that file doesn't work
+# SIAM support
+
+export SIAM_HOME=/home/ops/siam
+export LD_LIBRARY_PATH=/lib:/usr/lib:/usr/local/lib
+
+# Set Java environment
+export JAVA_HOME=/usr/java/jdk1.5.0_15
+export PATH=.:$JAVA_HOME/bin:$PATH:$HOME/bin:$SIAM_HOME/utils:$SIAM_HOME/utils/foce:$SIAM_HOME/native/foce:/root/bin
+export SIAM_HOME=/home/ops/siam
+export JAVA_DEV_ROOT=$SIAM_HOME
+export IS_UNIX=true
+export LOG4J_THRESHOLD=INFO
+
+# Java compiler
+export JAVAC=javac
+export JAVA=java
+export JAVA_OPTIONS=""
+
+#alias loc='localhost'
+
+export SIAM_BIN=$SIAM_HOME/bin/x86-linux
+
+export SIAM_CODEBASE=http://`hostname -f`/codebase/
+export SIAM_CLASSPATH=$SIAM_HOME/jars/siam.jar:$SIAM_HOME/jars/javax.jar:$SIAM_HOME/jars/log4j-1.2.13.jar:$SIAM_HOME/jars/puck.jar:$SIAM_HOME/jars/ssds-client-pub-bob.jar:$SIAM_HOME/jars/XModem.jar:$SIAM_HOME/jars/jddac-common.jar:$SIAM_HOME/jars/jddac-probe-j2me.jar:$SIAM_HOME/jars/mdnssd.jar:$SIAM_HOME/jars/rbnb.jar
+
+
+# DataTurban Support
+
+export RBNB_HOME=/usr/local/DataTurbine
+
+###########################################
+# End of import from .bashrc
+#
+
+
+echo "Executing startfoce at `date`"
+
+# check to see if you want auto start or not
+if [ "$SIAM_AUTOSTART" ] && [ $SIAM_AUTOSTART == FALSE ]
+then
+  echo "skipping SIAM auto start"
+  echo "SIAM_AUTOSTART = FALSE"
+  exit 0
+fi
+
+# switch to SIAM_HOME dir
+cd $SIAM_HOME
+
+if [ ! -e logs ]; then
+  echo Creating log directory $SIAM_HOME/logs
+  mkdir logs
+fi
+
+./utils/foce/foce -publish >& $STDOUT_DUMP &
+

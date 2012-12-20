@@ -1,0 +1,29 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Run ppp daemon, with user-specified parameters. Daemon is run in 
+# a loop, so that if connection is dropped, we attempt reconnection
+# automatically.
+
+# These parameters work for the DataRadios; note that ppp compression
+# schemes are turned OFF. - T.O'R.
+
+port=ttyS1
+baud=38400
+from=shore
+to=mooring8
+delay=3
+
+hndshk=""
+
+while :
+do
+  echo Setting up the ppp link from $from to $to at ${baud} baud on $port
+  date
+  /usr/sbin/pppd nodeflate nobsdcomp novj novjccomp -detach noauth lock $hndshk $from:$to $port $baud
+  echo "**** PPP FAILED at `date`"
+  sleep $delay
+done
+ 

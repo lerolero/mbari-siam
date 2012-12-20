@@ -1,0 +1,22 @@
+
+System Requirements
+
+Operating systems: 
+Linux (32-bit): Red Hat, Debian, Intrynsic
+Mac OS X: 10.5
+Windows XP (32-bit): (requires Cygwin)
+
+Approximately 260 MB of hard disk space for development system
+Approximately 20 MB of hard disk space on target
+
+Memory: 64 MB RAM minimum, 512 GB or more recommended
+
+Processors: 
+StrongARM SA1110 33 MHz 
+Lippert Cool Runner PC-104
+Reasonably modern Intel-based Mac/PC
+
+Network:
+Network connection is optional (may be run stand-alone as a logger). SIAM may be run over fairly low-bandwidth links, depending on telemetry volumes; for example, a 7200 bps Globalstar link with 30% availability has been used to return 5-20 MB/day. 
+
+

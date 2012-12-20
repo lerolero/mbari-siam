@@ -1,0 +1,248 @@
+# These notes describe changes and issues
+# associated with the specified releases 
+# of MBARI Software Infrastructure and Applications for MOOS (SIAM)
+
+Copyright Information
+
+     Copyright 1998, Monterey Bay Aquarium Research Institute.
+
+Intellectual Property Disclaimer
+ 
+     MBARI MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR IMPLIED.  BY WAY OF 
+     EXAMPLE, BUT NOT LIMITATION, MBARI MAKES NO REPRESENTATIONS OR WARRANTIES OF 
+     MERCHANTABILITY OR FITNESS FOR ANY PARTICULAR PURPOSE OR THAT THE USE OF THE 
+     LICENSED SOFTWARE COMPONENTS OR DOCUMENTATION WILL NOT INFRINGE ANY PATENTS, 
+     COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS.  MBARI SHALL NOT BE HELD LIABLE FOR 
+     ANY LIABILITY NOR FOR ANY DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH 
+     RESPECT TO ANY CLAIM BY RECIPIENT OR ANY THIRD PARTY ON ACCOUNT OF OR 
+     ARISING FROM THIS AGREEMENT OR USE OF THE SOFTWARE OR SPECIFICATION.
+
+Terms of Use
+
+========================
+ SIAM Release Notes 
+ release tag: next release (monthdd-yyyy)
+========================
+- added wrapper script foce/utils/motorUtil for org.mbari.siam.foce.utils.FOCEMotorUtil
+	- controls Elmo controllers from command line, w/o SIAM
+
+
+========================
+ SIAM Release Notes 
+ release tag: may08-2009
+========================
+- org.mbari.siam.configt.ConfigTool: 
+	bug fix: misnaming of property parentHostname caused PARENT_HOST in 
+	/etc/siam/siamEnv not to be set
+
+	performance: check process status in stdout/stderr read loop and 
+	quit when process done.
+	
+	performance: reduce polling interval during config file write 
+	(detect completion sooner)
+
+- org.mbari.siam.configt.ConfigFile:
+	performance: reuse a RECompiler object so that it doesn't need to be 
+	recreated for each RE (regular expression) 
+
+- siamPort.cfg: 
+	eliminated properties/siamPort.cfg, now replaced by consistently named
+	specially purposed versions: siamPort.cfg.moos, siamPort.cfg.foce, etc.
+
+- make/CONTROL/postinst (siam ipkg installer):
+	bug fix: logic for installing siamPort.cfg and renamed generic MOOS 
+	siamPort.cfg to siamPort.cfg.moos (which replaces siamPort.cfg.basic)
+
+- make/Makefile.2008FOCE
+	- changed PUCK SBE52MP target to build using mksiamjar (so it doesn't include all seabird classes and uses the new directory structure)
+	- split individual sets of PUCK targets into groups so they can be made independently
+	- focepucks target now builds all PUCK groups (still makes all pucks as before)
+	- all groups and focepucks depends on puckxml target so that puckxml is updated automatically
+
+- Added new driver for Sensoray 518, an A/D board used for environmental monitoring in the FOCE electronics housing
+  Modified files (relative to siam2):
+	- /make: Makefile,Makefile.2009FOCE*
+	- /native/foce:Makefile, foceio.c, sensoray.c*, sensoray.h*, testSenoray.c*
+	- /properties: siamPort.cfg.foce
+	- /src/org/mbari/siam/core: SiamProperties.java
+	- /src/org/mbari/siam/foce/deployed:Makefile, FOCEAnalogBoard.java, FOCENodeProperties.java,FOCESensorayBoard.java*
+	- /src/org/mbari/siam/foce/devices/analog:Makefile, Sensoray518.java*,AnalogInstrument.java
+	_ * new file
+- fixed bug in org/mbari/siam/foce/devices/AnalogInstrument.java: weak tests for array boundaries fixed
+
+- Changed the way that analog ports are represented in siamPort.cfg:
+### Change Details ###
+ These were designed to enable the use of multiple, non-contiguous analog channel ranges within a single analog 
+ instrument. For example, a single power monitor service may be defined to use channels 8,10-15 and 24-30. The new syntax for defining analog channels is as follows:
+
+	  analogPort<number> <boardNumber> <channelRange>[,<channelRange>,...]
+
+  where channelRange is defined as
+
+  	firstChannel[-lastChannel]
+
+  for example,
+
+	analogPort8 1 8,10-15,23,26-30
+
+defines an analog port on analog board 1 using channels [8,10,11,12,13,14,15,23,26,27,28,29,30].
+
+Internally, new lightweight classes replace the integer arrays used to represent analog channel definitions:
+- org.mbari.siam.core.ChannelRange
+- org.mbari.siam.core.ChannelParameter
+ 
+Additionally, methods have been added to the SiamProperties class: 
+getStringArrayProperty, parseStringArrayProperty
+getChannelRangeProperty, parseChannelRangeProperty.
+
+ The getX methods are thin (2 line) wrappers for the parseX functions, which do the work and may be used outside the context of reading properties.
+
+Other classes modified in support of non-contiguous analog port definitions:
+  - src/org/mbari/siam/core/AnalogDevicePort.java
+  - src/org/mbari/siam/core/AnalogInstrumentPort.java
+  - src/org/mbari/siam/core/SiamProperties.java:
+  - src/org/mbari/siam/foce/deployed/FOCENodeProperties.java
+  - src/org/mbari/siam/foce/devices/analog/AnalogInstrument.java
+  - properties/siamPort.cfg.foce
+  - make/Makefile.2009FOCE
+### End Change Details ###
+
+# A Series of updates for May2009 FOCE deployment:
+# Utilities
+monitor: 
+- a thin wrapper for monitorStreams; it can be on its own, and is also used by several other utility scripts, giving them a common format:
+  pH
+  sensors
+  power
+
+motor: 
+- a rewite of the motor utility for separate motor drivers
+
+elmoPower: 
+- switches/reads the DMM32 A/D card digital IO bits use to enable/disable power to the Elmo motor controllers
+
+# Parsers
+- replace specialized classes with PacketParser derivates, allowing a single type of strongly typed data to be passed by the instrument registry instead of many different classes and interfaces
+	org.mbari.siam.devices.workhorse.WorkhorsePacketParser
+	org.mbari.siam.devices.nortek.VectorPacketParser
+	org.mbari.siam.devices.seabird.sbe52mp.Seabird53PacketParser
+	org.mbari.siam.devices.phDigital.PhDigitalPacketParser
+	org.mbari.siam.foce.devices.elmo.ElmoPacketParser
+
+# Instrument Services
+- modified Analog and related classes to support non-continuous A/D channel ranges (see above).
+- adding new Elmo motor controller support
+- adding closed loop control virtual instrument (still in progress)
+	org.mbari.siam.foce.devices.analog.ScaledAnalog (PMonitor)
+	org.mbari.siam.foce.devices.analog.ScaledAnalog Sensoray518 (EMonitor)
+	org.mbari.siam.foce.devices.motorControl.ControlLoop (in progress)
+	org.mbari.siam.foce.devices.motorControl.MotorControlIF
+	org.mbari.siam.foce.devices.elmo.Elmo
+	org.mbari.siam.foce.devices.elmo.ElmoSolo
+	org.mbari.siam.foce.devices.elmo.ElmoSoloSvc
+	foceio
+
+# Architecture
+- modified Analog and related classes to support non-continuous A/D channel ranges (see above).
+- modified PacketParser to support allow registry names to be included in parsed data
+	org.mbari.siam.foce.deployed.FOCEAnalogBoard
+	org.mbari.siam.foce.deployed.FOCENodeProperties
+	org.mbari.siam.foce.deployed.FOCESensorayBoard
+	org.mbari.siam.foce.deployed.FOCENode
+	org.mbari.siam.distributed.AnalogInstrumentPort
+	org.mbari.siam.distributed.SiamProperties
+	org.mbari.siam.distributed.ChannelRange
+	org.mbari.siam.distributed.ChannelParameters
+	org.mbari.siam.distributed.PacketParser
+
+# Utility
+- Added motor control class to manipulate motors from command line outside of SIAM context
+- added option to getLastSample to parse packets when packet parser is available
+- added chainable filter classes (used by ControlLoop); similar in concept to JDDAC function blocks, but much less sophisticated
+	org.mbari.siam.foce.utils.FOCEMotorUtil
+	org.mbari.siam.operations.utils.GetLastSample
+	org.mbari.siam.utils.DelimitedStringParser
+	org.mbari.siam.utils.Filter
+	org.mbari.siam.utils.BoxcarFilter
+
+========================
+ SIAM Release Notes 
+ release tag: january09-2009-2
+========================
+- bug fix: Fixed summarization capability for StreamingInstrumentServices
+- bug fixes: various portal summarization utilities
+- Added support for Iridium console and ShoreMessaging service
+
+
+========================
+ SIAM Release Notes 
+ release tag: december15-2008
+========================
+- bug fix: Removed shadowed '_attributes' variable from WetlabsTriplet, TurbidityEventDetector. 
+- bug fix: made writeProcRegister in MOOSWDTManager synchronized
+- Added some exception throwing in the GPS instrument driver so that the GPS will not initialize 
+  if it doesn't respond to the node. 
+
+
+========================
+ SIAM Release Notes 
+ release tag: december12-2008
+========================
+- bug fix: the SA1110 watchdog implementation was not completing fast enough to 
+  avoid erroneous resets. The timeout was extended to 60 sec and the compare register
+  will now be incremented every 15 seconds. The timeout on syncProcessRunner was 
+  also increased to 500 msec.  
+
+
+========================
+ SIAM Release Notes 
+ release tag: december11-2008
+========================
+- bug fix: the SA1110 watchdog implementation failed to clear bit 3 in the OSSR register 
+  following a sleep reset. Bits M0-M3 contain an unknown value at reset and need to be cleared 
+  or unintentional watchdog resets can occur if the WME bit is set in the OWER register. 
+
+
+========================
+ SIAM Release Notes 
+ release tag: december09-2008
+========================
+- Addition of SA1110 watchdog timer implementation. Includes writeRegister application 
+  in /root and a shell script /etc/siam/disableWDT.sh to manually disable the watchdog.
+  Current watchdog timeout is 20 seconds. 
+
+- bug fix: instantiation of subclass "MOOSSleepManager"
+
+- org.mbari.siam.configt.ConfigTool: 
+	bug fix: misnaming of property parentHostname caused PARENT_HOST in 
+	/etc/siam/siamEnv not to be set
+
+	performance: check process status in stdout/stderr read loop and 
+	quit when process done.
+	
+	performance: reduce polling interval during config file write 
+	(detect completion sooner)
+
+- org.mbari.siam.configt.ConfigFile:
+	performance: reuse a RECompiler object so that it doesn't need to be 
+	recreated for each RE (regular expression) 
+
+- siamPort.cfg: 
+	eliminated properties/siamPort.cfg, now replaced by consistently named
+	specially purposed versions: siamPort.cfg.moos, siamPort.cfg.foce, etc.
+
+- make/CONTROL/postinst (siam ipkg installer):
+	bug fix: logic for installing siamPort.cfg and renamed generic MOOS 
+	siamPort.cfg to siamPort.cfg.moos (which replaces siamPort.cfg.basic)
+
+========================
+ SIAM Release Notes 
+ release tag: november25-2008
+========================
+
+- org.mbari.siam.configt.ConfigFile:
+	performance: replaced RE engine with apache jakarta classes
+
+- siam/utils/configAction, configt, configTool
+	performance: checks for root user and concurrent SIAM process
+

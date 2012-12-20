@@ -1,0 +1,281 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+</head>
+<body>
+<h1>SIAM: Software Infrastructure and Applications for MOOS</h1>
+SIAM provides autonomous observatory management, instrument data
+acquisition,
+logging, telemetry, remote instrument control, automatic
+"plug-and-work" integration of instruments and datastreams, and other
+features. SIAM components may be distributed across TCP/IP networks,
+and
+interact with one another using Java RMI technology. The physical
+network
+media may be hardwired or wireless.
+<p>The lack of standard instrument protocols presents major challenges
+to observatory configuration and management; each instrument
+manufacturer specifies their own protocol to configure and instrument
+and acquire its data. SIAM addresses these challenges by providing a
+generic network interface to any instrument integrated with SIAM. Thus
+clients on the observatory network can interact with all instruments
+through the same generic interface protocol, regardless of the actual
+"native" instrument protocol. The standard interface
+leads to a very scalable architecture for observatory configuration and
+management. The translation between generic network interface and
+specific instrument protocols is handled by SIAM instrument services,
+which are like "instrument drivers", implemented for each kind of
+instrument. SIAM provides an <i>application framework</i> to help
+programmers
+quickly develop instrument services.
+</p>
+<p>You can find a SIAM overview published in <i>Proceedings of the
+IEEE
+2004 Oceans Conference</i> <a href="../IEEE-Oceans-2004.pdf">here</a>.
+</p>
+<h2>Node and Instrument services</h2>
+<p>Figure 1 shows some major SIAM components as deployed on the MOOS
+moored observatory. The gray blocks represent MOOS mooring controller
+(MMC) nodes at sea, with attached serial instruments shown as gray
+cylinders. The MMC nodes
+are interconnected by the at-sea fiber/wire network. Each MMC node
+hosts a SIAM <i>node service</i> object. The node service provides an
+interface to manage node resources, get information about attached
+instrument services, and other functions. The node services can be
+accessed by clients anywhere on the network through Java's RMI
+mechanism. The
+node RMI interface is defined {@link org.mbari.siam.distributed.Node
+here}.
+</p>
+<p>Each MMC node also hosts a SIAM <i>instrument service</i> for every
+physical instrument attached to the node. The instrument service
+provides
+a generic RMI interface that enables network access to every
+instrument, with methods to acquire data, retrieve data, configure the
+physical instrument, and other functions. The instrument RMI interface
+is defined {@link org.mbari.siam.distributed.Instrument here}. Any
+instrument integrated
+with SIAM can be accessed through this generic interface, regardless of
+the
+actual protocol of the specific instrument.<br>
+</p>
+<h3>Figure 1: SIAM components on MOOS observatory </h3>
+<p><img alt="SIAM components on MOOS observatory"
+ src="overviewFigures/Slide1.JPG" alt="Node and instruments"
+ style="width: 800px; height: 720px;">
+</p>
+<p style="font-weight: bold;"><br>
+</p>
+<p>Figure 2 shows some relationships between a node service and its
+associated
+instrument services. In addition to managing node resources (e.g.
+power, telemetry link), the node service creates instrument service
+objects for each physical instrument attached to the node. Each
+instrument service
+encapsulates a serial connection to its physical instrument. Clients
+(either local to the node or from across the network) access the
+instrument
+service's generic RMI interface to request data, configure the
+instrument, etc; the instrument service issues the appropriate serial
+command(s) to the serial device to fulfill the specific client
+request.
+<p>Note that the node understands MBARI PUCK protocol, and can extract and execute the SIAM instrument service code from the instrument serial port using PUCK protocol, thus implementing automatic "plug and work" functionality. See http://www.mbari.org/pw for more details.
+<h3><span style="font-weight: bold;">Figure 2: Relationships between
+Node and Instrument services</span><img
+ alt="Node and instrument relationships"
+ src="overviewFigures/Slide2.JPG" style="width: 960px; height: 720px;"><br>
+</h3>
+<p style="font-weight: bold;">Figure 2: Relationships between Node and
+Instrument services</p>
+<p>The instrument service classes have been designed to be portable to
+many
+observatory environments; in particular, the instrument service does
+not
+rely directly on the node service class. Instead the instrument service
+interacts with the <i>Parent</i> interface to request power,
+positional
+information, and other functions. Node service implements the Parent
+interface,
+and of course other implementations of Parent are possible.
+</p>
+<h2>Instrument service framework</h2>
+<p>
+The {@link org.mbari.siam.core org.mbari.siam.core} package includes base classes
+that can be extended to implement services for specific instruments.
+These base
+classes implement generic functionality that is the same for all
+instrument services, and define abstract methods that must be
+implemented
+in specific ways for specific instruments. In general, the abstract
+method implementations depend on the specific serial protocol of the
+instrument. This <i>application framework</i> approach helps
+programmers
+quickly develop robust instrument services in several ways:
+</p>
+<ul>
+  <li>Base classes include code that must be executed by every
+instrument source,
+and so helps ensure that all services are started, managed, and shut
+down
+in a consistent way </li>
+  <li>Subclasses automatically inherit bug fixes, efficiency
+improvements, and
+other enhancements to the base classes </li>
+  <li>Use of the framework significantly reduces the amount of
+instrument-
+specific code; our tests indicate that 30% code savings are typical. </li>
+</ul>
+<p>
+Figure 3 shows the class hierarchy of the instrument service
+application framework. {@link org.mbari.siam.core.BaseInstrumentService
+BaseInstrumentService} implements
+generic methods that manage the life-cycle of every instrument service.
+BaseInstrumentService has two immediate subclasses; {@link
+org.mbari.siam.core.PolledInstrumentService PolledInstrumentService} and
+{@link org.mbari.siam.core.StreamingInstrumentService
+StreamingInstrumentService}.
+Services for instruments that are "polled" for their data extend the
+PolledInstrumentService class.
+Services for instruments that asynchronously "stream" data extend the
+StreamingInstrumentService class.</p>
+<p><br>
+</p>
+<h3>Figure 3: Instrument service framework class hierarchy<img
+ alt="Instrument service framework class hierarchy"
+ title="Instrument service framework class hierarchy"
+ src="overviewFigures/Slide3.JPG" style="width: 960px; height: 750px;"></h3>
+<p> </p>
+<p style="font-weight: bold;"><br>
+</p>
+<p>To implement a specific instrument service, you simply extend either
+PolledInstrumentService or StreamingInstrumentService, depending on the
+type
+of instrument. Your subclass, whether polled or streaming, <b>must</b>
+implement the following abstract methods defined by
+BaseInstrumentService:
+<br>
+{@link org.mbari.siam.core.BaseInstrumentService#initPromptString
+initPromptString}
+<br>
+{@link org.mbari.siam.core.BaseInstrumentService#initSampleTerminator
+initSampleTerminator}
+<br>
+{@link org.mbari.siam.core.BaseInstrumentService#initCurrentLimit
+initCurrentLimit}
+<br>
+{@link org.mbari.siam.core.BaseInstrumentService#initInstrumentPowerPolicy
+initInstrumentPowerPolicy}
+(see <a href="#InstrumentPowerManagement">Instrument power management</a>)<br>
+{@link org.mbari.siam.core.BaseInstrumentService#initCommunicationPowerPolicy
+initCommunicationPowerPolicy}
+(see <a href="overview.html#InstrumentPowerManagement">Instrument
+power management</a>)<br>
+{@link org.mbari.siam.core.BaseInstrumentService#initInstrumentStartDelay
+initInstrumentStartDelay}
+<br>
+{@link org.mbari.siam.core.BaseInstrumentService#initMaxSampleBytes
+initMaxSampleBytes}
+<br>
+{@link org.mbari.siam.core.BaseInstrumentService#getSerialPortParameters
+getSerialPortParameters}
+<br>
+{@link org.mbari.siam.core.BaseInstrumentService#createDefaultSampleSchedule
+createDefaultSampleSchedule}
+</p>
+<p>Your service can optionally override the following methods of
+BaseInstrumentService:
+<br>
+{@link org.mbari.siam.core.BaseInstrumentService#initializeInstrument
+initializeInstrument}
+<br>
+{@link org.mbari.siam.core.BaseInstrumentService#setClock setClock}
+<br>
+{@link org.mbari.siam.core.BaseInstrumentService#getInstrumentStateMetadata
+getInstrumentStateMetadata}
+</p>
+<p>When extending PolledInstrumentService, you must implement the
+following abstract methods:
+<br>
+{@link org.mbari.siam.core.PolledInstrumentService#requestSample
+requestSample}
+</p>
+<p>When extending StreamingInstrumentService, you must implement the
+following abstract methods:
+<br>
+{@link org.mbari.siam.core.StreamingInstrumentService#startStreaming
+startStreaming}
+<br>
+{@link org.mbari.siam.core.StreamingInstrumentService#stopStreaming
+stopStreaming}
+<br>
+{@link org.mbari.siam.core.StreamingInstrumentService#isStreaming
+isStreaming}
+</p>
+<p>E.g. see {@link org.mbari.siam.devices.seabird.base.Seabird} and {@link
+org.mbari.siam.devices.nortek.Aquadopp Aquadopp} for examples of polled and
+streaming services, respectively.
+</p>
+<h3><a name="InstrumentPowerManagement"></a>Instrument power management</h3>
+SIAM instrument services specify how instrument power is managed, and
+can accomodate battery-powered devices as well as devices that receive
+their power from the observatory platform. Every instrument service
+specifies values for two <i>power policies</i>. The <i>instrument
+power policy</i> refers to how the observatory platform applies power
+to the device itself, and the <i>communication power policy</i> refers
+to how the platform applies
+power to the device's serial communication line. Each of these policies
+takes a value defined by the {@link
+org.mbari.siam.distributed.PowerPolicy PowerPolicy} class;
+<br>
+<ul>
+  <li>PowerPolicy.ALWAYS - power is always applied </li>
+  <li>PowerPolicy.WHEN_SAMPLING - power is only applied when service is
+sampling the
+instrument. </li>
+  <li>PowerPolicy.NEVER - power is never applied. </li>
+</ul>
+<p>The following table provides guidelines for setting power policy
+based on instrument characteristics. The instrument service specifies
+power policy when implementing the {@link
+org.mbari.siam.core.BaseInstrumentService#initInstrumentPowerPolicy
+initInstrumentPowerPolicy}
+and
+{@link org.mbari.siam.core.BaseInstrumentService#initCommunicationPowerPolicy
+initCommunicationPowerPolicy} methods.
+<br>
+<table border="2">
+  <tbody>
+    <tr>
+      <td><br>
+      </td>
+      <td style="font-weight: bold;">Instrument power policy</td>
+      <td style="font-weight: bold;">Comms power policy</td>
+    </tr>
+    <tr>
+      <td style="font-weight: bold;">PowerPolicy.ALWAYS</td>
+      <td>Instrument has long warm-up or initialization time;<br>
+&nbsp;instrument doesn't tolerate multple power cycles<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><span style="font-weight: bold;">PowerPolicy.WHEN_SAMPLING</span><br>
+      </td>
+      <td style="vertical-align: top;">Instrument can tolerate multiple
+power cycles<br>
+      </td>
+      <td style="vertical-align: top;">Maximum power saving<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><span style="font-weight: bold;">PowerPolicy.NEVER</span><br>
+      </td>
+      <td style="vertical-align: top;">Battery-powered instruments<br>
+      </td>
+      <td style="vertical-align: top;">Not applicable<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</p>
+</body>
+</html>

@@ -1,0 +1,10 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+#
+# Script executes org.mbari.siam.operations.utils.GetUUID.main()
+$JAVA -cp $SIAM_CLASSPATH \
+-Dsiam.bin=$SIAM_BIN \
+org.mbari.siam.operations.utils.GetUUID
+

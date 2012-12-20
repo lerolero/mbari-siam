@@ -1,0 +1,215 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>Simple CSS Test Page</title>
+		<link href="../css/content.css" rel="stylesheet" type="text/css" />
+		</head>
+	
+	<body>
+		
+		<h1>Installation Notes for 3rd Party Packages</h1>
+		<p></p>
+		
+		<a name="java"></a>
+		<h2>Java SDK</h2>
+		<h3>General</h3>
+		<p>Follow the Installation instructions provided with the SDK download.</p>
+		<h3>Win32/Cygwin</h3>
+		<ul>
+			<li>Ensure that the installation directory path name does not contain whitespace</li>
+			</ul>
+		<p></p>
+		
+		<a name="gnu"></a>
+		<h2>GNU Utilities</h2>
+		<p>
+		There are several core utilities and tools that are needed to build and run SIAM:
+		</p>
+		<dl>
+			
+			<dt>System</dt>
+			<dd>coreutils, shellutils</dd>
+			<dd>bash, csh, expect</dd>
+			
+			<dt>Admin</dt>
+			<dd>sudo*</dd>
+			<dd>GRUB*</dd>
+			<dd>cron*</dd>
+			<dd>diskfree</dd>
+			<dd>stat*, netstat*, top*</dd>
+			<dd>gzip, tar</dd>
+			<dd>mailutils*</dd>
+			
+			<dt>Software Development</dt>
+			<dd>gcc, make**, binutils</dd>
+			<dd>automake, autoconf, libtool</dd>
+			<dd>C, C++, perl</dd>
+			<dd>gdb</dd>
+			<dd>Libc, ncurses</dd>
+			
+			<dd>textutils</dd>
+			<dd>awk, gawk, sed, grep</dd>
+			<dd>diff</dd>
+			<dd>emacs*, vim</dd>
+			
+			<dt>Network</dt>
+			<dd>inetutils, xinetd</dd>
+			<dd>ping</dd>
+			<dd>e2fsprogs</dd>
+			<dd>traceroute*</dd>
+			<dd>ntp</dd>
+			<dd>wget,wput</dd>
+			<dd>apache, boa, or other web server*</dd>
+			
+			<dt>Optional</dt>
+			<dd>links, lynx or other web browser (MMC: for configtool)</dd>
+			<dd>chainsaw (log4j front-end)</dd>
+			</dl>
+		<p></p>
+		<div class="emphasis">* - optional (recommended)</div>
+		<div class="emphasis">** - Cygwin currently distributes only Gnu make v3.81, which does not support Windows pathnames with colons (kind of odd for Cygwin, no?).<br /> 
+The Java compiler for Windows insists on DOS (or mixed, e.g. c:/path/...) path names, so can’t handle the strict POSIX style enforced by make 3.81. <br />
+There are 3.80 make Cygwin binaries floating around, but these don’t work with the current cygwin dll.<br />
+One (tested) alternative is to use MinGW make 3.80, available from sourceforge (<a href="http://sourceforge.net/projects/mingw/">http://sourceforge.net/projects/mingw/</a>).<br />
+One could also try building make 3.80 from source.
+</div>
+		<p></p>
+		<a name="rxtx"></a>
+		<h2>RXTX</h2>
+		<h3>Mac OS</h3>
+		<p>Install the binary package (RXTX.pkg). <br />
+		There are instructions for how to build and install the binaries manually on the RXTX wiki (requires XCode tools).
+		</p>
+		<table class="altTable">
+			<tr>
+				<th>File Name</th>
+				<th>Location</th>
+				</tr>
+			<tr>
+				<td>librxtxSerial.jnilib </td>
+				<td>/Library/Java/Extensions</td>
+				</tr>
+			<tr>
+				<td>RXTXcomm.jar </td>
+				<td>/Library/Java/Extensions</td>
+				</tr>
+			<!--
+			 <tr>
+			 <td></td>
+			 <td></td>
+			 </tr>
+			 <tr class="alt">
+			 <td></td>
+			 <td></td>
+			 </tr>
+			 -->
+			</table>
+			<p></p>
+		<div class="emphasis">Run fixperm.sh included with the distribution to set lock permissions</div>
+		<p></p>
+		
+		<h3>Linux</h3>
+		<p>Untar the distribution and install the contents to the following locations, where JAVA_HOME is the location of the Java SDK:
+		</p>
+		<table class="altTable">
+			<tr>
+				<th>File Name</th>
+				<th>Location</th>
+				</tr>
+			<tr>
+				<td>librxtxSerial.so </td>
+				<td>JAVA_HOME/jre/lib/[machine type] (i386 for instance)</td>
+				</tr>
+			<tr>
+				<td>RXTXcomm.jar </td>
+				<td>JAVA_HOME/jre/lib/ext</td>
+				</tr>
+			<!--
+			 <tr>
+			 <td></td>
+			 <td></td>
+			 </tr>
+			 <tr class="alt">
+			 <td></td>
+			 <td></td>
+			 </tr>
+			 -->
+			</table>
+			<p></p>
+		<div class="emphasis">Make sure the user is in group lock or uucp so lockfiles work.</div>
+		<div class="emphasis">Make sure the library is in LD_LIBRARY_PATH</div>
+			<p></p>
+
+		<h3>Win32/Cygwin</h3>
+		<p>Untar the distribution and install the contents to the following locations, where JAVA_HOME is the location of the Java SDK:
+		
+		</p>
+		
+		<table class="altTable">
+			<tr>
+				<th>File Name</th>
+				<th>Location</th>
+				</tr>
+			<tr>
+				<td>rxtxSerial.dll </td>
+				<td>JAVA_HOME/jre/bin</td>
+				</tr>
+			<tr class="alt">
+				<td>RXTXcomm.jar </td>
+				<td>JAVA_HOME/jre/lib/ext</td>
+				</tr>
+			<!--
+			 <tr>
+			 <td></td>
+			 <td></td>
+			 </tr>
+			 <tr class="alt">
+			 <td></td>
+			 <td></td>
+			 </tr>
+			 -->
+			</table>
+		<p>The following Java environment must be set for all distributions		
+		</p>
+		<table class="altTable">
+			<tr>
+				<th>Variable</th>
+				<th>Value</th>
+				</tr>
+			<tr>
+				<td>RXTXcomm.jar must be in the classpath</td>
+				<td>A copy of RXTXcomm.jar is in SIAM_HOME/jars; this jar should be included in SIAM_CLASSPATH.</td>
+				</tr>
+			<tr class="alt">
+				<td>Java system property &quot;gnu.io.rxtx.SerialPorts&quot; must be set for SIAM; otherwise, the RXTX must scan for ports, and this can take a very long time.
+					SIAM uses the &quot;platformSerialPorts&quot; property in siamPort.cfg to pass this value to RXTX.
+					</td>
+				<td>Delimited list of serial ports; For Win32, the delimiter is semicolon, for Linux/MacOS, use colon.
+					<div class="commands">
+						platformSerialPorts = /dev/ttys0:\<br />
+						/dev/ttys1:\<br />
+						/dev/ttys2:\<br />
+						/dev/ttys3:
+						</div>
+					Attempting to open a port not in this list results in a PortNotFoundException.
+					</td>
+				</tr>
+			<!--
+			 <tr>
+			 <td></td>
+			 <td></td>
+			 </tr>
+			 <tr class="alt">
+			 <td></td>
+			 <td></td>
+			 </tr>
+			 -->
+			</table>
+		
+		<a name="osdt"></a>
+		<h2>Open Source Data Turbine</h2>
+		<p></p>
+		
+		</body>
+	</html>

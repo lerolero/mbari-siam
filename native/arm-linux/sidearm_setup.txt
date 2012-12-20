@@ -1,0 +1,186 @@
+This documents covers the steps necessary to allow a sideARM to run the 
+SIAM software immediately after a reboot.
+(Edited to cover Ricoh RTC on Sidearm4 - 2/17/04 rah)
+
+* Add the script '/etc/init.d/rc.local' to do the following at boot
+
+  - chgrp lock /var/lock
+  - chmod 775 /var/lock
+  - mount -a
+  - /root/ricohRTC -s
+  - ntpdate -b ocean.shore.mbari.org
+  - /root/rootsrv/rootsrv
+  - rfpower on
+  - runppp
+
+  note: comment out the 'ntpdate ntp.shore.mbari.org' if you are not on 
+  the MBARI network.
+  note: script is kept in cvs under siam/native/arm-linux/scripts
+  note: make sure that the script has executable permission
+  note: ricohRTC -s sets system time from Ricoh RTC chip.  Do this before ntpdate;
+        ntpdate is more accurate, but if it fails, the Ricoh time will be close.
+  note: rootsrv is required for managing entry/exit into sleep mode (SleepManager)
+        see $SIAM_HOME/docs/SleepManager_setup.txt for more information
+  note: If you want to use the shorthaul modem on a Linux tty port, also see
+	ShorthaulModemSetup.txt in cvs under siam/native/arm-linux/scripts/shorthaul
+
+* Copy the executable file ricohRTC to /root
+  note: file is kept in cvs under siam/native/arm-linux/src/ricohRTC
+
+* Add the script '/etc/init.d/loadspi' script for loading and unloading the 
+  SPI driver.
+  note: script is kept in cvs under siam/native/arm-linux/scripts
+  note: make sure that the script has executable permission
+
+* Add the script '/etc/init.d/loadgpio' script for loading and unloading the 
+  GPIO driver.
+  note: script is kept in cvs under siam/native/arm-linux/scripts
+  note: make sure that the script has executable permission
+
+* Add the script '/etc/init.d/loadlddio' script for loading and unloading the 
+  LDDIO driver.
+  note: script is kept in cvs under siam/native/arm-linux/scripts
+  note: make sure that the script has executable permission
+
+* Add the script '/usr/sbin/runppp' script which starts the ppp
+  daemon, and retries after awhile if connection can't be established
+  note: make sure that the script has executable permission
+
+* Add the symbolic link '/etc/rc2.d/S20loadspi -> ../init.d/loadspi'.  This 
+  link will cause the loadpsi script to be processed at boot time.
+
+* Add the symbolic link '/etc/rc2.d/S20loadgpio -> ../init.d/loadgpio'.  This 
+  link will cause the loadpsi script to be processed at boot time.
+
+* loadspi and loadgpio assume that the modules sa1100spi.o and sa1100gpio.o
+  reside in /root. Modify them or place the modules there.
+
+* Add the symbolic link '/etc/rc2.d/S99local -> ../init.d/rc.local'.  This 
+  link will cause the 'rc.local' script to be processed at boot time.
+
+* Add character devices for use by the gpio drivers:
+  cd /dev
+  mknod /dev/spi c 10 223
+  mknod /dev/gpio c 10 224
+  mknod /dev/lddio c 10 225
+  chown root /dev/spi
+  chgrp lock /dev/spi
+  chmod 664 /dev/spi 
+  chown root /dev/gpio
+  chgrp lock /dev/gpio
+  chmod 664 /dev/gpio
+  chown root /dev/lddio
+  chgrp lock /dev/lddio
+  chmod 664 /dev/lddio
+ 
+* Modify the /etc/fstab file with the entries
+
+  - /dev/hda1                     /mnt/hda            ext2  defaults 0 0
+  - tempest:/vol/vol0/users/mrisi /home/mrisi/tempest nfs   bg,soft,nosuid,nodev,exec
+
+  The nfs mount of your home directory is optional.  If you choose to nfs 
+  mount your home directory you must have a user account on the sideARM with
+  the same user id as your user id on the MBARI UNIX network.  You can 
+  determine this id by logging on to a computer such as ocean.shore.mbari.org
+  and typing the command 'id'.
+
+* Add the scripts,
+	
+  - .bash_profile
+  - .bashrc
+
+  to the home directory of the user account you plan to execute the SIAM 
+  software from.  The .bashrc will have to be modified to match the setup of 
+  your environment.  Specifically you will have to
+
+
+  - Source the appropriate j9env script	(example: '. /j9/j9env')
+  - Set your SIAM_HOME var (example: SIAM_HOME=/your/siam/home/dir)
+  - Set your SIAM_CLASSPATH var (example: SIAM_CLASSPATH=/your/siam/classes:/more/classes:/you/get/the/idea)
+
+  Use the .bashrc checked into CVS '/siam/native/arm-linux/scripts'
+  as an example.
+
+
+* Adding an HTTP Server
+
+  - As root use the ipkg command to add the thttp server to your sidearm.  The 
+    command is executed as follows
+
+    bash-2.03# ipkg install thttpd
+
+  - alternatively you can get the thttp server from the web at 
+   
+    http://www.acme.com/software/thttpd/
+
+    and follow the instructions there for installation.
+
+  - Once the thttp server is installed modify the thttpd config file located at 
+   
+    /etc/thttpd.conf
+
+    with the following entries
+
+        # This section overrides defaults
+        dir=/home/httpd/html
+        user=httpd# default = nobody
+        nochroot
+        nosymlink
+        logfile=/var/log/thttpd.log
+        pidfile=/var/run/thttpd.pid
+        # This section _documents_ defaults in effect
+        # port 80
+        # nosymlink# default = !chroot
+        # novhost
+        # nocgipat
+        # nothrottles
+        # host=0.0.0.0
+        # charset=iso-8859-1 
+
+    The main thing you want to make sure of is that the 'chroot' entry is removed and that
+    the 'nochroot' and 'nosymlink' entries are added.  This will allow the thttp server to
+    follow symlinks.
+
+    Create a symbolic link in the httpd home directory that points to the SIAM code base.
+    For example in the directory, 
+
+    /home/httpd/html
+
+    you would create the symbolic link,
+
+    codebase -> /mnt/hda/codebase
+
+    where '/mnt/hda/codebase' is the location of the SIAM codebase on your system.  Now make
+    sure that the httpd user has read and execute privileges to the codebase directory.  Once this
+    is done you can verify that the setup is correct by surfing to a class file on your system
+    with a web browser on another work station.  For example browsing an address such as 
+
+    http://sidearm6/codebase/moos/devices/seabird/
+
+    Should reveal a page with entries such as 
+
+        dr-x   2      1024  Jul  9 17:29  ./
+        dr-x   5      1024  Jul  9 17:29  ../
+        -r--   1      6132  Jul  9 17:39  CTD_SeabirdSBE37SM.class
+        -r--   1     13361  Jul  9 17:39  CTD_SeabirdSBE37SM_Stub.class
+
+    When the web server functionality is verified you can begin using it as the RMI codebase
+    for your system by setting the 'SIAM_CODEBASE' environment variable to something like this
+
+    SIAM_CODEBASE=http://sidearm6.shore.mbari.org/codebase/
+
+    This will allow RMI clients to retrieve the RMI stubs via http from your system.
+
+
+* Build the mooringPPP tarball and install it on the sideARM
+  This will add support for pon globalstar and poff globalstar.
+  On the development station:
+  
+  $  makePPPtarball
+  
+  On the sideARM:
+  
+  #  cd /
+  #  ssh devStation -l developer \
+     cat siam/native/arm-linux/mooringPPP-0.1.tgz | tar zxv
+     

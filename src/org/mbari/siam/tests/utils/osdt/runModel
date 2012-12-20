@@ -1,0 +1,7 @@
+#!/bin/bash
+
+$JAVA -cp $SIAM_CLASSPATH \
+-Dlog4j.logger.org.mbari.siam.foce.devices.controlLoop.OSDTConnectorWorker=INFO \
+-Dlog4j.logger.org.mbari.siam.foce.devices.controlLoop.WorkerThread=INFO \
+-Dlog4j.logger.org.mbari.siam.utils.TCPClient=INFO \
+org.mbari.siam.tests.utils.osdt.Model $*

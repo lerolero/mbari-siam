@@ -1,0 +1,24 @@
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Sample dpaView script file
+#
+# dpaView and Bash shell commands
+# may be put into a file and fed into
+# dpaView, creating a scripting capability
+# to automate dpaView command sequences
+
+echo "Hello World"
+
+# this is how to pause for user input
+read -u 1 -p  "press enter to continue"
+
+# print the dpaView help screen
+help
+
+# always end with the exit
+# command, otherwise the script
+# will remain in the dpaView main
+# routine indefinitely
+exit

@@ -1,0 +1,283 @@
+#!/bin/bash
+
+#########################################
+# Name: plotDelay
+#
+# Summary: graph sample delay for a list of input (.sd) files
+#
+# Description:  
+# parseDelay uses logView and dataInterval.awk to produce
+# sample delay (jitter) data files for a specified set of device IDs.
+# The output may optionally be fed to plotDelay, which generates
+# a GNU plotutils command file and graphs the data in PDF
+# format using plotutils and ghostscript.
+#
+# inputs: 
+# - list of sample delay files (.sd)
+#   - record format: timestamp (epoch seconds) sampleDelay (seconds) [record type]
+#
+# outputs:
+# - plotutils command file (plot.cmd, may edit and re-plot directly)
+# - plot command line (plotString.out, for debug)
+# - PDF format plot -> CWD/plot-output/pdf/sampleDelay-plot.pdf
+# - PS format plot -> CWD/plot-output/ps/sampleDelay-plot.ps
+#
+# dependencies:
+# - requires GNU plotutils and ghostscript
+#
+# Author: k. headley
+#
+# Copyright MBARI 2009
+#
+#########################################
+
+#########################################
+# Script configuration defaults
+# casual users should not need to change
+# anything below this section
+#########################################
+PLOT_HOME="."
+OUTPUT="$PLOT_HOME/plot-output"
+PDF="$OUTPUT/pdf"
+PS="$OUTPUT/ps"
+OUTPUT_FILE="sampleDelay-plot"
+PS_OUT="$PS/$OUTPUT_FILE.ps"
+PDF_OUT="$PDF/$OUTPUT_FILE.pdf"
+
+GPFILE="$PLOT_HOME/plot.cmd"
+MAKEPDF="/opt/local/bin/gs -q -dNOPAUSE -dNOPROMPT  -dBATCH -sDEVICE=pdfwrite"
+GRAPH="/opt/local/bin/graph -T ps " 
+GNUPLOT="/opt/local/bin/gnuplot $GPFILE"
+replot=0
+PLOT_STRING_FILE="$PLOT_HOME/plotString.out"
+DOTS="dots lw 4"
+POINTS="points"
+MARKER="$DOTS"
+
+TITLE="Sample Delay"
+RANGE_MIN="*"
+RANGE_MAX="*"
+
+#################################
+# Script variable initialization
+#################################
+VERBOSE="FALSE"
+DEBUG=""
+
+# Plot string holds the value of the
+# plot command 
+PLOT_STRING=""
+
+#################################
+# Function Definitions
+#################################
+#################################
+# name: printUsage
+# description: print use message
+# args: none
+#################################
+printUsage(){
+    echo
+    echo "parseDelay uses logView and dataInterval.awk to produce" 
+	echo "sample delay (jitter) data files for a specified set of device IDs."
+	echo "The output may optionally be fed to plotDelay, which generates"
+    echo "a GNU plotutils command file and graphs the data in PDF"
+	echo "format using plotutils."
+	echo 
+    echo "usage: `basename $0` [options] sdFile... "
+    echo ""
+	echo "Options:"
+    echo "-d            : debug (keep temporary files) [$DEBUG]"
+    echo "-o <filename> : output file name (w/o ext)   [$OUTPUT_FILE]"
+    echo "-r <min Y>    : range min                    [$RANGE_MIN]"
+    echo "-R <max Y>    : range max                    [$RANGE_MAX]"
+    echo "-T <title>    : plot title                   [$TITLE]"
+    echo "-V            : verbose output               [$VERBOSE]"
+    echo "-h            : print this help message"
+    echo
+    echo
+}
+
+########################################
+# name: vout
+# description: print verbose message to stderr
+# args:
+#     msg: message
+########################################
+vout(){
+    if [ "$VERBOSE" == "TRUE" ]
+    then
+        echo "$1" >&2
+    fi
+}
+
+########################################
+# name: exitError
+# description: print use message to stderr
+# args:
+#     msg:        error message
+#     returnCode: exit status to return
+########################################
+exitError(){
+    echo >&2
+    echo "$1" >&2
+    exit $2
+}
+
+#################################
+# name: setPlotString
+# description: generate value of PLOT_STRING
+# args: none
+#################################
+setPlotString(){
+vout "setPlotString args $* [$#]"
+jitFiles=$*
+
+PLOT_STRING="plot "
+let "i=1"
+vout "jitFiles=$jitFiles size $#"
+
+echo -n "plot"> $PLOT_STRING_FILE
+for JITFILE in $jitFiles
+do
+ foo=`basename ${JITFILE}`
+ echo -n " \"${JITFILE}\" using 1:2 t \"${foo:0:4}\" with ${MARKER}" >> $PLOT_STRING_FILE
+ if [ "$i" -lt "$#" ]
+ then
+  echo ", \\" >> $PLOT_STRING_FILE
+ fi
+ let "i+=1"
+done
+echo >> $PLOT_STRING_FILE
+PLOT_STRING=`cat $PLOT_STRING_FILE`
+
+}
+
+
+#################################
+# name: makeGP
+# description: Write gnuplot command file
+# args: none
+#################################
+makeGP(){
+ vout "makeGP args $* [$#]"
+ setPlotString $*
+ vout "Plot string: $PLOT_STRING"
+
+cat > $GPFILE << EOF
+# GNU Plot definition file
+# [automatically generated]
+
+# general options
+set terminal postscript color "Arial" 10
+set title "$TITLE" 
+set output "$PS_OUT"
+set multiplot  
+set key box samplen 3 spacing 1 width 1 height 1 autotitles title "Device ID"
+set pointsize 0.25  
+
+# input options
+set datafile separator " "
+set timefmt "%s"
+
+# x-axis
+set xlabel "Timestamp (epoch sec)" 
+set xdata time
+set format x "%m/%d/%Y %H:%M:%S"
+set xtics rotate
+
+# y-axis
+set ylabel "Sample Delay [sec]" 
+set yrange [$RANGE_MIN:$RANGE_MAX]
+
+# plot command string
+$PLOT_STRING
+
+EOF
+}
+
+##########################
+# Script main entry point
+##########################
+
+# Argument processing
+if [ "$#" -eq 0 ];then
+    printUsage
+    exit 0
+fi
+
+while getopts dhT:o:r:R:V Option
+do
+    case $Option in
+        d ) DEBUG="TRUE"
+        ;;
+		o ) OUTPUT_FILE=$OPTARG
+		    PS_OUT="$PS/$OUTPUT_FILE.ps"
+			PDF_OUT="$PDF/$OUTPUT_FILE.pdf"
+		;;
+		r ) RANGE_MIN=$OPTARG
+		;;
+		R ) RANGE_MAX=$OPTARG
+		;;
+		T ) TITLE=$OPTARG
+		;;
+        V ) VERBOSE="TRUE"
+        ;;
+        h) printUsage
+          exit 0
+        ;;
+        *) exitError "unrecognized option [$OPTOPT]"
+        ;;
+    esac
+done
+
+let "scount=$OPTIND-1"
+while [ "$scount" -gt 0 ]
+do
+ shift
+ let "scount-=1"
+done
+
+vout "RANGE_MIN   = [$RANGE_MIN]"
+vout "RANGE_MAX   = [$RANGE_MAX]"
+vout "TITLE       = [$TITLE]"
+vout "OUTPUT_FILE = [$OUTPUT_FILE]"
+vout "DEBUG       = [$DEBUG]"
+vout "VERBOSE     = [$VERBOSE]"
+
+# Go to working directory
+cd $PLOT_HOME
+
+# create directories if they don't exist
+if [ ! -d "$PS" ]
+then
+	vout "creating $PS directory..."
+    mkdir -p "$PS"
+fi
+if [ ! -d "$PDF" ]
+then
+	vout "creating $PDF directory..."
+    mkdir -p "$PDF"
+fi
+
+# Generate gnuplot plot definition file
+# use configured file paths for output
+makeGP $*
+
+# Plot data with gnuplot
+vout "Creating Postscript output..."
+$GNUPLOT
+
+# Convert PS to PDF with GhostScript
+vout "Creating PDF output..."
+$MAKEPDF -sOutputFile=$PDF_OUT $PS_OUT
+
+# remove temp gnuplot file
+if [ ! "$DEBUG" ]
+then
+ vout "cleaning up..."
+ rm $GPFILE
+ rm $PLOT_STRING_FILE
+fi
+
+vout "done"

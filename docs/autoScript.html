@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+  <meta name="Author" content="Bob Herlien">
+  <meta name="GENERATOR"
+ content="Mozilla/4.79 [en] (Windows NT 5.0; U) [Netscape]">
+  <title>autoscript utilities</title>
+</head>
+<body>
+<b>NAME</b>
+<blockquote>autoscript utilities - automatic script transfer and
+execution<br>
+</blockquote>
+<b>DESCRIPTION</b>
+<blockquote>The autoscript utilities automatically transfer a shell
+script from shore to the MOOS surface node, and automatically execute
+the script on the surface node. These utilities are very useful in
+cases where the ppp link is intermittent and unpredictable. <br>
+  <br>
+  <div style="margin-right: 0px;" dir="ltr"><font face="Courier New"
+ size="2">To automatically transfer and execute a script, do the
+following:</font></div>
+  <ol dir="ltr">
+    <li>
+      <div style="margin-right: 0px;"><font face="Courier New" size="2">Develop
+the auto-script you want to execute as a 'bash' shell script. The
+auto-script infrastructure simply executes the script and logs its
+output; auto-script does not check the script contents for 'safety'. T<strong>hus
+it is critical that the script itself properly branches based on
+results of&nbsp;its contained commands.<span
+ style="font-weight: normal;"></span><br>
+      </strong></font></div>
+    </li>
+    <li>
+      <div style="margin-right: 0px;"><font face="Courier New" size="2"><strong><span
+ style="font-weight: normal;">Be sure to set the executable
+bits on the script.</span><br>
+      </strong></font></div>
+    </li>
+    <li>
+      <div style="margin-right: 0px;"><font face="Courier New" size="2">When
+the script is ready for one-time execution on the surface node, become
+'root' and copy the script to <a
+ title="mailto:ops@portal:pending/autoscript"
+ href="mailto:ops@portal:pending/autoscript">ops@portal:siam/autoScript/pending/autoscript<br>
+      </a></font></div>
+    </li>
+    <li>
+      <div style="margin-right: 0px;"><font face="Courier New" size="2">Monitor
+email for results of the auto-script execution</font></div>
+    </li>
+  </ol>
+  <div style="margin-right: 0px;" dir="ltr"><font face="Courier New"
+ size="2"><br>
+  </font>
+  <div style="margin-right: 0px;" dir="ltr"><font face="Courier New"
+ size="2">Note that the <span style="text-decoration: underline;">last
+line</span> of an autoscript must be the following special comment:<br>
+  <br>
+# AUTOSCRIPT EOF<br>
+  <br>
+The '#' commant character must appear in the first column.<br>
+  <br>
+The autoscript utilities come with the following caveats:</font></div>
+  <ul>
+    <li><font face="Courier New" size="2">Execution of the autoscript
+is NOT synchronized with telemetry retrieval by the portal utility</font>
+    </li>
+    <li><font face="Courier New" size="2">Only&nbsp;one autoscript
+is&nbsp;recognized and executed&nbsp;in surface node's "pending"
+directory</font> </li>
+    <li><font face="Courier New" size="2">Execution of an autoscript is
+one-time only; if you want to execute it again, you must repeat step 3
+(above)</font> </li>
+    <li><font face="Courier New" size="2">These utilities merely
+transfer and execute the autoscript; the script content itself must be
+thoroughly thought out and tested beforehand</font></li>
+    <li><font face="Courier New" size="2">ssh <span
+ style="font-weight: bold;">MUST</span> be configured such that user
+'ops' is not prompted for a password when transferring files via 'scp'
+to and from the MOOS surface node<br>
+      </font></li>
+  </ul>
+  <font face="Courier New" size="2">The actual utilities consist of the
+following:<br>
+  </font>
+  <ul>
+    <li><font face="Courier New" size="2"><a
+ href="manageAutoScript.html">manageAutoscript</a> -
+automatically transfers "pending" autoscript from shore to MOOS surface
+node, retrieves output of previous autoscript executions from surface
+node to shore. Executes on the portal host</font></li>
+    <li><font face="Courier New" size="2">runAutoscript - automatically
+executes autoscript transferred from shore, saves script output.
+Executes on the surface node.<br>
+      </font></li>
+  </ul>
+  </div>
+</blockquote>
+<blockquote><br>
+</blockquote>
+</body>
+</html>

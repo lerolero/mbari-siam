@@ -1,0 +1,20 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# List objects bound to specific naming URL
+
+if [ ! -n "$1" ]
+then
+  echo "usage: `basename $0` namingURL"
+  exit 1
+fi
+
+$JAVA $JAVA_OPTIONS -cp $SIAM_CLASSPATH \
+-Djava.security.policy=$SIAM_HOME/properties/policy \
+-Dsiam_home=$SIAM_HOME -Dlog4j.threshold=$LOG4J_THRESHOLD \
+org.mbari.siam.tests.linkBenchmarks.client.RmiList $1
+
+
+

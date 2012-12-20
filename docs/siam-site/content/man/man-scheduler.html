@@ -1,0 +1,649 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>SIAM scheduler Manual Page</title>
+		<link href="../../css/content.css" rel="stylesheet" type="text/css" />
+		<link href="../../css/manpage.css" rel="stylesheet" type="text/css" />
+		</head>
+	
+	<body>
+		
+		<div class="nameHeader">
+			<h1>Name</h1> 
+			<div class="nameText">
+				<h2>SIAM Scheduler <!-- name text here --></h2>
+				</div>
+			</div>
+		
+		<div class="synopsisHeader">
+			<h1>Synopsis</h1>
+			<div class="synopsisText">
+				Instrument service scheduling and utility use notes.
+				</div>
+			</div>
+		
+		<div class="descriptionHeader">
+			<h1>Description</h1>
+			<div class="descriptionText">
+				<p>
+				<!-- description text here -->
+				The scheduler for SIAM is a very flexible scheduler that is similar 
+				in many respects to the Unix cron utility. Schedules may be used to specify 
+				scheduled tasks at a set of absolute dates/times or periodically at a specified rate.
+				</p>
+				<p>
+				Instrument services may use one or more named schedules; by default, each has a single default sampling schedule called &quot;default&quot;.
+				</p>
+				
+				<h2>Types of Schedules</h2>
+				<p>
+				There are two types of schedules: relative and absolute. 
+				Absolute schedules are analogous to crontab entries; they represent a set of specific times 
+				at which to perform some task. An absolute schedule would be used, for example, to schedule a 
+				task to run Monday,Wednesday, and Saturday at 12:00 and 18:00, or at quarter past the hour, 
+				every hour between 0600 and 13:00.
+				</p>
+				<p>
+				Relative schedules are used to schedule a task for execution at an arbitrarily long fixed period.
+				Relative schedules can be masked to operate only during certain times. A relative schedule would
+				be used to schedule a task to execute every 47 minutes, or every 2 days, 3 hours, and 20 minutes, 
+				but only june-august during daylight hours. Relative schedules may be shifted by some delay to align 
+				(or avoid alignment) with other tasks, or to execute their initial cycle at a specific time.
+				</p>
+				<p>
+				The key difference between absolute and relative schedules is that absolute schedules execute at a 
+				specific set of times that are not necessarily periodic and will be the same regardless of when they 
+				begin, but relative schedules are strictly periodic, and their execution times are determined relative 
+				to the time they begin.
+				</p>
+				
+				<h2>Schedule Specifier Syntax</h2>
+				<p>
+				The schedule specification consists of 11 fields describing the set of execution times, all separated 
+				by whitespace. In general, each field consists of a mask followed by a modulus, of the form<br />
+                </p>
+				<div class="commands">mask/modulus</div><p><br />
+				The modulus is always a number; the mask consists of a list of comma-delimited ranges of numbers or names, 
+				for example:</p>
+				<div class="commands">
+					3,5,11-22,7
+					thu-sun,tue
+					mar,may-aug
+					</div>
+				<p>An asterisk (*) may be used as a mask to represent the range &quot;first-last&quot;.
+				</p>
+				<p>
+				Ranges of numbers are allowed. Ranges are two numbers separated with a hyphen. The specified range is inclu-
+				sive. For example, 8-11 for an &quot;hours&quot; entry specifies execution at hours 8, 9, 10 and 11.
+				</p>
+				<p>
+				Lists are allowed. A list is a set of numbers and/or ranges separated by commas. Examples: ``1,2,5,9'', ``0-4,8-12''.
+				</p>
+				<p>
+				The mask and modulus are interpreted differently for relative and absolute schedules: 
+				The modulus values can be used in conjunction with ranges to skip certain values in each range. 
+				For absolute schedules, following a range with &quot;/n&quot; indicates that only every nth value of the 
+				range is included in the mask.
+				</p>
+				<p>
+				For example, &quot;0-23/2&quot; can be used in the hours field to specify command execution every other
+				hour (the alternative in the V7 standard is ``0,2,4,6,8,10,12,14,16,18,20,22''). Steps are also
+				permitted after an asterisk, so if you want to say &quot;every two hours'', just use &quot;*/2&quot;.
+				</p>
+				<p>
+				For relative schedules, the modulus is used to compute the execution period. The mask portion 
+				is used to mask off certain execution times. For example,<br /></p>
+				<div class="commands">r * */3 13-23/2...</div><p><br />
+				indicates that execution should occur every two hours and 3 minutes, but only between the hours 
+				of 1 p.m. and 11 p.m.. By contrast, the same entry for an absolute schedule would indicate every 
+				third minute of every odd hour between 1 p.m. and 11 p.m. : &quot;13:00,13:03...13:57,15:00,15:03...15:57,17:00....&quot;
+				</p>
+				<p>
+				Names can also be used for the &quot;month&quot; and &quot;day of week&quot; fields. Use the first three letters of the 
+				particular day or month (case insensitive). Ranges or lists of names are allowed.
+				</p>
+				<p>
+				The last field (to the end of the line) specifies the job file to be run (Note: the use of the job field is deprecated; it may be included, and will be displayed by toString(), but is not functional).
+				</p>
+				<h2>Examples</h2>
+				<p>
+				Run a job every 10 seconds between 50 past and 10 past the minute</p>
+				<div class="commands">r 50-10/10 * * * * * * * GMT *</div><p><br />
+				
+				Run job at 0,15,30,45 past the hour, every other hour between midnight and 6 a.m. and
+				between noon and 6 p.m. (GMT-8 time zone), mon-fri
+				Stop after 300 cycles</p>
+				<div class="commands">a 0 0,15,30,45 0-6,12-18/2 * mon-fri * * * GMT-8 300</div><p><br />
+				</p>
+				<h2>Utilities</h2>
+				<p>
+				A number of utilities are provided (under siam/utils/) to manipulate schedules:
+                </p>
+				<ul>
+					<li>addSchedule</li>
+					<li>setSchedule</li>
+					<li>removeSchedule</li>
+					<li>showSchedule</li>
+					<li>suspendSchedule</li>
+					<li>resumeSchedule</li>
+					</ul>
+				<table class="altTable">
+					<tr> 
+						<th> 
+							<div align="center">Field</div>
+							
+							</th>
+						<th> 
+							<div align="center">Description</div>
+							</th>
+						<th> 
+							<div align="center">Allowed Values</div>
+							</th>
+						<th> 
+							<div align="center">Comments</div>
+							
+							</th>
+						</tr>
+					<tr class="alt"> 
+						<td> 
+							<div align="center"><b>type</b></div>
+							</td>
+						<td> 
+							<div align="center">Type of schedule entry<br />
+								(relative or absolute)</div>
+							
+							</td>
+						<td> 
+							<div align="center">r<br />
+								a </div>
+							</td>
+						<td> 
+							<div align="left">case insensitive</div>
+							</td>
+						
+						</tr>
+					<tr> 
+						<td> 
+							<div align="center"><b>second</b></div>
+							</td>
+						<td> 
+							<div align="center">Seconds mask</div>
+							</td>
+						<td> 
+							<div align="center">*<br />
+								
+								0-59</div>
+							</td>
+						<td> 
+							<div align="left"></div>
+							</td>
+						</tr>
+					<tr class="alt"> 
+						<td> 
+							<div align="center"><b>minute</b></div>
+							
+							</td>
+						<td> 
+							<div align="center">Minutes mask</div>
+							</td>
+						<td> 
+							<div align="center">*<br />
+								0-59</div>
+							</td>
+						
+						<td> 
+							<div align="left"></div>
+							</td>
+						</tr>
+					<tr> 
+						<td> 
+							<div align="center"><b>hour</b></div>
+							</td>
+						<td> 
+							<div align="center">Hours mask</div>
+							
+							</td>
+						<td> 
+							<div align="center">*<br />
+								0-23</div>
+							</td>
+						<td> 
+							<div align="left"></div>
+							</td>
+						</tr>
+					
+					<tr class="alt"> 
+						<td> 
+							<div align="center"><b>day</b></div>
+							</td>
+						<td> 
+							<div align="center">Days modulus</div>
+							</td>
+						<td> 
+							<div align="center">*<br />
+								
+								integer </div>
+							</td>
+						<td> 
+							<div align="left">Modulus portion used for relative schedules 
+								only.<br />
+								<br />
+								Mask portion must be *.</div>
+							</td>
+						</tr>
+					
+					<tr> 
+						<td> 
+							<div align="center"><b>month</b></div>
+							</td>
+						<td> 
+							<div align="center">Months mask</div>
+							</td>
+						<td> 
+							<div align="center">*<br />
+								
+								0-7<br />
+								jan,feb,mar,apr,may,jun,<br />
+								jul,aug,sep,oct,nov
+								</div>
+							</td>
+						<td> 
+							<br />
+							<br />
+							</td>
+						
+						</tr>
+					<tr class="alt"> 
+						<td> 
+							<div align="center"><b>day of week</b></div>
+							</td>
+						<td> 
+							<div align="center">Weekday mask</div>
+							</td>
+						<td> 
+							<div align="center">*<br />
+								
+								0-7<br />
+								sun,mon,tue,wed<br />
+								thu,fri,sat</div>
+							</td>
+						<td> 
+							<div align="left"></div>
+							</td>
+						</tr>
+					
+					<tr> 
+						<td> 
+							<div align="center"><b>day of month</b></div>
+							</td>
+						<td> 
+							<div align="center">Month Day mask</div>
+							</td>
+						<td> 
+							<p align="center">*<br />
+							
+							0-31<br />
+							</p>
+							</td>
+						<td> 
+							<div align="left"></div>
+							</td>
+						</tr>
+					<tr class="alt"> 
+						<td> 
+							<div align="center"><b>day of year</b></div>
+							
+							</td>
+						<td> 
+							<div align="center">Day of year mask</div>
+							</td>
+						<td> 
+							<div align="center">*<br />
+								0-365</div>
+							</td>
+						
+						<td> 
+							<div align="left"></div>
+							</td>
+						</tr>
+					<tr> 
+						<td> 
+							<div align="center"><b>time zone</b></div>
+							</td>
+						<td> 
+							<div align="center">Compute time in this time zone (to operate 
+								during local daylight hours, for example)</div>
+							
+							</td>
+						<td> 
+							<div align="center"> GMT[&plusmn; n]</div>
+							</td>
+						<td> 
+							<div align="left"></div>
+							</td>
+						</tr>
+					
+					<tr class="alt"> 
+						<td> 
+							<div align="center"><b>max cycles</b></div>
+							</td>
+						<td> 
+							<div align="center">Stop execution after max cycles</div>
+							</td>
+						<td> 
+							<p align="center"> *<br />
+							
+							integer</p>
+							</td>
+						<td> 
+							<div align="left"></div>
+							</td>
+						</tr>
+					</table>
+				
+				<h2>Scheduler Utilities</h2>	 
+				<p>There are a number of utilities for using SIAM scheduler:</p>
+				<ul>
+					<li>addSchedule</li>
+					<li>setSchedule</li>
+					<li> removeSchedule</li>
+					<li> showSchedule</li>
+					<li> suspendSchedule</li>
+					<li>resumeSchedule </li>
+					</ul>
+				<p>
+				The following table describes the utilities and their use. The options are described in greater detail in a separate table below.
+				</p>
+				<table class="altTable">
+					<tr> 
+						<th >Name</th>
+						
+						<th >Use Syntax</th>
+						<th >Description</th>
+						</tr>
+					<tr class="alt"> 
+					
+						<td >showSchedule<a name="showSchedule"></a></td>
+						<td >showSchedule &lt;nodeURL&gt; [&lt;port&gt; [&lt;scheduleName&gt;] [&lt;lookAheadSec&gt;]]... 
+							</td>
+						
+						<td > 
+							<p>Display the current state of specified schedule(s). If 
+							no port or schedule is specified, all schedules on the given 
+							nodeURL will be displayed.</p>
+							<p>The information displayed includes the names of all schedules, 
+							making this a good place to start. All instrument services 
+							have a schedule named Default which implements their default 
+							sampling schedule..</p>
+							</td>
+						</tr>
+					<tr> 
+					
+						<td >addSchedule<a name="addSchedule"></a></td>
+						<td >addSchedule &lt;nodeURL&gt; &lt;port&gt; &lt;scheduleName&gt; 
+							&lt;scheduleSpecifier&gt; [<b>o</b>] </td>
+						
+						<td > 
+							<p>Adds a schedule for the specified device (port). If the 
+							device does not recognize scheduleName, the schedule will 
+							not be added. </p>
+							<p>If the overwrite option (&quot;o&quot;) is specified, the 
+							schedule (if scheduleName is valid) will be overwritten 
+							if it already exists. </p>
+							<p>If the overwrite option is not specified (and scheduleName 
+							is valid), addSchedule will return a message indicating 
+							that the schedule already exists and will not modify the 
+							schedule.</p>
+							</td>
+						</tr>
+					<tr class="alt"> 
+					
+						<td >setSchedule<a name="setSchedule"></a></td>
+						
+						<td >setSchedule &lt;nodeURL&gt; &lt;port&gt; &lt;scheduleName&gt; 
+							&lt;scheduleSpecifier&gt;</td>
+						<td >Same as addSchedule; the overwrite option is 
+							implicitly asserted </td>
+						</tr>
+					<tr> 
+					
+						<td >removeSchedule<a name="removeSchedule"></a></td>
+						
+						<td >removeSchedule &lt;nodeURL&gt; &lt;port&gt; 
+							&lt;scheduleName&gt; </td>
+						<td >Removes the specified schedule</td>
+						</tr>
+					<tr class="alt"> 
+					
+						<td >suspendSchedule<a name="suspendSchedule"></a></td>
+						
+						<td >suspendSchedule &lt;nodeURL&gt; &lt;port&gt; 
+							&lt;scheduleName&gt; </td>
+						<td > 
+							<p>Suspends the action for the specified schedule. This may 
+							be useful for temporarily disabling a device without interrupting 
+							its schedule. </p>
+							<p>The schedule continues to run, but exits immediately instead 
+							of performing its scheduled task. </p>
+							</td>
+						
+						</tr>
+					<tr> 
+					
+						<td >resumeSchedule<a name="resumeSchedule"></a></td>
+						<td >resumeSchedule &lt;nodeURL&gt; &lt;port&gt; 
+							&lt;scheduleName&gt; </td>
+						<td >Informs a suspended task to resume normal operation</td>
+						
+						</tr>
+					<tr class="alt"> 
+					
+						<td >synch<a name="synch"></a></td>
+						<td >synch &lt;nodeURL&gt; &lt;port&gt; &lt;scheduleName&gt; 
+							[&lt;delay ms&gt;] </td>
+						
+						<td > 
+							<p>Causes the specified schedule to execute after the specified 
+							delay (default delay is 0 ms).</p>
+							<p>May be used to shift the relative starting times of relative 
+							schedules. Absolute schedules will execute after the specified 
+							delay, but are otherwise unaffected.</p>
+							</td>
+						</tr>
+					</table>
+				
+				<h2>Options</h2>
+				<table class="altTable">
+					<tr>
+						<th width="10%">Option</th>
+						<th width="20%">Description</th>
+						<th width="45%">Values</th>
+						</tr>
+					<tr class="alt">
+						<td>nodeURL</td>
+						<td>IP address or host name of SIAM node</td>
+						<td>e.g. 134.89.88.1, mooring.moos.mbari.org</td>
+						</tr>
+					<tr>
+						<td>portName</td>
+						<td>Name of instrument port (or alias) defined in siamPort.cfg</td>
+						<td>/dev/ttyS8, COM1, /dev/tty.KeySerial1</td>
+						</tr>
+					<tr class="alt">
+						<td>scheduleName</td>
+						<td>Named schedule to manipulate</td>
+						<td>&quot;default&quot;, &quot;darkCalSample&quot;, &quot;backgroundSample&quot;, etc.</td>
+						</tr>
+					<tr>
+						<td>scheduleSpecifier</td>
+						<td>Schedule definition string using scheduleSpecifier syntax (see above).<br />Simple periodic intervals may be specified simply as some number of seconds.</td>
+						<td>
+							<p>Simple (relative) schedule: once per hour (using simple scheduleSpecifier)
+							</p>
+							<div class="commands">setSchedule localhost /dev/tty.KeySerial1 default 3600</div><br />
+							
+							<p>Simple (relative) schedule: once per hour (using full scheduleSpecifier)
+							</p>
+							<div class="commands">setSchedule localhost /dev/tty.KeySerial1 default &quot;R */0 */0 */1 */0 * * * * GMT *&quot;</div><br />
+							
+							<p>Absolute schedule: 06:30 and 18:30 GMT every M,W,F (although periodic with no end time, happens at a specific (absolute) time of day)
+							</p>
+							<div class="commands">setSchedule localhost /dev/tty.KeySerial1 default &quot;A 0 30 6,18 * mon,wed,fri * * * GMT *&quot;</div><br />
+							
+							<p>Absolute schedule:</p>
+							<ul>
+								<li>0,15,30,45 past the hour</li>
+								<li>every other hour between midnight and 6 a.m. and between noon and 6 p.m.</li>
+								<li>mon-fri</li>
+								<li>GMT-8 time zone</li>
+								<li>Stop after 300 cycles</li>
+								</ul>
+							<div class="commands">setSchedule localhost /dev/tty.KeySerial1 default &quot;a 0 0,15,30,45 0-6,12-18/2 * mon-fri * * * GMT-8 300&quot;</div><br />
+							
+							</td>
+						</tr>
+					<tr class="alt">
+						<td>o (overwrite)</td>
+						<td><div class="emphasis">option valid for addSchedule only</div>When adding a schedule, overwrite the specified schedule if one of the same name already exists.</td>
+						<td>-</td>
+						</tr>
+					<tr>
+						<td>delay ms</td>
+						<td><div class="emphasis">option valid for synch only</div>Delay for the specified number of milliseconds before beginning synch.<br />
+							Relative schedules will be referenced to the time of first execution following the delay.</td>
+						<td>-</td>
+						</tr>
+					<tr class="alt">
+						<td>lookAheadSec</td>
+						<td>Since absolute schedules may not occur at regular intervals, the Scheduler needs to bound its search for upcoming events.
+						The lookAhead value indicates how far into the future (in seconds) to search for upcoming event times.
+						When none is specified, the default value is used.
+						</td>
+						<td>-</td>
+						</tr>
+					<!--
+					 <tr>
+					 <td></td>
+					 <td></td>
+					 <td>-</td>
+					 </tr>
+					 <tr class="alt">
+					 <td></td>
+					 <td></td>
+					 <td>-</td>
+					 </tr>
+					 -->
+					</table>
+				<p>
+				Example output:
+				The showSchedule utility (used with no portName option specified) returns all schedules on a SIAM node:
+                </p>
+				<pre>
+					showSchedule system.node.mbari.org 
+					
+					
+					Name: Default
+					Owner: org.mbari.siam.foce.devices.elmo.ElmoThruster:1729 key=14
+					Schedule: R */2 */0 */0 */0 * * * * GMT *
+					Status: Executing	-
+					
+					Name: Default
+					Owner: org.mbari.siam.foce.devices.digital.DigitalInputService:1738 key=4
+					Schedule: R */10 */0 */0 */0 * * * * GMT *
+					Status: Waiting	3284
+					
+					Name: Default
+					Owner: org.mbari.siam.devices.seabird.sbe52mp.SBE52MP:1733 key=6
+					Schedule: R */0 */1 */0 */0 * * * * GMT *
+					Status: Executing	-
+					
+					Name: Default
+					Owner: org.mbari.siam.foce.devices.analog.ScaledAnalog:1737 key=3
+					Schedule: R */10 */0 */0 */0 * * * * GMT *
+					Status: Executing	-
+					
+					...etc.
+					</pre>
+				<p>The showSchedule utility (used with portName option specified) returns all schedules associated with that port:</p>
+				<pre>
+					showSchedule system.node.mbari.org EMonitor
+					
+					0 [main] ERROR org.mbari.siam.operations.utils.ShowSchedule  - ShowSchedule: lookAhead value undefined or invalid; using default (3600)
+					
+					Name: Default
+					Owner: org.mbari.siam.foce.devices.analog.Sensoray518:1721 key=2
+					Schedule: R */10 */0 */0 */0 * * * * GMT *
+					Status: Waiting	7979
+					</pre>
+					<p>Note that an error is thrown, indicating that no lookAhead value is provided. <br />
+					Since absolute schedules may not occur at regular intervals, the Scheduler needs to bound its search for upcoming events.<br />
+					The lookAhead value indicates how far into the future to search for upcoming event times.<br />
+					When none is specified, the default value is used.
+					</p>
+				<p></p>
+				</div>
+			</div>
+		
+		<div class="environmentHeader">
+			<h1>Environment</h1>
+			<div class="environmentText">
+				<p>
+				<!-- description text here -->
+				The following environment variables must be set:
+				</p>	 
+						<table class="altTable">
+							<tr>
+								<th>Variable</th>
+								<th>Description</th>
+								<th>Example</th>
+								</tr>
+							<tr>
+								<td>JAVA_HOME </td>
+								<td>location of Java installation</td>
+								<td><div class="path"> /j9, /opt/java/jdk1.3.1, etc.</div></td>
+								</tr>
+							<tr class="alt">
+								<td>JAVA</td>
+								<td>Path to JVM command</td>
+								<td>For MMC<div class="commands">$JAVA_HOME/bin/j9</div><br />For Sun JVM (e.g. linux, win32, mac OS) <div class="commands">$JAVA_HOME/bin/java</div>
+									</td>
+								</tr>
+							<tr>
+								<td>SIAM_HOME</td>
+								<td>top of the SIAM directory tree</td>
+								<td>-</td>
+								</tr>
+							<tr class="alt">
+								<td>SIAM_CLASSPATH</td>
+								<td>Path including all SIAM and supporting classes</td>
+								<td>For MMC<div class="path">$JAVA_HOME/lib/jclMax/classes.zip:$JAVA_HOME/lib/prsnlmot.jar:$JAVA_HOME/lib/RXTXcomm.jar:$SIAM_HOME/classes</div><br />
+									For linux/win32<div class="path"> $SIAM_HOME/classes</div></td>
+								</tr>
+							<!--
+							 <tr>
+							 <td></td>
+							 <td></td>
+							 <td>-</td>
+							 </tr>
+							 <tr class="alt">
+							 <td></td>
+							 <td></td>
+							 <td>-</td>
+							 </tr>
+							 -->
+							</table>
+						<p></p>
+						</div>
+			</div>
+		
+		<div class="seeAlsoHeader">
+			<h1>See Also</h1>
+			<div class="seeAlsoText">
+				<div class="command"><a href="../configure.html#" target="mainFrame">SIAM Configuration Guide</a></div>
+				</div>
+			</div>
+		
+		
+		</body>
+	</html>

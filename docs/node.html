@@ -1,0 +1,63 @@
+<!DOCTYPE doctype PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+    
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+    
+  <meta name="Author" content="Tom O'Reilly">
+    
+  <meta name="GENERATOR"
+ content="Mozilla/4.79 [en] (Windows NT 5.0; U) [Netscape]">
+  <title>node</title>
+</head>
+  <body>
+ <b>NAME</b> 
+<blockquote>node - start a MOOS node service</blockquote>
+  
+<p><br>
+<b>SYNOPSIS</b> </p>
+<blockquote> 
+  <pre>node portalHost [verbosity]</pre>
+ </blockquote>
+  
+<p><br>
+<b>DESCRIPTION</b> </p>
+<blockquote>The node utility runs a MOOS <i>node service</i> on the localhost. 
+which in turn runs multiple <i>instrument services</i> which are accessible
+across the network to other utilities such as  <i>listPorts</i>, <i>shutdownPort</i>,
+  <i>scanPort</i>, etc. The first argument to <i>node</i> is the address
+or name of the portal host machine  for this node. The second argument, which
+is optional, is the <i>verbosity</i> of output written to stdout, and must
+be one of the following: "ERROR", "WARN", "INFO", and "DEBUG", in order of
+increasing verbosity. By default, <i>verbosity</i> is set to "INFO".  
+  <p><i>node</i> determines DPA and serial port configuration  through the
+file <i>$SIAM_HOME/properties/siamPort.cfg; </i>see the in-line documentation
+in that file.</p>
+</blockquote>
+  
+<p><br>
+<b>ENVIRONMENT</b> </p>
+<blockquote>The following environment variables must be set:</blockquote>
+  
+<ul>
+ <li> JAVA_HOME - location of Java installation, e.g.<i> /j9</i> or <i>/opt/java/jdk1.3.1</i></li>
+  <li> JAVA - name of the JVM. E.g. on a Sidearm, JAVA should be set to <i>j9. 
+    </i>On a workstation with Sun's Java installed, JAVA could be set to
+    <i>java</i>.</li>
+  <li> SIAM_HOME - top of the SIAM directory tree</li>
+  <li> SIAM_CLASSPATH - on a Sidearm, SIAM_CLASSPATH should be set to <i>$JAVA_HOME/lib/jclMax/classes.zip:$JAVA_HOME/lib/prsnlmot.jar:$JAVA_HOME/lib/RXTXcomm.jar:$SIAM_HOME/classes</i>.&nbsp; 
+On X86 system, SIAM_CLASSPATH should be set to<i> $SIAM_HOME/classes</i></li>
+  <br>
+&nbsp;
+</ul>
+ <b>SEE ALSO</b> 
+<blockquote><a href="listPorts.html">listPorts</a> ,&nbsp; <a
+ href="scanPort.html">scanPort</a> ,&nbsp;&nbsp; <a
+ href="shutdownPort.html">shutdownPort,</a> &nbsp;<a
+ href="exitNode.html">exitNode</a><br>
+  <br>
+</blockquote>
+<br>
+</body>
+</html>

@@ -1,0 +1,19 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# catch CTRL-C (SIGTERM) and exit
+sigTrap(){
+ exit 1
+}
+
+trap sigTrap INT TERM
+
+# Script executes moos.deployed.NodeTest.main()
+$JAVA -cp $SIAM_CLASSPATH \
+-Djava.security.policy=$SIAM_HOME/properties/policy \
+-Dlog4j.threshold=$LOG4J_THRESHOLD \
+-Dexec.name=`basename "$0"` \
+org.mbari.siam.operations.utils.LogSplitter ${1+"$@"}
+

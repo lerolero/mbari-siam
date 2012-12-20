@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>SIAM Quick Start Guide</title>
+		<link href="../css/content.css" rel="stylesheet" type="text/css" />
+		</head>
+	
+	<body>
+		<a name="top"></a>
+			<h1>SIAM Quick Start Guide</h1>
+			
+		<p>Follow these steps to install SIAM and run example instrument services</p>
+		<ul>
+			<li>Install 3rd party packages
+				<ul>
+					<li>Java SDK 1.3 or higher</li>
+					<li>GNU Make 3.80 (3.81 and above aren't compatible with Windows/Cygwin)</li>
+					<li>bash shell</li>
+					<li>RXTX 2.1-7r2</li>
+					</ul>
+              </li>
+			<li>Install SIAM source tree
+				<ul>
+					<li><em class="commands1">tar xzvf &lt;siam-version&gt;.tar.gz</em></li>
+					<li>creates siam2 directory</li>
+					</ul>
+                 </li>
+				<li>Configure environment variables
+				<ul>
+					<li>source sample environment file appropriate for your system (in SIAM_HOME/docs/siam-site/content/examples):</li>
+					<li><em class="commands1">source siam-env.&lt;your OS&gt;  &lt;path to SIAM_HOME&gt; &lt;path to JAVA_HOME&gt;</em></li>
+					<li><em class="emphasis">example environment files are available from</em> <a href="examples.html">example index</a></li>
+					</ul>
+				</li>
+				<li>Create directories
+				<ul>
+					<li><em class="commands1">cd $SIAM_HOME</em></li>
+					<li><em class="commands1">mkdir classes</em></li>
+					<li><em class="commands1">mkdir codebase</em></li>
+					<li><em class="commands1">mkdir ports</em></li>
+					<li><em class="commands1">mkdir logs</em></li>
+					</ul>
+                 </li>
+				<li>Build SIAM Java sources
+				<ul>
+					<li><em class="commands1">cd $SIAM_HOME</em></li>
+					<li><em class="commands1">make</em></li>
+					</ul>
+                 </li>
+				<li>Build siamjar
+				<ul>
+					<li><em class="commands1">make siamjar</em></li>
+					</ul>
+                 </li>
+				<li>Build instrument service JAR files
+				<ul>
+					<li><em class="commands1">make example.all</em></li>
+					<li>creates instrument service JAR files in <em class="darkpath">SIAM_HOME/ports</em></li>
+					<li><em class="emphasis">example makefile and shell script are available from</em> <a href="examples.html">example index</a></li>
+					</ul>
+                 </li>
+				<li>Configure example siamPort.cfg
+				<ul>
+					<li><em class="commands1">cp $SIAM_HOME/docs/siam-site/content/examples/siamPort.cfg.example $SIAM_HOME/properties/siamPort.cfg</em></li>
+					<li>edit <em class="darkpath">$SIAM_HOME/properties/siamPort.cfg</em></li>
+					<li>set the codebase parameter to point to your codebase directory, e.g. <em class="darkpath">/Users/joe/code/siam2/codebase</em> (siamPort.cfg does NOT expand environment variables)</li>
+					<li><em class="emphasis">example siamPort.cfg is available from</em> <a href="examples.html">example index</a></li>
+					</ul>
+                 </li>
+				<li>Start the SIAM application
+				<ul>
+					<li><em class="commands1">cd $SIAM_HOME</em></li>
+					<li><em class="commands1">node &amp;</em></li>
+					</ul>
+                 </li>
+				<li>You're up and running!</li>
+				</ul>
+				<p>Log files created by the instrument services and the SIAM application will be written to the SIAM_HOME/logs directory (or the directory (relative to SIAM_HOME) specified in siamPort.cfg).</p>
+				<p>Now try some SIAM utilities...</p>
+				<ul>
+				<li>Use the listPorts utility to verify that the services are running
+				<ul>
+					<li><em class="commands1">listPorts localhost -stats</em></li>
+					<li>should return
+						<pre>
+    adrift:siam2 user$ listPorts localhost
+    SIAM version $Name:  $
+							
+    Node 10005 has 3 ports
+							
+    Port Name ISI-ID   Service   Status 
+    --------- ------   -------   ------ 
+    test   9990          Dummy SLEEPING 
+    sbe37  9992 DummySeabird37       OK 
+    co2    9995      DummypCO2       OK 
+							</pre>
+						</li>
+					</ul>
+                </li>
+				<li>Use getLastSample to look at most recent data
+				<ul>
+					<li><em class="commands1">getLastSample localhost sbe37</em></li>
+					<li>should return
+						<pre>
+    adrift:siam2 headley$ getLastSample localhost sbe37
+    SIAM version $Name:  $
+    parentID=10005, recordType=0
+    devid=9992, t=1295051771952, seqNo=3, mdref=2
+    nBytes=100
+    **
+     *I*|****=****=**Kgt***Ys****~*&quot;***	7R*;*****:****F**G*o;5E*p*@***E*_*F*)*2**1****iR*****v*3S***$C
+							</pre>
+						</li>
+					</ul>
+                </li>
+				<li>To stop the SIAM application
+				<ul>
+					<li><em class="commands1">exitNode localhost</em></li>
+					</ul>
+				</li>
+			</ul>
+		</body>
+	</html>

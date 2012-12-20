@@ -1,0 +1,18 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+#!/bin/bash
+# Periodically feed Sidearm's watchdog timer 
+#
+# NOTE: THIS SCRIPT IS STRICTLY FOR TESTING PURPOSES ONLY! 
+# Running this script may prevent appropriate node reset following 24-hour 
+# communications outage. Do not operate heavy machinery when using this
+# script. May cause drowsiness. Void where prohibited.
+while [ 1 ]
+do
+  echo "feed watchdog" > /proc/watchdog
+  sleep 60
+done
+

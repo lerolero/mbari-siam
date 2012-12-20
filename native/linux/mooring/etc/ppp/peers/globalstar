@@ -1,0 +1,26 @@
+#
+# Dial-up configuration for calling mbari via the globalstar modem
+#
+linkname globalstar
+mtm-1:
+ipparam mbari
+#logfile /var/log/globalstar.log
+#record /tmp/pppd.record
+#debug
+noauth
+user ops
+usepeerdns
+maxconnect 3600         #disconnect after one hour
+noipdefault
+defaultroute
+#deflate 14
+noccp	#disable compression negotiation with the proprietary ADUS server
+updetach
+
+ttySX12
+globalstar
+38400
+modem
+crtscts
+lock
+connect /etc/ppp/dialMBARI

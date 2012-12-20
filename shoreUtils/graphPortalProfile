@@ -1,0 +1,195 @@
+#!/bin/bash
+
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Configuration
+GPP_HOME="."
+OUTPUT="$GPP_HOME/gpp-output"
+PDF="$OUTPUT/pdf"
+PS="$OUTPUT/ps"
+PROFILE_DAT="$OUTPUT/profile.dat"
+PP_CSV="$OUTPUT/pp.csv"
+TS_CSV="$OUTPUT/ts.csv"
+PP_PS=$PS/portalProfile.ps
+OTD_PS=$PS/opTimeDistribution.ps
+BR_PS=$PS/BitrateVsTransferSize.ps
+PS_PS=$PS/PacketSizeVsDeviceID.ps
+
+EPSTATS="epStats "
+#GPSTATS="gpStats -l "
+GPSTATS="gpStats "
+GPFILE="$GPP_HOME/gp.tmp"
+MAKEPDF="/usr/bin/gs -q -dNOPAUSE -dNOPROMPT  -dBATCH -sDEVICE=pdfwrite"
+GRAPH="/usr/bin/graph -T ps " 
+GNUPLOT="/usr/bin/gnuplot $GPFILE"
+START_TIME=`date +"%m/%d/%Y %H:%M:%S"`
+END_TIME=`date +"%m/%d/%Y %H:%M:%S"`
+replot=0
+
+#
+# Make the plot definition for gnu plot
+#
+makeGP(){
+cat > $GPFILE << EOF
+set terminal postscript color
+set xdata time
+set timefmt "%m/%d/%Y %H:%M:%S"
+set format x "%m/%d/%Y %H:%M:%S"
+set xrange ["$START_TIME":"$END_TIME"]
+set xlabel "Time"
+set xtics rotate
+
+set output "$PP_PS"
+set title "Portal Download Profile"
+set ylabel "Operations (index)"
+set yrange [0:9]
+set datafile separator ","
+set key   samplen 4 spacing 1 width 0 height 0 autotitles
+set multiplot
+
+set key noautotitle
+plot "$PP_CSV" using 1:(\$5==1 ? \$5 : 1/0 ) t "session" with points pt 1,\
+     "$PP_CSV" using 1:(\$5==2 ? \$5 : 1/0 ) t "resetWDT",  \
+     "$PP_CSV" using 1:(\$5==3 ? \$5 : 1/0 ) t "nodeInfo",  \
+     "$PP_CSV" using 1:(\$5==4 ? \$5 : 1/0 ) t "RxDistData",\
+     "$PP_CSV" using 1:(\$5==5 ? \$5 : 1/0 ) t "packetSet",\
+     "$PP_CSV" using 1:(\$5==6 ? \$5 : 1/0 ) t "xferPacket",\
+     "$PP_CSV" using 1:(\$5==7 ? \$5 : 1/0 ) t "processPackets",\
+     "$PP_CSV" using 2:(\$5==1 ? \$5 : 1/0 ) with points pt 1,\
+     "$PP_CSV" using 2:(\$5==2 ? \$5 : 1/0 ) with points pt 2,\
+     "$PP_CSV" using 2:(\$5==3 ? \$5 : 1/0 ) with points pt 3,\
+     "$PP_CSV" using 2:(\$5==4 ? \$5 : 1/0 ) with points pt 4,\
+     "$PP_CSV" using 2:(\$5==5 ? \$5 : 1/0 ) with points pt 5,\
+     "$PP_CSV" using 2:(\$5==6 ? \$5 : 1/0 ) with points pt 6,\
+     "$PP_CSV" using 2:(\$5==7 ? \$5 : 1/0 ) with points pt 7
+
+unset multiplot
+##############################
+set xdata 
+set format x
+set output "$OTD_PS"
+set title "Distribution of Operation Times"
+set xlabel "Operation"
+set ylabel "Operation Duration (min)"
+set datafile separator ","
+set xtics norotate
+
+set key   samplen 4 spacing 1 width 0 height 0 noautotitles
+set xrange [0:8]
+#set yrange [0:7200]
+set autoscale y
+set multiplot
+
+plot "$PP_CSV" using 5:(\$5==1 && \$3>0 ? \$3/60000 : 1/0 ) t "connect" with points pt 1,\
+     "$PP_CSV" using 5:(\$5==2 && \$3>0 ? \$3/60000 : 1/0 ) t "resetWDT",  \
+     "$PP_CSV" using 5:(\$5==3 && \$3>0 ? \$3/60000 : 1/0 ) t "nodeInfo",  \
+     "$PP_CSV" using 5:(\$5==4 && \$3>0 ? \$3/60000 : 1/0 ) t "RxDistData",\
+     "$PP_CSV" using 5:(\$5==5 && \$3>0 ? \$3/60000 : 1/0 ) t "packetSet",\
+     "$PP_CSV" using 5:(\$5==6 && \$3>0 ? \$3/60000 : 1/0 ) t "xferPacket",\
+     "$PP_CSV" using 5:(\$5==7 && \$3>0 ? \$3/60000 : 1/0 ) t "processPackets"
+unset multiplot
+##############################
+
+set output "$BR_PS"
+set title "Bitrate vs Transfer Size"
+set xlabel "Transfer Size (bytes)"
+set ylabel "Bitrate (Normalized to nominal)"
+set datafile separator ","
+set key samplen 4 spacing 1 width 0 height 0 noautotitles
+set autoscale 
+set xtics norotate
+unset multiplot
+
+plot "$TS_CSV" using (\$2>=0 ? \$2 : 1/0):(\$3>=0 ? \$3 : 1/0 ) t "Bitrate" with points pt 4
+
+##############################
+
+set output "$PS_PS"
+set title "Packet Size vs DeviceID"
+set xlabel "Device ID"
+set ylabel "Packet Size (bytes)"
+set datafile separator ","
+set key samplen 4 spacing 1 width 0 height 0 noautotitles
+set autoscale 
+set xtics rotate 50,10
+unset multiplot
+
+plot "$TS_CSV" using 1:(\$4>=0 ? \$4 : 1/0 ) t "Packet Size" with points pt 5
+
+##############################
+
+EOF
+}
+
+while [ "$#" -ge 1 ]
+do 
+case "$1" in
+-start)
+shift
+START_TIME="$1"
+shift
+;;
+-end)
+shift
+END_TIME="$1"
+shift
+;;
+-replot)
+replot=1
+shift
+;;
+*)
+break;
+;;
+esac
+done
+
+# Go to working directory
+cd $GPP_HOME
+
+# create directories if they don't exist
+if [ ! -d "$OUTPUT" ]
+then
+    mkdir "$OUTPUT"
+fi
+if [ ! -d "$PS" ]
+then
+    mkdir "$PS"
+fi
+if [ ! -d "$PDF" ]
+then
+    mkdir "$PDF"
+fi
+
+if [ "$replot" -lt 1 ]
+then
+# Clear old files
+rm -f $PS/*.ps
+rm -f $PDF/*.pdf
+
+# extract profile stats from portal log
+$EPSTATS $* > $PROFILE_DAT
+
+# generate .csv stats data
+$GPSTATS  -d `cygpath -w $OUTPUT` `cygpath -w $PROFILE_DAT`
+fi
+
+# Generate gnuplot plot definition file
+# use configured file paths for output
+makeGP
+
+# Plot data with gnuplot
+echo Creating Postscript...
+$GNUPLOT
+
+# Convert PS to PDF with GhostScript
+echo Creating PDF...
+$MAKEPDF -sOutputFile=$PDF/portalProfile.pdf $PS/portalProfile.ps
+$MAKEPDF -sOutputFile=$PDF/opTimeDistribution.pdf $PS/opTimeDistribution.ps
+$MAKEPDF -sOutputFile=$PDF/BitrateVsTransferSize.pdf $PS/BitrateVsTransferSize.ps
+$MAKEPDF -sOutputFile=$PDF/PacketSizeVsDeviceID.pdf $PS/PacketSizeVsDeviceID.ps
+
+# remove temp gnuplot file
+rm $GPFILE

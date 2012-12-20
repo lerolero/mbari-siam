@@ -1,0 +1,32 @@
+#!/bin/csh
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Notify specified email addresses if specified remote IP interface is 
+# accessible
+
+if ($#argv < 2) then
+  echo "usage: $0 ipAddr notifyRecipient"
+  exit 1
+endif
+
+set ipAddr=$argv[1]
+    shift
+set recipient=$argv:q
+
+  set date=`date`
+
+# Try to ping specified address
+echo "Attempt to ping $ipAddr - $date" > /tmp/pingAttempts
+ping -c 3 -w 15 $ipAddr | tee -a /tmp/pingAttempts
+
+if ($status == 0) then
+  # Specified IP is connected
+  set msg="$ipAddr is CONNECTED to `hostname`; $date"
+  echo $msg > /tmp/connectMsg
+##  mail -s $msg < /tmp/connectMsg
+  mail -s $msg:q $recipient < /tmp/connectMsg
+endif
+
+

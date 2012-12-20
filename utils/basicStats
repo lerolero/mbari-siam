@@ -1,0 +1,27 @@
+#!/bin/sh
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Get some basic Globalstar access and GPS information
+
+echo "Globalstar connections:"
+tail -500 /var/log/messages | grep "Connect time"
+
+
+cd /home/ops/siam/logs
+
+echo ""
+echo "Portal log access timestamps:"
+ls -l *.dat
+
+# Set up environment for SIAM
+source ~/.bashrc
+
+echo ""
+echo "Latest retrieved GPS record:"
+/home/ops/siam/utils/logView 1287 . | tail -1
+
+
+
+

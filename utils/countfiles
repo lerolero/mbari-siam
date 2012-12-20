@@ -1,0 +1,50 @@
+#!/usr/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# countfiles
+# This script finds files of type FIND_TYPE in a 
+# recursive search under directory FIND_ROOT
+# and counts occurrences of TARGET found in
+# each file. Displays the number of occurences
+# found (>0) and a total number of occurrences.
+# Optionally dumps results to a file and
+# sorts the output file.
+
+# Configuration
+FIND_ROOT="$SIAM_HOME/src"
+FIND_TYPE="*.java"
+TARGET="println"
+GREP="grep"
+SORT="sort -d"
+OUTFILE="cf.out"
+COUNT="wc -l"
+
+# clear output file
+>$OUTFILE
+total=0
+
+for FILE in `find "$FIND_ROOT" -name "$FIND_TYPE"`
+do
+	count=`$GREP $TARGET $FILE|$COUNT`
+	if [ "$count" -gt 0 ]
+	then
+	    len=${#FILE}
+	    let pad="80-$len"
+	    format="%s %"$pad"s  %4d\n"
+	    dummy="-"
+		printf "$format"  $FILE $dummy $count  | tee -a $OUTFILE
+		let total="total+count"
+	fi
+done
+
+if [ -f "$OUTFILE" ] && [ "$OUTFILE" != "/dev/null" ]
+then
+ mv $OUTFILE $OUTFILE.tmp
+ $SORT $OUTFILE.tmp > $OUTFILE
+ printf "\n-----\n%4d total occurences of $TARGET in $FIND_TYPE under $FIND_ROOT\n" $total |tee -a $OUTFILE
+ rm $OUTFILE.tmp
+else
+ printf "\n-----\n%4d total occurences of $TARGET in $FIND_TYPE under $FIND_ROOT\n" $total
+fi

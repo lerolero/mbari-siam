@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id: build.xml,v 1.2 2011/07/25 16:18:16 headley Exp $ -->
+<project name="moos" basedir=".">
+	
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Load property files in this order:
+
+    1. User properties
+    2. This level properties
+
+    This allows a user to have specific settings that override any other
+    settings (other than command-line, which always take precedence).
+    -->
+    <property file="${user.home}/build.properties" />
+    <property file="build.properties" />
+
+    <!-- Show MOOS help  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="help">
+	<local name="pname"/>
+    <property name="pname" value="moos" />
+		<echo>
+		${pname}.deployed        - SIAM ipkg for MOOS 
+		${pname}.shore           - SIAM portal/shore 
+		${pname}.distribution    - deployed, shore
+		</echo>
+	</target>
+	
+    <!-- Make deployed tar.gz ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <target name="deployed">
+	
+	<tar destfile="${dist}/deployed.tar">
+	    <tarfileset dir="atp" prefix="siam/atp" username="ops" group="ops" filemode="775">
+		</tarfileset>
+		<tarfileset dir="classes" prefix="siam/classes" username="ops" group="ops" filemode="775">
+			<include name="**/com/Ostermiller/**" />
+			<include name="**/com/topcoder/**" />
+			<include name="**/com/strangeberry/**" />
+			<include name="**/org/doomdark/**" />
+			<include name="**/org/mbari/jddac/**" />
+			<include name="**/org/mbari/puck/**" />
+			<include name="**/org/mbari/rmi/**" />
+			<include name="**/org/mbari/util/**" />
+			<include name="**/org/mbari/siam/configt/**" />
+			<include name="**/org/mbari/siam/core/**" />
+			<include name="**/org/mbari/siam/dataTurbine/**" />
+			<include name="**/org/mbari/siam/devices/nalModem/**" /> 
+			<include name="**/org/mbari/siam/distributed/**" />
+			<include name="**/org/mbari/siam/foce/**" />
+			<exclude name="**/org/mbari/siam/foce/devices/**" />
+			<include name="**/org/mbari/siam/moos/**" />
+			<include name="**/org/mbari/siam/operations/**" />
+			<include name="**/org/mbari/siam/registry/**" />
+			<include name="**/org/mbari/siam/test/**" />
+			<include name="**/org/mbari/siam/tests/**" />
+			<include name="**/org/mbari/siam/utils/**" />
+		</tarfileset>
+		<tarfileset dir="utils" prefix="siam/utils" username="ops" group="ops" filemode="775">
+		</tarfileset>
+		<tarfileset dir="ports" prefix="siam/ports" username="ops" group="ops" filemode="775">
+		</tarfileset>
+		<tarfileset dir="bin" prefix="siam/bin" username="ops" group="ops" filemode="775">
+		</tarfileset>
+		<tarfileset dir="properties" prefix="siam/properties" username="ops" group="ops" filemode="664">
+		</tarfileset>
+		<tarfileset dir="jars" prefix="siam/jars" username="ops" group="ops" filemode="775">
+			<include name="gnu_getopt.jar" />
+			<include name="jrendezvous.jar" />
+			<include name="junit.jar" />
+			<include name="log4j-1.2.13.jar" />
+			<include name="RXTXcomm.jar" />
+			<include name="javax.jar" />
+			<include name="javax.servlet.jar" />
+			<include name="org.mortbay.jetty-jdk1.2.jar" />
+			<include name="jakarta-regexp-1.5.jar" />
+			<include name="XModem.jar" />
+			<include name="jddac-common.jar" />
+			<include name="jddac-probe-j2me.jar" />
+			<include name="rbnb.jar" />
+		</tarfileset>
+	  </tar>
+	  <gzip src="${dist}/deployed.tar" destfile="${dist}/deployed.tar.gz" />
+	  
+	<tar destfile="${dist}/gbpatch.tar">
+	    <tarfileset dir="native/arm-linux/top" prefix="/" username="root" group="root" filemode="775">
+			<include name="**/etc/**" />
+			<include name="**/root/**" />
+			<include name="**/usr/**" />
+			<include name="**/sbin/**" />
+			<include name="**/j9/**" />
+			<include name="**/home/ops/.bashrc" />		
+		</tarfileset>
+	</tar>	  
+	<gzip src="${dist}/gbpatch.tar" destfile="${dist}/gbpatch.tar.gz" />
+	<property environment="myEnv"/>
+	<echo>
+	myEnv.JAVA_DEV_ROOT=${myEnv.JAVA_DEV_ROOT}
+	</echo>
+	
+	<delete file="${dist}/siam.ipk"/>
+	<tar destfile="${dist}/control.tar">
+		<tarfileset dir="make/CONTROL" username="ops" group="ops" filemode="775">
+			<include name="control/**" />
+			<include name="p*/**" />
+		</tarfileset>
+	</tar>
+	<gzip src="${dist}/control.tar" destfile="${dist}/control.tar.gz" />
+	<delete file="${dist}/control.tar"/>
+	
+	<echo file="${dist}/debian-binary">2.0</echo>
+	<tar destfile="${dist}/data.tar">
+		<tarfileset dir="${dist}" prefix="mnt/hda" username="root" group="root">
+			<include name="deployed.tar.gz" />
+			<include name="gbpatch.tar.gz" />
+		</tarfileset>
+	</tar>
+	<gzip src="${dist}/data.tar" destfile="${dist}/data.tar.gz" />
+
+	<tar destfile="${dist}/siam.ipk">
+		<tarfileset dir="${dist}" username="root" group="root">
+			<include name="control.tar.gz" />
+			<include name="data.tar.gz" />
+			<include name="debian-binary" />
+		</tarfileset>
+	</tar>
+	<gzip src="${dist}/siam.ipk" destfile="${dist}/siam.ipk.gz" />
+	<move file="${dist}/siam.ipk.gz" tofile="${dist}/siam.ipk"/>
+	<delete file="${dist}/control.tar.gz"/>
+	<delete file="${dist}/gbpatch.tar"/>
+	<delete file="${dist}/gbpatch.tar.gz"/>
+	<delete file="${dist}/data.tar"/>
+	<delete file="${dist}/deployed.tar"/>
+	<delete file="${dist}/shore.tar"/>
+	<delete file="${dist}/data.tar.gz"/>
+	<delete file="${dist}/debian-binary"/>
+	
+ </target>
+
+    <!-- Make shore tar.gz ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <target name="shore">
+	  <tar destfile="${dist}/shore.tar">
+	  
+	    <tarfileset dir="atp" prefix="siam/atp" username="ops" group="ops" filemode="775">
+		</tarfileset>
+	    <tarfileset dir="classes" prefix="siam/classes" username="ops" group="ops" filemode="664">
+			<include name="**/com/Ostermiller/**" />
+			<include name="**/com/topcoder/**" />
+			<include name="**/com/strangeberry/**" />
+			<include name="**/org/doomdark/**" />
+			<include name="**/org/mbari/jddac/**" />
+			<include name="**/org/mbari/puck/**" />
+			<include name="**/org/mbari/rmi/**" />
+			<include name="**/org/mbari/util/**" />
+			<include name="**/org/mbari/siam/configt/**" />
+			<include name="**/org/mbari/siam/core/**" />
+			<include name="**/org/mbari/siam/dataTurbine/**" />
+			<include name="**/org/mbari/siam/devices/serialadc/SerialAdcPacketParser.class"/>
+			<include name="**/org/mbari/siam/distributed/**" />
+			<include name="**/org/mbari/siam/foce/**" />
+			<exclude name="**/org/mbari/siam/foce/devices/**" />
+			<include name="**/org/mbari/siam/moos/**" />
+			<include name="**/org/mbari/siam/operations/**" />
+			<include name="**/org/mbari/siam/registry/**" />
+			<include name="**/org/mbari/siam/test/**" />
+			<include name="**/org/mbari/siam/tests/**" />
+			<include name="**/org/mbari/siam/utils/**" />
+		</tarfileset>
+		<tarfileset dir="utils" prefix="siam/utils" username="ops" group="ops" filemode="775">
+		</tarfileset>
+		<tarfileset dir="ports" prefix="siam/ports" username="ops" group="ops" filemode="775">
+		</tarfileset>
+		<tarfileset dir="bin" prefix="siam/bin" username="ops" group="ops" filemode="775">
+		</tarfileset>
+		<tarfileset dir="properties" prefix="siam/properties" username="ops" group="ops" filemode="664">
+		</tarfileset>
+		<tarfileset dir="docs" prefix="siam/docs" username="ops" group="ops" filemode="664">
+		</tarfileset>
+		<tarfileset dir="images" prefix="siam/images" username="ops" group="ops" filemode="664">
+		</tarfileset>
+		<tarfileset dir="shoreUtils" prefix="siam/shoreUtils" username="ops" group="ops" filemode="664">
+		</tarfileset>
+		<tarfileset dir="jars" prefix="siam/jars" username="ops" group="ops" filemode="775">
+			<include name="gnu_getopt.jar" />
+			<include name="jrendezvous.jar" />
+			<include name="junit.jar" />
+			<include name="log4j-1.2.13.jar" />
+			<include name="RXTXcomm.jar" />
+			<include name="javax.jar" />
+			<include name="javax.servlet.jar" />
+			<include name="org.mortbay.jetty-jdk1.2.jar" />
+			<include name="jakarta-regexp-1.5.jar" />
+			<include name="XModem.jar" />
+			<include name="jddac-common.jar" />
+			<include name="jddac-probe-j2me.jar" />
+			<include name="rbnb.jar" />
+		</tarfileset>
+	  </tar>
+	  <gzip src="${dist}/shore.tar" destfile="${dist}/shore.tar.gz" />
+	 <delete file="${dist}/shore.tar"/>
+   </target>
+
+    <!-- Make distribution tar.gz ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <target name="distribution" depends="shore,deployed">
+	<echo>Distribution build complete</echo>
+   </target>
+
+
+	</project>

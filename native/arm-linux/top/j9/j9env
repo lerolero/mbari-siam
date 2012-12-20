@@ -1,0 +1,5 @@
+# Environment for IVE apps -- revised:  11/20/02 brent@mbari.org
+export JAVA_HOME=/j9
+bindir=$JAVA_HOME/bin
+export PATH=$PATH:$bindir
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$bindir

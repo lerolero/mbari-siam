@@ -1,0 +1,205 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Instrument Service Properties</title>
+<link href="../css/content.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+<h1>Instrument Service Properties</h1>
+<p>
+SIAM instrument services are configured using Java properties, consisting of name/value pair strings defining configuration parameters.
+</p>
+<p>
+The SIAM instrument service framework defines a set of properties (attributes, configuration parameters) common to all SIAM services. <br />
+InstrumentServiceAttribute and related classes encapsulate the types and behaviors of the properties, for example whether required or optional, 
+and conversion from (configuration file) strings.<br />
+Instrument services may also define instrument-specific properties, which may have default values and may be made required or optional.
+</p>
+<h2>Initializing Service Properties</h2>
+<p>
+At run-time, the service property values are loaded from a file called service.properties contained in the instrument service jar.
+service.properties is created by the mkpuck utility, which is called from mksiamjar. The property values are set by configuring the appropriate makefile or shell script used to call mksiamjar.
+</p>
+<h2>Setting Service Properties</h2>
+<p>
+The service property values may be changed while the service is running using the <a href="man/man-setProperty.html">setProperty</a> utility. The changes made with setProperty 
+will persist while the service is running; by default, they will revert to the serviceProperty defaults at service or system restart. They may be made to persist across service 
+or system restarts using the <a href="man/man-cachePort.html">cachePort</a> utility.
+</p>
+<h2>Showing Service Properties</h2>
+<p>
+The current values of the service properties may be read while the service is running using the <a href="man/man-portProperties.html">portProperties</a> utility.<br />
+portProperties lists all instrument service properties, both common and instrument-specific.
+The <a href="man/man-getMetadata.html">getMetadata</a> utility shows both the current value of the service properties and the default values in the service.properties file.
+</p>
+<h2>Common Service Properties</h2>
+<p>
+The following table describes the service properties common to all of the instrument services.
+</p>
+<table class="altTable">
+<tr>
+  <th>Property</th>
+  <th>Description</th>
+  <th>Default Value</th>
+</tr>
+<tr>
+<td>isiID</td>
+<td>SSDS-ID of device</td>
+<td>-</td>
+</tr>
+<tr class="alt">
+<td>serviceName</td>
+<td>Name of service</td>
+<td>UNKNOWN</td>
+</tr>
+<tr>
+<td>UUID</td>
+<td>Universal unique identifier of device</td>
+<td>00000000-0000-0000-0000-000000000000</td>
+</tr>
+<tr class="alt">
+<td>nominalCurrentMa</td>
+<td>Expected nominal instrument current draw</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>peakCurrentMa</td>
+<td>Expected maximum instrument current draw</td>
+<td>5000</td>
+</tr>
+<tr class="alt">
+<td>currentLimitMa</td>
+<td>DPA overcurrent trip if this limit exceeded</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>powerOnDelaySec</td>
+<td>Seconds to pause before first power-on</td>
+<td>0</td>
+</tr>
+<tr class="alt">
+<td>startDelayMsec</td>
+<td>Pause (msec) after each power-on</td>
+<td>0</td>
+</tr>
+<tr>
+<td>powerPolicy</td>
+<td>Set to ALWAYS, NEVER, or SAMPLING</td>
+<td>PowerPolicy.NEVER</td>
+</tr>
+<tr class="alt">
+<td>commPowerPolicy</td>
+<td>Set to ALWAYS, NEVER, or SAMPLING</td>
+<td>PowerPolicy.WHEN_SAMPLING</td>
+</tr>
+<tr>
+<td>timeSynch</td>
+<td>If true, try to synchronize instrument clock with node clock when service starts</td>
+<td>FALSE</td>
+</tr>
+<tr class="alt">
+<td>sampleSchedule</td>
+<td>Sample acquisition schedule</td>
+<td>-</td>
+</tr>
+<tr>
+<td>maxSampleTries</td>
+<td>Number of times to attempt per scheduled sample acquisition</td>
+<td>-</td>
+</tr>
+<tr class="alt">
+<td>sampleTimeoutMsec</td>
+<td>Timeout (msec) on serial read during acquisition</td>
+<td>-</td>
+</tr>
+<tr>
+<th colspan="3">
+Summarization and telemetry subsampling properties
+</th>
+</tr>
+<tr>
+<td>summaryTriggerCount</td>
+<td> Generate summary packet after this many raw samples are acquired</td>
+<td></td>
+</tr>
+<tr class="alt">
+<td>maxSummarySamples</td>
+<td>Generate summary packet and clear statistics after this many raw samples are acquired</td>
+<td>0</td>
+</tr>
+<tr>
+<td> defaultSkipInterval</td>
+<td> n&gt;0: Number of &quot;raw&quot; SensorDataPackets to skip during data telemetry<br />
+ 0: retrieve all raw packets<br />
+-1: retrieve no raw packets (e.g. during summarization)
+</td>
+<td>0</td>
+</tr>
+<tr class="alt">
+<td>packetSetSize</td>
+<td>Number of SIAM packets to retrieve per &quot;set&quot; by portal</td>
+<td>10</td>
+</tr>
+<tr>
+<td>errCacheLimit</td>
+<td>Generate MessagePacket after this many successive errors</td>
+<td>5</td>
+</tr>
+<tr class="alt">
+<td>instrumentName</td>
+<td>Unused</td>
+<td>UNKNOWN</td>
+</tr>
+<tr>
+<th colspan="3">
+The following are read-only properties that may be displayed but may not be modified by the user:
+</th>
+</tr>
+<tr>
+<td>className</td>
+<td>Name of service class</td>
+<td>-</td>
+</tr>
+<tr class="alt">
+<td>parentID</td>
+<td>ISI-ID of host platform</td>
+<td>-</td>
+</tr>
+<tr>
+<td>extendedVersion</td>
+<td>Unused</td>
+<td>-</td>
+</tr>
+<tr class="alt">
+<td>frameworkVersion</td>
+<td>SIAM version of service base class</td>
+<td>-</td>
+</tr>
+<tr>
+<td>serviceStatus</td>
+<td>Code indicating current state of service:<br />
+0=OK<br />1=ERROR<br />2=INITIAL<br />
+3=SHUTDOWN<br />4=SUSPEND<br />
+5=SAMPLING<br />6=SLEEPING<br />
+7=SAFE</td>
+<td>-</td>
+</tr>
+<!--
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="alt">
+<td></td>
+<td></td>
+<td></td>
+</tr>
+-->
+</table>
+
+</body>
+</html>

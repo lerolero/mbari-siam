@@ -1,0 +1,16 @@
+#!/bin/csh
+# This script transfers a large file to MBARI's anonymous ftp server
+set HOST='ftp.mbari.org'
+set USER='MBARIftp'
+set PASSWD='ftp2wave'
+
+ftp -n $HOST << END1
+quote USER $USER
+quote PASS $PASSWD
+cd pub/oreilly
+lcd /home/ops/test
+prompt
+mput test-file.*
+quit
+'END1'
+exit 0

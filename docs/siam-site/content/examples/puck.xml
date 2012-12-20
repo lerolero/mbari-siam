@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:noNamespaceSchemaLocation="http://ssds.mbari.org/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="2" lastAuthor="$Author:$" lastUpdate="$Date:$">
+
+    <Deployment role="instrument">
+        <Device id="1728" name="FOCE Fan Motor" type="Servo Motor" 
+            mfgName="Elmo Motion Control"  mfgModel="Solo Whistle" mfgSerialNumber="SOL9175168">
+            <Person	firstname="Joe" surname="User" organization="RatherNice"
+                email="joeUser@ratherNice.org" phone="555-867-5309" />	
+        </Device>
+        <output>
+            <DataStream>
+                <description>Output Data Stream from FOCE Fan Motor Controller</description>
+                <RecordDescription bufferStyle="ascii" 
+                    parseable="true" 
+                    recordType="1"
+                    bufferParseType="ordered"
+                    bufferItemSeparator=","
+                    bufferLengthType="variable">
+                    <!-- Sample Record:
+                        0.00000,90,02004100,00000000,-1
+                    -->
+                    <!--
+                        Comments:
+                    -->
+                    <RecordVariable
+                        name="encoderVelocity"
+                        longName="Encoder Velocity"
+                        units="revolutions/minute"
+                        columnIndex="1"
+                        format="float" >
+                        <description>fan rotation speed</description>
+                        <StandardVariable name="rotation_velocity_of_component" namespaceUriString="http://mmisw.org/ont/mbarissds/eqtperformance/" />
+                    </RecordVariable>
+                    <RecordVariable
+                        name="joggingVelocity"
+                        longName="Commanded Jogging Velocity"
+                        units="counts/second"	
+                        columnIndex="2"
+                        format="int" >
+                        <description>sets the motor speed, according to profile if in that mode; determines rate at which position command or electric angle command changes </description>
+                        <StandardVariable name="step_increment_frequency_commanded" namespaceUriString="http://mmisw.org/ont/mbarissds/eqtperformance/" />
+                    </RecordVariable>
+                    <RecordVariable
+                        name="statusRegister"
+                        longName="Status Register Bit Field"
+                        units="bitField"	
+                        columnIndex="3"
+                        format="string" >
+                        <description>hex bits: 0=OK, 1-3=drive,4=MotorOn,5=ReferenceMode,6=MotorFail,7-9=unitMode,10=GainScheduling,11=HomingInProcess,12=ProgramRunning,13=currentLimitOn,14-15=MotionStat,16-17=RecorderStat,24-26=HallABC,27=CPUStat,28=LimitStop,29=UserProgErr</description>
+                        <StandardVariable name="device_status_flag" namespaceUriString="http://mmisw.org/ont/mmi/eqthealth/" />
+                    </RecordVariable>
+                    <RecordVariable
+                        name="motorFault"
+                        longName="Motor Fault Bit Field"
+                        units="bitField"	
+                        columnIndex="4"
+                        format="string" >
+                        <description>hex bits: overall value of 0=motor on or normal shutdown; see SimplIQ Command Reference Manual (http://www.elmomc.com/support/manuals/MAN-SIMCR.pdf) for bits</description>
+                        <StandardVariable name="device_status_flag" namespaceUriString="http://mmisw.org/ont/mmi/eqthealth/" />
+                    </RecordVariable>
+                    <RecordVariable
+                        name="turnSensor"
+                        longName="Fan Turn Sensor Count"
+                        units="count"	
+                        columnIndex="5"
+                        format="int" >
+                        <description>total number of turns</description>
+                        <StandardVariable name="accumulated_rotations" namespaceUriString="http://mmisw.org/ont/ssds/eqtorientation/" /> 
+                    </RecordVariable>
+                </RecordDescription>
+            </DataStream>
+        </output>
+    </Deployment>
+</Metadata>
