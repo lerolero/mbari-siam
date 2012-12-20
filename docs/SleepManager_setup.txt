@@ -1,0 +1,84 @@
+This document describes the proper configuration of SleepManager,
+including what you need to configure in SideArm and SIAM.
+
+SleepManager can be configured as 'enabled' or 'disabled'.  Currently
+(during development and testing), it defaults to 'disabled'.  To
+continue to use it in that mode, you don't need to do anything.
+Eventually, we'll change the default to 'enabled'.  When that
+happens, you'll either need to disable (Section 1) or configure the
+system to use it (Section 2)
+
+
+Section 1 - Disabling SleepManager
+
+SleepManager is configured via node properties, which are set
+(by default) in $SIAM_HOME/properties/siamPort.cfg.  Check out
+a copy of siamPort.cfg.example from CVS and look at the section
+dedicated to SleepManager (toward the bottom).
+
+To disable SleepManager, set SleepManager.enabled = false
+
+
+Section 2 - Configuring SideArm/SIAM to use SleepManager
+
+* In $SIAM_HOME/properties/siamPort.cfg, set SleepManager.enabled = true
+
+* SleepManager will only operate with MSP430 microcode dated
+  May 15, 2003 or later.  If your MSP430 has microcode earlier than this,
+  you'll need to reflash it.  See Tim Meese for this.  To determine
+  your microcode version, log onto your SideArm and do the following:
+  cd /root
+  stty -F /dev/ttySX15 9600
+  ./picocom /dev/ttySX15
+  <return>
+  get version
+  ^B (control-B)
+  X
+
+* Create directory /root/rootsrv on your SideArm.  Make sure it's
+  owned by root, and has rwx privileges ONLY FROM ROOT.  Group and
+  world privileges should be blank, or at most just read-only.
+
+* Check out $SIAM_HOME/rootsrv/rootsrv from CVS.  Put this in
+  the /root/rootsrv directory, and make sure it's owned by root.
+
+* Make sure that your /etc/init.d/rc.local script contains the line
+  /root/rootsrv/rootsrv  (see $SIAM_HOME/docs/sidearm_setup.txt)
+
+* Set $SIAM_HOME/properties/siamPort.cfg to use MSP430-1217.jar on
+  serviceJar8, per siamPort.cfg.example.  The MSP430 driver (in
+  $SIAM_HOME/src/moos/devices/MSP430) is a modification of the 
+  old Environmental driver, with an additional method used by
+  SleepManager.
+
+* In $SIAM_HOME/make/Makefile, replace the line that makes the
+  Environmental driver with the following line that makes the
+  MSP430 driver.  Note that 'sampleSchedule' may be anything, but
+  make sure that the 'registryName' definition is there:
+
+  mkpuck moos.devices.MSP430.MSP430 "MSP430" 1217 $(SIAM_HOME)/ports/MSP430-1217.jar 'sampleSchedule = 30' 'registryName = MSP430_SERVICE';
+
+* Note that currently, the SideArm ethernet driver does not obey
+  the Linux power-management spec.  As a result, network I/O breaks
+  on every power cycle.  Therefore, YOU CAN'T OPERATE SIAM WITH
+  SLEEP MANAGEMENT FROM AN NFS DIRECTORY.  Until this problem is fixed,
+  you'll need to make $SIAM_HOME be a directory in local flash memory
+  (I use /mnt/hda/siam).  Moreover, you won't be able to ssh into
+  SIAM while it's running.  When you finish executing the SIAM code,
+  you can restore network I/O by running 'ifdown eth0; ifup eth0'.
+
+* Note that the default SleepManager.sleepString in siamPort.cfg is "sleep",
+  which directly commands rootsrv to go to sleep.  You can, instead,
+  execute any bash script that you place into /root/rootsrv (it has to
+  be exactly there, for security purposes).  To do so, change
+  SleepManager.sleepString to be "rootcmd <script_name>".  For
+  convenience, $SIAM_HOME/rootsrv also contains an executable called
+  'suspend', which puts the SideArm to sleep.  So, for example, you could
+  write a bash script that does 'ifdown eth0; suspend; ifup eth0'
+  This in fact works, but 'ifup' takes quite a long time.  If you do
+  this, adjust SleepManager.wakeupSeconds to allow time for the 'ifup'
+  to run before SIAM uses network I/O (e.g. for an nfs drive).
+
+* SleepManager has numerous other properties to configure its behavior.
+  See $SIAM_HOME/properties/siamPort.cfg.example.  All the SleepManager
+  properties are in there (commented out) and documented.

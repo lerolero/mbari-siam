@@ -1,0 +1,64 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Tom O'Reilly">
+   <meta name="GENERATOR" content="Mozilla/4.79 [en] (Windows NT 5.0; U) [Netscape]">
+   <title>listServices</title>
+</head>
+<body>
+<b>NAME</b>
+<blockquote>listServices - list the services that have been added to a node 
+using the <a href="addService.html">addService</a> command 
+</blockquote>
+<b>SYNOPSIS</b>
+<blockquote>
+<pre>listServices</pre>
+</blockquote>
+<b>DESCRIPTION</b>
+<blockquote>The listServices utility can be used to list all the services along 
+with their universally unique identifiers (UUID) that have been added to a node.  
+When the SIAM application scans a puck it will look for service code in the 
+puck.  If no service code is found in the puck it will attempt to look up the 
+service locally using the puck's UUID.  If a service has been added to the 
+platform using the addService command then the SIAM application will load that 
+service.  To list the services that have been added to the node simply enter 
+the listServices command, for example
+<blockquote>
+<pre>$ listServices</pre>
+</blockquote>
+This utility may be run on the MMC as well as a Windows or Linux PC. 
+<blockquote>
+<pre></pre>
+</blockquote>
+</blockquote>
+<b>ENVIRONMENT</b>
+<blockquote>The following environment variables must be set:</blockquote>
+
+<ul>
+<li>
+JAVA_HOME - location of Java installation, e.g.<i> /j9</i> or <i>/opt/java/jdk1.3.1</i></li>
+
+<li>
+JAVA - name of the JVM. E.g. on a Sidearm, JAVA should be set to <i>j9.
+</i>On
+a workstation with Sun's Java installed, JAVA could be set to <i>java</i>.</li>
+
+<li>
+SIAM_HOME - top of the SIAM directory tree</li>
+
+<li>
+SIAM_CLASSPATH - on a Sidearm, SIAM_CLASSPATH should be set to <i>SIAM_CLASSPATH=$JAVA_HOME/lib/jclMax/classes.zip:$JAVA_HOME/lib/prsnlmot.jar:$JAVA_HOME/lib/RXTXcomm.jar:$SIAM_HOME/classes:$SIAM_HOME/jars/log4j-1.2.8.jar</i>.&nbsp;
+On X86 system, SIAM_CLASSPATH should be set to<i> $SIAM_HOME/classes;$SIAM_HOME/jars/RXTXcomm.jar;$SIAM_HOME/jars/log4j-1.2.8.jar</i></li>
+</ul>
+
+<p><br><b>SEE ALSO</b>
+<blockquote>
+&nbsp;
+<a href="addService.html">addService</a>,&nbsp; 
+<a href="removeService.html">removeService</a>
+</blockquote>
+
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# MUCE restore BIN power 01/05/2010
+
+export LOG4J_THRESHOLD=INFO
+
+SURFACE=surface
+
+NODE=$SURFACE
+
+cpuAwake 600 $NODE
+
+# send command twice...
+switchBIN400V $NODE 0 ON
+switchBIN400V $NODE 0 ON
+
+# check status
+switchBIN400V $NODE 0 
+
+listPorts $NODE -stats
+
+# AUTOSCRIPT EOF

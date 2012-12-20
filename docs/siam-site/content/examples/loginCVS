@@ -1,0 +1,12 @@
+#!/usr/bin/expect
+
+# Automatic CVS login script
+# as it may be called by a build script
+# (e.g. buildRelease) that sets the environment variables 
+# CVSROOT and CVS_PASSWD
+send_user "\r\n\n\n"
+spawn cvs -d $env(CVSROOT) login
+expect password:
+send "$env(CVS_PASSWD)\r"
+send_user "\r\n Done \r\n\n\n"
+exit 

@@ -1,0 +1,516 @@
+#!/bin/bash
+#
+###############################################
+## Copyright 2003 MBARI
+## Author: Kent Headley
+##
+## testDpa
+##
+## Synopsis
+## Automated test script exercises DPA hardware
+## via /dev/spi and /dev/gpio interfaces. 
+## 
+## Description
+## Creates a test script ($CMDFILE) for dpaView;
+## the test script places the DPA into a number
+## of known states, which it then reads back. In
+## addition to dpaView commands, the script contains
+## statements (echo) that generate tags used later
+## to parse the file.
+##
+## testDPA then calls dpaView, taking commands from the 
+## test script and redirecting output to a file
+## ($OUTFILE). 
+
+## The output file is parsed, and the results of
+## of the tests compared to expected values. The 
+## results of each test are displayed.
+
+
+#########################
+## Environment variables
+TESTDIR="utils"
+CMDFILE="dpatest.cmd"
+OUTFILE="dpatest.out"
+
+###############
+## Global vars
+
+# DPA number
+let DPA=0xF
+let MAX_DPA=0x5
+let MIN_DPA=0x0
+
+# debug flag
+let DEBUG=0x0
+let OVERWRITE=0x1
+
+# testLines holds test result lines
+testLines=(  )
+
+# statusResults hold the results of
+# parseStatusResults
+statusResults=( )
+
+# test result variables
+let initResult="0xF"
+let powerResult="0xF"
+let commsResult="0xF"
+let interruptResult="0xF"
+
+########################
+## Function Definitions
+
+# printDebug(msg)
+# args: <argsToPrint...>
+printDebug(){
+  if [ $DEBUG -gt 0 ]
+  then
+    echo $@
+  fi
+}
+
+# run dpaView with a set of
+# test commands, then dump the
+# output to a file
+runDpaView(){
+    dpaView < $CMDFILE >> $OUTFILE
+}
+
+# strip blank lines from (output) file
+# args: <fileToStrip>
+stripBlanks(){
+  file=${1-$OUTFILE}
+  if [ -e "$file.quux" ]
+  then
+    rm $file.quux
+  fi
+  while read line
+  do
+    if [ "$line" ]
+    then
+      echo $line >> $file.quux
+    fi
+  done <$file
+  mv $file.quux $file
+}
+
+# read $1 lines into the testLines array
+# args: <numberOfLines>
+readLines(){
+      let count="0"
+      testLines=( )
+      while [ "$count" -lt "$1" ]
+      do
+        read nextLine
+	if [ "$nextLine" ] 
+	then
+          #printDebug "getLines read $nextLine"
+	  let count="$count+1"
+	  testLines[$count]=$nextLine
+	fi
+      done
+}
+
+# read (non-null) lines into the testLines array until $1 is reached
+# or until $2 TOTAL lines are read; will read all lines if no max is
+# is specified and no match occurs
+# args: <terminator>
+#       [<maxTotalLines>]
+readUntil(){
+      let index="0"
+      testLines=( )
+      nextLine=""
+      let maxLines="${2--1}"
+      while [ "$nextLine" != "$1" ] && [ "$maxLines" -ne 0 ]
+      do
+        read nextLine
+	if [ "$nextLine" ] 
+	then
+	  let index="$index+1"
+	  testLines[$index]=$nextLine
+	fi
+	let maxLines="$maxLines-1"
+      done
+}
+
+
+# parse status output
+# args:  <expectedProbeResult>
+#        <expectedInterruptFlag>
+#        <expectedCh1Relays>
+#        <expectedCh1Controls>
+#        <expectedCh2Relays>
+#        <expectedCh2Controls>
+parseStatusResults(){
+  
+  printDebug "parsing Status Results"
+  
+  # clear global var
+  statusResults=( )
+  compareTo=( "$1" "$2" "$3" "$4" "$5" )
+  printDebug "compare to ${compareTo[@]}"
+
+  foo=(${testLines[1]})
+  sresult="${foo[2]}"
+  statusResults[0]=$sresult
+  printDebug ${foo[0]} result: $sresult
+
+  foo=(${testLines[2]})
+  let result="${foo[7]}"
+  statusResults[1]=$result
+  printDebug ${foo[0]} result: `printf "0x%04X" $result`
+
+  foo=(${testLines[3]})
+  let result="${foo[8]}"
+  statusResults[2]=$result
+  printDebug "${foo[0]} result: `printf "0x%04X" $result`"
+
+  foo=(${testLines[4]})
+  let result="${foo[8]}"
+  statusResults[3]=$result
+  printDebug "${foo[0]} result: `printf "0x%04X" $result`"
+
+  foo=(${testLines[5]})
+  let result="${foo[8]}"
+  statusResults[4]=$result
+  printDebug "${foo[0]} result: `printf "0x%04X" $result`"
+  let passed=0
+  if [ "${statusResults[0]}" != "${compareTo[0]}" ]
+  then
+    let passed="$passed|0x1"
+  fi
+
+  if [ "${statusResults[1]}" -ne "${compareTo[1]}" ]
+  then
+    let passed="$passed|0x2"
+  fi
+
+  if [ "${statusResults[2]}" -ne "${compareTo[2]}" ]
+  then
+    let passed="$passed|0x4"
+  fi
+
+  if [ "${statusResults[3]}" -ne "${compareTo[3]}" ]
+  then
+    let passed="$passed|0x8"
+  fi
+
+  if [ "${statusResults[4]}" -ne "${compareTo[4]}" ]
+  then
+    let passed="$passed|0x10"
+  fi
+
+
+  printDebug "parseStatusResults exiting ${statusResults[@]}"
+
+  return $passed
+}
+
+# parse current limit output
+# args:  <expected current limit> 
+#        < +/- variation >
+parseCurrentLimitResults(){
+  
+  printDebug "parsing Current Limit Results $1 $2"
+  
+  # clear global var
+  statusResults=( )
+  compareTo=( "$1" "$2" )
+  printDebug "compare to ${compareTo[@]}"
+
+  foo=(${testLines[1]})
+  let result="${foo[9]}"
+  statusResults[0]=$result
+  printDebug ${foo[0]} result: `printf "0x%04X" $result`
+
+  foo=(${testLines[2]})
+  let result="${foo[9]}"
+  statusResults[1]=$result
+  printDebug "${foo[0]} result: `printf "0x%04X" $result`"
+
+  let hiVal="${compareTo[0]}+${compareTo[1]}"
+  let loVal="${compareTo[0]}-${compareTo[1]}"
+
+  printDebug max=$hiVal min=$loVal Ch 1=${statusResults[0]} Ch 2=${statusResults[1]}
+
+  if [ "${statusResults[0]}" -gt "$hiVal" ] || [ "${statusResults[0]}" -lt "$loVal" ]
+  then
+    let passed="$passed|0x1"
+  fi
+
+  if [ "${statusResults[1]}" -gt "$hiVal" ] || [ "${statusResults[1]}" -lt "$loVal" ]
+  then
+    let passed="$passed|0x2"
+  fi
+
+  printDebug "parseCurrentLimitResults exiting ${statusResults[@]}"
+
+  return $passed
+}
+
+# go through the output file
+# and parse test results    
+parseResults(){
+  # read and parse the output file for test
+  # results
+  exec 0< $OUTFILE
+  while read nextLine
+  do
+    #printDebug "$nextLine"
+    case $nextLine in
+    "initResults" )
+      readUntil "endInit"
+      expected=( "detected" 56 3 32 3 )
+      parseStatusResults "${expected[@]}"
+      let initResult="$?"
+    ;;
+    "powerResults" )
+      readUntil "endPower"
+      expected=( "detected" 56 2 33 2 )
+      parseStatusResults "${expected[@]}"
+      let powerResult="$?"
+    ;;
+    "interruptResults" )
+      readUntil "endInterrupts"
+      expected=( "detected" 0 2 33 2 )
+      parseStatusResults "${expected[@]}"
+      let interruptResult="$?"
+    ;;
+    "commsResults" )
+      readUntil "endComms"
+      expected=( "detected" 0 0 39 0 )
+      parseStatusResults "${expected[@]}"
+      let commsResult="$?"
+    ;;
+    "currentResults" )
+      readUntil "endCurrent"
+      expected=( 310 15 )
+      parseCurrentLimitResults "${expected[@]}"
+      let currentResult="$?"
+    ;;
+    esac
+  done
+}
+
+# Write the test command file
+# to be executed by dpaView
+# args: <dpa>
+makeCmdFile(){
+
+  if [ -e $CMDFILE ]
+  then
+    if [ "$OVERWRITE" -eq 0 ]
+    then
+      mv $CMDFILE $CMDFILE.bak.`date +%m%d%H%M`
+    else
+      rm $CMDFILE
+    fi
+  fi
+  
+  # Note use of echo to produce strings to 
+  # look for in parseResults
+
+  # Inititialization Test
+  echo "echo beginInit" >> $CMDFILE
+  echo "init $1 a" >> $CMDFILE
+  echo "echo initResults" >> $CMDFILE
+  echo "status $1 a a" >> $CMDFILE
+  echo "echo endInit" >> $CMDFILE
+
+  # Power Test
+  echo "echo beginPower" >> $CMDFILE
+  echo "power $1 a on" >> $CMDFILE
+  echo "echo powerResults" >> $CMDFILE
+  echo "status $1 a a" >> $CMDFILE
+  echo "echo endPower" >> $CMDFILE
+
+  # Interrupt Test
+  echo "echo beginInterrupts" >> $CMDFILE
+  echo "interrupts $1 a a dis" >> $CMDFILE
+  echo "echo interruptResults" >> $CMDFILE
+  echo "status $1 a a" >> $CMDFILE
+  echo "echo endInterrupts" >> $CMDFILE
+
+  # Comms Test
+  echo "echo beginComms" >> $CMDFILE
+  echo "comms $1 a up" >> $CMDFILE
+  echo "echo commsResults" >> $CMDFILE
+  echo "status $1 a a" >> $CMDFILE
+  echo "echo endComms" >> $CMDFILE
+
+  # Current Limit Test
+  echo "echo beginCurrent" >> $CMDFILE
+  echo "setCurrentLimit $1 a 10" >> $CMDFILE
+  echo "echo currentResults" >> $CMDFILE
+  echo "readAdcChannel 2 15" >> $CMDFILE
+  echo "echo endCurrent" >> $CMDFILE
+
+  # Reinitialize the board
+  echo "init $1 a" >> $CMDFILE
+
+  # Always remember to exit dpaView
+  echo "exit" >> $CMDFILE
+
+}
+
+# show test results
+showTestResults(){
+
+  echo;echo "DPA $DPA Test Complete:";echo
+
+  if [ $initResult -eq 0 ]
+  then
+   echo "Initialization Test    [OK]"
+  else
+   echo "Initialization Test    [FAIL] (`printf "0x%02X" $initResult`)"
+  fi
+
+  if [ $commsResult -eq 0 ]
+  then
+   echo "Communications Test    [OK]"
+  else
+   echo "Communications Test    [FAIL] (`printf "0x%02X" $commsResult`)"
+  fi
+
+  if [ $powerResult -eq 0 ]
+  then
+   echo "Power Test             [OK]"
+  else
+   echo "Power Test             [FAIL] (`printf "0x%02X" $powerResult`)"
+  fi
+
+  if [ $interruptResult -eq 0 ]
+  then
+   echo "Interrupt Test         [OK]"
+  else
+   echo "Interrupt Test         [FAIL] (`printf "0x%02X" $interruptResult`)"
+  fi
+
+  if [ $currentResult -eq 0 ]
+  then
+   echo "Current Limit Test     [OK]"
+  else
+   echo "Current Limit Test     [FAIL] (`printf "0x%02X" $currentResult`)"
+  fi
+ 
+}
+
+# write output file header
+writeHeader(){
+  echo "Automated DPA Test Output" > $OUTFILE
+  echo "DPA number $DPA" >> $OUTFILE
+  echo `date` >> $OUTFILE
+}
+
+# main function
+# args: <dpa>
+main(){
+
+  # execute from test directory
+  cd $TESTDIR
+
+  # Make command file
+  makeCmdFile $1
+
+  # clean up any existing output file
+  if [ -e $OUTFILE ]
+  then
+    if [ "$OVERWRITE" -eq 0 ]
+    then
+      mv $OUTFILE  $OUTFILE.bak.`date +%m%d%H%M`
+    else
+      rm $OUTFILE
+    fi
+  fi
+
+  # write output file header
+  writeHeader $1
+
+  # run dpaView
+  runDpaView
+
+  # tidy up the output file
+  stripBlanks $OUTFILE
+
+  # redirect STDIN to OUTFILE
+  0< $OUTFILE
+
+  # evaluate the results
+  parseResults
+
+  # showTestResults
+  showTestResults
+
+  # all done
+  echo
+  echo "Output file:  $TESTDIR/$OUTFILE"
+  echo "Command file: $TESTDIR/$CMDFILE"
+  echo
+  exit
+}
+
+# print usage message
+printUsage(){
+echo
+echo "Usage - `basename $0` <dpa> [<debug> <overwrite>]"
+echo "        dpa       0-5"
+echo "        debug     +d:ON -d:OFF (default is OFF)"
+echo "        overwrite +o:ON -o:OFF (default is ON)"
+echo
+}
+
+# parse command line options
+# args: <optionToParse>
+parseOpt(){
+  for arg in $@
+  do
+  case $arg in
+  [+][Dd])
+    let DEBUG=0x1
+  ;;
+  [-][Dd])
+    let DEBUG=0x0
+  ;;
+  [+][Oo])
+    let OVERWRITE=0x1
+  ;;
+  [-][Oo])
+    let OVERWRITE=0x0
+  ;;
+  [012345])
+    let DPA="$arg"
+  ;;
+  esac
+  done
+return
+}
+
+# let user know that this will alter the DPA
+# state and give them a chance to bail out
+printWarning(){
+  read -p "This will re-initialize DPA $DPA; Do you wish to continue [y]? " foo
+  case $foo in
+    [nN])
+      exit 
+    ;;
+  esac
+}
+
+###################
+## Main entry point
+
+# parse command line options 
+parseOpt $@
+
+if [ "$DPA" -lt "$MIN_DPA" ] || [ "$DPA" -gt "$MAX_DPA" ]
+then
+  printUsage
+  exit
+fi
+
+printWarning
+
+main $DPA 2>/dev/null
+
+

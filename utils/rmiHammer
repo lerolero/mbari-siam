@@ -1,0 +1,23 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+if [ -z "$1" ]
+then
+echo ""
+echo 'usage: rmiHammer <nodeURL>'
+echo ""
+fi
+
+node=$1
+echo hammering $node...
+
+let cycles="0"
+while [ "1" -eq "1" ]
+do
+listPorts $node 
+echo cycle=$cycles `date`
+let cycles="$cycles+1"
+done
+

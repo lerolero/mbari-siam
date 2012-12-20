@@ -1,0 +1,226 @@
+#!/bin/bash
+
+#########################################
+# Name: motorCycle
+#
+# Summary: Invoke scripts to run cyclic
+#          motor behaviors
+#
+# Description:
+# motorCycle calls a specified script in 
+# and endless loop and logs the output.
+# The script should perform one cycle of
+# of motor behavior that is to be repeated
+# indefintely.
+# 
+# The makes it easy to change motor behavior
+# by plugging in different cycle scripts.
+#
+# see default.mc for example cycle script
+#
+# Author: k headley
+#
+# Copyright MBARI 2009
+#
+#########################################
+
+#########################################
+# Script configuration defaults
+# casual users should not need to change
+# anything below this section
+#########################################
+RUNDATE=`date +%m%d%y-%H%M%S`
+SCRIPT=""
+LOG_SUFFIX="-$RUNDATE.log"
+LOGFILE=""
+SCRIPT_PID=""
+PID_FILE="/tmp/mcycle-$RUNDATE.pid"
+
+#################################
+# Script variable initialization
+#################################
+VERBOSE="FALSE"
+START_DELAY_SEC=0
+
+#################################
+# Function Definitions
+#################################
+
+#################################
+# name: sigTrap
+# description: signal trap callback
+# will interrupt 
+# args: none
+#################################
+sigTrap(){
+
+  # stop the currently running script
+  # and exit
+  echo "Stopping $SCRIPT PID=$SCRIPT_PID"
+  kill 0
+  rm $PID_FILE
+  exit 0;
+}
+
+#################################
+# name: printUsage
+# description: print use message
+# args: none
+#################################
+printUsage(){
+    echo
+    echo "usage: `basename $0` [options] script [arg...]"
+    echo
+    echo "-d <startDelaySec> : Start delay     [$START_DELAY_SEC]"
+    echo "-l <logFile>       : log file        [<script>$LOG_SUFFIX]"
+    echo "-V                 : verbose output  [$VERBOSE]"
+    echo "-h                 : print this help message"
+    echo ""
+    echo
+}
+
+########################################
+# name: vout
+# description: print verbose message to stderr
+# args:
+#     msg: message
+########################################
+vout(){
+    if [ "$VERBOSE" == "TRUE" ]
+    then
+	echo "$1" >&2
+    fi
+}
+
+########################################
+# name: exitError
+# description: print use message to stderr
+# args:
+#     msg:        error message
+#     returnCode: exit status to return
+########################################
+exitError(){
+    echo >&2
+    echo "$1" >&2
+    echo >&2
+    exit $2
+}
+
+##########################
+# Script main entry point
+##########################
+
+# Argument processing
+
+# process arguments
+let "shiftCount=0"
+while getopts d:l:hV Option
+do
+    case $Option in
+	d ) START_DELAY_SEC=$OPTARG
+	    let "shiftCount=$shiftCount+2"
+	;;
+	l ) LOGFILE=$OPTARG
+	    let "shiftCount=$shiftCount+2"
+	;;
+	V ) VERBOSE="TRUE"
+	    let "shiftCount=$shiftCount+1"
+      	;;
+	h) printUsage
+	  exit 0
+	;;
+	*) exit 0 # getopts outputs error message
+	;;
+    esac
+done
+
+# shift arguments to get to script name
+while [ "$shiftCount" -gt 0 ]
+do
+shift
+let "shiftCount=$shiftCount-1"
+done
+echo "all args:$*"
+# Script name should be 
+# last argument on the command line
+# after options
+SCRIPT=$*
+SCRIPT_NAME=$1
+
+if [ -f "$SCRIPT_NAME" ]
+then
+
+ if [ ! "$LOGFILE" ]
+ then
+   # peel the file name and strip the suffix
+   # note that some basename impls don't support
+   # -s (e.g. the one on FOCE), hence we use sed
+   LOGFILE=`basename $SCRIPT_NAME | sed -e "s/\(.*\)\..*/\1/"`
+ fi
+else
+ echo
+ echo "Error: script file not found [$SCRIPT_NAME]"
+ echo 
+ printUsage
+exit 0
+fi
+
+LOGFILE=$LOGFILE$LOG_SUFFIX
+vout "SCRIPT : $SCRIPT"
+vout "LOGFILE: $LOGFILE"
+vout "START_DELAY_SEC: $START_DELAY_SEC"
+
+# call sigTrap on INT,TERM (can add EXIT)
+trap sigTrap INT TERM
+
+# reset trapped signals
+# trap - INT TERM EXIT
+
+# clear log file
+echo "" > $LOGFILE
+
+if [ "$START_DELAY_SEC" -gt 0 ]
+then
+echo "waiting for start delay [$START_DELAY_SEC]"
+sleep $START_DELAY_SEC
+fi
+
+echo
+echo
+echo "====================" |tee -a $LOGFILE
+echo "date             : `date`" |tee -a $LOGFILE
+echo "motorCycle PID   : $$ [$PID_FILE]" |tee -a $LOGFILE
+echo "running script   : `basename $SCRIPT`" |tee -a $LOGFILE
+echo "script output to : $LOGFILE" |tee -a $LOGFILE
+echo "====================" |tee -a $LOGFILE
+echo
+
+echo "$$" > $PID_FILE
+
+while [ 1 ]
+do
+# run script and optionally log output
+ # echo date to script log
+ echo `date` >> $LOGFILE
+
+ # run the script in background
+ $SCRIPT >> $LOGFILE &
+
+ # get the PID of the script
+ # so it can be stopped if motorCycle is killed
+ SCRIPT_PID=$!
+
+ # wait for script to complete
+ echo "waiting for $SCRIPT PID=$SCRIPT_PID"
+ wait ${SCRIPT_PID}
+
+ # log exit code
+ exitCode=$?
+ echo "exit $exitCode" >> $LOGFILE
+
+ if [ "$exitCode" -ne 0 ]
+ then 
+  echo "error executing `basename $SCRIPT`: see $LOGFILE"
+  break
+ fi
+done

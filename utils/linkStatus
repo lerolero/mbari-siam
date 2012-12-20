@@ -1,0 +1,24 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# This script is invoked by Node application to determine if specified 
+# network interface (e.g. "eth0", "ppp") is currently connected. If 
+# interface is connected, return 0, else return 1.
+interface=$1;
+/sbin/ifconfig | grep $interface
+result=$?
+if [ $result -eq 0 ]
+then
+  # Interface IS connected
+  exit 0;
+else
+  # Interface is NOT connected
+  exit 1;
+fi
+
+
+
+
+

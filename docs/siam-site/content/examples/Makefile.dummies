@@ -1,0 +1,70 @@
+
+#######################################
+# This file contains 
+# dummy PUCK targets
+#######################################
+
+# <!-- $Header:$	--> #
+
+dummies.help:
+	echo "dummies.all   - build all test targets"
+	echo "dummies.ctd   - ctd test instruments"
+	echo "dummies.adcp  - adcp test instruments"
+	echo "dummies.co2   - CO2 test instruments"
+	echo "dummies.no3   - nitrate test instruments"
+	echo "dummies.fluor - fluorometer test instruments"
+	echo "dummies.met   - meteorological test instruments"
+	echo "dummies.rad   - radiometer test instruments"
+	echo "dummies.sum   - summarizer test instruments"
+	echo "dummies.gps   - GPS test instruments"
+	echo "dummies.o2    - Dissolved oxygen test instruments"
+
+dummies.all:puckxml dummies.test dummies.ctd dummies.adcp dummies.co2 dummies.no3 dummies.fluor dummies.met dummies.rad dummies.sum dummies.gps dummies.o2
+
+dummies.test:
+	mkpuck org.mbari.siam.devices.dummy.DummyInstrument 'Dummy' 1151 $(JAVA_DEV_ROOT)/ports/DummyInstrument-1151.jar $(JAVA_DEV_ROOT)/puckxml/blank_comments.xml 'sampleSchedule = 30' 'registryName = Dummy' 'UUID = 00000000-0000-0000-0000-000000000000' ;\
+	mkpuck org.mbari.siam.devices.dummy.DummyInstrument 'Dummy' 1150 $(JAVA_DEV_ROOT)/ports/DummyInstrument-1150.jar $(JAVA_DEV_ROOT)/puckxml/DummyInstrument-1150.xml 'sampleSchedule = 5' 'UUID = 00000000-0000-0000-0000-000000000000' ;\
+	mkpuck org.mbari.siam.devices.dummy.DummyInstrument 'Dummy' 1151 $(JAVA_DEV_ROOT)/ports/DummyInstrument-1151.jar $(JAVA_DEV_ROOT)/puckxml/DummyInstrument-1151.xml 'sampleSchedule = 5' 'UUID = 00000000-0000-0000-0000-000000000000' ;\
+
+dummies.ctd: 
+	mkpuck org.mbari.siam.devices.dummy.VarDummyInstrument 'DummySeabird37' 1025 $(JAVA_DEV_ROOT)/ports/VarDummyInstrument-1025.jar $(JAVA_DEV_ROOT)/puckxml/blank_comments.xml  'sampleSchedule = 600' 'dataLength = 100' 'registryName = DummySeabird37' 'UUID = 00000000-0000-0000-0000-000000000000' ;\
+	mkpuck org.mbari.siam.devices.dummy.VarDummyInstrument 'DummySeabird' 1035 $(JAVA_DEV_ROOT)/ports/VarDummyInstrument-1035.jar $(JAVA_DEV_ROOT)/puckxml/blank_comments.xml  'sampleSchedule = 600' 'dataLength = 72' 'UUID = 00000000-0000-0000-0000-000000000000' ;\
+
+dummies.adcp: 
+	mkpuck org.mbari.siam.devices.dummy.VarDummyInstrument 'DummyWorkhorse' 1022 $(JAVA_DEV_ROOT)/ports/VarDummyInstrument-1022.jar $(JAVA_DEV_ROOT)/puckxml/blank_comments.xml  'sampleSchedule = 3600' 'dataLength = 1348' 'UUID = 00000000-0000-0000-0000-000000000000' ;\
+
+dummies.co2: 
+	mkpuck org.mbari.siam.devices.dummy.VarDummyInstrument 'DummypCO2' 1020 $(JAVA_DEV_ROOT)/ports/VarDummyInstrument-1020.jar $(JAVA_DEV_ROOT)/puckxml/blank_comments.xml 'sampleSchedule = 3600' 'dataLength = 182' 'registryName = DummypCO2' 'UUID = 00000000-0000-0000-0000-000000000000' ;\
+
+dummies.no3: 
+	mkpuck org.mbari.siam.devices.dummy.VarDummyInstrument 'DummyISUS' 1036 $(JAVA_DEV_ROOT)/ports/VarDummyInstrument-1036.jar $(JAVA_DEV_ROOT)/puckxml/blank_comments.xml  'sampleSchedule = 3600' 'dataLength = 4861' 'UUID = 00000000-0000-0000-0000-000000000000' ;\
+
+dummies.o2:
+	mkpuck org.mbari.siam.devices.dummy.VarDummyInstrument 'DummyAanderaa' 1039 $(JAVA_DEV_ROOT)/ports/VarDummyInstrument-1039.jar $(JAVA_DEV_ROOT)/puckxml/blank_comments.xml  'sampleSchedule = 600' 'dataLength = 290' 'UUID = 00000000-0000-0000-0000-000000000000' ;\
+
+dummies.fluor:
+	mkpuck org.mbari.siam.devices.dummy.VarDummyInstrument 'DummyWETLabs' 1038 $(JAVA_DEV_ROOT)/ports/VarDummyInstrument-1038.jar $(JAVA_DEV_ROOT)/puckxml/blank_comments.xml  'sampleSchedule = 600' 'dataLength = 452' 'UUID = 00000000-0000-0000-0000-000000000000' ;\
+
+dummies.met:
+	mkpuck org.mbari.siam.devices.dummy.VarDummyInstrument 'DummyAsimet' 1021 $(JAVA_DEV_ROOT)/ports/VarDummyInstrument-1021.jar $(JAVA_DEV_ROOT)/puckxml/blank_comments.xml 'sampleSchedule = 600' 'dataLength = 34' 'UUID = 00000000-0000-0000-0000-000000000000' ;\
+	mkpuck org.mbari.siam.devices.dummy.VarDummyInstrument 'DummyASIMET' 1037 $(JAVA_DEV_ROOT)/ports/VarDummyInstrument-1037.jar $(JAVA_DEV_ROOT)/puckxml/blank_comments.xml  'sampleSchedule = 600' 'dataLength = 142' 'UUID = 00000000-0000-0000-0000-000000000000' ;\
+
+dummies.rad:
+	mkpuck org.mbari.siam.devices.dummy.VarDummyInstrument 'DummyOCR' 1023 $(JAVA_DEV_ROOT)/ports/VarDummyInstrument-1023.jar $(JAVA_DEV_ROOT)/puckxml/blank_comments.xml 'sampleSchedule = A */0 */10 6-18 * * * * GMT-7 *' 'dataLength = 2488' 'acquireSleepSec = 10' 'UUID = 00000000-0000-0000-0000-000000000000' ;\
+	mkpuck org.mbari.siam.devices.dummy.VarDummyInstrument 'DummyOCR' 1024 $(JAVA_DEV_ROOT)/ports/VarDummyInstrument-1024.jar $(JAVA_DEV_ROOT)/puckxml/blank_comments.xml 'sampleSchedule = A */0 */10 6-18 * * * * GMT-7 *' 'dataLength = 2488' 'acquireSleepSec = 10' 'UUID = 00000000-0000-0000-0000-000000000000' ;\
+	mkpuck org.mbari.siam.devices.dummy.VarDummyInstrument 'DummyOCR' 1033 $(JAVA_DEV_ROOT)/ports/VarDummyInstrument-1033.jar $(JAVA_DEV_ROOT)/puckxml/blank_comments.xml 'sampleSchedule = A */0 */10 6-18 * * * * GMT-7 *' 'dataLength = 2488' 'acquireSleepSec = 10' 'UUID = 00000000-0000-0000-0000-000000000000' ;\
+
+dummies.sum:
+	mkpuck org.mbari.siam.devices.dummy.VarDummyInstrument 'DummyWETLabsSummarizer' 1026 $(JAVA_DEV_ROOT)/ports/VarDummyInstrument-1026.jar $(JAVA_DEV_ROOT)/puckxml/blank_comments.xml  'sampleSchedule = 3600' 'dataLength = 1450' 'UUID = 00000000-0000-0000-0000-000000000000' ;\
+	mkpuck org.mbari.siam.devices.dummy.VarDummyInstrument 'DummyAquadoppSummarizer' 1027 $(JAVA_DEV_ROOT)/ports/VarDummyInstrument-1027.jar $(JAVA_DEV_ROOT)/puckxml/blank_comments.xml  'sampleSchedule = 3600' 'dataLength = 719' 'UUID = 00000000-0000-0000-0000-000000000000' ;\
+	mkpuck org.mbari.siam.devices.dummy.VarDummyInstrument 'DummySeabirdSummarizer' 1028 $(JAVA_DEV_ROOT)/ports/VarDummyInstrument-1028.jar $(JAVA_DEV_ROOT)/puckxml/blank_comments.xml  'sampleSchedule = 3600' 'dataLength = 1500' 'UUID = 00000000-0000-0000-0000-000000000000' ;\
+	mkpuck org.mbari.siam.devices.dummy.VarDummyInstrument 'DummyWETLabsSummarizer' 1029 $(JAVA_DEV_ROOT)/ports/VarDummyInstrument-1029.jar $(JAVA_DEV_ROOT)/puckxml/blank_comments.xml  'sampleSchedule = 3600' 'dataLength = 900' 'UUID = 00000000-0000-0000-0000-000000000000' ;\
+	mkpuck org.mbari.siam.devices.dummy.VarDummyInstrument 'DummyAquadoppSummarizer' 1030 $(JAVA_DEV_ROOT)/ports/VarDummyInstrument-1030.jar $(JAVA_DEV_ROOT)/puckxml/blank_comments.xml  'sampleSchedule = 3600' 'dataLength = 236' 'UUID = 00000000-0000-0000-0000-000000000000' ;\
+	mkpuck org.mbari.siam.devices.dummy.VarDummyInstrument 'DummyAanderaaSummerizer' 1031 $(JAVA_DEV_ROOT)/ports/VarDummyInstrument-1031.jar $(JAVA_DEV_ROOT)/puckxml/blank_comments.xml  'sampleSchedule = 3600' 'dataLength = 300' 'UUID = 00000000-0000-0000-0000-000000000000' ;\
+	mkpuck org.mbari.siam.devices.dummy.VarDummyInstrument 'DummyWorkhorseSummarizer' 1032 $(JAVA_DEV_ROOT)/ports/VarDummyInstrument-1032.jar $(JAVA_DEV_ROOT)/puckxml/blank_comments.xml  'sampleSchedule = 3600' 'dataLength = 10100' 'UUID = 00000000-0000-0000-0000-000000000000' ;\
+
+dummies.gps:
+	mkpuck org.mbari.siam.devices.dummy.VarDummyInstrument 'DummyGPS' 1034 $(JAVA_DEV_ROOT)/ports/VarDummyInstrument-1034.jar $(JAVA_DEV_ROOT)/puckxml/blank_comments.xml  'sampleSchedule = 600' 'dataLength = 70' 'UUID = 00000000-0000-0000-0000-000000000000' ;\
+
+
+

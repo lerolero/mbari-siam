@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id:$ -->
+
+<!-- use some project name, e.g., 2011FOCE -->
+<project name="projectName" basedir=".">
+	
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Load property files in this order:
+
+    1. User properties
+    2. This level properties
+
+    This allows a user to have specific settings that override any other
+    settings (other than command-line, which always take precedence).
+    -->
+    <property file="${user.home}/build.properties" />
+    <property file="build.properties" />
+	
+	<!-- show help  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	
+	<target name="help">
+	<local name="pname"/>
+    <property name="pname" value="projectName" />
+		<echo>
+		${pname}.all            - build all FOCE service JARs and native code
+		${pname}.foo            - foo service JARs
+		${pname}.bar            - bar service JARs
+		</echo>
+	</target>
+		
+	<!-- Build all Service JARs  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	
+	<target name="all" depends="projectName.foo,projectName.bar">
+		<echo>Building service JARs - complete</echo>
+	</target>
+		
+	<!-- foo Service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="foo" depends="puckxml">
+		<echo>Building foo service JARs</echo>
+		<exec executable="mksiamjar">
+		<arg line="paste mksiamjar args here" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="paste mkpuck args here" />
+		</exec>		
+	</target>
+	
+	<!-- bar Service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="foo" depends="puckxml">
+		<echo>Building bar service JARs</echo>
+		<exec executable="mksiamjar">
+		<arg line="paste mksiamjar args here" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="paste mkpuck args here" />
+		</exec>		
+	</target>
+	</project>

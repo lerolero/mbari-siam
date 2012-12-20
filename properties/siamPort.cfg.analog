@@ -1,0 +1,335 @@
+##############################################################################
+# siamPort.cfg modified for refactoring due to FOCE changes		     #
+# 17 april 2008, rah							     #
+#                                                                            #
+# Note -								     #
+# There are now additional types of instrument ports.  For FOCE, these	     #
+# include analogPort (e.g. analogPort16) or generic instrument ports without #
+# a hardware resource assigned (e.g. instrumentPort17).			     #
+# Due to the way this was structured with the original SIAM, each port must  #
+# have a unique "index".  E.g., if 0-15 are serial ports, the analog ports   #
+# might start at 16, as in analogPort16 above.  Simply put, the trailing     #
+# number in the port name must be unique across all types of ports.	     #
+# There is no longer a restriction that these indices must be contiguous.    #
+# We will currently scan for 100 ports starting at index 0.		     #
+##############################################################################
+# The siam port configuration file allows the assignment of platform         #
+# specific serial port names to siam serial port identifiers.  Assign        #
+# the name for the platform specific serial port as follows                  #
+#                                                                            #
+# serialPort<siam port number> = <platform serial port name>                 #
+#                                                                            #
+# For example:                                                               #
+#                                                                            #
+# serialPort0 = /dev/ttySA0                                                  #
+# serialPort1 = /dev/ttySx2                                                  #
+#                                                                            #
+# -or-                                                                       #
+#                                                                            #
+# serialPort0 = COM1                                                         #
+# serialPort1 = COM3                                                         #
+# serialPort2 = COM4                                                         #
+#                                                                            #
+# Use siam port numbers in order, if a number in the siam port number        #
+# sequence is missing the PortManager will stop searching the config         #
+# file for ports.                                                            #
+#                                                                            #
+# After the ports are configured set the serviceJar associated with the      #
+# each port as follows                                                       #
+#                                                                            #
+# serviceJar<siam port number> = <service jar name>                          #
+#                                                                            #
+# For example:                                                               #
+#                                                                            #
+# serviceJar0     = CompassKVHC100.jar                                       #
+#                                                                            #
+# -or-                                                                       #
+#                                                                            #
+# serviceJar1     = OceanMaster5000.jar                                      #
+#                                                                            #
+# If a port does not have an instrument then leave it's serviceJar           #
+# entry blank.                                                               #
+#                                                                            #
+# Assign the name for the platform specific power ports as follows           #
+# powerPort<siam port number> = <platform power port type>                   #
+#                                                                            #
+# For example:                                                               #
+#                                                                            #
+# powerPort0      = NULL                                                     #
+#                                                                            #
+# would be a NullPowerPort -or-                                              #
+#                                                                            #
+# powerPort3      = DPA                                                      #
+#                                                                            #
+# would be a SidearmPowerPort                                                #
+#                                                                            #
+##############################################################################
+# For FOCE, the powerPortN entry has 2 or 3 numerical entries in the form of:#
+# powerPortN = <board> <bit> [numBits]					     #
+# e.g.									     #
+# powerPort1 = 0 2 3							     #
+# signifies relay board 0, power bits 2-4 (3 bits).			     #
+# If the last (numBits) parameter is missing, it implies one bit.  This is   #
+# the normal case.  E.g.						     #
+# powerPort2 = 0 1							     #
+# signifies relay board 0, power bit 1					     #
+#                                                                            #
+# The analog channels are designated by:				     #
+# analogPortN = <board> <channel> <numChans>				     #
+# analogNameN = <symbolicName>						     #
+#                                                                            #
+# "analogName" is optional, but helps in looking at it with listPorts.  E.g. #
+# analogPort16 = 0 0 4							     #
+# analogName16 = pH							     #
+# signifies a SIAM "Instrument" composed of 4 analog ports on board 0	     #
+# using analog ports 0-3.  This instrument will be known as "pH".	     #
+##############################################################################
+
+# See foce.devices.analog.AnalogInstrument for how to configure analogPort
+analogPort0	= 0 0 4
+#analogPort0	= 0 0
+#powerPort0	= 1 0 4
+powerPort0	= 0 15
+serviceJar0	= SBE18-1646.jar
+analogName0	= pH
+
+serialPort1     = /dev/ttyS4
+powerPort1      = 0 0
+serviceJar1     = Seabird52MP-1642.jar
+
+#serialPort2     = /dev/ttyS5
+#powerPort2      = 0 1
+#serviceJar2     = NortekVector-1644.jar
+
+#serialPort7     = /dev/ttyS10
+#powerPort7      = 0 7
+#serviceJar7     = Workhorse-1645.jar
+
+
+##############################################################################
+# The jarLocation entry is location of the serviceJars relative to           #
+# SIAM_HOME.                                                                 #
+#                                                                            #
+# For example:                                                               #
+#                                                                            #
+# jarLocation     = ports                                                    #
+#                                                                            #
+# The example above means the service jars would be located at               #
+#                                                                            #
+#/$SIAM_HOME/jars                                                            #
+#                                                                            #
+##############################################################################
+
+jarLocation     =  ports    
+nodeID		= 1643
+
+
+##############################################################################
+# The logLocation entry is location of the serviceLogs relative to           #
+# SIAM_HOME.                                                                 #
+#                                                                            #
+# For example:                                                               #
+#                                                                            #
+# logLocation     = logs                                                     #
+#                                                                            #
+# The example above means the service logs would be located at               #
+#                                                                            #
+#/$SIAM_HOME/logs                                                            #
+#                                                                            #
+##############################################################################
+
+logLocation =  logs   
+
+
+##############################################################################
+# The platformSerialPorts entry informs RXTX of all of the available serial  #
+# ports on the platform.  RXTX will search the system for serial ports if    #
+# this entry is left blank or not present, however, RXTX may not find them   #
+# all.  If this entry is set RXTX will only know about these serial ports    #
+# and will not search for others.  For PC based Linux and Windows systems it #
+# may be desirable to remove or comment out this entry.  For sideARM systems #
+# the entry should be set as follows.                                        #
+#                                                                            #
+# platformSerialPorts     =       /dev/ttySX0:\                              #
+#                                 /dev/ttySX1:\                              #
+#                                 /dev/ttySX2:\                              #
+#                                 /dev/ttySX3:\                              #
+#                                 /dev/ttySX4:\                              #
+#                                 /dev/ttySX5:\                              #
+#                                 /dev/ttySX6:\                              #
+#                                 /dev/ttySX7:\                              #
+#                                 /dev/ttySA2                                #
+#                                                                            #
+# Note you may use the '\' to follow on an entry but the entry must have no  #
+# spaces in it.                                                              #
+#                                                                            #
+##############################################################################
+
+platformSerialPorts     =       /dev/ttyS2:\
+                                /dev/ttyS4:\
+                                /dev/ttyS5:\
+                                /dev/ttyS6:\
+                                /dev/ttyS7:\
+                                /dev/ttyS8:\
+                                /dev/ttyS9:\
+                                /dev/ttyS10:\
+                                /dev/ttyS11:\
+
+maxPorts = 20
+                                
+##############################################################################
+# The platformPower entry the FOCE instrument parser about where the power   #
+# relay boards reside in I/O space.  You may multiple entries on this line   #
+# to indicate multiple power relay boards; e.g. platformPower = 0x310 0x320  #
+# Similarly, platformAnalog informs the parser about the I/O address(es) of  #
+# the A/D board(s).							     #
+##############################################################################
+
+platformPower = 0x310 0x320
+platformAnalog = 0x300
+
+
+##############################################################################
+# The codeBaseLocation entry is the absolute location of the nodes codebase. #
+#                                                                            #
+# For example:                                                               #
+#                                                                            #
+# codeBaseLocation      = /mnt/hda/codebase                                  #
+#                                                                            #
+##############################################################################
+
+codeBaseLocation        =  /home/ops/siam/codebase
+
+
+##############################################################################
+# The following properties are for the proper operation of SleepManager,     #
+# which manages putting the processor into low-power sleep mode and waking   #
+# it back up again.                                                          #
+#                                                                            #
+# Most of these properties have a reasonable default value in the code, and  #
+# thus can be omitted if you're willing to accept the defaults               #
+#                                                                            #
+##############################################################################
+
+#enabled:  true to enable, false means you'll never go to sleep
+SleepManager.enabled     = false
+
+#sleepString:  string to send to rootserver to put us to sleep
+#This can be either "sleep\n" or "rootcmd" + the name of script
+# in /root/rootsrv
+SleepManager.sleepString = nice --20 /root/suspend.sh
+
+#pollSeconds:  How often we poll to see if we can go to sleep
+SleepManager.pollSeconds = 2 
+
+#rootSrvPort:  TCP Port number for root server
+#SleepManager.rootsrvPort = 7932
+
+#lookupRetries:  How many times we try to find MSP430 service before we give up
+#SleepManager.lookupRetries = 30
+
+#environmentalRetries:  Retry count for talking to MSP430
+#SleepManager.environmentalRetries = 3
+
+#wakeupSeconds:  How many seconds we wake up early, to allow things to
+# stabilize before sampling.  
+SleepManager.wakeupSeconds = 3
+
+#minSleepSeconds:  Minimum time we'll go to sleep.  If less than this,
+# we'll just stay awake.  Note this MUST be larger than wakeupSeconds
+SleepManager.minSleepSeconds = 5
+
+#schedLookaheadSeconds:  Parameter passed to scheduler to look for next
+# sampling event.  Since the scheduler can't tell us if the next event
+# is longer than this, this becomes the maximum time we'll go to sleep.
+# Note this MUST be larger than wakeupSeconds
+SleepManager.schedLookaheadSeconds = 1800
+
+
+
+##############################################################################
+# The following NodeService and CommsManager properties are for managing the #
+# communications link between the remote node and the shore portal.          #
+#                                                                            #
+# Following is a description of the comms session and what the properties    #
+# mean.  All values are in milliseconds, and have reasonable defaults.       #
+#                                                                            #
+# CommsSchedulerTask is responsible for ensuring that a comms link is up for #
+# certain number of minutes per hour.  Every <NodeService.leaseRenewalInterval>#
+# milliseconds, CommsSchedulerTask establishes a lease (which ensures that   #
+# comms are alive) for <NodeService.leaseInterval> milliseconds.	     #
+#                                                                            #
+# CommsManager.enabled enables CommsLeaseListener.  This should normally     #
+# remain true.  If false, not only will CommsLeaseListener never set up the  #
+# comms link, but it will also never notify the portal side that the link    #
+# is up, if e.g. it's turned on by the boot script.	                     #
+#                                                                            #
+# CommsManager.onString and CommsManager.offString are the names of Linux    #
+# executables to set up and tear down the comms link, respectively.  If      #
+# these properties are not defined, CommsLeaseListener does not try to       #
+# set up the link, but will directly send the Portal notifications.  This is #
+# very useful for testing, e.g. on ethernet.  Just comment out the 	     #
+# properties, and it will work on ethernet or any other permanently connected#
+# device.								     #
+#                                                                            #
+# Conversely, CommsManager.protocolWaitTime is the wait time before the link #
+# is torn down.  That is, when the last lease either expires or is terminated#
+# CommsLeaseListener will send a notifyPortalDisconnecting message, then     #
+# wait for protocolWaitTime, and then tear down the link by calling 	     #
+# CommsManager.offString						     #
+#                                                                            #
+# CommsManager.processWaitTime is the time, in milliseconds, that we'll wait #
+# for the onString or offString scripts to complete, before we timeout and   #
+# kill the respective processes.  If it's missing or <= 0, we wait forever.  #
+##############################################################################
+
+CommsManager.enabled = false
+CommsManager.auxEnabled = false
+
+# NodeService.leaseInterval
+# (connection duration)
+# 60000 primary nodes
+# 10000 for the subnodes 
+# (1/18/2006 klh/rah)
+NodeService.leaseInterval = 60000
+NodeService.auxLeaseInterval = 60000
+
+# NodeService.leaseRenewalInterval
+# (connection period)
+# 900000 for deployment
+# 120000 for testing on ethernet
+NodeService.leaseRenewalInterval = 120000
+NodeService.auxLeaseRenewalInterval = 900000
+
+# CommsManager.onString,offString
+# (system call to exec on connection)
+# Use of CommsManager.onString and CommsManager.offString are deprecated(?)
+# They were made obsolete by mods to the time sync mechanism (?)
+# (1/18/2006 klh/rah)
+CommsManager.parentLinkOn = /bin/true
+CommsManager.parentLinkOff = /bin/true
+
+# CommsManager.parentLinkStatus
+# (system call to check status of network interfaces)
+#CommsManager.parentLinkStatus = linkStatus eth0
+
+#CommsManager.auxLinkOn = pon 
+#CommsManager.auxLinkOff = commsOff  
+
+# CommsManager.protocolWaitTime
+# (time to wait when establishing connection)
+# 15000 primary nodes with Globalstar wireless
+# 5000 for other nodes
+# 0 for testing on ethernet
+# (1/18/2006 klh/rah)
+CommsManager.protocolWaitTime = 5000
+CommsManager.auxProtocolWaitTime = 5000
+
+# CommsManager.processWaitTime
+# (time to wait when disconnection)
+# 240000 for primary nodes with Globalstar wireless
+# 60000 for primary nodes
+# 30000 for the subnodes 
+# (1/18/2006 klh/rah)
+CommsManager.processWaitTime = 60000
+CommsManager.auxProcessWaitTime = 60000

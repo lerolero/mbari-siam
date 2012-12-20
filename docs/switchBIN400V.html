@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+  <meta name="Author" content="Tom O'Reilly">
+  <meta name="GENERATOR"
+ content="Mozilla/4.79 [en] (Windows NT 5.0; U) [Netscape]">
+  <title>switchBIN400V</title>
+</head>
+<body>
+<b>NAME</b>
+<blockquote>switchBIN400V - get status of HV switch, or toggle HV power
+to subnodes<br>
+</blockquote>
+<b>SYNOPSIS</b>
+<blockquote>
+  <pre>switchBIN400V node portName [ON|OFF|<span
+ style="font-style: italic;">channel</span>ON|<span
+ style="font-style: italic;">channel</span>OFF|ALLON|ALLOFF]<span
+ style="font-style: italic;"></span><span style="font-style: italic;"></span></pre>
+</blockquote>
+<b>DESCRIPTION</b>
+<blockquote>When two arguments are specified, the <span
+ style="font-style: italic;">switchBIN400V</span> utility shows status
+of the high voltage switch(es) as reported by the SIAM power service
+running on the specified node and port.&nbsp; If a third argument is
+specified, <span style="font-style: italic;">switchBIN400V</span>
+actually toggles high-voltage power to subnodes through the SIAM power
+service running on the specified node and port. The optional third
+argument specifies the particular switch to toggle, is
+case-insensitive, and can be one of
+the following:<br>
+  <ul>
+    <li>ON or OFF: valid for power systems with just one HV switch,
+such as the surface node</li>
+    <li><span style="font-style: italic;">channel</span>ON or <span
+ style="font-style: italic;">channel</span>OFF, where <span
+ style="font-style: italic;">channel</span> is "0" or "1": valid for
+power systems with two power channels, such as a BIN. <span
+ style="font-weight: bold;">NOTE</span>: there is no space allowed
+between <span style="font-style: italic;">channel</span> and ON/OFF.<br>
+    </li>
+    <li>ALLON or ALLOFF: valid for any power system<br>
+    </li>
+  </ul>
+  <br>
+The results of <span style="font-style: italic;">switchBIN400V</span>
+depend on what is "downstream" in the power architecture from the
+specified
+node. The <span style="font-style: italic;">switchBIN400V</span>
+utility supercedes the older <span style="font-style: italic;">switchHiVoltage</span>
+utility, which is obsolete.<br>
+  <p>The portName can be abbreviated as an integer, i.e. "/dev/ttySX13"
+can
+be abbreviated as simply "13". Thus the following examples switches
+power through the service running on port /dev/ttySX13 of "surface":<br>
+  </p>
+  <blockquote>
+    <pre>% switchBIN400V surface 13 ON<br></pre>
+  </blockquote>
+  <p>This utility may be run on the same host as the node, or on any
+networked
+host from which the node host is accessible. If run on the node's host,
+then <i>node</i> can be specified as "localhost" or simply "loc". </p>
+For example, the following command displays the switch status on node1,
+assuming the SIAM power service is running on port /dev/ttySX13: <br>
+  <pre style="margin-left: 40px;">% switchBIN400V node1 /dev/ttySX13<br></pre>
+  <p>The following command switches 400V OFF on the "surface" node,
+assuming the SIAM service is running on port /dev/ttyS0:<br>
+  </p>
+  <pre style="margin-left: 40px;">% switchBIN400V surface 0 off<br></pre>
+The following command switches 400V ON to switch channel 0, assuming
+the SIAM service is running on port /dev/ttySX13:<br>
+  <pre style="margin-left: 40px;">% switchBIN400V node5 13 0on<br></pre>
+  <p>Note that there's no space between power channel number ("0") and
+"on".<br>
+  </p>
+</blockquote>
+<p><br>
+<b>ENVIRONMENT</b>
+</p>
+<blockquote>The following environment variables must be set:</blockquote>
+<ul>
+  <li>JAVA_HOME - location of Java installation, e.g.<i> /j9</i> or <i>/opt/java/jdk1.3.1</i></li>
+  <li>JAVA - name of the JVM. E.g. on a Sidearm, JAVA should be set to <i>j9.
+    </i>On
+a workstation with Sun's Java installed, JAVA could be set to <i>java</i>.</li>
+  <li>SIAM_HOME - top of the SIAM directory tree</li>
+  <li>SIAM_CLASSPATH - on a Sidearm, SIAM_CLASSPATH should be set to <i>$JAVA_HOME/lib/jclMax/classes.zip:$JAVA_HOME/lib/prsnlmot.jar:$JAVA_HOME/lib/RXTXcomm.jar:$SIAM_HOME/classes</i>.&nbsp;
+On X86 system, SIAM_CLASSPATH should be set to<i> $SIAM_HOME/classes</i></li>
+</ul>
+<p><br>
+<b>SEE ALSO</b>
+</p>
+<blockquote>&nbsp;<span style="text-decoration: underline;"><a
+ href="binBackups.html">binBackups</a></span><br>
+&nbsp;</blockquote>
+</body>
+</html>

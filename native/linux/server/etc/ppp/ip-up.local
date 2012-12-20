@@ -1,0 +1,16 @@
+#!/bin/bash
+# Executed when ppp link comes up
+
+# Add route to moored network nodes
+/sbin/route add -net 134.89.36.0 netmask 255.255.255.0 gw mse
+/sbin/route add -net 10.1.36.0 netmask 255.255.255.0 gw mse
+su -l -c "/home/ops/siam/utils/portalLinkNotify $5 up" ops
+
+# Log the IP-UP event
+echo "IP-UP `date +'%s %b %d %Y %H:%M:%S'` $*" >>/var/log/ppp.log
+
+# Notify users of connection
+/home/ops/mse/siam/shoreUtils/connectAlert mse 'chma@mbari.org oreilly@mbari.org'
+
+# run autoScript utility
+/home/ops/mse/siam/shoreUtils/manageAutoScript /home/ops/mse/siam mse:/mnt/hda/siam/ 'headley@mbari.org oreilly@mbari.org bkieft@mbari.org' >& /tmp/autoscript.out &

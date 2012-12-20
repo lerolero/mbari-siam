@@ -1,0 +1,91 @@
+#!/bin/csh
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Plot NTP offset as function of time
+
+set terminal=
+set output=
+# Process leading options
+while ($#argv > 0) 
+  if ("$argv[1]" == "-terminal") then
+    shift
+    set terminal = `echo set terminal $argv[1]`
+  else if ("$argv[1]" == "-output") then
+    shift
+    set output = `echo set output \"$argv[1]\"`
+  else
+    break    # end of options
+  endif
+  shift
+
+end
+
+if ($#argv < 2) then
+  echo usage: `basename $0` '[-terminal type][-output file] nodeName portalLog'
+  exit 1
+endif
+
+set nodeName=$argv[1]
+set portalLog=$argv[2]
+
+set awkfile=/tmp/plotNtpOffset.awk
+
+cat > $awkfile <<'EOF'
+
+BEGIN {
+
+  # Name of node 
+  target = ARGV[1];
+  ARGV[1] = "";
+
+  startTime = 0;
+}
+
+/^startRetrieveTime=/ {
+  epochSec = substr($0, index($0, "=")+1)/1000;
+}
+
+
+/Command Response/ {
+  if (index($0, target) > 0) {
+    timeStampSec = $1/1000 + epochSec;
+    printNext = 1;
+  }
+}
+
+
+/ntpdate.*offset/ {
+  if (printNext) {
+    i = index($0, "offset");
+    val = substr($0, i+7) / 1;
+    printf "%d   %s\n", timeStampSec, val;
+    printNext = 0;
+  }
+}
+
+'EOF'
+
+set datafile=/tmp/ntpOffsets.dat
+awk -f $awkfile $nodeName $portalLog > $datafile
+
+set plotScript=/tmp/ntpOffset.gnuplot
+set title=`echo "$nodeName NTP offsets"`
+cat > $plotScript << EOF2
+$terminal
+$output
+set title "$title"
+set xdata time
+set timefmt "%s"
+set format x "%m/%d\n%H:%M"
+
+set xlabel "Time (UTC)"
+set ylabel "NTP offset sec"
+plot "$datafile" using 1:2 title "" with linespoints
+
+EOF2
+
+gnuplot -persist $plotScript
+
+

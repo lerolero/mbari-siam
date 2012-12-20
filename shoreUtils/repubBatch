@@ -1,0 +1,161 @@
+#!/bin/bash
+
+#########################################
+# Name: repubBatch
+#
+# Summary: 
+# Republish batch of SIAM data to SSDS
+# using same start/end time 
+# and directory
+#
+# Description: 
+#  Calls logPublish with specified
+#  parameters to republish data from list of
+#  device IDs.	 
+#
+# Author: k. headley
+#
+# Copyright 2009 MBARI
+#
+#########################################
+
+#########################################
+# Script configuration defaults
+# casual users should not need to change
+# anything below this section
+#########################################
+# default path to logPublish
+LOGPUB="logPublish"
+
+# default start option
+BEGIN=""
+# default end option
+END=""
+# default log directory
+LOGDIR="."
+# default device IDs
+DEVIDS=""
+# default options (test, print, sticky, nowrap)
+OTEST=""
+OPRINT=""
+OSTICKY=""
+ONOWRAP=""
+
+#################################
+# Script variable initialization
+#################################
+VERBOSE="FALSE"
+
+#################################
+# Function Definitions
+#################################
+
+#################################
+# name: printUsage
+# description: print use message
+# args: none
+#################################
+printUsage(){
+    echo
+    echo "usage: `basename $0` [options] deviceID [deviceID...]"
+    echo "-b <mm/dd/yyyyThh:mm:ss> : Start time      [$BEGIN]"
+    echo "-e <mm/dd/yyyyThh:mm:ss> : End time        [$END]"
+    echo "-d <path>                : Log directory   [$LOGDIR]"
+    echo "-t                       : test option     [$OTEST]"
+    echo "-p                       : print option    [$OPRINT]"
+    echo "-s                       : sticky option    [$OSTICKY]"
+    echo "-n                       : nowrap option    [$ONOWRAP]"
+    echo "-l <logPublish>          : logPublish path [$LOGPUB]"
+    echo "-V                       : verbose output  [$VERBOSE]"
+    echo "-h                       : print this help message"
+    echo ""
+    echo
+}
+
+########################################
+# name: vout
+# description: print verbose message to stderr
+# args:
+#     msg: message
+########################################
+vout(){
+    if [ "$VERBOSE" == "TRUE" ]
+    then
+	echo "$1" >&2
+    fi
+}
+
+########################################
+# name: exitError
+# description: print use message to stderr
+# args:
+#     msg:        error message
+#     returnCode: exit status to return
+########################################
+exitError(){
+    echo >&2
+    echo "$1" >&2
+    echo >&2
+    exit $2
+}
+
+##########################
+# Script main entry point
+##########################
+
+# Argument processing
+if [ "$#" -eq 0 ];then
+    printUsage
+    exit 0
+fi
+
+while getopts b:d:e:tpnshV Option
+do
+    case $Option in
+	b ) BEGIN="-start "$OPTARG
+	;;
+	e ) END="-stop "$OPTARG
+	;;
+	d ) LOGDIR=$OPTARG
+	;;
+	n ) ONOWRAP="-n"
+        ;;
+	p ) OPRINT="-p"
+        ;;
+	s ) OSTICKY="-s"
+        ;;
+	t ) OTEST="-t"
+        ;;
+	V ) VERBOSE="TRUE"
+	;;
+	h)printUsage
+	  exit 0
+	;;
+	*)  # everything else is device IDs
+	;;
+    esac
+done
+
+# use the end of the list as device IDs
+let "ARGSHIFT=$OPTIND-1"
+shift $ARGSHIFT
+DEVIDS="$*"
+
+# echo settings
+echo "BEGIN=$BEGIN"
+echo "END=$END"
+echo "TEST=$OTEST"
+echo "PRINT=$OPRINT"
+echo "STICKY=$OSTICKY"
+echo "NOWRAP=$ONOWRAP"
+echo "LOGDIR=$LOGDIR"
+echo "DEVIDS=$DEVIDS"
+
+# Loop over device ID list
+# and republish each data set
+for LOG in $DEVIDS
+do
+ CMDLINE="$LOGPUB $OSTICKY $ONOWRAP $OTEST $OPRINT $BEGIN $END $LOG $LOGDIR"
+ echo "$CMDLINE"
+ $CMDLINE
+done

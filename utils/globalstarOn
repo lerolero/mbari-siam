@@ -1,0 +1,52 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# This script is invoked by Node application to initiate Globalstar connection.
+# Return 0 if successful. Return 255 if another process is using the Globalstar port.
+
+# Maximum tries to attempt comm link can be specified on command line. Other
+# scripts (e.g. ppp 'connect' script) can access this
+if [ -n "$1" ] 
+then
+  export MAX_COMM_TRIES=$1
+fi
+
+# Establish ppp 
+pon globalstar
+result=$?
+
+# Check for failure...
+if [ $result -ne 0 ] 
+then
+
+  # Check for ppp failure to obtain resource
+  if [ $result -eq 6 ]
+  then
+    # Return immediately. Return value of 255 indicates 'Don't use this port'
+    # to caller.
+    exit 255
+  fi
+
+  # Some other generic error? Check status of ppp
+  linkStatus ppp
+  result2=$?
+  if [ $result2 -ne 0 ] 
+  then
+    # Power off Globalstar modem after
+    # 15-second pause (to avoid NVRAM corruption).
+    sleep 15
+    /etc/siam/rfpower.ops 1 off
+  else
+    echo "ppp is connected!"
+  fi
+
+fi
+
+
+exit $result
+
+
+
+

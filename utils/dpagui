@@ -1,0 +1,15 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+if [ ! -n "$1" ]
+then
+  echo "usage: `basename $0` nodeIP"
+  exit 1
+fi
+
+java -cp $SIAM_CLASSPATH:.:$SIAM_HOME/jars/jfreechart-1.0.0-pre2.jar:$SIAM_HOME/jars/jcommon-1.0.0-pre2.jar:$SIAM_HOME/jars/primetime.jar \
+-Djava.security.policy=$SIAM_HOME/properties/policy \
+-Dsiam_home=$SIAM_HOME -Dlog4j.threshold=$LOG4J_THRESHOLD \
+org.mbari.siam.moos.utils.nodeGUI.DpaGUI $SIAM_HOME/images/DpaDiagram.jpg $*

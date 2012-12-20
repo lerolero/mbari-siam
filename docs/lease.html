@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+  <meta name="Author" content="Bob Herlien">
+  <meta name="GENERATOR"
+ content="Mozilla/4.79 [en] (Windows NT 5.0; U) [Netscape]">
+  <title>lease</title>
+</head>
+<body>
+<b>NAME</b>
+<blockquote>lease - get a lease on the node's communications link</blockquote>
+<b>SYNOPSIS</b>
+<blockquote>
+  <pre>lease<br>lease -establish [&lt;time&gt;]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [nodeHost]<br>lease -renew &lt;leaseID&gt; [&lt;time&gt;] [nodeHost]<br>lease -terminate &lt;leaseID&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [nodeHost]</pre>
+</blockquote>
+<b>DESCRIPTION</b>
+<blockquote>The <i>lease </i> utility establishes and manages <i>comms
+leases</i>
+on the node's communications link.&nbsp; The <i>lease</i> utility
+asserts that the cpu not sleep and that wireless network connections be
+maintained for a specified duration (specified in seconds).&nbsp; Any
+number
+of people/programs/etc can separately take out a lease.&nbsp; As long
+as <b>any</b>
+lease is still valid, the communications link will stay active and the
+CPU will remain awake.&nbsp; When the time that you specified for your
+lease has elapsed (assuming you haven't renewed the lease), the lease
+expires.&nbsp;
+If it was the last lease to be active, the communications link will
+then
+go down. (The&nbsp;<a style="font-style: italic;" href="cpuAwake.html">cpuAwake</a>
+utility keeps
+the cpu from sleeping, but does not keep wireless network connections).<br>
+  <p>There are three operations that can be performed by lease:
+"-establish",
+"-renew", and "-terminate".&nbsp; The default operation (if you don't
+specify
+any of the above) is "-establish", which establishes a new lease.&nbsp;
+This returns a new <i>leaseID</i>, which is simply an integer that you
+can use to reference this lease for further operations. The following
+example
+will renew lease 6 on localhost for 300 seconds (5 minutes): </p>
+  <blockquote>
+    <pre>lease -renew 6 300<br></pre>
+  </blockquote>
+The following example terminates the lease (i.e. makes it immediately
+invalid):
+  <blockquote>
+    <pre>lease -terminate 6<br></pre>
+  </blockquote>
+  <p>The default options for <i>lease</i> are: </p>
+  <pre>-establish<br>time = 900 (seconds, which is 15 minutes)<br>nodeHost = localhost<br></pre>
+  <p>Thus, simply issuing the command "lease" is equivalent to: </p>
+  <blockquote>
+    <pre>lease -establish 600 localhost<br></pre>
+  </blockquote>
+  <p>The command-line parser is very forgiving -- parameters can be in
+almost
+any order.&nbsp; The only constraint is that for "-renew",
+&lt;leaseID&gt;
+must occur before &lt;time&gt;.&nbsp; Anything that begins with "//" or
+an
+alphabetic character is assumed to be the nodeHost. <br>
+&nbsp;<br>
+When a lease is established on a MOOS subnode, another lease is
+automatically established on the surface node as well, to ensure that
+the wireless link stays connected for at least as long as the original
+lease is in effect. <br>
+  </p>
+</blockquote>
+<b>BUGS</b>
+<blockquote>Be aware that if you hold the comms line open with a long
+lease,
+not only will you cost the system a lot of power, but data will not be
+downloaded to the portal in the interim.&nbsp; That's because the
+trigger
+for downloading the data is bringing <b>up</b> the comms link.&nbsp;
+If
+you have a lease, the link doesn't go down during that time, and thus
+doesn't
+need to be brought back up. This is not a bug in <i>lease</i>, but is
+inherent in the design of
+the SIAM software.
+  <p>When attempting to establish a lease on a node which is not
+currently connected, <i>lease</i> will wait until a connection is
+detected then proceed with lease establishment. This operation does not
+currently function
+reliably. </p>
+</blockquote>
+<p><br>
+<b>ENVIRONMENT</b>
+</p>
+<blockquote>The following environment variables must be set:</blockquote>
+<ul>
+  <li>JAVA - name of the JVM. E.g. on a Sidearm, JAVA should be set to <i>j9.
+    </i>On
+a workstation with Sun's Java installed, JAVA could be set to <i>java</i>.</li>
+  <li>SIAM_HOME - top of the SIAM directory tree</li>
+  <li>SIAM_CLASSPATH - on a Sidearm, SIAM_CLASSPATH should be set to <i>$JAVA_HOME/lib/jclMax/classes.zip:$JAVA_HOME/lib/prsnlmot.jar:$JAVA_HOME/lib/RXTXcomm.jar:$SIAM_HOME/classes</i>.&nbsp;
+On X86 system, SIAM_CLASSPATH should be set to<i> $SIAM_HOME/classes</i></li>
+</ul>
+<p><br>
+<b>SEE ALSO</b>
+</p>
+<blockquote><a href="cpuAwake.html">cpuAwake</a>.</blockquote>
+</body>
+</html>

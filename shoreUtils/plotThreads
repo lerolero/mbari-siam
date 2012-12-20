@@ -1,0 +1,106 @@
+#!/bin/csh
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Plot thread count as function of time
+
+set terminal=
+set output=
+# Process leading options
+while ($#argv > 0) 
+  if ("$argv[1]" == "-terminal") then
+    shift
+    set terminal = `echo set terminal $argv[1]`
+  else if ("$argv[1]" == "-output") then
+    shift
+    set output = `echo set output \"$argv[1]\"`
+  else
+    break    # end of options
+  endif
+  shift
+
+end
+
+if ($#argv < 2) then
+  echo usage: `basename $0` '[-terminal type][-output file] nodeID portalLog'
+  exit 1
+endif
+
+set nodeID=$argv[1]
+set portalLog=$argv[2]
+
+set awkfile=/tmp/plotThreads.awk
+
+cat > $awkfile <<'EOF'
+
+BEGIN {
+  # Node's ISI ID
+  target = ARGV[1];
+  ARGV[1] = "";
+
+  FS=",";
+  nCycles = 0;
+  # printf("packet#   total     free     used\n");
+}
+
+/devid=/ {
+  if (index($0, target) == 0) {
+    # Not our target
+    inTarget = 0;
+    next;
+  }
+  inTarget = 1;
+
+  t = substr($2, 4)/1000;
+
+  #  printf "t = %d\n", t;
+
+  if (t0 == 0) {
+    t0 = t;
+  }
+
+  elapsed = t - t0;
+}
+
+/devid=.*, t=.*/ {
+  packetHeader = $0;
+}
+
+/jvmthreads:/ {
+  if (!inTarget) {
+    next;
+  }
+  # Get timestamp from packet header
+  ind = index(packetHeader, "t=") + 2;
+  timeStampSec = substr(packetHeader, ind, 14)/1000.;
+
+  i = index($0, ":");
+  nThreads = substr($0, i+1);
+
+  printf "%.0f  %s\n", timeStampSec, nThreads;
+}
+'EOF'
+
+set datafile=/tmp/threads.dat
+awk -f $awkfile $nodeID $portalLog > $datafile
+
+set plotScript=/tmp/threads.gnuplot
+
+cat > $plotScript << EOF2
+$terminal
+$output
+set title "Thread count"
+set xdata time
+set timefmt "%s"
+set format x "%m/%d\n%H:%M"
+
+set xlabel "Time (UTC)"
+set ylabel "# threads"
+plot "$datafile" using 1:2 title "" with linespoints
+
+EOF2
+
+gnuplot -persist $plotScript
+
+

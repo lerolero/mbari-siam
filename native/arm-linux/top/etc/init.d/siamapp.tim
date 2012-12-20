@@ -1,0 +1,44 @@
+#!/bin/sh
+#
+# start/stop the SIAM application
+
+#let the root scripts know where siam is located, this should probably be in
+#config file called located /etc/siam/???.conf
+SIAM_HOME=/mnt/hda/siam
+
+#source /etc/profile so you have a path
+. /etc/profile
+
+case "$1" in
+    start)
+	# start the the SIAM application
+	until [ -d $SIAM_HOME ]
+	do
+	  echo "waiting for /mnt/hda..."
+	  /bin/sleep 0.5
+	done
+	/bin/sleep 3
+        echo -n "Starting SIAM application: "
+        # /bin/su ops -c "$SIAM_HOME/utils/startnode"
+        /sbin/start-stop-daemon -c ops:users --start --exec "$SIAM_HOME/utils/startnode"
+	echo "done."
+	;;
+    stop)
+        echo -n "Stopping SIAM application: "
+        #invoke stopnode script and wait until it returns
+        # /bin/su ops -c  "$SIAM_HOME/utils/stopnode"
+        /sbin/start-stop-daemon -c ops:users --start --exec "$SIAM_HOME/utils/stopnode"
+	echo "done."
+	;;
+    reload|restart|force-reload)
+	$0 stop
+        $0 start
+        ;;
+    *)
+	echo "Usage: $0 {start|stop|reload|restart}"
+	exit 1
+	;;
+esac
+
+exit 0
+

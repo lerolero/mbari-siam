@@ -1,0 +1,12 @@
+#!/bin/bash
+#
+# co2 - Utility to call the CO2Subsystem methods of FOCENode
+# 29 April 2011, rah
+# 
+
+$JAVA -cp $SIAM_CLASSPATH -Dlog4j.threshold=DEBUG \
+    -Dsiam_home=$SIAM_HOME \
+    -Djava.security.policy=$SIAM_HOME/properties/policy \
+    org.mbari.siam.foce.utils.FOCECO2SubsysUtil $*
+
+

@@ -1,0 +1,16 @@
+# /etc/network/interfaces -- configuration file for ifup(8), ifdown(8)
+#
+# This configuration is for '<HOST_NAME>' 
+#
+# The loopback interface
+# automatically added when upgrading
+auto lo
+     iface lo inet loopback
+                                                                                
+# Cerf Ethernet Settings - static IP
+# Please edit these numbers to reflect your network settings.
+auto eth0
+     iface eth0 inet static
+     address <ETHERNET_ADDRESS>    # <HOST_NAME> ethernet
+     netmask 255.255.255.00
+     gateway <PRIMARY_NODE_ADDRESS>     # <PRIMARY_NODE_NAME> ethernet

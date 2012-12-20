@@ -1,0 +1,20 @@
+#!/bin/bash
+#
+
+# MSE maintenance 06/14/2007
+# restart Medusa port on surface
+
+export LOG4J_THRESHOLD=INFO
+
+SURFACE=surface
+NODE=surface
+
+wakeup surface $NODE
+sleep 5
+shutdownPort $NODE /dev/ttySA2
+sleep 5
+scanPort $NODE /dev/ttySA2
+sleep 5
+listPorts $NODE -stats
+
+# AUTOSCRIPT EOF

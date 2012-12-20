@@ -1,0 +1,54 @@
+#!/bin/bash
+#
+# Enable/Disable Radio Power
+
+# open a file to lddio device
+declare GPIO_dev=/dev/gpio
+
+# Configure GPDR RF Power bits as outputs
+echo "6000O" >$GPIO_dev
+
+# Get RF Power bits to set/clear
+let pwrbits=0
+case "$1" in
+0 ) 
+    let pwrbits=0x2000
+;;
+1 ) 
+    let pwrbits=0x4000
+;;
+[Aa][Ll][Ll] )
+    let pwrbits=0x6000
+;;
+* )
+echo
+echo "Usage rfpower [0|1|all] [on|off]"
+echo
+exit 1
+;;
+esac
+
+# set RF Power bits
+case "$2" in
+[Oo][Nn] ) 
+        echo `printf "%X+" $pwrbits` >$GPIO_dev
+	echo
+	echo "RF Power $1 ON"
+	echo
+;;
+[Oo][Ff][Ff] )
+        echo `printf "%X-" $pwrbits` >$GPIO_dev
+	echo
+	echo "RF Power $1 OFF"
+	echo
+;;
+* )
+echo
+echo "Usage rfpower [0|1|all] [on|off]"
+echo
+;;
+esac
+
+exit 0
+
+

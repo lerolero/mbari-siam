@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Utility Quick Reference</title>
+<link href="../../css/content.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<p>SIAM utility commands are summarized below, indexed in several categories:</p>
+<ul>
+<li><a href="#common">Commonly Used</a></li>
+<li><a href="#deployed.node">Deployed.Node</a></li>
+<li><a href="#deployed.service">Deployed.Service</a></li>
+<li><a href="#schedule">Scheduling</a></li>
+<li><a href="#puck">PUCK</a></li>
+<li><a href="#shore.portal">Shore.Portal</a></li>
+<li><a href="#logs">Logging</a></li>
+<li><a href="#alpha">Alphabetical</a></li>
+</ul>
+<a name="common"></a>
+<h2>Commonly Used</h2>
+<h3>Node</h3>
+<div class="commands">exitNode <em class="options">nodeURL</em></div>
+<div class="commands">listPorts <em class="options">nodeURL [-stats]</em></div>
+<div class="commands">nodeInfo <em class="options">nodeURL</em></div>
+<div class="commands">nodeStatus <em class="options">nodeURL</em></div>
+<div class="commands">nodeTest <em class="options"></em></div>
+<h3>Port Management</h3>
+<div class="commands">cachePort <em class="options">nodeURL port [-clear]</em></div>
+<div class="commands">portProperties <em class="options">nodeURL portName [portName...]</em></div>
+<div class="commands">powerDownPort <em class="options">nodeURL port</em></div>
+<div class="commands">powerUpPort <em class="options">nodeURL port</em></div>
+<div class="commands">restartPort <em class="options">nodeURL portName [portName...]</em></div>
+<div class="commands">scanPort <em class="options">nodeURL portName [portName...]</em></div>
+<div class="commands">setProperty <em class="options">nodeURL port name=&quot;value&quot; [name=&quot;value&quot;...]</em></div>
+<div class="commands">shutdownPort <em class="options">nodeURL port</em></div>
+<h3>Sampling</h3>
+<div class="commands">getLastSample <em class="options">nodeURL portName [portName...]</em></div>
+<div class="commands">getMetadata <em class="options">nodeURL port [acilpsx]</em></div>
+<div class="commands">samplePort <em class="options">nodeURL portName [portName...]</em></div>
+<h3>Scheduling</h3>
+<div class="commands">resumeSchedule <em class="options">nodeURL port scheduleName</em></div>
+<div class="commands">setSchedule <em class="options">nodeURL port scheduleName scheduleSpecifier</em></div>
+<div class="commands">showSchedule <em class="options">nodeURL [port [scheduleName] [lookAheadSec]]</em></div>
+<div class="commands">suspendSchedule <em class="options">nodeURL port scheduleName</em></div>
+<div class="commands">synch <em class="options">nodeURL port scheduleName [delay ms]</em></div>
+
+<a name="deployed.node"></a>
+<h2>Deployed.Node</h2>
+<div class="commands">addService <em class="options">JAR-file</em></div>
+<div class="commands">auxTelem.sh <em class="options">-d device -b baud -t timeoutSec -s sleepSec -p powerBit -y terminalEmulation</em></div>
+<div class="commands">exitNode <em class="options">nodeURL</em></div>
+<div class="commands">getLeases <em class="options">nodeURL</em></div>
+<div class="commands">killj9 <em class="options"></em></div>
+<div class="commands">lease <em class="options">[-establish durationSec [-aux]] [-renew leaseID [-aux]] [-terminate leaseID [-aux]] nodeURL</em></div>
+<div class="commands">listPorts <em class="options">nodeURL [-stats]</em></div>
+<div class="commands">listServices <em class="options">nodeURL</em></div>
+<div class="commands">listSubnodes <em class="options">nodeURL</em></div>
+<div class="commands">node <em class="options">portalHost [debugLevel]</em></div>
+<div class="commands">nodeInfo <em class="options">nodeURL</em></div>
+<div class="commands">nodeStatus <em class="options">nodeURL</em></div>
+<div class="commands">nodeTest <em class="options"></em></div>
+<div class="commands">removeService <em class="options">uuid</em></div>
+<div class="commands">setNodeProperty <em class="options">nodeURL name=&quot;value&quot; [name=&quot;value&quot;...]</em></div>
+
+<a name="deployed.service"></a>
+<h2>Deployed.service</h2>
+<div class="commands">addSchedule <em class="options">nodeURL port scheduleName scheduleSpecifier [<b>o</b>]</em></div>
+<div class="commands">annotatePort <em class="options">nodeURL portName notation</em></div>
+<div class="commands">cachePort <em class="options">nodeURL port [-clear]</em></div>
+<div class="commands">conPort <em class="options">nodeURL port</em></div>
+<div class="commands">getLastSample <em class="options">nodeURL portName [portName...]</em></div>
+<div class="commands">getLeases <em class="options">nodeURL</em></div>
+<div class="commands">getMetadata <em class="options">nodeURL port [acilpsx]</em></div>
+<div class="commands">portProperties <em class="options">nodeURL portName [portName...]</em></div>
+<div class="commands">portStatus <em class="options">nodeURL portName [portName...]</em></div>
+<div class="commands">powerDownPort <em class="options">nodeURL port</em></div>
+<div class="commands">powerUpPort <em class="options">nodeURL port</em></div>
+<div class="commands">removeSchedule <em class="options">nodeURL port scheduleName</em></div>
+<div class="commands">restartPort <em class="options">nodeURL portName [portName...]</em></div>
+<div class="commands">resumeSchedule <em class="options">nodeURL port scheduleName</em></div>
+<div class="commands">samplePort <em class="options">nodeURL portName [portName...]</em></div>
+<div class="commands">scanPort <em class="options">nodeURL portName [portName...]</em></div>
+<div class="commands">setInstClock <em class="options">nodeURL portName [portName...]</em></div>
+<div class="commands">setNodeProperty <em class="options">nodeURL name=&quot;value&quot; [name=&quot;value&quot;...]</em></div>
+<div class="commands">setProperty <em class="options">nodeURL port name=&quot;value&quot; [name=&quot;value&quot;...]</em></div>
+<div class="commands">setSchedule <em class="options">nodeURL port scheduleName scheduleSpecifier</em></div>
+<div class="commands">showSchedule <em class="options">nodeURL [port [scheduleName] [lookAheadSec]]</em></div>
+<div class="commands">shutdownPort <em class="options">nodeURL port</em></div>
+<div class="commands">suspendSchedule <em class="options">nodeURL port scheduleName</em></div>
+<div class="commands">synch <em class="options">nodeURL port scheduleName [delay ms]</em></div>
+
+<a name="schedule"></a>
+<h2>Scheduling</h2>
+<div class="commands">addSchedule <em class="options">nodeURL port scheduleName scheduleSpecifier [<b>o</b>]</em></div>
+<div class="commands">removeSchedule <em class="options">nodeURL port scheduleName</em></div>
+<div class="commands">resumeSchedule <em class="options">nodeURL port scheduleName</em></div>
+<div class="commands">setSchedule <em class="options">nodeURL port scheduleName scheduleSpecifier</em></div>
+<div class="commands">showSchedule <em class="options">nodeURL [port [scheduleName] [lookAheadSec]]</em></div>
+<div class="commands">suspendSchedule <em class="options">nodeURL port scheduleName</em></div>
+<div class="commands">synch <em class="options">nodeURL port scheduleName [delay ms]</em></div>
+
+<a name="puck"></a>
+<h2>PUCK</h2>
+<div class="commands">catJar <em class="options">jarFile [x]</em></div>
+<div class="commands">dumpPuck <em class="options">[-b baudHint] [-t triesPerBaud] port</em></div>
+<div class="commands">erasePuck <em class="options">[-b baudHint] [-t triesPerBaud] port</em></div>
+<div class="commands">extractPuck <em class="options">[-b baudHint] [-t triesPerBaud] port</em></div>
+<div class="commands">listPuck <em class="options">[-b baudHint] [-t triesPerBaud] port</em></div>
+<div class="commands">puckit <em class="options">serviceClassname servicePropertiesFile serviceXMLFile outputJarfile</em></div>
+<div class="commands">readDatasheet <em class="options">[-b baudHint] [-t triesPerBaud] port</em></div>
+<div class="commands">writeDatasheet <em class="options">[-b baudHint] [-t triesPerBaud] port [datasheetProperties]</em></div>
+<div class="commands">writePuck <em class="options">[-b baudHint] [-t triesPerBaud] port</em></div>
+
+
+<a name="shore.portal"></a>
+<h2>Shore.portal</h2>
+
+<a name="logs"></a>
+<h2>Logs</h2>
+<div class="commands">getPackets <em class="options">nodeURL [-between startTime endTime] [-default] [-types type(s)] [-skip subsampleInterval] [-timeout timeoutSec] [-maxbytes n] [-stale] [-nosave] deviceID</em></div>
+<div class="commands">logPublish <em class="options">nodeURL -[hsntp] [-start startTime] [-stop stopTime] deviceID logDirectory</em></div>
+<div class="commands">logView <em class="options">[-utc] [-type type][-start startTime][-stop stopTime][-age][-skip n][-bin][-hex][-parse class] [-noheader][-stream][-e][-u][-r separator][-h separator][-notype][-stats][-stats][-sheader] deviceID directory</em></div>
+<div class="commands">repubBatch <em class="options">nodeURL -[hsntpV] [-b startTime] [-l logPublishPath] [-e endTime] [-d logDirectory] deviceID [deviceID...] </em></div>
+
+<a name="alpha"></a>
+<h2>Alphabetical</h2>
+<div class="commands">addSchedule <em class="options">nodeURL port scheduleName scheduleSpecifier [<b>o</b>]</em></div>
+<div class="commands">addService <em class="options">JAR-file</em></div>
+<div class="commands">annotatePort <em class="options">nodeURL portName notation</em></div>
+<div class="commands">auxTelem.sh <em class="options">-d device -b baud -t timeoutSec -s sleepSec -p powerBit -y terminalEmulation</em></div>
+<div class="commands">cachePort <em class="options">nodeURL port [-clear]</em></div>
+<div class="commands">catJar <em class="options">jarFile [x]</em></div>
+<div class="commands">conPort <em class="options">nodeURL port</em></div>
+<div class="commands">dumpPuck <em class="options">[-b baudHint] [-t triesPerBaud] port</em></div>
+<div class="commands">erasePuck <em class="options">[-b baudHint] [-t triesPerBaud] port</em></div>
+<div class="commands">exitNode <em class="options">nodeURL</em></div>
+<div class="commands">extractPuck <em class="options">[-b baudHint] [-t triesPerBaud] port</em></div>
+<div class="commands">getLastSample <em class="options">nodeURL portName [portName...]</em></div>
+<div class="commands">getLeases <em class="options">nodeURL</em></div>
+<div class="commands">getMetadata <em class="options">nodeURL port [acilpsx]</em></div>
+<div class="commands">getPackets <em class="options">nodeURL [-between startTime endTime] [-default] [-types type(s)] [-skip subsampleInterval] [-timeout timeoutSec] [-maxbytes n] [-stale] [-nosave] deviceID</em></div>
+<div class="commands">killj9 <em class="options"></em></div>
+<div class="commands">lease <em class="options">[-establish durationSec [-aux]] [-renew leaseID [-aux]] [-terminate leaseID [-aux]] nodeURL</em></div>
+<div class="commands">listPorts <em class="options">nodeURL [-stats]</em></div>
+<div class="commands">listPuck <em class="options">[-b baudHint] [-t triesPerBaud] port</em></div>
+<div class="commands">listServices <em class="options">nodeURL</em></div>
+<div class="commands">listSubnodes <em class="options">nodeURL</em></div>
+<div class="commands">logPublish <em class="options">nodeURL -[hsntp] [-start startTime] [-stop stopTime] deviceID logDirectory</em></div>
+<div class="commands">logView <em class="options">[-utc] [-type type][-start startTime][-stop stopTime][-age][-skip n][-bin][-hex][-parse class] [-noheader][-stream][-e][-u][-r separator][-h separator][-notype][-stats][-stats][-sheader] deviceID directory</em></div>
+<div class="commands">node <em class="options">portalHost [debugLevel]</em></div>
+<div class="commands">nodeInfo <em class="options">nodeURL</em></div>
+<div class="commands">nodeStatus <em class="options">nodeURL</em></div>
+<div class="commands">nodeTest <em class="options"></em></div>
+<div class="commands">portProperties <em class="options">nodeURL portName [portName...]</em></div>
+<div class="commands">portStatus <em class="options">nodeURL portName [portName...]</em></div>
+<div class="commands">powerDownPort <em class="options">nodeURL port</em></div>
+<div class="commands">powerUpPort <em class="options">nodeURL port</em></div>
+<div class="commands">puckit <em class="options">serviceClassname servicePropertiesFile serviceXMLFile outputJarfile</em></div>
+<div class="commands">readDatasheet <em class="options">[-b baudHint] [-t triesPerBaud] port</em></div>
+<div class="commands">removeSchedule <em class="options">nodeURL port scheduleName</em></div>
+<div class="commands">removeService <em class="options">uuid</em></div>
+<div class="commands">repubBatch <em class="options">nodeURL -[hsntpV] [-b startTime] [-l logPublishPath] [-e endTime] [-d logDirectory] deviceID [deviceID...] </em></div>
+<div class="commands">restartPort <em class="options">nodeURL portName [portName...]</em></div>
+<div class="commands">resumeSchedule <em class="options">nodeURL port scheduleName</em></div>
+<div class="commands">samplePort <em class="options">nodeURL portName [portName...]</em></div>
+<div class="commands">scanPort <em class="options">nodeURL portName [portName...]</em></div>&quot;
+<div class="commands">setInstClock <em class="options">nodeURL portName [portName...]</em></div>
+<div class="commands">setNodeProperty <em class="options">nodeURL name=&quot;value&quot; [name=&quot;value&quot;...]</em></div>
+<div class="commands">setProperty <em class="options">nodeURL port name=&quot;value&quot; [name=&quot;value&quot;...]</em></div>
+<div class="commands">setSchedule <em class="options">nodeURL port scheduleName scheduleSpecifier</em></div>
+<div class="commands">showSchedule <em class="options">nodeURL [port [scheduleName] [lookAheadSec]]</em></div>
+<div class="commands">suspendSchedule <em class="options">nodeURL port scheduleName</em></div>
+<div class="commands">shutdownPort <em class="options">nodeURL port</em></div>
+<div class="commands">synch <em class="options">nodeURL port scheduleName [delay ms]</em></div>
+<div class="commands">writeDatasheet <em class="options">[-b baudHint] [-t triesPerBaud] port [datasheetProperties]</em></div>
+<div class="commands">writePuck <em class="options">[-b baudHint] [-t triesPerBaud] port</em></div>
+
+</body>
+</html>

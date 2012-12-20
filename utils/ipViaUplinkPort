@@ -1,0 +1,22 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Configure uplink port for IP via RS-485/ppp
+
+if [ ! -n "$2" ]
+then
+  echo "usage: `basename $0` localEndpointAddr remoteEndpointAddr"
+  exit 1
+fi
+
+
+# Enable uplink port for RS-485
+rs485.ops e
+
+# Run ppp daemon on uplink port (run in background)
+runppp /dev/ttySX14 19200 $1 $2 &
+
+
+

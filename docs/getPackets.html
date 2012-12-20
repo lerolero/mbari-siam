@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+  <meta name="Author" content="Tom O'Reilly">
+  <meta name="GENERATOR"
+ content="Mozilla/4.79 [en] (Windows NT 5.0; U) [Netscape]">
+  <title>getPackets</title>
+</head>
+<body>
+<b>NAME</b>
+<blockquote>getPackets - retrieve packets from specified instrument
+service on specified host <br>
+</blockquote>
+<b>SYNOPSIS</b>
+<blockquote>
+  <pre>getPackets nodeHostname [options] deviceID<br></pre>
+</blockquote>
+<b>DESCRIPTION</b>
+<blockquote>The <span style="font-style: italic;">getPackets</span>
+utility retrieves packets from a specified instrument service, subject
+to subsampling and filtering specified by options specified on the
+command line, and writes the packets to a device log in the current
+directory. The device log consists of two files; the '.dat' file
+contains the packets, and the '.idx' is an index into the .dat file
+(providing efficient "random" access to the .dat file). The files'
+basename consists of&nbsp; the deviceID with "_0" appended; e.g. the
+log for device 1473 consists of files 1473_0.dat and 1473_0.idx. If the
+log files for the specified device already exist, <span
+ style="font-style: italic;">getPackets</span> will append to the log.
+The logged packets can subsequently be displayed with the <a
+ href="logView.html"><span style="font-style: italic;">logView</span></a>
+utility.<br>
+  <br>
+  <span style="font-weight: bold;">NOTE</span>: the instrument service
+is specified with the integer deviceID, <span
+ style="font-style: italic; text-decoration: underline;">not</span> by
+port name.<br>
+  <br>
+</blockquote>
+<p><span style="font-weight: bold;">OPTIONS</span><br>
+</p>
+<blockquote>-between <span style="font-style: italic;">startTime
+endTime</span><br>
+  <div style="margin-left: 40px;">Retrieve only packets created between
+  <span style="font-style: italic;">startTime</span> and <span
+ style="font-style: italic;">endTime</span>, where times can have
+format m/d/yyyy, m/dyyyyTh:m, m/d/yyyyTh:m:s. By default, <span
+ style="font-style: italic;">startTime</span> is January 1, 1970 and <span
+ style="font-style: italic;">endTime</span> is the current clock time. <br>
+  </div>
+-types <span style="font-style: italic;">type(s)</span><br>
+  <div style="margin-left: 40px;">Retrieve only packets of specified <span
+ style="font-style: italic;">type(s)</span>, where type can be
+'metadata', 'data', 'message', 'summary', or 'all'. By default, all
+types are retrieved.<br>
+  </div>
+-skip<span style="font-style: italic;"> interval </span><br>
+  <div style="margin-left: 40px;">Retrieve only every nth packet, where
+n=interval + 1. <span style="font-style: italic;"></span>By default, <span
+ style="font-style: italic;">interval</span> is 0, which means don't
+skip any packets.<br>
+  </div>
+-default: <br>
+  <div style="margin-left: 40px;">Use <a
+ href="summariesAndFiltering.html">any telemety filters already
+associated with the service</a> when retrieving packets.<span
+ style="text-decoration: underline;"></span><br>
+  </div>
+  <blockquote> </blockquote>
+</blockquote>
+<b>ENVIRONMENT</b>
+<blockquote>The following environment variables must be set:</blockquote>
+<ul>
+  <li>JAVA_HOME - location of Java installation, e.g.<i> /j9</i> or <i>/opt/java/jdk1.3.1</i></li>
+  <li>JAVA - name of the JVM. E.g. on a Sidearm, JAVA should be set to <i>j9.
+    </i>On
+a workstation with Sun's Java installed, JAVA could be set to <i>java</i>.</li>
+  <li>SIAM_HOME - top of the SIAM directory tree</li>
+  <li>SIAM_CLASSPATH - on a Sidearm, SIAM_CLASSPATH should be set to <i>$JAVA_HOME/lib/jclMax/classes.zip:$JAVA_HOME/lib/prsnlmot.jar:$JAVA_HOME/lib/RXTXcomm.jar:$SIAM_HOME/classes</i>.&nbsp;
+On X86 system, SIAM_CLASSPATH should be set to<i> $SIAM_HOME/classes</i></li>
+</ul>
+<p><br>
+<b>SEE ALSO</b>
+</p>
+<div style="margin-left: 40px;"><a href="logPublish.html">logPublish</a><br>
+</div>
+<div style="margin-left: 40px;"><a href="logView.html">logView</a><br>
+<br>
+</div>
+</body>
+</html>

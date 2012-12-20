@@ -1,0 +1,118 @@
+#!/bin/bash
+# This script attempts to connect through the Globalstar modem. The script
+# makes multiple attempts to establish a connection, all while DTR is asserted;
+# hence the modem hopefully does NOT reboot while in the retry loop.
+
+
+reportFile=/tmp/chat.out
+GLOBALSTAR_OUT=/tmp/globalstar.out
+
+# clear dial-up session output file
+# and put session start time at top of file
+echo "dialMBARI starting at `date`" > $GLOBALSTAR_OUT
+
+#### exec 2>& $reportFile
+
+# Turn on Globalstar power
+echo 6000O4000+ >/dev/gpio    
+
+# Look for Qualcomm self-test result after power-up
+/usr/sbin/chat -v                                        \
+        TIMEOUT                 9                        \
+        'SELF TEST RESULT: OK'  '\d\d\d\rAT\$QCPKND=2'   \
+        'OK-\d+++\c\d-OK'       ATH0                   \
+	'OK'       '\c'
+
+
+result=$?
+if [ $result -ne 0 ] 
+then
+   # ERROR from self-test?
+   echo "Modem self-test failed" >> $GLOBALSTAR_OUT
+fi
+
+
+# Determine how many timesto attempt connection; maximum tries may be specified
+# beforehand in MAX_COMM_TRIES environment variable.
+echo "MAX_COMM_TRIES = $MAX_COMM_TRIES" >> $GLOBALSTAR_OUT
+if [ -n "$MAX_COMM_TRIES" ]
+then
+  let maxTries=$MAX_COMM_TRIES
+else
+  let maxTries=150
+fi
+
+echo "attempt to establish connetion: max tries=$maxTries" >> $GLOBALSTAR_OUT
+
+let nTries=0
+
+# Now attempt to make connection
+while [ 1 ] 
+do
+
+  # First setup the modem and get service status, RSSI, etc, and
+  # capture to file
+  /usr/sbin/chat -v  -s     \
+          ABORT                't get terminal parameters'  \
+          TIMEOUT              9                             \
+          ''                  AT\$QCSTATUS                  \
+          'OK'                '\c'  2> $reportFile
+
+  if [ $? -ne 0 ] 
+  then
+    echo "Failed QCSTATUS or can't get terminal params" >> $GLOBALSTAR_OUT
+    exit 1
+  fi
+
+  # Check for registration, service available, other criteria in output
+  proceed=1
+  grep "SERVICE AVAILABLE: YES" $reportFile >& /dev/null
+  if [ $? -ne 0 ] 
+  then
+    echo "service not available" >> $GLOBALSTAR_OUT
+    # Don't proceed
+    proceed=0
+  fi
+
+  grep "REGISTRATION: YES" $reportFile >& /dev/null
+  if [ $? -ne 0 ] 
+  then
+    echo "not registered" >> $GLOBALSTAR_OUT
+    # Don't proceed
+     proceed=0
+  fi
+
+  # Check to see if dialing criteria were met
+  if [ $proceed -ne 0 ]
+  then
+    # Proceed to dial
+    /usr/sbin/chat -v                                        \
+            ABORT                   '\nBUSY\r'                    \
+            ABORT                   '\nNO ANSWER\r'               \
+            ABORT                   '\nRINGING\r\n\rRINGING\r'    \
+            ABORT                   'NO CARRIER\r'                \
+            TIMEOUT                 180                            \
+            ''                    ATD18317751667                \
+            CONNECT                 '\c'
+
+    result=$?
+    if [ $result -eq 0 ]
+    then
+      # Got connection
+      exit 0
+    fi
+  fi
+
+  # Increment 'nTries' counter
+  let nTries=$nTries+1
+
+  # Try again?
+  if [ $nTries -gt $maxTries ] 
+  then
+    # Abort
+    exit 1
+  fi
+  # Repeating too fast leads to garbled output from modem?
+  sleep 5
+done
+end

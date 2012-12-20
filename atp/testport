@@ -1,0 +1,61 @@
+#!/bin/tcsh
+# Perform the following functions on each port of the specified node:
+#    
+#    shutdown
+#    scan
+#    annotate
+#    suspend
+#    resume
+# 
+# After each operation, check to verify that the command had the
+# desired affect on service status or presence.
+#
+
+if ($#argv != 2) then
+  echo "usage: $0 nodeHost portName"
+  echo "e.g.: "
+  echo "  % $0 sidearm14 /dev/ttySX1"
+  exit 1
+endif
+
+set node = `echo "//"$argv[1]"/node"`
+set port = $argv[2]
+
+listPorts $node -stats
+
+annotatePort $node $port "ATP test initiated `date` on $node $port"
+
+echo -n "Press any key to sample instrument on port " $port ":"
+set resp = $<
+samplePort $node $port 
+
+echo -n "Press any key to get most recent sample from instrument on port " $port ":"
+set resp = $<
+getLastSample $node $port 
+
+echo -n "Press any key to shutdown service on port " $port ":"
+set resp = $<
+shutdownPort $node $port
+listPorts $node -stats
+echo "Should now be no service on port " $port
+
+echo -n "Press any key to load service on port " $port ":"
+set resp = $<
+scanPort $node $port
+listPorts $node -stats
+echo "Should now be service running on port " $port
+
+echo -n "Press any key to get instrument metadata from port " $port ":"
+set resp = $<
+getMetadata $node $port 
+
+echo -n "Press any key to show schedule for instrument on " $port ":"
+set resp = $<
+showSchedule $node $port 
+
+annotatePort $node $port "ATP test complete `date` on $node $port"
+
+echo "Test complete."
+
+
+

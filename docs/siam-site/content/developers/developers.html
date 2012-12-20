@@ -1,0 +1,743 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>SIAM Developer's Guide</title>
+<link href="../../css/content.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+<h1>SIAM Developer's Guide</h1>
+<p>Once you've gotten SIAM up and running, you may have devices that does not already have a SIAM service.</p>
+<p>This section provides information to enable developers to write SIAM instrument services for new instruments and other devices.
+It's also a good starting point for understanding SIAM internals and architecture. Topic in this section include</p>
+<ol>
+<li><a href="#dg_isf">Instrument Service Framework (ISF)</a></li>
+<li><a href="#dg_isstates">Instrument service state diagram</a></li>
+<li><a href="#dg_hello">HelloSIAM: instrument service HOWTO</a></li>
+<li><a href="#dg_best_practices">SIAM best practices</a></li>
+<li><a href="#dg_utilities">Writing SIAM utilities</a></li>
+<li><a href="#dg_virtual_services">Virtual services</a></li>
+<li><a href="#dg_other">Platform-specific interfaces</a></li>
+</ol>
+
+<a name="dg_isf"></a>
+<h2>Instrument Service Framework</h2>
+<p>
+Integrating new sensors can be one of the most common and yet time-consuming and technically risky activities associated with maintaining an observing system.
+Developers of varying degrees of experience and familiarity with the language and internals of the observing system write and test new code, potentially introducing errors that degrade performance.</p>
+<p>If the observing system doesn't expose facilities for fundamental and common activities like data logging, timestamping, and resource management, these may be reinvented many times over, which is at best very inefficient.
+SIAM aims to reduce this time and risk with its instrument service framework.</p>
+<p>The framework encapsulates common operations and data collection strategies used by many COTS and custom instruments, allowing developers to focus on writing what they understand best: device-specific APIs.
+</p>
+<p></p>
+<h3>Key Components</h3>
+
+<table class="altTable">
+<tr>
+  <th>Component</th>
+  <th>Description</th>
+  <th>Diagram</th>
+</tr>
+<tr>
+<td>Packages</td>
+<td>The package diagram describes the contents of top-level SIAM software packages.</td>
+<td>
+<div class="img">
+ <a target="_blank" href="../../img/Packages.png"><img src="../../img/Packages_tn.jpg" alt="" width="110" height="90" /></a>
+ <div class="desc">SIAM Packages</div>
+</div>
+</td>
+</tr>
+<tr class="alt">
+<td>Components</td>
+<td>The component diagram above provdes a view of the relationship between key SIAM software components and interfaces.</td>
+<td>
+<div class="img">
+ <a target="_blank" href="../../img/Components.png"><img src="../../img/Components_tn.jpg" alt="" width="110" height="90" /></a>
+ <div class="desc">SIAM Components</div>
+</div>
+</td>
+</tr>
+<tr>
+<td>ISF Strategies</td>
+<td>Instrument Service Framework class diagrams: Data acquisition strategies (polled, streaming...)</td>
+<td>
+<div class="img">
+ <a target="_blank" href="../../img/ISFStrategies.png"><img src="../../img/ISFStrategies_tn.jpg" alt="" width="110" height="90" /></a>
+ <div class="desc">Instrument Service Framework: strategies</div>
+</div>
+</td>
+</tr>
+<tr class="alt">
+<td>ISF Configuration</td>
+<td>Instrument Service Framework class diagrams: Service configuration (Attributes)</td>
+<td>
+<div class="img">
+ <a target="_blank" href="../../img/ISFConfiguration.png"><img src="../../img/ISFConfiguration_tn.jpg" alt="" width="110" height="90" /></a>
+ <div class="desc">Instrument Service Framework: configuration</div>
+</div>
+</td>
+</tr>
+<tr>
+<td>ISF Input/Output</td>
+<td>Instrument Service Framework class diagrams: Input/Output</td>
+<td>
+<div class="img">
+ <a target="_blank" href="../../img/ISFInputOutput.png"><img src="../../img/ISFInputOutput_tn.jpg" alt="" width="110" height="90" /></a>
+ <div class="desc">Instrument Service Framework: input/output</div>
+</div>
+</td>
+</tr>
+<tr class="alt">
+<td>ISF Scheduling</td>
+<td>Instrument Service Framework class diagrams: Scheduling mechanisms</td>
+<td>
+<div class="img">
+ <a target="_blank" href="../../img/ISFScheduling.png"><img src="../../img/ISFScheduling_tn.jpg" alt="" width="110" height="90" /></a>
+ <div class="desc">Instrument Service Framework: scheduling</div>
+</div>
+</td>
+</tr>
+<tr>
+<td>ISF Logging</td>
+<td>Instrument Service Framework class diagrams: Logging mechanisms</td>
+<td>
+<div class="img">
+ <a target="_blank" href="../../img/ISFLogging.png"><img src="../../img/ISFLogging_tn.jpg" alt="" width="110" height="90" /></a>
+ <div class="desc">Instrument Service Framework: logging</div>
+</div>
+</td>
+</tr>
+<tr class="alt">
+<td>ISF States</td>
+<td>Instrument Service Framework state diagram: Instrument service states</td>
+<td>
+<div class="img">
+ <a name="dg_isstates"></a>
+ <a target="_blank" href="siam-states.html"><img src="../../img/ISFServiceStates_tn.jpg" alt="" width="110" height="90" /></a>
+ <div class="desc">Instrument Service Framework: logging</div>
+</div>
+</td>
+</tr>
+</table>
+<!-- Key Components 
+<ul>
+<li>InstrumentServiceFramework</li>
+<ul>
+<li>strategies (polled, streaming...)</li>
+<li>configuration (Attributes)</li> 
+<li>I/O ports</li>
+<li>scheduling</li>
+<li>logging</li>
+<li>summarization</li>
+</ul>
+<li>SIAM</li>
+<ul>
+<li>telemetry</li>
+<li>events</li>
+</ul>
+</ul>
+-->
+<a name="dg_hello"></a>
+<h2>HelloSIAM: Write a basic instrument service</h2>
+<p>The Instrument Service Framework simplifies the process of writing new instrument services by providing most of the basic facilities needed to acquire and log data.
+Use this example to write a complete functional instrument service that collects data through a serial port from a dummy instrument, the Fake-O-Tron.
+</p>
+<p>Read the <a href="helloSIAM.html">HelloSIAM example</a></p>
+
+<a name="dg_best_practices"></a>
+<h2>Instrument Service Best Practices</h2>
+<p>Like most frameworks, SIAM is intended to be flexible and extensible; there are many ways to do things with the SIAM framework. This section presents general information and practices that may be helpful when using SIAM.</p>
+<h3>Structure</h3>
+<h4>Separate driver code from service code</h4>
+<p>One structural pattern that has worked well for some SIAM instrument services is to encapsulate device-specific protocols and constants (what you may think of as driver software)
+into a class (or set of classes) that are indendent of SIAM. This makes it possible to write non-SIAM applications to use the device interface completely outside the 
+SIAM software stack. This has the advantages of making testing easier, isolating the device logic from the service logic, and making the device software more reusable.
+</p>
+<p>An instrument service or test utility creates and uses an instance of the hardware abstraction class, supply the hardware abstraction object with a serial port.
+One or more interfaces exposing/hiding parts of the device API are created. The service may implement the defined interface(s) by simply wrapping the the hardware instance with the required method calls. 
+Utilities then may use this interface to invoke remote methods on the hardware via the service. </p>
+
+<p>The following diagram illustrates this pattern:</p>
+<div class="img">
+ <a target="_blank" href="../../img/HardwareAbstractionPattern.png"><img src="../../img/HardwareAbstractionPattern_tn.jpg" alt="" width="110" height="90" /></a>
+ <div class="desc">Instrument Service Framework: logging</div>
+</div>
+<div class="text_line"></div>
+
+<p>Examples of this pattern can be found in the following services:</p>
+<ul>
+<li>org.mbari.siam.devices.valve, org.mbari.siam.devices.bbElec </li>
+<li>org.mbari.siam.foce.devices.elmo.base.ElmoService, Elmo</li>
+<li>org.mbari.siam.foce.devices.co2subsys.CO2SubsystemMonitor, BB232SPDA</li>
+</ul>
+
+<h4>Extend Attributes as stand-alone classes</h4>
+<p>Most SIAM services that extend the InstrumentServiceAttributes to include service-specific configuration parameters, do so by defining the attributes as an inner class.
+It is sometimes useful to define them as a stand-alone class. The only potential disadvantage to doing so is that it increases the number of classes and source files, but it enables the attributes to be more easily shared among other objects.
+This is especially useful in the context of virtual services that manage objects that all depend on (and need to share) a single instance of the service attributes.
+</p>
+
+<h3>Attributes</h3>
+<p>InstrumentServiceAttributes attributes are primarily intended to be used to provide a mechanism for configuring service defaults (in the instrument service JAR) and for dynamically changing run-time service configuration.
+This infrastructure feature is very useful, providing type validation and metadata updates automatically, and the ability to assign callbacks when values change. They can also enforce policies for required and optional parameters.
+</p>
+<p>There is a dependency between the InstrumentServiceAttributes and configuration syntax, since the configuration information is provided by uses as text (for example in in a JAR makefile/script, or from the setProperty command line).
+The current infrastructure supports fully supports alll attributes that are primitive data types, and there is also support for some mnemonic types (where the user supplies a mnemonic that represents a numeric value).
+Other complex data types (classes) are not generally supported, though SIAM could be extended to do so.
+</p>
+
+<h3>PUCK Protocol Support</h3>
+<p>SIAM natively supports PUCK protocol</p>
+<p>While instrument services do not generally need to use this facility directly, they have access to PUCK contents, namely service.properties (which are used to set instrument service attribute default values when the service is loaded)
+and service.xml. There are not any facilities in SIAM for XML data bindings that allow instrument services to programatically use the contents of service.xml.
+</p>
+<a name="packet_parser"></a>
+<h3>Packet Parsers</h3>
+<p>It is useful to include a packet parser in new instrument services. Packet parsers are a component that parse data into named fields with units, so that the data may be displayed in human-readable format or used programatically.
+Several utilities (SamplePort, getLastSample, logView) can optionally (and automatically) display parsed data if a parser exists. In addition, data streaming via DataTurbine is supported by packet parsers.
+</p>
+<p>The relevant classes are these:</p>
+<ul>
+<li>org.mbari.siam.distributed.PacketParser        - PacketParser base class</li>
+<li>org.mbari.siam.distributed.PacketParser$Field  - Data field</li>
+<li>org.mbari.siam.distributed.PacketParser$Record - Aggregates Fields</li>
+<li>org.mbari.siam.utils.DelimitedStringParser     - PacketParser for parsing delimited ASCII data</li>
+</ul>
+
+<p>Instrument services that generate multiple types of data packets may need more than one parser; in this case, one structural approach is to write a parser for each packet type, 
+and that an additional parser be written that determines the packet type and delegates to an appropriate parser instance.
+</p>
+
+<p> An instrument service can declare an instance and override getParser() to return a PacketParser:</p>
+<pre><code>
+	/** PacketParser instance */
+	PacketParser _stateParser=null;
+	
+	/** Return a PacketParser (create one if an instance doesn't exist). */
+	public PacketParser getParser() throws NotSupportedException{
+		// lazy-create the parser
+		if(_packetParser==null){
+			_packetParser=new CO2SubsystemMonitorParser(_attributes.registryName,&quot;,&quot;);
+		}
+		// return the instance
+		return _packetParser;
+	}
+</code></pre>
+
+<p> The service produces comma-delimited ASCII data, so the parser extends DelimitedStringParser.
+</p>
+<p> There are only a few methods to implement: a constructor, an initializer (not required, just how this parser does things), and a method to fill create a PacketParser.Field for each data element,
+depending on its data type:</p>
+<pre><code>
+	<em class="emphasis">public class CO2SubsystemMonitorParser extends DelimitedStringParser</em>{
+		
+		static private Logger _log4j = Logger.getLogger(CO2SubsystemMonitorParser.class);
+		
+		public static final int INDEX_BASE           =0;
+		public static final int VOLTAGE_24V_INDEX    =INDEX_BASE+0;
+		public static final int CURRENT_24V_INDEX    =INDEX_BASE+1;
+		public static final int HUMIDITY_INDEX       =INDEX_BASE+2;
+		public static final int TEMPERATURE_INDEX    =INDEX_BASE+3;
+		public static final int FAN_STATE_INDEX      =INDEX_BASE+4;
+		public static final int WATER_SENSOR_1_INDEX =INDEX_BASE+5;
+		public static final int WATER_SENSOR_2_INDEX =INDEX_BASE+6;
+		public static final int FAN_CONTROL_INDEX    =INDEX_BASE+7;
+
+		public Vector fieldNames=new Vector();
+		public Vector fieldUnits=new Vector();
+		
+		
+		private static final long serialVersionUID=1L;
+		
+		/** No-arg constructor needed to instantiate via class loader (e.g. by logView) */
+		public CO2SubsystemMonitorParser(){
+			super();
+			this.initialize();
+		}
+		
+		<em class="emphasis">public CO2SubsystemMonitorParser(String registryName, String delimiters)</em>{
+			super(registryName,delimiters);
+			this.initialize();
+		}
+
+		<em class="emphasis">protected void initialize()</em>{
+			fieldNames.add(VOLTAGE_24V_INDEX,   &quot;voltage_24v&quot;);
+			fieldNames.add(CURRENT_24V_INDEX,   &quot;current_24v&quot;);
+			fieldNames.add(HUMIDITY_INDEX,      &quot;humidity&quot;);
+			fieldNames.add(TEMPERATURE_INDEX,   &quot;temperature&quot;);
+			fieldNames.add(FAN_STATE_INDEX,     &quot;fan_state&quot;);
+			fieldNames.add(WATER_SENSOR_1_INDEX,&quot;water_1&quot;);
+			fieldNames.add(WATER_SENSOR_2_INDEX,&quot;water_2&quot;);
+			fieldNames.add(FAN_CONTROL_INDEX,    &quot;fan_control&quot;);
+
+			fieldUnits.add(VOLTAGE_24V_INDEX,   &quot;volts&quot;);
+			fieldUnits.add(CURRENT_24V_INDEX,   &quot;amperes&quot;);
+			fieldUnits.add(HUMIDITY_INDEX,      &quot;percent&quot;);
+			fieldUnits.add(TEMPERATURE_INDEX,   &quot;deg C&quot;);
+			fieldUnits.add(FAN_STATE_INDEX,     &quot;~0:on ~4096:off&quot;);
+			fieldUnits.add(WATER_SENSOR_1_INDEX,&quot;1:off 0:on&quot;);
+			fieldUnits.add(WATER_SENSOR_2_INDEX,&quot;1:off 0:on&quot;);
+			fieldUnits.add(FAN_CONTROL_INDEX,   &quot;0:on  1:off&quot;);
+		}
+		
+		
+		/** Process the token, whose position in string is nToken. If
+		 token corresponds to a Field, create and return the field. 
+		 Otherwise return null. */
+		<em class="emphasis">protected PacketParser.Field processToken(int nToken,String token)
+		throws ParseException</em>{
+			if(_log4j.isDebugEnabled()){
+			//_log4j.debug(&quot;parsing token [&quot;+token+&quot;/&quot;+nToken+&quot;]&quot;);
+			}
+			switch (nToken) {
+				case VOLTAGE_24V_INDEX:
+				case CURRENT_24V_INDEX:
+				case HUMIDITY_INDEX:
+				case TEMPERATURE_INDEX:
+					<em class=&quot;emphasis&quot;>return new PacketParser.Field((String)fieldNames.get(nToken),new Double(token),(String)fieldUnits.get(nToken));</em>
+				case FAN_STATE_INDEX:
+				case FAN_CONTROL_INDEX:
+				case WATER_SENSOR_1_INDEX:
+				case WATER_SENSOR_2_INDEX:
+					<em class=&quot;emphasis&quot;>return new PacketParser.Field((String)fieldNames.get(nToken),new Integer(token),(String)fieldUnits.get(nToken))</em>;
+				default:
+					throw new ParseException(&quot;invalid field index [&quot;+nToken+&quot;] parsing CO2SubsystemMonitor packet&quot;,nToken);
+			}
+		}	
+	}
+</code></pre>
+
+<h3>Open Source Data Turbine Support</h3>
+<p>The Instrument Service Framework supports data streaming (pub/sub) using Open Source DataTurbine. BaseInstrumentService includes an instance of Turbinator (org.mbari.siam.dataTurbine.Turbinator).
+When DataTurbine support is enabled in a service, the Turbinator parses SensorDataPackets and publishes them to a DataTurbine server.
+</p>
+<p>To use DataTurbine support, the instrument service has to provide a <a href="#packet_parser">PacketParser</a> (org.mbari.siam.distributed.PacketParser), and override the method getPacketParser() defined in BaseInstrumentService.
+	The PacketParser must be capable of parsing any packet types that are to be published to DataTurbine. DataTurbine servers are configured individually for each instrument service; the instrument service must define the property rbnbServer.
+</p>
+<p>  
+</p>
+<h3>SIAM Registry</h3>
+<p>The SIAM registry is a publish-subscribe mechanism that allows data to be distributed to software components within the SIAM JVM (i.e. remote pub/sub is not currently supported).
+</p>
+<p>
+To publish to the registry, a component must have a unique registry name. DeviceService declares a service attribute called registryName for this purpose. By default, it us null, and to use the registry, 
+instrument services must configure a service attribute called registryName with a unique name; usually this is done where the instrument service JAR is configured. When this is done, 
+SensorDataPackets are automatically sent to subscribers via a callback method (see below).
+</p>
+<p>To subscribe to data from a registered service, components must implement the InstrumentDataListener interface (org.mbari.siam.registry.InstrumentDataListener). The interface defines two methods:</p>
+<pre><code>
+    /** Callback for new data record
+	@param sensorData - SensorDataPacket that instrument logged
+	@param fields - Result of passing sensorData to PacketParser.parseFields()
+	if registered DeviceService is an instanceof BaseInstrumentService.  Else null.
+    */
+    public void dataCallback(DevicePacket sensorData, PacketParser.Field[] fields);
+
+    /**Action performed when service installed */
+    public void serviceRegisteredCallback(RegistryEntry entry);
+</code></pre>
+
+
+<h3>Events</h3>
+<p>   
+EventManager is a mechanism for notifying objects of system
+level events. 
+
+The EventManager is implemented as a singleton; it is typically started
+by the NodeManager. It has a Queue member field, which implements the event
+queue thread. Once created, the EventManager waits for events to be posted.
+An EventDispatcher thread is created and allocated, one per listener.  
+When an event comes in, it is posted to each EventDispatcher that handles an 
+event of that type.  
+
+Objects may register as listeners of various event types, or post
+events to the EventManager queue. 
+
+All event types must be extended from NodeEvent, which extends
+java.util.EventObject.
+</p>
+<p>There are a number of events that may be published/subscribed to in the system:</p>
+	<ul>
+		<li> ServiceEvent</li>
+		<li> SchedulerEvent </li>
+		<li> LogSampleEvent</li>
+		<li> PowerEvent</li>
+		<li> CommEvent</li>
+		</ul>
+
+<p>
+Objects receive event notifications by implementing the appropriate listener interface methods, and registering with the EventManager via the addListener method.
+To publish an event, the EventManager postEvent method is called.
+</p>
+<p>There are no guarantees about the timeliness or ordering of messages, except that they are dispatched in the order received.</p>
+
+<a name="dg_utilities"></a>
+<h2>Utilities</h2>
+<h5>Writing clients to communicate with your service and SIAM</h5>
+<p>SIAM provides a number of <a href="../utilityReference.html">utilities</a> that communicate with the node and its instrument services.
+</p>
+<p>Node utilities (clients that use the Node interface) may make use of the NodeUtility class (org.mbari.siam.operations.utils), which provides a framework for creating new node clients.</p>
+<p>Port  utilities (clients that interface with a particular port (service) ) may make use of the PortUtility class (org.mbari.siam.operations.utils), which extends NodeUtility, adding methods for acting on one or more instrument ports (services).</p>
+<p>Similarly, the DeviceLogUtility class (clients that interface to SIAM service data logs) may be based on the DeviceLogUtil class (org.mbari.siam.operations.utils).</p>
+<p>The typical pattern for constructing these types of utilities is to</p>
+<ul>
+<li> subclass the appropriate utility class</li>
+<li> add the optional command line argument processing</li>
+<li> fill in the methods for implementing the utilty logic</li>
+</ul>
+
+<p>It is often convenient to write custom services to manage instrument-specific functions of an instrument service, for example perform diagnostic functions.
+There are a couple of approaches to this. One way is to use ServiceAttributes to trigger operations. This technique is rather limited, since this mechanism 
+doesn't make it easy to pass multiple arguments (particularly complex data types) and get return values.
+</p>
+<p>A perhaps better approach is to write a utility that uses JAVA Remote Method Invocation (RMI) to execute remote methods on service stub obtained from the node service.<br />
+The pattern for constructing such utilties looks like this:</p>
+<ul>
+<li> Develop one or more interfaces exposing the desired methods and include it in the siam.distributed.devices package (e.g. siam.distributed.devices.WidgetIF)</li>
+<li> The interface should be remotable (extends Remote) and all arguments and return values should be serializeable</li>
+<li> Interface methods should throw RemoteException and all arguments and return values should be serializeable</li>
+<li> Add the interface(s) to the service class declarations and implement its methods</li>
+<li> Write a client extending PortUtility that obtains a service stub, then cast it to the appropriate interface</li>
+<li> Write a wrapper script to invoke the utility from the command line</li>
+</ul>
+
+<h3>Example</h3>
+<p>The FOCE CO2 subsystem monitor is an instrument service that monitors environmental conditions inside of an electronics housing; it also controls a CPU cooling fan.
+A utility was written to operate the cooling fan, turning it on or off.
+The following interface, CO2SubsystemMonitorIF, is declared in siam.distributed.devices:
+</p>
+<pre><code>
+	<em class="emphasis">public interface CO2SubsystemMonitorIF 
+	extends Remote</em>{
+		/** Fan state constant ON  */
+		public static final int FAN_CONTROL_ON=0;
+		/** Fan state constant OFF */
+		public static final int FAN_CONTROL_OFF=1;
+
+		/** Set the CO2 cooling fan control bit. valid state values 
+		 are FAN_CONTROL_ON, FAN_CONTROL_OFF
+		 */
+		public void setFanControl(int state) throws Exception,RemoteException;
+
+		/** get the CO2 Subsystem monitor state */
+		public PacketParser.Field[] getMonitorState() throws Exception,RemoteException;
+	}
+</code></pre>
+<p>The CO2 subsystem monitor service (org.mbari.siam.foce.devices.subsys.CO2SubsystemMonitor) also implements this interface, as well as the methods declared by the interface:</p>
+<pre><code>
+	public class CO2SubsystemMonitor extends PolledInstrumentService
+		implements Instrument, InstrumentDataListener, <em class="emphasis">CO2SubsystemMonitorIF</em>{
+		
+		...
+		
+		/////////////////////////////////////////////////////////
+		//        CO2SubsystemMonitorIF methods                //
+		/////////////////////////////////////////////////////////
+
+		/** Set the CO2 cooling fan control bit. valid state values 
+		    are FAN_CONTROL_ON, FAN_CONTROL_OFF
+		 */
+		<em class="emphasis">public void setFanControl(int state)
+		throws Exception</em>{
+			boolean bstate=true;
+			
+			switch (state) {
+				case FAN_CONTROL_ON:
+					bstate=false;
+					break;
+				case FAN_CONTROL_OFF:
+					bstate=true;
+					break;
+				default:
+					throw new Exception(&quot;Invalid state [&quot;+state+&quot;] in setFanControl. Use FAN_CONTROL_OFF and FAN_CONTROL_ON&quot;);
+			}
+			// the logic sense is inverted, so 
+			_io_module.writeDigitalOut(bstate);
+		}
+
+		/** Read the monitor state, but do not log the sample */		
+		<em class="emphasis">public PacketParser.Field[] getMonitorState()
+		throws Exception</em>{
+			if(_stateBytes==null){
+				_stateBytes=new byte[getMaxSampleBytes()];
+			}
+			int bytesRead=readSample(_stateBytes);
+			if(_statePacket==null){
+				_statePacket=new SensorDataPacket(getId(),getMaxSampleBytes());
+			}
+			_statePacket = processSample(_stateBytes,bytesRead);
+			if(_stateParser==null){
+				_stateParser=getParser();
+			}
+			return _stateParser.parseFields(_statePacket);
+		}
+		
+		...
+</code></pre>
+<p>The utility subclasses PortUtility, and overrides the methods necessary to process command line arguments and to perform the utility business logic.</p>
+<p>Method processCustomOption() processes command line arguments specific to the utility (PortUtility parses the node URL and port arguments):</p>
+<pre><code>
+	/** Process application-specific option. */
+	<em class="emphasis">public void processCustomOption(String[] args, int index)
+	throws InvalidOption</em>{
+				
+		for(int i=0;i&lt;args.length;i++){
+			if(<em class="emphasis">args[i].equals(&quot;-f&quot;)</em>){
+				// process fan command option
+				String test=args[i+1];
+				if(test.equalsIgnoreCase(&quot;ON&quot;)){
+					// set command to ON
+					_fan_cmd=CO2SubsystemMonitorIF.FAN_CONTROL_ON;
+					// enable fan setting
+					_setFan=true;
+					i++;
+				}else if(test.equalsIgnoreCase(&quot;OFF&quot;)){
+					// set command to OFF
+					_fan_cmd=CO2SubsystemMonitorIF.FAN_CONTROL_OFF;
+					// enable fan setting
+					_setFan=true;
+					i++;
+				}
+			}else if(<em class="emphasis">args[i].equals(&quot;-q&quot;)</em>){
+				// quiet option: disable state reporting
+				_getState=false;
+			}
+		}
+	}
+</code></pre>
+
+<p>Method processPort() performs the utility action for the port(s) specified on the command line:</p>
+<pre><code>
+	/** Perform the utility logic */
+	<em class="emphasis">public void processPort(Node node, String portName)
+	throws RemoteException</em>{
+		
+		try {
+			<em class="emphasis">// the node provides a reference to a Device</em>
+			device = node.getDevice(portName.getBytes());
+		} catch (Exception e) {
+			System.err.println(&quot;Exception looking up port &quot; + portName + &quot; : &quot; + e);
+			return;
+		}
+		
+		// Ensure that the Device implements CO2SubsystemMonitorIF
+		if (!(device instanceof CO2SubsystemMonitorIF)){
+			System.err.println(&quot;Service on port [&quot;+portName + &quot;] is not a CO2SubsystemMonitor.  Exiting.&quot;);
+			return;
+		}
+		
+		<em class="emphasis">// Cast service as CO2SubsystemMonitorIF</em>
+		_CO2Subsys = (CO2SubsystemMonitorIF)device;
+		
+		<em class="emphasis">// do operations with via CO2SubsystemMonitorIF interface</em>
+		if(_setFan){
+			try{
+			// call remote method to turn fan on/off
+			<em class="emphasis">_CO2Subsys.setFanControl(_fan_cmd);</em>
+			}catch (Exception e) {
+				_log4j.error(&quot;setFanControl failed:&quot;);
+				e.printStackTrace();
+			}
+		}
+		if(_getState){
+			try{
+			// call remote method to report state
+			// (displays a parsed SensorDataPacket)
+			<em class="emphasis">PacketParser.Field[] fields= _CO2Subsys.getMonitorState();</em>
+			for(int i=0;i&lt;fields.length;i++){
+				System.out.println(&quot;   &quot;+fields[i].getName()+&quot; &quot;+fields[i].getValue()+&quot; &quot;+fields[i].getUnits());
+			}
+			}catch (Exception e) {
+				_log4j.error(&quot;getMonitorState failed:&quot;);
+				e.printStackTrace();
+			}
+			
+		}
+	}
+</code></pre>
+<p>The main method is required to run the utility from the command line:</p>
+<pre><code>
+	/** Main method (so utility may be invoked from command line) */
+	<em class="emphasis">public static void main(String[] args)</em> {
+		// Configure log4j
+		PropertyConfigurator.configure(System.getProperties());
+		BasicConfigurator.configure();
+		
+		<em class="emphasis">// get utility instance</em>
+		CO2SubsysUtil util = new CO2SubsysUtil();
+		
+		// process command line arguments
+		util.processArguments(args,2);
+		
+		<em class="emphasis">// do utility action</em>
+		util.run();
+	}
+</code></pre>
+
+<a name="dg_virtual_services"></a>
+<h2>Virtual Services</h2>
+<h5>Services that connect other services</h5>
+<p>Recently, a new class of service is being developed under SIAM: &quot;virtual&quot; instrument services that aggregate data from other services to perform new services.
+For example, a closed loop control service is being implemented for FOCE. This service collects data from many different instruments and controls pumps, valves and motors 
+to maintain a constant pH within an experimental apparatus in the deep ocean.
+</p>
+<p>A detailed presentation of this architecture is outside the scope of this document, and in fact, the implementation is still being tested and developed at this time.
+But it does use many of the structural patterns described here, as well as using the data pub/sub mechanisms SIAM provides to gather data from various sensors.
+</p>
+<div class="img">
+ <a target="_blank" href="../../img/FOCEControl-schematic.png"><img src="../../img/FOCEControl-schematic_tn.jpg" alt="" width="110" height="90" /></a>
+ <div class="desc">FOCE Control System: architecture schematic</div>
+</div>
+<div class="img">
+ <a target="_blank" href="../../img/FOCEControl-sensors.png"><img src="../../img/FOCEControl-sensors_tn.jpg" alt="" width="110" height="90" /></a>
+ <div class="desc">FOCE Control System: sensors and actuators</div>
+</div>
+<div class="img">
+ <a target="_blank" href="../../img/FOCEControl-components.png"><img src="../../img/FOCEControl-components_tn.jpg" alt="" width="110" height="90" /></a>
+ <div class="desc">FOCE Control System: software components</div>
+</div>
+<div class="text_line"></div>
+<p>The following packages and classes relate to the FOCE control system:
+</p>
+<table class="altTable">
+<tr>
+  <th>Component</th>
+  <th>Description</th>
+</tr>
+<tr>
+<td>org.mbari.siam.foce.controlLoop</td>
+<td>Package contains implementations for control service classes</td>
+</tr>
+<tr class="alt">
+<td>
+org.mbari.siam.foce.utils.ControlClient<br />
+SIAM_HOME/utils/foce/cloop<br />
+</td>
+<td>Control service client utility</td>
+</tr>
+<tr>
+<td>
+org.mbari.siam.foce.utils.CLOTH<br />
+org.mbari.siam.tests.utils.osdt.*<br />
+SIAM_HOME/utils/foce/cloth<br />
+SIAM_HOME/src/org/mbari/siam/tests/utils/osdt/runModel<br />
+SIAM_HOME/src/org/mbari/siam/tests/utils/osdt/osdtTestClient<br />
+SIAM_HOME/src/org/mbari/siam/tests/utils/osdt/osdtTestClient<br />
+</td>
+<td>Control service test harness</td>
+</tr>
+</table>
+<a name="dg_other"></a>
+<h2>...And Other Things</h2>
+<h5>Platform-specific devices</h5>
+<p>It is often required to integrate data from devices that are not traditional serial instruments.
+For example, platforms may have COTS or custom digital hardware with memory mapped I/O, or accessed via a hardware bus.
+</p>
+<p>While SIAM doesn't include generic mechanisms for such devices, there are examples of interfaces that have been developed for various platform-specific applications at MBARI.
+</p>
+<table class="altTable">
+<tr>
+  <th>Example</th>
+  <th>Description</th>
+  <th>Platform</th>
+  <th>Related Material</th>
+</tr>
+<tr>
+<td>Dual Port Adapter (DPA)</td>
+<td>Custom digital I/O card, interfaced via SPI bus and memory mapped I/O. A Linux kernel-space driver was written to expose the SPI bus and memory mapped I/O through the linux dev file system.
+</td>
+<td>MOOS mooring controller (MMC)</td>
+<td>
+<ul>
+<li> org.mbari.siam.moos.deployed.DpaBoard</li>
+<li> org.mbari.siam.moos.deployed.SpiMaster</li>
+<li> org.mbari.siam.moos.deployed.LddMaster</li>
+<li> SIAM_HOME/utils/dpaView</li>
+<li> SIAM_HOME/native/arm-linux/src/kernel/sa1100gpio.c</li>
+<li> SIAM_HOME/native/arm-linux/src/kernel/sa1100lddio.c</li>
+<li> SIAM_HOME/native/arm-linux/src/kernel/sa1100spi.c</li>
+</ul>
+</td>
+</tr>
+<tr class="alt">
+<td>Ricoh RTC</td>
+<td>Real-time clock interface for a Ricoh RTC clock chip
+</td>
+<td>MOOS mooring controller (MMC)</td>
+<td>
+<ul>
+<li> SIAM_HOME/native/arm-linux/src/ricohRTC</li>
+<li> SIAM_HOME/native/arm-linux/top/root/ricohRTC</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td>FOCE digital I/O</td>
+<td>Interface to PC104 A/D and Digital I/O cards. Here, a linux application was written with drivers for several different digital I/O cards. 
+SIAM instrument services were written to access the linux app through a TCP/IP socket interface.
+</td>
+<td>FOCE Controller</td>
+<td>
+<ul>
+<li> org.mbari.siam.foce.AnalogBoard</li>
+<li> org.mbari.siam.foce.RelayBoard</li>
+<li> org.mbari.siam.foce.SensorayBoard</li>
+<li> org.mbari.siam.foce.IOMapper</li>
+<li> SIAM_HOME/native/foce/foceio.c</li>
+<li> SIAM_HOME/native/foce/sensoray.c</li>
+<li> SIAM_HOME/native/foce/testSensoray.c</li>
+<li> SIAM_HOME/native/foce/adtest.c</li>
+<li> SIAM_HOME/native/foce/ioport.c</li>
+<li> SIAM_HOME/native/foce/relay.c</li>
+<li> SIAM_HOME/native/foce/rtest.c</li>
+</ul>
+</td>
+</tr>
+</table>
+<!--
+<h1>H1 Text</h1>
+text
+<h2>H2 Text</h2>
+text
+<h3>H3 Text</h3>
+text
+<h4>H4 Text</h4>
+text
+<h5>H5 Text</h5>
+text
+<h6>H6 Text</h6>
+text
+
+<table class="altTable">
+<tr>
+  <th>Header 1</th>
+  <th>Header 2</th>
+  <th>Header 3</th>
+</tr>
+<tr>
+<td>col 1</td>
+<td>col 2</td>
+<td>col 3</td>
+</tr>
+<tr class="alt">
+<td>col 1</td>
+<td>col 2</td>
+<td>col 3</td>
+</tr>
+<tr>
+<td>col 1</td>
+<td>col 2</td>
+<td>col 3</td>
+</tr>
+<tr class="alt">
+<td>col 1</td>
+<td>col 2</td>
+<td>col 3</td>
+</tr>
+</table>
+-->
+</body>
+</html>

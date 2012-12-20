@@ -1,0 +1,20 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Set-up siam sidearm hardware to run JUNIT tests.  This includes
+# copying the siamPort.test to reflect port assignments for sidearm hardware.
+# This script also creates the log and codebase directories which are required
+# to run the NodeManagerTestMMC class.
+# Author: Karen A. Salamy
+# Date: 4/23/2004
+
+cd /mnt/hda/siam/
+mkdir logs
+mkdir codebase
+
+cd properties/
+cp siamPort.test.mmc siamPort.test
+cp siamPort.test.mmc siamPort.test~
+

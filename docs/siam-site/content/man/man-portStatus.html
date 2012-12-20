@@ -1,0 +1,170 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>Simple CSS Manual Page</title>
+		<link href="../../css/content.css" rel="stylesheet" type="text/css" />
+		<link href="../../css/manpage.css" rel="stylesheet" type="text/css" />
+		</head>
+	
+	<body>
+		
+		<div class="nameHeader">
+			<h1>Name</h1> 
+			<div class="nameText">
+				<h2>portStatus <!-- name text here --></h2>
+				</div>
+			</div>
+		
+		<div class="synopsisHeader">
+			<h1>Synopsis</h1>
+			<div class="synopsisText">
+				<div class="commands">portStatus <em class="options">nodeURL portName [portName...]</em></div>
+				</div>
+			</div>
+		
+		<div class="descriptionHeader">
+			<h1>Description</h1>
+			<div class="descriptionText">
+				<p>
+				<!-- description text here -->
+				The portStatus utility displays the status of the specified 
+				instrument port on the specified MMC node, whether an instrument service is 
+				running on the port or not. 
+				</p><p>
+				The output includes status of port registers
+				(including overcurrent status), voltage, current limit setting, heatsink
+				temperature, relay status, whether there is a PUCK attached to the port, 
+				and the name of SIAM service running on the port (if one exists).
+				</p>	
+				<div class="emphasis">This utility applies only to MOOS Mooring Controller (MMC) platform</div> 
+				<h2>Options</h2>
+				<table class="altTable">
+					<tr>
+						<th>Option</th>
+						<th>Description</th>
+						<th>Values</th>
+						</tr>
+					<tr>
+						<td>nodeURL</td>
+						<td>IP address or host name of SIAM node</td>
+						<td>e.g. 134.89.88.1, mooring.moos.mbari.org</td>
+						</tr>
+					<tr class="alt">
+						<td>portName</td>
+						<td>Name of instrument port (or alias) defined in siamPort.cfg</td>
+						<td>/dev/ttyS8, COM1, /dev/tty.KeySerial1</td>
+						</tr>
+					<!--
+					 <tr>
+					 <td></td>
+					 <td></td>
+					 <td>-</td>
+					 </tr>
+					 <tr class="alt">
+					 <td></td>
+					 <td></td>
+					 <td>-</td>
+					 </tr>
+					 -->
+					</table>
+				<p>
+				Example output:</p>
+				<pre>
+					portStatus surface /dev/ttySX11
+					
+					SIAM version $Name:  $
+					
+					port #: 11
+					relayReg: 0x2, controlReg: 0xc5, interruptReg: 0x38
+					
+					overCurrent: false
+					voltage: 12.24636
+					current: 0.0732
+					currentLimit: 3000.0
+					heatsinkTemperature: 28.328003
+					
+					RS485Term Relay: ISO
+					commsIso Relay: ISO
+					powerIso Relay: CON
+					
+					status: OK
+					commTxPower: LOW
+					commDuplex: FULL
+					commMode: 232
+					commSlew: FAST
+					commsPower: OFF
+					instrumentPower: ON
+					has Puck: false
+					service: Garmin GPS s/n 81108743 (ID=1590)
+					
+					</pre>
+				<p></p>
+				</div>
+			</div>
+		
+		<div class="environmentHeader">
+			<h1>Environment</h1>
+			<div class="environmentText">
+				<p>
+				<!-- description text here -->
+				The following environment variables must be set:
+				</p>	 
+						<table class="altTable">
+							<tr>
+								<th>Variable</th>
+								<th>Description</th>
+								<th>Example</th>
+								</tr>
+							<tr>
+								<td>JAVA_HOME </td>
+								<td>location of Java installation</td>
+								<td><div class="path"> /j9, /opt/java/jdk1.3.1, etc.</div></td>
+								</tr>
+							<tr class="alt">
+								<td>JAVA</td>
+								<td>Path to JVM command</td>
+								<td>For MMC<div class="commands">$JAVA_HOME/bin/j9</div><br />For Sun JVM (e.g. linux, win32, mac OS) <div class="commands">$JAVA_HOME/bin/java</div>
+									</td>
+								</tr>
+							<tr>
+								<td>SIAM_HOME</td>
+								<td>top of the SIAM directory tree</td>
+								<td>-</td>
+								</tr>
+							<tr class="alt">
+								<td>SIAM_CLASSPATH</td>
+								<td>Path including all SIAM and supporting classes</td>
+								<td>For MMC<div class="path">$JAVA_HOME/lib/jclMax/classes.zip:$JAVA_HOME/lib/prsnlmot.jar:$JAVA_HOME/lib/RXTXcomm.jar:$SIAM_HOME/classes</div><br />
+									For linux/win32<div class="path"> $SIAM_HOME/classes</div></td>
+								</tr>
+							<!--
+							 <tr>
+							 <td></td>
+							 <td></td>
+							 <td>-</td>
+							 </tr>
+							 <tr class="alt">
+							 <td></td>
+							 <td></td>
+							 <td>-</td>
+							 </tr>
+							 -->
+							</table>
+						<p></p>
+						</div>
+			</div>
+		
+		<div class="seeAlsoHeader">
+			<h1>See Also</h1>
+			<div class="seeAlsoText">
+			none
+			<!--
+				<div class="command"><a href=".html#" target="mainFrame">link1</a></div>
+				</div>
+			-->
+			</div>
+		</div>
+		
+		</body>
+	</html>

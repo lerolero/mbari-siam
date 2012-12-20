@@ -1,0 +1,106 @@
+#!/bin/csh
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Plot Globalstar signal strength as a function of time
+
+if ($#argv != 3) then
+  echo "Usage: $0 portalLogFile pppLogFile ppp-endpoint"
+  exit 1
+endif
+
+set portalLog=$1
+set pppLog=$2
+set pppEndpoint=$3
+
+
+
+# Build awk script to get Globalstar signal strengths from portal log. Note
+# that timestamps in the log are according to node clock, which is UTC
+set awkscript=/tmp/getSignal.awk
+cat > $awkscript << 'EOF'
+BEGIN {
+  year = 2009;
+}
+
+/\/var\/log\/syslog:/ {
+  # Get signal strengths recorded in /var/log/syslog
+  month = substr($1, index($1, ":")+1);
+  day = $2;
+  timestring = $3;
+
+  printf "%s %s %s %s    %d\n", month, day, year, timestring, $7;
+}
+
+'EOF'
+
+set signalData=/tmp/globalstarSignal
+
+awk -f $awkscript $portalLog | sort | uniq > $signalData
+
+set awkscript=/tmp/tmp$$.awk
+cat > $awkscript << 'EOF2'
+
+BEGIN {
+
+  targetIP = ARGV[1];
+  ARGV[1] = "";
+
+  connectMsg = "IP-UP.*" targetIP;
+  disconnectMsg = "IP-DOWN.*" targetIP;
+}
+
+
+$0 ~ connectMsg {
+  start = $2;
+}
+
+$0 ~ disconnectMsg {
+
+  if (start > 0) {   # Need at least 1 'IP-UP' to compute duration
+    duration = $2 - start;
+    # Convert epoch seconds to time-string
+    printf "%s %d\n", strftime("%b %d %Y %H:%M:%S", $2), duration;
+  }
+}
+
+
+'EOF2'
+
+# Execute awk script to extract duration as function of time. Note that
+# we need to generate timestrings in UTC
+setenv TZ UTC0
+set pppDuration=/tmp/ppp-duration
+awk -f $awkscript $pppEndpoint $pppLog > $pppDuration
+
+echo "compute range"
+@ stop=`date +%s`
+@ start=$stop - 86400
+
+echo "build gnuplot file"
+
+set title="Globalstar signal strength and PPP duration"
+set plotScript=/tmp/plotSessions
+cat > $plotScript << EOF3
+
+set xdata time
+set timefmt "%b %d %Y %H:%M:%S"
+
+set title "$title"
+# Need place-holder for xlabel for proper spacing...
+set xlabel "Time (UTC)"
+set xrange [${start}:$stop]
+set format x "%m/%d"
+set ylabel "ppp duration"
+set yrange [0:2400]
+set y2label "Globalstar signal strength"
+set y2range [0:4.5]
+
+plot "$signalData" using 1:5 axes x1y2 with histeps title "Globalstar signal strength", "$pppDuration" using 1:5 axes x1y1 with linespoints title "ppp duration"
+
+
+EOF3
+
+cat $plotScript | gnuplot
+

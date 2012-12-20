@@ -1,0 +1,15 @@
+#!/bin/bash
+# This file should not be modified -- make local changes to
+# /etc/ppp/ip-down.local instead
+
+echo "Now in ip-down" > /tmp/ip-down.out
+ 
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
+export PATH
+ 
+LOGDEVICE=$6
+REALDEVICE=$1
+ 
+[ -x /etc/ppp/ip-down.local ] && /etc/ppp/ip-down.local "$@"
+ 
+exit 0

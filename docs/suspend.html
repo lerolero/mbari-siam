@@ -1,0 +1,66 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Bob Herlien">
+   <meta name="GENERATOR" content="Mozilla/4.79 [en] (Windows NT 5.0; U) [Netscape]">
+   <title>suspend</title>
+</head>
+<body>
+<b>NAME</b>
+<blockquote>suspend - put the CPU into suspend (sleep) mode</blockquote>
+<b>SYNOPSIS</b>
+<blockquote>
+<pre>suspend [-n] [-v] [&lt;seconds>]</pre>
+</blockquote>
+<b>DESCRIPTION</b>
+<blockquote><b>This utility is intended to be run only by system scripts
+and the SIAM application, and not by the end-user.</b>&nbsp; It can be
+useful for system testing, but should never be run by the operator on a
+deployed system.
+<p><b>suspend</b> puts the CPU into sleep (suspend) mode for &lt;seconds>
+seconds.&nbsp; In the absence of this parameter, it will put the CPU to
+sleep for 60 seconds.&nbsp; The maximum parameter it will accept is 3600
+seconds (one hour).&nbsp; It uses the SA1100 RTC (hwclock, via /dev/rtc)
+to set the wakeup time.
+<p>Options:
+<ul>
+<li>
+<b>-n</b> - Don't suspend past midnight (as indicated by /dev/rtc).&nbsp;
+This circumvents a bug in the distributed version of the Linux driver for
+/dev/rtc (sa1100-rtc.o).&nbsp; This bug has been fixed in deployed systems,
+but the flag is here for compatibility with non-fixed systems.</li>
+
+<li>
+<b>-v</b> - verbose mode.&nbsp; Tells user what it's doing at each step
+of the way.</li>
+</ul>
+</blockquote>
+<b>BUGS</b>
+<blockquote>It appears that the Linux kernel, under some conditions (unknown
+to this author), will manipulate the SA1100 clock.&nbsp; If this happens
+between the time 'suspend' sets the wakeup time registers and the time
+of the wakeup, then the CPU may never wake up.&nbsp; 'Suspend' has code
+to set the SA1100 time/date registers if they're too far away from the
+system time.&nbsp; This code is necessary to avoid this system bug.&nbsp;
+This solution appears to work, but is worrisome.&nbsp; It would be best
+to find where the kernel tries to manipulate the hwclock, and disable that
+code.</blockquote>
+
+<p><br><b>ENVIRONMENT</b>
+<blockquote>This utility depends on no environment variables.</blockquote>
+
+<p><br><b>SEE ALSO</b>
+<ul>
+<li>
+Log onto any Linux workstation and do a "<b>man hwclock</b>" to see how
+to manipulate the SA1100 RTC.</li>
+
+<li>
+<a href="ricohRTC.html">ricohRTC</a></li>
+</ul>
+
+<blockquote>&nbsp;</blockquote>
+
+</body>
+</html>

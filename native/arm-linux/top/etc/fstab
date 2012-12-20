@@ -1,0 +1,21 @@
+# <device>    <mountpoint>   <filesystemtype> <options> <dump> <fsckorder>
+/dev/mtdblock3 	/               jffs2           defaults 0 0
+tmpfs		/mnt/ramfs	tmpfs		defaults 0 0
+proc            /proc           proc            defaults 0 0
+devpts		/dev/pts	devpts		mode=0622       0 0
+
+# we don't use dump, therefore fs_dump=0
+# the root fs should have fs_passno=1, others 2 or above;
+# fs_passno=0 indicates that the fs should not be checked
+
+# use this if doing fsck and mount from rc.local
+/dev/hda1 /mnt/hda ext3 defaults 0 0
+
+# use this if doing fsck and mount from cardmgr
+#/dev/hda1 /mnt/hda ext2 defaults 0 2
+
+# example of remote mounting network share
+#tempest:/vol/vol0/users/oreilly  /home/oreilly/tempest  nfs bg,soft,nosuid,nodev,exec
+
+
+

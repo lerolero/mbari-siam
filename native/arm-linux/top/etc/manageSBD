@@ -1,0 +1,9 @@
+#!/bin/bash
+# Downlink any queued SBD messages
+export SIAM_HOME=/mnt/hda/siam
+. /etc/siam/siamEnv
+
+timeout=60
+serviceHost=localhost
+
+$SIAM_HOME/utils/shoremsgclient $serviceHost -c -t $timeout

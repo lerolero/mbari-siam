@@ -1,0 +1,14 @@
+#!/bin/bash
+# Run ppp daemon, with user-specified parameters. Daemon is run in 
+# a loop, so that if connection is dropped, we attempt reconnection
+# automatically.
+
+link=longhaul
+delay=3
+
+while :
+do
+  /usr/sbin/pon $link
+  sleep $delay
+done
+ 

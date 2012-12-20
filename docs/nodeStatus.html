@@ -1,0 +1,62 @@
+<!DOCTYPE doctype PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+        
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+        
+  <meta name="Author" content="Tom O'Reilly">
+        
+  <meta name="GENERATOR"
+ content="Mozilla/4.79 [en] (Windows NT 5.0; U) [Netscape]">
+  <title>nodeStatus</title>
+</head>
+  <body>
+  <b>NAME</b>  
+<blockquote>nodeStatus - list diagnostic information for specified MOOS 
+node</blockquote>
+  <b>SYNOPSIS</b>  
+<blockquote>    
+  <pre>nodeStatus nodeHostname</pre>
+  </blockquote>
+  <b>DESCRIPTION</b>  
+<blockquote>The nodeStatus utility displays various diagnostic iformation
+ for the specified MOOS node. E.g.<br>
+ &nbsp;    
+  <blockquote>      
+    <pre>% nodeStatus sidearm6</pre>
+  </blockquote>
+  Diagnostic information includes a list of all instruments on the node's
+ports and their sampling statistics, diagnostic information for each port,
+node file system usage statistics, number of JVM threads, RFIO board status,
+optical subsystem status, satellite communication status.  This utility may
+be run on the same host as the node, or on any networked host from which
+the node host is accessible. If run on the node's host, then <i>nodeHost</i>
+should be specified as "localhost". </blockquote>
+    
+<p><br>
+ <b>ENVIRONMENT</b> </p>
+ 
+<blockquote>The following environment variables must be set:</blockquote>
+    
+<ul>
+  <li> JAVA_HOME - location of Java installation, e.g.<i> /j9</i> or <i>/opt/java/jdk1.3.1</i></li>
+   <li> JAVA - name of the JVM. E.g. on a Sidearm, JAVA should be set to
+    <i>j9.      </i>On a workstation with Sun's Java installed, JAVA could
+be set to     <i>java</i>.</li>
+   <li> SIAM_HOME - top of the SIAM directory tree</li>
+   <li> SIAM_CLASSPATH - on a Sidearm, SIAM_CLASSPATH should be set to <i>$JAVA_HOME/lib/jclMax/classes.zip:$JAVA_HOME/lib/prsnlmot.jar:$JAVA_HOME/lib/RXTXcomm.jar:$SIAM_HOME/classes</i>.&nbsp;
+ On X86 system, SIAM_CLASSPATH should be set to<i> $SIAM_HOME/classes</i></li>
+   
+</ul>
+    
+<p><br>
+ <b>SEE ALSO</b> </p>
+ 
+<blockquote>&nbsp;<a href="node.html">node</a><br>
+   <br>
+ </blockquote>
+   <br>
+ <br>
+</body>
+</html>

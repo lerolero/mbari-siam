@@ -1,0 +1,8 @@
+#!/bin/bash
+SYSLOG=/var/log/syslog
+PPPLOG=/var/log/ppp.log
+if [ -s $PPPLOG ]; then
+  exec tail "$@" $PPPLOG
+else
+  exec tail "$@" $SYSLOG | grep ' \(pppd\|chat\)\[*.\]*.' | sed -e 's/\^M//g'
+fi

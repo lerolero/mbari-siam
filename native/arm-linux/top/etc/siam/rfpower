@@ -1,0 +1,72 @@
+#!/bin/bash
+
+if [ ! -e /proc/cpu/registers ]
+then
+    insmod --noksymoops registers
+    if [ $? -ne 0 ]
+    then
+	echo "No permission for insmod"
+	echo "Use rfpower.ops instead"
+	exit 1
+    fi
+fi
+
+cd /proc/cpu/registers
+
+if [ ! -w GPDR ]
+then
+    echo "No permission to write GPIO registers"
+    echo "Use rfpower.ops instead"
+    exit 1
+fi
+
+# get GPDR state
+let gpdr=`cat GPDR`
+#echo `printf "GPDR=0x%08X" $gpdr`
+
+# Configure GPDR RF Power bits as outputs
+let gpdr="$gpdr|0x6000"
+echo `printf "0x%08X" $gpdr` > GPDR
+#echo `printf "GPDR=0x%08X" $gpdr`
+
+# Get RF Power bits to set/clear
+let pwrbits=0
+case "$1" in
+0 ) 
+    let pwrbits=0x2000
+;;
+1 ) 
+    let pwrbits=0x4000
+;;
+[Aa][Ll][Ll] )
+    let pwrbits=0x6000
+;;
+* )
+echo
+echo "Usage rfpower [0|1|all] [on|off]"
+echo
+exit 1
+;;
+esac
+
+# set RF Power bits
+case "$2" in
+[Oo][Nn] ) 
+	echo `printf "0x%08X" $pwrbits` > GPSR
+	echo
+	echo "RF Power $1 ON"
+	echo
+;;
+[Oo][Ff][Ff] )
+	echo `printf "0x%08X" $pwrbits` > GPCR
+	echo
+	echo "RF Power $1 OFF"
+	echo
+;;
+* )
+echo
+echo "Usage rfpower [0|1|all] [on|off]"
+echo
+;;
+esac
+

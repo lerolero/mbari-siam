@@ -1,0 +1,9 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+$JAVA -cp $SIAM_CLASSPATH \
+-Dsiam_home=$SIAM_HOME \
+org.mbari.siam.operations.utils.AddServiceJar $*
+

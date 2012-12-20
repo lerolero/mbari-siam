@@ -1,0 +1,164 @@
+#!/bin/csh
+
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+set terminal=x11
+set plotScript=/tmp/plotJitter.gnuplot
+
+set xrange=''
+set yrange='set yrange [0:100]'
+set output=
+set startEpochSec=0
+set stopEpochSec=2140000000
+
+# Process leading options
+while ($#argv > 0)
+  if ("$argv[1]" == "-xrange") then
+    shift
+    set xrange = "set xrange $argv[1]"
+  else if ("$argv[1]" == "-yrange") then
+    shift
+    set yrange = "set yrange $argv[1]"
+  else if ("$argv[1]" == "-terminal") then
+    shift  
+    set terminal = $argv[1]:q
+    set output=`echo set output \"jitter.$terminal\"`
+
+  else if ("$argv[1]" == "-start") then
+    shift
+    set startEpochSec = `ut2et $argv[1]`
+  else if ("$argv[1]" == "-stop") then
+    shift
+    set stopEpochSec = `ut2et $argv[1]`
+  else
+    break  # End of options
+  endif
+
+  shift   # Check next argument
+
+end
+
+if ($#argv < 1) then
+  echo usage: `basename $0` '[options] deviceIDs'
+  echo "-terminal type"
+  echo "-output filename"
+  echo "-start dd/mm/yyyyThh:mm:ss"
+  echo "-stop dd/mm/yyyyThh:mm:ss"
+  exit 1
+endif
+
+set deviceIDs=($argv)
+
+set awkScript = /tmp/plotJitter.awk
+cat > $awkScript <<'EOF2'
+# Compute interval between adjacent sensor data packets. Takes output of 
+# 'logView' as input.
+
+BEGIN {
+##  FS = ", ";
+  nPackets = 0;
+  serviceName = "UNK";
+  deviceID = "UNK";
+  startEpochSec = ARGV[1];
+  ARGV[1] = "";
+  stopEpochSec = ARGV[2];
+  ARGV[2] = ""; 
+  printf "# startEpochSec=%d, stopEpochSec=%d\n", startEpochSec, stopEpochSec;
+}
+
+/serviceName=/ {
+  serviceName = substr($0, index($0, "=")+1);
+}
+
+/isiID=/ {
+  deviceID = substr($0, index($0, "=")+1);
+}
+
+
+/SensorDataPacket/ {
+  sensorData = 1;
+  line = 1;
+  timeTag = $0;
+  next;
+}
+
+{
+  line++;
+  if (line == 3 && sensorData) {
+    sec = substr($2, 3, 13)/1000.;
+    if (sec < startEpochSec || sec > stopEpochSec) {
+      sensorData = 0;
+      next;
+    }
+
+    if (nPackets > 0) {
+      interval = sec - prev_sec;
+      printf "%d %.1f  # %s\n", sec, interval, timeTag;
+      sum += interval;
+      sumsq += interval * interval;
+    }
+    nPackets++;
+    prev_sec = sec;
+    sensorData = 0;  # Done with this packet
+  }
+}
+
+END {
+  mean = sum / nPackets;
+  x2 = sumsq / nPackets;
+
+  if (nPackets > 1) {
+    stdDev = sqrt(x2 - mean * mean);
+  }
+  printf "# Mean interval: %.1f, stdDev: %.1f, n=%d\n", mean, stdDev, nPackets;
+  printf "# deviceID|%s|serviceName|%s|mean|%.1f|stdDev|%.1f\n", deviceID, serviceName, mean, stdDev
+}
+
+'EOF2'
+
+echo Compute data intervals
+echo "start: $startEpochSec"
+echo "stop:  $stopEpochSec"
+foreach deviceID ($deviceIDs)
+  set file = $deviceID.logView
+  echo Computing sample intervals for $file
+  awk -f $awkScript $startEpochSec $stopEpochSec $file > ${file:r}.interval
+end
+
+
+echo "Create gnuplot script $plotScript"
+cat > $plotScript << EOF
+
+set xdata time
+set timefmt "%s"
+set format x "%m/%d\n%H:%M"
+set terminal $terminal
+$output
+set title "Sampling intervals"
+set xlabel "Time (UTC)"
+set ylabel "Interval (sec)"
+$xrange
+$yrange
+set key bmargin
+
+EOF
+
+# Add plot commands
+
+echo -n "plot " >> $plotScript
+@ n = 1
+foreach deviceID ($deviceIDs)
+ set file = $deviceID.interval
+ set title=`tail -1 $file | awk 'BEGIN{FS="|"}{print $2 ": " $4 " (sig=" $8 "sec)"}'`
+ echo -n \"$file\" 'using 1:2 title ' \"$title\" ' with linespoints' >> $plotScript
+ if ($n < $#deviceIDs) echo -n ", " >> $plotScript
+ @ n = $n + 1
+end
+echo "" >> $plotScript
+
+
+
+echo "Plot it"
+gnuplot -persist $plotScript 

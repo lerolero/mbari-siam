@@ -1,0 +1,131 @@
+
+# MUCE Iridium session HOWTO
+#
+# This document describes how to configure and use an Iridium 
+# console session with the MUCE mooring via a minicom 
+# session.
+#
+# ***IMPORTANT USE NOTE***
+# Iridium air time is expensive ($1+/min plus connection charges)
+# Use Iridium time efficiently, and be sure to properly disconnect sessions when
+# you are finished
+#
+# author: k headley
+
+Connecting to Iridium requires an analog phone line; there is a modem connected to
+an analog line on siam-portal-3 in Bldg G.
+
+A minicom session and a login script have been saved on siam-portal-3:
+	/etc/minirc.iridium
+	/home/ops/login.iridium
+
+To establish the session:
+- ssh ops@siam-portal-3
+- minicom iridium
+- Ctrl-A D (to get to dialing menu)
+- select the session named Iridium (8011881693757168)
+- hit enter to dial
+- when connected, the login script should run and automatically send the ops user name and password
+- to disconnect:
+	type 'exit' to quit your console session, 
+	type Ctrl-A H to hang up (minicom will prompt you to confirm hang-up)
+
+# Below are a few notes on configuring minicom
+
+# Serial Port Setup Menu
+A -    Serial Device      : /dev/ttyS1
+B - Lockfile Location     : /var/lock 
+C -   Callin Program      : 
+D -  Callout Program      : 
+E -    Bps/Par/Bits       : 19200 8N1 
+F - Hardware Flow Control : No 
+G - Software Flow Control : No
+
+# Dialing Entry
+# Ctrl-A D gets you to the dial menu
+# the arrow keys are used to navigate the Dial Menu
+# options; the Edit options are shown below
+# The login script is passed to runscript
+# (see runscript manpage for syntax)
+# If the Script option is left blank, minicom will
+# bring up the login prompt if the modem initialization is
+# correct.
+
+A -  Name                    : Iridium
+B -  Number                : 8011881693757168 
+C -  Dial string #         : 1
+D -  Local echo          : No
+E -  Script                    : /home/ops/login.iridium 
+F -  Username            : <the usual login>
+G -  Password            : <the usual password>
+H -  Terminal Emulation  : VT102 
+I -  Backspace key sends : Delete
+J -  Linewrap            : On 
+K -  Line Settings       : 19200 8N1
+L -  Conversion table    :  
+
+# Configuring automatic login
+Here is an example login script; the  Username and Password options in the Dialing Entry
+are passed to the script as $(USER) and $(PASSWORD). The Dialing Entry Script option should 
+be the path to this script.
+
+==== snip ====
+# iridium console login script
+# run by minicom via runscript
+#
+# author: k headley
+# see runscript manpage
+# see minicom manpage
+
+#print "connected..."
+# send CR to get loging prompt
+send ""
+
+#print "waiting for login prompt..."
+expect {
+ "ogin:"
+ "OGIN:"
+ timeout 10
+}
+#print "sending login..."
+#(from minicom Dial Login)
+send "$(LOGIN)" 
+#print "waiting for passwd prompt..."
+expect {
+ "assword:"
+ "ASSWORD:"
+ timeout 10
+}
+#print "sending passwd..."
+#(from minicom Dial Password)
+send "$(PASS)" 
+exit
+====snip====
+
+
+# Modem and Dialing Options
+
+# These settings are basically the minicom default settings
+# The init string settings are important - especially V1, which enables the CONNECT
+# strings. Without this, the dialer will not know when it is connected and will fail to 
+# present the login prompt until the user hits enter.
+
+A - Init string .........        ~^M~AT S7=45 S0=0 L1 V1 X4 &c1 E1 Q0^M
+B - Reset string ........    ^M~ATZ^M~
+C - Dialing prefix #1.... ATDT
+D - Dialing suffix #1.... ^M
+E - Dialing prefix #2.... ATDP
+F - Dialing suffix #2.... ^M 
+G - Dialing prefix #3.... ATX1DT
+H - Dialing suffix #3.... ;X4D^M 
+I - Connect string ...... CONNECT
+J - No connect strings .. NO CARRIER            BUSY
+                                           NO DIALTONE           VOICE 
+K - Hang-up string ...... ~~+++~~ATH^M
+
+L - Dial cancel string .. ^M 
+M - Dial time ........... 45           Q - Auto bps detect ..... No
+N - Delay before redial . 2     R - Modem has DCD line .. Yes
+O - Number of tries ..... 10      S - Status line shows ... DTE speed
+P - DTR drop time (0=no). 1  T - Multi-line untag .... No 
+

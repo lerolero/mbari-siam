@@ -1,0 +1,4 @@
+#!/bin/bash
+# client - socket test client
+
+$JAVA -cp $SIAM_CLASSPATH org.mbari.siam.tests.socket.SockClient $*

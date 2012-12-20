@@ -1,0 +1,51 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Tom O'Reilly">
+   <meta name="GENERATOR" content="Mozilla/4.79 [en] (Windows NT 5.0; U) [Netscape]">
+   <title>puckit</title>
+</head>
+<body>
+&nbsp;
+<br><b>NAME</b>
+<blockquote>puckit - create "jar file" for instrument service</blockquote>
+<b>SYNOPSIS</b>
+<blockquote>
+<pre>puckit serviceClassName propertiesFile jarFile</pre>
+</blockquote>
+<b>DESCRIPTION</b>
+<blockquote>A device service is started on a port when the host node <i>scans</i>
+that port. For the port being scanned, the node attempts to locate a <i>service
+jar file, </i>which contains the service classfile, the service stub classfile,
+and an ASCII service properties file. The node then instantiates the service
+from its classfile, exports the service stub classfile, and provides the
+properties file to the service. The service properties file specifies attributes
+specific to the service, using <i>key=value</i> syntax. The following properties
+are required in the properties file:
+<br>&nbsp;
+<blockquote>
+<pre>isiID - specifies instrument's ISI-ID</pre>
+</blockquote>
+</blockquote>
+
+<blockquote>The puckit utility creates the jar file. puckit takes three
+command line arguments:
+<blockquote>serviceClassName - specifies service class, e.g. "moos.kvh.CompassKVHC100"
+<br>propertiesFile - the service properties file name
+<br>jarFile - the name of the jar file to be created</blockquote>
+The user can then copy the created jar file to a puck or to a pre-configuration
+location on the host.</blockquote>
+<b>ENVIRONMENT</b>
+<blockquote>The following environment variables must be set:</blockquote>
+
+<ul>
+<li>
+SIAM_HOME - top of the SIAM directory tree</li>
+</ul>
+
+<p><br><b>SEE ALSO</b>
+<blockquote>&nbsp;<a href="scanPort.html">scanPort</a></blockquote>
+
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE doctype PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+  <meta name="Author" content="Tom O'Reilly">
+  <meta name="GENERATOR"
+ content="Mozilla/4.79 [en] (Windows NT 5.0; U) [Netscape]">
+  <title>Telemetry filters</title>
+</head>
+<body>
+<b>NAME</b>
+<blockquote>getfilter, setfilter, clearfilter - manipulate telemetry
+filters<br>
+</blockquote>
+<b>SYNOPSIS</b>
+<blockquote>
+  <pre>getfilter nodeHostname deviceID<br>setfilter nodeHostname -types <span
+ style="font-style: italic;">type(s)</span> -skip <span
+ style="font-style: italic;">interval</span> deviceID<br>clearfilter nodeHostname deviceID<br><br></pre>
+  <pre><span style="font-weight: bold;">NOTE</span>: for these utilities, the service is specified as deviceID, <span
+ style="font-weight: bold;">not</span> as port name. <br></pre>
+</blockquote>
+<b>DESCRIPTION</b>
+<blockquote>The <span style="font-style: italic;">getfilter</span>, <span
+ style="font-style: italic;">setfilter</span>, and <span
+ style="font-style: italic;">clearfilter</span> utilities display and
+manipulate "telemetry filters" associated with a specified instrument
+service. When a telemetry retriever such as <a
+ style="font-style: italic;" href="portal.html">portal</a><span
+ style="font-style: italic;"> </span>or <a href="getPackets.html"><span
+ style="font-style: italic;">getPackets</span></a> requests packets
+from an
+instrument service, the service may decimate the number of packets
+returned through <a href="summariesAndFiltering.html">telemetry
+subsampling</a>, i.e. by returning only every nth packet. The number of
+packets to skip for each packet type is specified by a "telemetry
+filter", and several such filters can be associated with an
+instrument service. The <span style="font-style: italic;">getfilter</span>
+utility displays the telemetry filters currently associated with a
+specified instrument service; e.g. the following command displays the
+filters associated with instrument service 1101 running on the
+"surface" node:<br>
+  <pre style="margin-left: 40px;">% getfilter surface 1101<br>SIAM version $Name: HEAD $<br>filter 0: types: SensorData : skip 3<br>filter 1: types: Metadata DeviceMessage Summary : skip 0<br></pre>
+The displayed filters are applied sequentially by the service when
+telemetry is requested. In the above example, only every 4th sensor
+data packet will be retrieved by portal or getPackets (three sensor
+data packets are skipped), while <span style="font-style: italic;">every</span>
+metadata, message, and summary packet will be retrieved. (Note that <span
+ style="font-style: italic;">all</span> packets are always logged by
+the service; the filters discussed here only apply to telemetry
+retrieval).<br>
+  <br>
+The <span style="font-style: italic;">clearfilter</span> utility
+removes all telemetry filters from an instrument service.<br>
+  <br>
+The&nbsp; <span style="font-style: italic;">setfilter</span> utility
+specifies one or more filters for an instrument service. Usage is as
+follows:<br>
+  <pre style="margin-left: 40px;">setfilter nodeHostname -types <span
+ style="font-style: italic;">type(s)</span> -skip <span
+ style="font-style: italic;">interval</span> deviceID</pre>
+Valid types are 'metadata', 'data', 'message', 'summary', or 'all'.
+Valid skip interval should be specified as an integer. An interval of
+'0' means return <span
+ style="text-decoration: underline; font-style: italic;">all</span>
+packets of the specified type(s), while an interval of '-1' means dont'
+return <span style="text-decoration: underline; font-style: italic;">any</span>
+packets of the specified type(s).<br>
+  <br>
+For example, the following commands clears all filters for instrument
+service 1101, then sets filtering to skip all sensor data and message
+packets from the service:<br>
+  <div style="margin-left: 40px;">
+  <pre>% clearfilter surface 1101<br>% setfilter -types data message -skip -1 1101<br></pre>
+  </div>
+  <span style="font-weight: bold;"></span>A subsequent invocation of <span
+ style="font-style: italic;">getfilter</span> shows: <br>
+</blockquote>
+<pre style="margin-left: 80px;">% getfilter localhost 1101<br>SIAM version $Name: HEAD $<br>filter 0: types: SensorData Metadata DeviceMessage Summary : skip 0<br>filter 1: types: SensorData DeviceMessage : skip -1<br></pre>
+<div style="margin-left: 40px;">Note that the filters displayed by <span
+ style="font-style: italic;">getfilter</span> will be applied by the
+service sequentially. E.g. in the above example, "filter 0" passes all
+packets of all types, but "filter 1" will subsequently remove all
+sensor data and message packets. <br>
+<br>
+</div>
+<p> <b>
+KNOWN BUGS<br>
+</b></p>
+<div style="margin-left: 40px;">There is currently no way to persist
+telemetry filters across
+service restarts, other than with the <a
+ href="summariesAndFiltering.html"><span style="font-style: italic;">defaultSkipInterval</span>
+property</a>.<br>
+</div>
+<p><b><br>
+ENVIRONMENT</b> </p>
+<blockquote>The following environment variables must be set:</blockquote>
+<ul>
+  <li> JAVA_HOME - location of Java installation, e.g.<i> /j9</i> or <i>/opt/java/jdk1.3.1</i></li>
+  <li> JAVA - name of the JVM. E.g. on a Sidearm, JAVA should be set to
+    <i>j9. </i>On a workstation with Sun's Java installed, JAVA could
+be set to <i>java</i>.</li>
+  <li> SIAM_HOME - top of the SIAM directory tree</li>
+  <li> SIAM_CLASSPATH - on a Sidearm, SIAM_CLASSPATH should be set to <i>$JAVA_HOME/lib/jclMax/classes.zip:$JAVA_HOME/lib/prsnlmot.jar:$JAVA_HOME/lib/RXTXcomm.jar:$SIAM_HOME/classes</i>.&nbsp;
+On X86 system, SIAM_CLASSPATH should be set to<i> $SIAM_HOME/classes</i></li>
+</ul>
+<p><br>
+<b>SEE ALSO</b> </p>
+<blockquote>&nbsp;<span style="text-decoration: underline;"><a
+ href="summariesAndFiltering.html">Summaries and telemetry subsampling</a><br>
+  <br>
+  </span> <br>
+</blockquote>
+<br>
+<br>
+</body>
+</html>

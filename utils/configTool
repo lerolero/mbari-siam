@@ -1,0 +1,82 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# configTool
+# SIAM configuration tool
+# uses Jetty http server and servlet
+# container to configure SIAM via http 
+# (configt uses links text-based web browser
+# to use configTool over a serial console)
+#
+
+########################
+# Variable definitions #
+########################
+PROPERTIES="$SIAM_HOME/properties/configtool.properties"
+
+#########################################
+# Help message                          #
+#########################################
+if [ "$#" -lt "1" ]
+then
+echo
+echo "Usage: `basename $0` -[wml] [-p <properties>]"
+echo "    w: Win32"
+echo "    m: MMC"
+echo "    l: Linux System"
+echo "    p: properties file [$PROPERTIES]"
+echo
+echo "Starting the `basename $0` server"
+echo "  When running in the background, redirect output to a file"
+echo "  to allow a text browser to run in the same session, e.g.:"
+echo
+echo "    `basename $0` -w -p myconfigtool.properties >& server.log &"
+echo "    `basename $0` -m >& /dev/null &"
+echo
+exit
+fi
+
+# Parse command line args
+while [ "$#" -ge 1 ]
+do
+
+case "$1" in
+-w )
+    echo Configuring for Win32...
+    CP="$SIAM_CLASSPATH;$SIAM_HOME/jars/org.mortbay.jetty-jdk1.2.jar;$SIAM_HOME/jars/commons-logging.jar;$SIAM_HOME/jars/javax.servlet.jar;$SIAM_HOME/jars/jakarta-regexp-1.5.jar"
+    shift
+    ;;
+-m )
+    echo "Configuring for ARM-Linux (MMC)..."
+    CP="$SIAM_CLASSPATH:$SIAM_HOME/jars/org.mortbay.jetty-jdk1.2.jar:$SIAM_HOME/jars/commons-logging.jar:$SIAM_HOME/jars/javax.servlet.jar:$SIAM_HOME/jars/jakarta-regexp-1.5.jar"
+    shift
+;;
+-l )
+    echo Configuring for x86-Linux...
+    CP="$SIAM_CLASSPATH:$SIAM_HOME/jars/org.mortbay.jetty-jdk1.2.jar:$SIAM_HOME/jars/commons-logging.jar:$SIAM_HOME/jars/javax.servlet.jar:$SIAM_HOME/jars/jakarta-regexp-1.5.jar"
+    shift
+;;
+-p )
+    shift
+    echo "Setting properties file=$1"
+    PROPERTIES="$1"
+    shift
+;;
+* ) shift
+;;
+esac
+done
+
+# Set default log4j level
+if [ "$LOG4J_THRESHOLD" == "" ]
+then
+  LOG4J_THRESHOLD="ERROR"
+fi
+
+echo "Starting configTool with debug level $LOG4J_THRESHOLD"
+
+export SIAM_CLASSPATH=$CP
+
+$JAVA -cp $SIAM_CLASSPATH -Djetty.home=$SIAM_HOME -Dlog4j.threshold=$LOG4J_THRESHOLD -Dconfigtool.properties=$PROPERTIES org.mbari.siam.configt.BasicServer

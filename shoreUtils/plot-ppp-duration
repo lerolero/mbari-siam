@@ -1,0 +1,63 @@
+#!/bin/csh
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Plot duration of ppp connections based on contents of /var/log/messages
+
+if ($#argv != 1) then
+  echo "Usage: $0 ppp-endpoint-IP"
+  exit 1
+endif
+
+
+# Create awk script to extract duration as function of time
+set awkscript=/tmp/tmp$$.awk
+cat > $awkscript << 'EOF'
+
+BEGIN {
+  targetIP = ARGV[1];
+  ARGV[1] = "";
+
+  # YEAR DOES NOT APPEAR IN INPUT!!!
+  year = 2009;
+
+  connectMsg = "remote IP address " targetIP; 
+}
+
+
+$0 ~ connectMsg {
+  thread = $5;
+}
+
+/Connect time/ {
+  if (index($0, thread) > 0) {
+    printf "%s %s %s %d  %s\n", $1, $2, $3, year, $8;
+  }
+}
+'EOF'
+
+# Execute awk script to extract duration as function of time
+set datafile=/tmp/ppp-duration
+awk -f $awkscript $argv[1] /var/log/messages > $datafile
+
+# Create gnuplot script to plot duration as function of time
+set plotscript=/tmp/gnuplot.$$
+cat > $plotscript << EOF2
+
+set xdata time
+set timefmt "%b %d %H:%M:%S %Y"
+set terminal png
+set output "ppp-duration.png"
+set title "PPP connection duration"
+# Need place-holder for xlabel for proper spacing...
+set xlabel " "
+set ylabel "Connection duration (minutes)"
+plot "/tmp/ppp-duration" using 1:5 with linespoints
+
+EOF2
+
+cat $plotscript | gnuplot 
+
+
+

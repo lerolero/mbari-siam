@@ -1,0 +1,137 @@
+#!/bin/csh
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Build SIAM instrument service jar file. May include multiple packages, e.g
+# if service's immediate parent class is not part of framework.
+
+set noglob=true
+set propertyFile=service.properties
+set classDir=""
+rm $propertyFile >& /dev/null
+@ error = 0
+@ add = 0
+set classBase=$JAVA_DEV_ROOT/classes
+
+# Process arguments
+while ($#argv > 0) 
+
+  if ("$argv[1]" == "-service") then
+    shift
+    set serviceClass=$argv[1]
+  else if ("$argv[1]" == "-mnem") then
+    shift
+    echo "serviceName = $argv[1]" >> $propertyFile
+  else if ("$argv[1]" == "-id") then
+    shift
+    echo "isiID = $argv[1]" >> $propertyFile
+  else if ("$argv[1]" == "-xml") then
+    shift
+    set xmlFile=$argv[1]
+    echo "Service XML file: $xmlFile"
+  else if ("$argv[1]" == "-jar") then
+    shift
+    set jarFile=$argv[1]
+  else if ("$argv[1]" == "-classdir") then
+    shift
+    set classDir = $argv[1]
+  else if ("$argv[1]" == "-add") then
+    echo "Add to existing jar file"
+    @ add = 1
+  else if ("$argv[1]" == "-base") then
+    shift	
+    set classBase=$argv[1]
+  else
+    # Assume this is a property key/value pair
+    echo $argv[1] >> $propertyFile
+  endif
+
+  shift
+end
+
+if (! $?serviceClass) then
+  echo "Missing required arguments: -service serviceClass"
+  @ error = 1
+endif
+
+## if (! $?xmlFile) then
+##  echo "Missing required arguments: -xml serviceXMLfile"
+##  @ error = 1
+## endif
+
+if (! $?jarFile) then
+  echo "Missing required arguments: -jar jarFile"
+  @ error = 1
+endif
+
+
+if ($error) then
+  echo Usage: $0:t -service class [-mnem serviceMnemonic][-id isiID][-xml serviceXMLfile] -jar jarFile
+  exit 1
+endif
+
+
+if (-e $propertyFile) then
+  # Copy property file to working area
+  cp $propertyFile `pwd`
+endif
+
+if ($?xmlFile) then
+  if (! -e $xmlFile) then
+    echo ERROR: $xmlFile not found
+    exit 1
+  endif
+
+  # Copy service XML file to working area
+  echo "copy $xmlFile to working area"
+  cp $xmlFile `pwd`/service.xml
+
+endif
+
+# Create service class file name by replacing '.' with '/' and appending
+# ".class" to class name
+set classFile = `echo $serviceClass |  awk '{gsub("\\.", "/"); printf "%s.class", $0}'`
+
+if (! -e $JAVA_DEV_ROOT/classes/$classFile) then
+  echo ERROR: $JAVA_DEV_ROOT/classes/$classFile not found
+  exit 1
+endif
+
+# Create manifest file
+set manifestFile = manifest.$$
+echo "Port-Service-Class: $serviceClass" > $manifestFile
+
+echo classBase: $classBase
+
+if ($add) then
+  echo Add to existing jar file...
+  jar uvfm $jarFile $manifestFile -C $classBase $classDir
+else
+  echo Create new jar file...
+  jar cvfm $jarFile $manifestFile -C $classBase $classDir
+endif
+
+if (-e $propertyFile) then
+  # Add property file to jar
+  jar uvf $jarFile $propertyFile:t
+endif
+
+if ($?xmlFile) then
+  # Get service XML file and add it to jar
+  echo "add service xml to $jarFile"
+  jar uvf $jarFile service.xml
+endif
+
+
+if (-e $manifestFile) rm $manifestFile 
+
+if  ($status != 0) exit $status
+
+if (-e $propertyFile) rm $propertyFile 
+
+exit 0
+
+
+
+

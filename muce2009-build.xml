@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id:$ -->
+<project name="muce2009" basedir=".">
+	
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Load property files in this order:
+
+    1. User properties
+    2. This level properties
+
+    This allows a user to have specific settings that override any other
+    settings (other than command-line, which always take precedence).
+    -->
+    <property file="${user.home}/build.properties" />
+    <property file="build.properties" />
+	
+	<!-- show MUCE 2009 help  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	
+	<target name="help">
+	<local name="pname"/>
+    <property name="pname" value="muce2009" />
+		<echo>
+		${pname}.all            - build all MUCE service JARs
+		${pname}.aanderaa       - Aanderaa O2 service JAR(s)
+		${pname}.aquadopp       - Aquadopp current profiler service JAR(s)
+		${pname}.ctd            - CTD service JAR(s)
+		${pname}.gps            - GPS service JAR(s)
+		${pname}.mclane         - McLane Profiler service JAR(s)
+		${pname}.medusa         - medusa service JAR(s)
+		${pname}.msp            - MSP430 service JAR(s)
+		${pname}.power          - Power can service JAR(s)
+		${pname}.triplet        - WetLabs Triplet service JAR(s)
+		${pname}.triaxys        - Triaxys heave sensor service JAR(s)
+		${pname}.workhorse      - Workhorse ADCP service JAR(s)
+		</echo>
+	</target>
+
+	<!-- Build all MUCE service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	
+	<target name="all" depends="muce2009.aanderaa,muce2009.aquadopp,muce2009.ctd,muce2009.gps,muce2009.mclane,muce2009.medusa,muce2009.msp,muce2009.power,muce2009.triplet,muce2009.triaxys,muce2009.workhorse">
+		<echo>Building MUCE service JARs - complete</echo>
+	</target>
+
+	<!-- Build service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="aanderaa" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.aanderaa.AanderaaO2 'Aanderaa Optode' 1524 ${siam_home}/ports/AanderaaO2-1524.jar ${siam_home}/puckxml/1524.xml 'sampleTimeoutMsec=8000' 'powerPolicy = always' 'commPowerPolicy = always' 'sampleSchedule = 10' 'diagnosticSampleInterval=60' 'summaryTriggerCount = 180' 'maxSummarySamples = 180' 'currentLimitMa = 3000' 'defaultSkipInterval=-1' 'startDelayMsec=1500' 'UUID = 26abd9d3-a8be-11da-bb39-00306e389969'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.aanderaa.AanderaaO2 'Aanderaa Optode' 1691 ${siam_home}/ports/AanderaaO2-1691.jar ${siam_home}/puckxml/1691.xml 'sampleTimeoutMsec=8000' 'powerPolicy = always' 'commPowerPolicy = always' 'sampleSchedule = 10' 'diagnosticSampleInterval=60' 'summaryTriggerCount = 180' 'maxSummarySamples = 180' 'currentLimitMa = 3000' 'defaultSkipInterval=-1' 'startDelayMsec=1500' 'UUID = 86ce48df-b816-11dd-8867-ab09dee8f6ea'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.aanderaa.AanderaaO2 'Aanderaa Optode' 1692 ${siam_home}/ports/AanderaaO2-1692.jar ${siam_home}/puckxml/1692.xml 'sampleTimeoutMsec=8000' 'powerPolicy = always' 'commPowerPolicy = always' 'sampleSchedule = 10' 'diagnosticSampleInterval=60' 'summaryTriggerCount = 180' 'maxSummarySamples = 180' 'currentLimitMa = 3000' 'defaultSkipInterval=-1' 'startDelayMsec=1500' 'UUID = b86c00a3-b816-11dd-8867-ab09dee8f6ea'" />
+		</exec>
+	</target>
+		
+	<!-- Build service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="aquadopp" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.nortek.Aquadopp 'Aquadopp Current Meter' 1473 ${siam_home}/ports/AquadoppCM-1473.jar ${siam_home}/puckxml/1473.xml 'powerPolicy = always' 'commPowerPolicy = always' 'timeSynch=true' 'summaryTriggerCount = 240' 'maxSummarySamples = 240' 'sampleSchedule = 15' 'diagnosticSampleInterval=40' 'currentLimitMa = 12000' 'defaultSkipInterval=-1' 'burstMode=false' 'samplesPerSession=1' 'limitSamplesPerSession=false' 'measurementIntervalSec = 10' 'UUID = ba65276c-4b27-11da-950b-00306e389969'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.nortek.Aquadopp 'Aquadopp Current Meter' 1474 ${siam_home}/ports/AquadoppCM-1474.jar ${siam_home}/puckxml/1474.xml 'powerPolicy = always' 'commPowerPolicy = always' 'timeSynch=true' 'summaryTriggerCount = 240' 'maxSummarySamples = 240' 'sampleSchedule = 15' 'diagnosticSampleInterval=40' 'currentLimitMa = 12000' 'defaultSkipInterval=-1' 'burstMode=false' 'samplesPerSession=1' 'limitSamplesPerSession=false' 'measurementIntervalSec = 10' 'UUID = 6948ae30-b399-11da-a94d-0800200c9a66'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.nortek.Aquadopp 'Aquadopp Current Meter' 1553 ${siam_home}/ports/AquadoppCM-1553.jar ${siam_home}/puckxml/1553.xml 'powerPolicy = always' 'commPowerPolicy = always' 'timeSynch=true' 'summaryTriggerCount = 240' 'maxSummarySamples = 240' 'sampleSchedule = 15' 'diagnosticSampleInterval=40' 'currentLimitMa = 12000' 'defaultSkipInterval=-1' 'burstMode=false' 'samplesPerSession=1' 'limitSamplesPerSession=false' 'measurementIntervalSec = 10' 'UUID = 8f30f710-b399-11da-a94d-0800200c9a66'" />
+		</exec>
+	</target>
+		
+	<!-- Build service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="ctd" depends="puckxml">
+<!-- SBE16plus driver - polled/moored mode w/ event detector-->
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.devices.seabird.sbe16plus.SBE16plus -jar ${siam_home}/ports/Seabird-16p-1533.jar -base ${siam_home}/classes -classdir org/mbari/siam/devices/seabird/base" />
+		</exec>
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.devices.seabird.sbe16plus.SBE16plus -jar ${siam_home}/ports/Seabird-16p-1533.jar -base ${siam_home}/classes -add -classdir org/mbari/siam/devices/seabird/eventDetector" />
+		</exec>
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.devices.seabird.sbe16plus.SBE16plus -mnem 'SBE-16+ event detector' -id 1533 -jar ${siam_home}/ports/Seabird-16p-1533.jar -xml ${siam_home}/puckxml/1533.xml -add -classdir org/mbari/siam/devices/seabird/sbe16plus 'sampleSchedule = 18' 'diagnosticSampleInterval=30' 'powerPolicy = always' 'commPowerPolicy = always' 'pumpMode=2' 'delayBeforeSamplingSec=10' 'log=true' 'safeSampleIntervalSec = 300' 'currentLimitMa = 8000' 'peakCurrentMa=8000' 'summaryTriggerCount = 100' 'maxSummarySamples = 100' 'defaultSkipInterval = -1' 'timeSynch=true' 'modemHost=node3' 'transmittSlope = 21.5409' 'transmittIntcpt = -1.2020' 'UUID = 4a3ffd9c-aa3f-11da-bb39-00306e389969'" />
+		</exec>
+<!-- SBE16plus driver - polled/moored mode w/ event detector-->
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.devices.seabird.sbe16plus.SBE16plus -jar ${siam_home}/ports/Seabird-16p-1688.jar -base ${siam_home}/classes -classdir org/mbari/siam/devices/seabird/base" />
+		</exec>
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.devices.seabird.sbe16plus.SBE16plus -jar ${siam_home}/ports/Seabird-16p-1688.jar -base ${siam_home}/classes -add -classdir org/mbari/siam/devices/seabird/eventDetector " />
+		</exec>
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.devices.seabird.sbe16plus.SBE16plus -mnem 'SBE-16+ event detector' -id 1688 -jar ${siam_home}/ports/Seabird-16p-1688.jar -xml ${siam_home}/puckxml/1688.xml -add -classdir org/mbari/siam/devices/seabird/sbe16plus 'sampleSchedule = 18' 'diagnosticSampleInterval=30' 'powerPolicy = always' 'commPowerPolicy = always' 'pumpMode=2' 'delayBeforeSamplingSec=10' 'log=true' 'safeSampleIntervalSec = 300' 'currentLimitMa = 8000' 'peakCurrentMa=8000' 'summaryTriggerCount = 100' 'maxSummarySamples = 100' 'defaultSkipInterval = -1' 'timeSynch=true' 'modemHost=node21' 'transmittSlope = 22.8441' 'transmittIntcpt = -1.2884' 'UUID = 7d11cc63-ab73-11dd-bd2b-81196419053c'" />
+		</exec>
+<!-- SBE19plus driver - polled/moored mode w/ event detector-->
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.devices.seabird.sbe19plus.SBE19plus -jar ${siam_home}/ports/Seabird-19p-1533.jar -base ${siam_home}/classes -classdir org/mbari/siam/devices/seabird/base" />
+		</exec>
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.devices.seabird.sbe19plus.SBE19plus -jar ${siam_home}/ports/Seabird-19p-1533.jar -base ${siam_home}/classes -add -classdir org/mbari/siam/devices/seabird/sbe16plus" />
+		</exec>
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.devices.seabird.sbe19plus.SBE19plus -jar ${siam_home}/ports/Seabird-19p-1533.jar -base ${siam_home}/classes -add -classdir org/mbari/siam/devices/seabird/eventDetector" />
+		</exec>
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.devices.seabird.sbe19plus.SBE19plus -mnem 'SBE-19+ event detector' -id 1533 -jar ${siam_home}/ports/Seabird-19p-1533.jar -xml ${siam_home}/puckxml/1533.xml -add -classdir org/mbari/siam/devices/seabird/sbe19plus 'sampleSchedule = 2' 'diagnosticSampleInterval=300' 'powerPolicy = always' 'commPowerPolicy = always' 'pumpMode=0' 'delayBeforeSamplingSec=0' 'log=false' 'safeSampleIntervalSec = 300' 'currentLimitMa = 8000' 'peakCurrentMa=8000' 'summaryTriggerCount = 900' 'maxSummarySamples = 900' 'defaultSkipInterval = -1' 'timeSynch=true' 'detectEvents = true' 'modemHost=node3' 'transmisChannel = 0' 'transmittSlope = 21.5409' 'transmittIntcpt = -1.2020' 'UUID = 4a3ffd9c-aa3f-11da-bb39-00306e389969'" />
+		</exec>
+<!--SBE19plus driver - polled/moored mode w/ event detector-->
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.devices.seabird.sbe19plus.SBE19plus -jar ${siam_home}/ports/Seabird-19p-1688.jar -base ${siam_home}/classes -classdir org/mbari/siam/devices/seabird/base" />
+		</exec>
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.devices.seabird.sbe19plus.SBE19plus -jar ${siam_home}/ports/Seabird-19p-1688.jar -base ${siam_home}/classes -add -classdir org/mbari/siam/devices/seabird/sbe16plus" />
+		</exec>
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.devices.seabird.sbe19plus.SBE19plus -jar ${siam_home}/ports/Seabird-19p-1688.jar -base ${siam_home}/classes -add -classdir org/mbari/siam/devices/seabird/eventDetector" />
+		</exec>
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.devices.seabird.sbe19plus.SBE19plus -mnem 'SBE-19+ event detector' -id 1688 -jar ${siam_home}/ports/Seabird-19p-1688.jar -xml ${siam_home}/puckxml/1688.xml -add -classdir org/mbari/siam/devices/seabird/sbe19plus 'sampleSchedule = 2' 'diagnosticSampleInterval=300' 'powerPolicy = always' 'commPowerPolicy = always' 'pumpMode=0' 'delayBeforeSamplingSec=0' 'log=false' 'safeSampleIntervalSec = 300' 'currentLimitMa = 8000' 'peakCurrentMa=8000' 'summaryTriggerCount = 900' 'maxSummarySamples = 900' 'defaultSkipInterval = -1' 'timeSynch=true' 'detectEvents = true' 'modemHost=node21' 'transmisChannel = 0' 'transmittSlope = 22.8441' 'transmittIntcpt = -1.2884' 'UUID = 7d11cc63-ab73-11dd-bd2b-81196419053c'" />
+		</exec>
+<!--SBE19plus - streaming/profile mode w/ event detector
+    Note: sampleSchedule is calculated internally using secondsPerSample*samplesPerPacket
+-->
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.devices.seabird.streamingSBE19.StreamingSBE19 -jar ${siam_home}/ports/StreamingSBE19-1533.jar -base ${siam_home}/classes -classdir org/mbari/siam/devices/seabird/eventDetector" />
+		</exec>
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.devices.seabird.streamingSBE19.StreamingSBE19 -mnem 'SBE-19+ event detector' -id 1533 -jar ${siam_home}/ports/StreamingSBE19-1533.jar -xml ${siam_home}/puckxml/1533.xml -add -classdir org/mbari/siam/devices/seabird/streamingSBE19 'sampleSchedule = 7200' 'diagnosticSampleInterval=30' 'powerPolicy = always' 'commPowerPolicy = always' 'currentLimitMa = 12000' 'peakCurrentMa=8000' 'summaryTriggerCount = 90' 'maxSummarySamples = 90' 'defaultSkipInterval = -1' 'timeSynch=true' 'limitSamplesPerSession = false' 'samplesPerSession = 1000000' 'burstMode = false' 'secondsPerSample = 2' 'samplesPerPacket = 10' 'detectEvents = true' 'modemHost=node3' 'transmisChannel = 0' 'transmittSlope = 21.5409' 'transmittIntcpt = -1.2020' 'staWidthSec = 120' 'ltaWidthSec = 720' 'attenuationDetriggerRatio = 1.1' 'maxTriggerSec = 86400' 'useShoreMessaging=true' 'eventDetectorStatusIntervalSec=86400' 'UUID = 4a3ffd9c-aa3f-11da-bb39-00306e389969'" />
+		</exec>
+<!--SBE19plus - streaming/profile mode w/ event detector
+    Note: sampleSchedule is calculated internally using secondsPerSample*samplesPerPacket
+-->
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.devices.seabird.streamingSBE19.StreamingSBE19 -jar ${siam_home}/ports/StreamingSBE19-1688.jar -base ${siam_home}/classes -classdir org/mbari/siam/devices/seabird/eventDetector" />
+		</exec>
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.devices.seabird.streamingSBE19.StreamingSBE19 -mnem 'SBE-19+ event detector' -id 1688 -jar ${siam_home}/ports/StreamingSBE19-1688.jar -xml ${siam_home}/puckxml/1688.xml -add -classdir org/mbari/siam/devices/seabird/streamingSBE19 'sampleSchedule = 7200' 'diagnosticSampleInterval=30' 'powerPolicy = always' 'commPowerPolicy = always' 'currentLimitMa = 12000' 'peakCurrentMa=8000' 'summaryTriggerCount = 90' 'maxSummarySamples = 90' 'defaultSkipInterval = -1' 'timeSynch=true' 'limitSamplesPerSession = false' 'samplesPerSession = 1000000' 'burstMode = false' 'secondsPerSample = 2' 'samplesPerPacket = 10' 'detectEvents = true' 'modemHost=node21' 'transmisChannel = 0' 'transmittSlope = 22.8441' 'transmittIntcpt = -1.2884' 'staWidthSec = 120' 'ltaWidthSec = 720' 'attenuationDetriggerRatio = 1.1' 'maxTriggerSec = 86400' 'useShoreMessaging=true' 'eventDetectorStatusIntervalSec=86400' 'UUID = 7d11cc63-ab73-11dd-bd2b-81196419053c'" />
+		</exec>
+	</target>
+		
+	<!-- Build service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="gps" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.garmin.GarminGPS 'Garmin GPS' 1344 ${siam_home}/ports/Garmin-1344.jar ${siam_home}/puckxml/1344.xml 'powerPolicy = always' 'commPowerPolicy = sampling' 'sampleSchedule = 600' 'currentLimitMa = 3000' 'dataShelfLifeHours=1' 'UUID = 6b129530-15b3-11da-91b7-00306e389969'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.garmin.GarminGPS 'Garmin GPS' 1693 ${siam_home}/ports/Garmin-1693.jar ${siam_home}/puckxml/1693.xml 'powerPolicy = always' 'commPowerPolicy = sampling' 'sampleSchedule = 600' 'currentLimitMa = 3000' 'dataShelfLifeHours=1' 'UUID = cd43dd12-bb4f-11dd-b029-b770eb37e6fb'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.garmin.GarminGPS 'Garmin GPS' 1590 ${siam_home}/ports/Garmin-1590.jar ${siam_home}/puckxml/1590.xml 'powerPolicy = always' 'commPowerPolicy = sampling' 'sampleSchedule = 600' 'currentLimitMa = 3000' 'dataShelfLifeHours=1' 'UUID = 2faac191-5d53-11db-adb2-bb4672561f45'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.garmin.GarminGPS 'Garmin GPS' 1591 ${siam_home}/ports/Garmin-1591.jar ${siam_home}/puckxml/1591.xml 'powerPolicy = always' 'commPowerPolicy = sampling' 'sampleSchedule = 600' 'currentLimitMa = 3000' 'dataShelfLifeHours=1' 'UUID = c18cf238-5d53-11db-adb2-bb4672561f45'" />
+		</exec>
+	</target>
+		
+	<!-- Build service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="mclane" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.mclane.McLaneProfiler 'McLane Profiler' 1510 ${siam_home}/ports/McLaneProfiler-1510.jar ${siam_home}/puckxml/1510.xml 'powerPolicy = always' 'commPowerPolicy = sampling' 'sampleSchedule = 7200' 'currentLimitMa = 3000' 'missingFileCount = -5' 'persistFilesNode = false' 'persistFilesCan = true' 'maxBytesTransfer = 250000' 'UUID = 061cabde-98f6-11da-92c6-00306e389969'" />
+		</exec>
+	</target>
+		
+	<!-- Build service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="medusa" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.medusa.Medusa 'Medusa card' 1441 ${siam_home}/ports/Medusa-1441.jar ${siam_home}/puckxml/1441.xml 'sampleSchedule = 600' 'currentLimitMa = 3000' 'dataShelfLifeHours=178' 'UUID = e052be35-e4db-11d9-b8bc-00306e389969'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.medusa.Medusa 'Medusa card' 1442 ${siam_home}/ports/Medusa-1442.jar ${siam_home}/puckxml/1442.xml 'sampleSchedule = 600' 'currentLimitMa = 3000' 'dataShelfLifeHours=178' 'UUID = 06e59ef6-e4dc-11d9-b8bc-00306e389969'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.medusa.Medusa 'Medusa card' 1526 ${siam_home}/ports/Medusa-1526.jar ${siam_home}/puckxml/1526.xml 'sampleSchedule = 600' 'currentLimitMa = 3000' 'dataShelfLifeHours=178' 'UUID = 3192f8e5-a8c5-11da-bb39-00306e389969'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.medusa.Medusa 'Medusa card' 1528 ${siam_home}/ports/Medusa-1528.jar ${siam_home}/puckxml/1528.xml 'sampleSchedule = 600' 'currentLimitMa = 3000' 'dataShelfLifeHours=178' 'UUID = 8f79b5b7-a8c6-11da-bb39-00306e389969'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.medusa.Medusa 'Medusa card' 1542 ${siam_home}/ports/Medusa-1542.jar ${siam_home}/puckxml/1542.xml 'sampleSchedule = 600' 'currentLimitMa = 3000' 'dataShelfLifeHours=178' 'UUID = 4880f5f5-b089-11da-bb39-00306e389969'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.medusa.Medusa 'Medusa card' 1560 ${siam_home}/ports/Medusa-1560.jar ${siam_home}/puckxml/1560.xml 'sampleSchedule = 600' 'currentLimitMa = 3000' 'dataShelfLifeHours=178' 'UUID = 24f8b686-0309-11db-9cb2-00306e389969'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.medusa.Medusa 'Medusa card' 1596 ${siam_home}/ports/Medusa-1596.jar ${siam_home}/puckxml/1596.xml 'sampleSchedule = 600' 'currentLimitMa = 3000' 'dataShelfLifeHours=178' 'UUID = e697de2a-5f01-11db-9a46-713f51a86ba0'" />
+		</exec>
+	</target>
+		
+	<!-- Build service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="msp" depends="puckxml">
+<!--only secondary nodes should use enableGFScan=false
+    powerWarningLow=0 for all nodes (safe mode disabled)
+-->
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.msp430.MSP430 'MSP430 (sidearm4.06)' 1412 ${siam_home}/ports/MSP430-1412.jar ${siam_home}/puckxml/1412.xml 'currentLimitMa = 3000' 'sampleSchedule = 600' 'diagnosticSampleInterval=0' 'dataShelfLifeHours=178' 'UUID = 1cd30504-c333-11d9-8c1e-00306e389969'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.msp430.MSP430 'MSP430 (sidearm4.25)' 1447 ${siam_home}/ports/MSP430-1447.jar ${siam_home}/puckxml/1447.xml 'currentLimitMa = 3000' 'sampleSchedule = 600' 'diagnosticSampleInterval=0' 'dataShelfLifeHours=178' 'UUID = a92f763a-29ff-11da-80c8-00306e389969'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.msp430.MSP430 'MSP430 (sidearm4.21)' 1483 ${siam_home}/ports/MSP430-1483.jar ${siam_home}/puckxml/1483.xml 'currentLimitMa = 3000' 'sampleSchedule = 600' 'diagnosticSampleInterval=0' 'dataShelfLifeHours=178' 'enableGFScan=false' 'UUID = a677c1d6-65f5-11da-950b-00306e389969'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.msp430.MSP430 'MSP430 (sidearm4.11)' 1523 ${siam_home}/ports/MSP430-1523.jar ${siam_home}/puckxml/1523.xml 'currentLimitMa = 3000' 'sampleSchedule = 600' 'diagnosticSampleInterval=0' 'dataShelfLifeHours=178' 'UUID = b1e23372-a5a1-11da-bb39-00306e389969'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.msp430.MSP430 'MSP430 (sidearm4.03)' 1559 ${siam_home}/ports/MSP430-1559.jar ${siam_home}/puckxml/1559.xml 'currentLimitMa = 3000' 'sampleSchedule = 600' 'diagnosticSampleInterval=0' 'dataShelfLifeHours=178' 'enableGFScan=false' 'UUID = 19673465-0307-11db-9cb2-00306e389969'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.msp430.MSP430 'MSP430 (sidearm4.02)' 1599 ${siam_home}/ports/MSP430-1599.jar ${siam_home}/puckxml/1599.xml 'currentLimitMa = 3000' 'sampleSchedule = 600' 'diagnosticSampleInterval=0' 'dataShelfLifeHours=178' 'UUID = c165f556-a748-11db-9cec-ad5ee500292a'" />
+		</exec>
+	</target>
+		
+	<!-- Build service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="power" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.serialadc.PowerCan 'Surface power can' 1547 ${siam_home}/ports/PowerCan-1547.jar ${siam_home}/puckxml/1547.xml 'powerPolicy = always' 'commPowerPolicy = sampling' 'sampleSchedule = 600' 'captureParams = ALL' 'dataCountCheck = true' 'logTimeSync = true' 'powerStatusChannel = ADC99' 'powerWarningLow=0' 'powerOkLow=12.0' 'statusMinSamples = 10' 'currentLimitMa = 3000' 'sampleTimeoutMsec=15000' 'UUID = 3e29b0a1-bdc4-11da-855d-00306e389969'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.serialadc.PowerCan 'Surface power can' 1594 ${siam_home}/ports/PowerCan-1594.jar ${siam_home}/puckxml/1594.xml 'powerPolicy = always' 'commPowerPolicy = sampling' 'sampleSchedule = 600' 'captureParams = ALL' 'dataCountCheck = true' 'logTimeSync = true' 'powerStatusChannel = ADC99' 'powerWarningLow=0' 'powerOkLow=12.0' 'statusMinSamples = 10' 'currentLimitMa = 3000' 'sampleTimeoutMsec=15000' 'UUID = 4e22e0a9-5ee2-11db-9a46-713f51a86ba0'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.powerswitch.PowerSwitch 'Radar repeater' 1586 ${siam_home}/ports/PowerSwitch-1586.jar ${siam_home}/puckxml/blank_comments.xml 'powerPolicy = always' 'commPowerPolicy = never' 'sampleSchedule = 3600' 'currentLimitMa = 12000' 'UUID = 596dcb1c-4e71-11db-8de5-00306e389969'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.serialadc.PowerCan 'BIN 400-12V Switch' 1555 ${siam_home}/ports/PowerCan-1555.jar ${siam_home}/puckxml/1555.xml 'powerPolicy = never' 'commPowerPolicy = sampling' 'sampleSchedule = 600' 'captureParams = ADC BP' 'dataCountCheck = true' 'logTimeSync = true' 'powerStatusChannel = ADC10' 'powerWarningLow=0' 'powerOkLow=12.0' 'statusMinSamples = 10' 'currentLimitMa = 3000' 'sampleTimeoutMsec=15000' 'UUID = b13985b1-eb7c-11da-9cb2-00306e389969'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.serialadc.PowerCan 'BIN 400-12V Switch' 1593 ${siam_home}/ports/PowerCan-1593.jar ${siam_home}/puckxml/1593.xml 'powerPolicy = never' 'commPowerPolicy = sampling' 'sampleSchedule = 600' 'captureParams = ADC BP' 'dataCountCheck = true' 'logTimeSync = true' 'powerStatusChannel = ADC10' 'powerWarningLow=0' 'powerOkLow=12.0' 'statusMinSamples = 10' 'currentLimitMa = 3000' 'sampleTimeoutMsec=15000' 'UUID = 3e9307c0-5ee0-11db-9a46-713f51a86ba0'" />
+		</exec>
+	</target>
+		
+	<!-- Build service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="triaxys" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.waveSensor.HeaveSensor 'Triaxys heave sensor' 1339 ${siam_home}/ports/Triaxys-1339.jar ${siam_home}/puckxml/1339.xml 'sampleSchedule=1800' 'sampleMinutes=25' 'serialNo=00750' 'xyzOffsets=-0.23, 0, 1.7' 'UUID = 125ac642-15ba-11da-91b7-00306e389969'" />
+		</exec>
+	</target>
+		
+	<!-- Build service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="triplet" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.wetlabs.WetLabsTriplet 'WETLabs ECO-Triplet' 1535 ${siam_home}/ports/WetLabsTriplet-1535.jar ${siam_home}/puckxml/1535.xml 'powerPolicy = always' 'commPowerPolicy = always' 'sampleSchedule = 10' 'diagnosticSampleInterval=60' 'timeSynch = true' 'samplesPerPacket = 5' 'averageCount = 20' 'summaryTriggerCount = 180' 'maxSummarySamples = 180' 'currentLimitMa = 3000' 'defaultSkipInterval = -1' 'logEnabled=false' 'UUID = a7c7f011-b481-11da-a94d-0800200c9a66'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.wetlabs.WetLabsTriplet 'WETLabs ECO-Triplet' 1536 ${siam_home}/ports/WetLabsTriplet-1536.jar ${siam_home}/puckxml/1536.xml 'powerPolicy = always' 'commPowerPolicy = always' 'sampleSchedule = 10' 'diagnosticSampleInterval=60' 'timeSynch = true' 'samplesPerPacket = 5' 'averageCount = 20' 'summaryTriggerCount = 180' 'maxSummarySamples = 180' 'currentLimitMa = 3000' 'defaultSkipInterval = -1' 'logEnabled=false' 'UUID = 15bbb70f-ad85-11da-bb39-00306e389969'" />
+		</exec>
+	</target>
+		
+	<!-- Build service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="workhorse" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.workhorse.WorkhorseADCP 'WH Sentinel ADCP 300kHz' 1549 ${siam_home}/ports/Workhorse-1549.jar ${siam_home}/puckxml/1549.xml 'powerPolicy = always' 'commPowerPolicy = sampling' 'currentLimitMa = 12000' 'preemptionSec = 10' 'powerOnDelaySec = 720' 'internalLog = false' 'sampleSchedule = 60' 'diagnosticSampleInterval=10' 'defaultSkipInterval = -1' 'summaryTriggerCount = 60' 'maxSummarySamples = 60' 'timeSynch = true' 'UUID = 0b975683-bf7f-11da-855d-00306e389969'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="org.mbari.siam.devices.workhorse.WorkhorseADCP 'WH Sentinel ADCP 300kHz' 1690 ${siam_home}/ports/Workhorse-1690.jar ${siam_home}/puckxml/1690.xml 'powerPolicy = always' 'commPowerPolicy = sampling' 'currentLimitMa = 12000' 'preemptionSec = 10' 'powerOnDelaySec = 720' 'internalLog = false' 'sampleSchedule = 60' 'diagnosticSampleInterval=10' 'defaultSkipInterval = -1' 'summaryTriggerCount = 60' 'maxSummarySamples = 60' 'timeSynch = true' 'UUID = bf2ab691-b75a-11dd-8867-ab09dee8f6ea'" />
+		</exec>
+	</target>
+
+	</project>

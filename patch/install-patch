@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# run this script as root to set permissions for patch
+# contents
+# Path definitions
+tar xpszvf contents.tar.gz etc/siam/manageLog
+tar xpszvf contents.tar.gz mnt/hda/siam/classes/moos/deployed/NodeService*
+tar xpszvf contents.tar.gz mnt/hda/siam/classes/moos/operations/utils/KillBIN
+tar xpszvf contents.tar.gz mnt/hda/siam/ports/PowerCan*.jar
+tar xpszvf contents.tar.gz mnt/hda/siam/ports/Medusa*.jar
+tar xpszvf contents.tar.gz mnt/hda/siam/utils/node*

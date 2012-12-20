@@ -1,0 +1,316 @@
+#!/bin/bash
+
+#################################
+# Script variable initialization
+#################################
+VERBOSE="FALSE"
+
+TESTHARNESS_HOME=$SIAM_HOME/src/org/mbari/siam/tests/utils/osdt
+RBNB_HOME=/Applications/RBNB/bin
+DFLT_OUTPUT_DIR=`pwd`"/cloop"
+OUTPUT_DIR=$DFLT_OUTPUT_DIR
+START_WAIT_SEC=3
+
+RBNB_OPTIONS=""
+TSVR_OPTIONS=""
+MODEL_OPTIONS=""
+SIAM_STOP_OPTIONS="loc"
+TSVR_PROPERTIES="$TESTHARNESS_HOME/osdtServer.properties"
+MODEL_PROPERTIES="$TESTHARNESS_HOME/model.properties"
+
+RBNB_CMD="$RBNB_HOME/startOSDT"
+TSVR_CMD="$TESTHARNESS_HOME/testHarnessServer"
+MODEL_CMD="$TESTHARNESS_HOME/runModel"
+SIAM_CMD="$SIAM_HOME/utils/node"
+SIAM_STOP_CMD="$SIAM_HOME/utils/exitNode $SIAM_STOP_OPTIONS"
+
+RBNB_LOG=$OUTPUT_DIR/rbnb.log
+TSVR_LOG=$OUTPUT_DIR/osdt.log
+MODEL_LOG=$OUTPUT_DIR/model.log
+SIAM_LOG=$OUTPUT_DIR/siam.log
+
+RBNB_PID_FILE=$OUTPUT_DIR/rbnb.pid
+TSVR_PID_FILE=$OUTPUT_DIR/osdt.pid
+MODEL_PID_FILE=$OUTPUT_DIR/model.pid
+SIAM_PID_FILE=$OUTPUT_DIR/siam.pid
+
+doALL=TRUE
+doRBNB=FALSE
+doTSVR=FALSE
+doMODEL=FALSE
+doSIAM=FALSE
+
+
+#################################
+# Function Definitions
+#################################
+
+#################################
+# name: sigTrap
+# description: signal trap callback
+# will interrupt 
+# args: none
+#################################
+sigTrap(){
+
+  # stop the currently running script
+  # and exit
+  echo "Stopping $SCRIPT PID=$SCRIPT_PID"
+  kill 0
+  rm $PID_FILE
+  exit 0;
+}
+
+#################################
+# name: printUsage
+# description: print use message
+# args: none
+#################################
+printUsage(){
+echo
+echo "usage:`basename $0` [-artms] [-T tserverProperties] [-M modelProperties] [-o outputDir] start|stop"
+echo
+
+}
+
+#################################
+# name: killGroup
+# description: kill related process group
+# args: parent PID
+#################################
+killGroup(){
+pid="$1"
+for child in $(ps -o pid,ppid -ax | \
+   awk "{ if ( \$2 == $pid ) { print \$1 }}")
+do
+  echo "Killing child process $child because ppid = $pid"
+  kill $child
+done
+  kill $pid
+}
+
+########################################
+# name: vout
+# description: print verbose message to stderr
+# args:
+#     msg: message
+########################################
+vout(){
+    if [ "$VERBOSE" == "TRUE" ]
+    then
+	echo "$1" >&2
+    fi
+}
+
+########################################
+# name: exitError
+# description: print use message to stderr
+# args:
+#     msg:        error message
+#     returnCode: exit status to return
+########################################
+exitError(){
+    echo >&2
+    echo "$1" >&2
+    echo >&2
+    exit $2
+}
+
+##########################
+# Script main entry point
+##########################
+
+# process arguments
+let "shiftCount=0"
+while getopts ahmrsto:T:M:V Option
+do
+    case $Option in
+	r ) doRBNB="TRUE"
+	    doALL="FALSE"
+	    let "shiftCount=$shiftCount+1"
+	;;
+	a ) doALL="TRUE"
+	    let "shiftCount=$shiftCount+1"
+	;;
+	t ) doTSVR="TRUE"
+	    doALL="FALSE"
+	    let "shiftCount=$shiftCount+1"
+	;;
+	m ) doMODEL="TRUE"
+	    doALL="FALSE"
+	    let "shiftCount=$shiftCount+1"
+	;;
+	s ) doSIAM="TRUE"
+	    doALL="FALSE"
+	    let "shiftCount=$shiftCount+1"
+	;;
+	o ) OUTPUT_DIR=$OPTARG
+	    let "shiftCount=$shiftCount+2"
+	;;
+	M ) MODEL_PROPERTIES=$OPTARG
+	    let "shiftCount=$shiftCount+2"
+	;;
+	T ) TSVR_PROPERTIES=$OPTARG
+	    let "shiftCount=$shiftCount+2"
+	;;
+	V ) VERBOSE="TRUE"
+	    let "shiftCount=$shiftCount+1"
+      	;;
+	h) printUsage
+	  exit 0
+	;;
+	*) exit 0 # getopts outputs error message
+	;;
+    esac
+done
+
+# shift arguments to get to script name
+while [ "$shiftCount" -gt 0 ]
+do
+shift
+let "shiftCount=$shiftCount-1"
+done
+# Script name should be 
+# last argument on the command line
+# after options
+COMMAND=$*
+COMMAND_NAME=$1
+
+# throw error if output dir path is taken
+if [ -e $OUTPUT_DIR ] && [ ! -d $OUTPUT_DIR ]
+then
+	echo "ERROR: output directory exists but is not a directory [$OUTPUT_DIR]"
+	echo "using default [$DFLT_OUTPUT_DIR]"
+fi
+
+# create output directory if it doesn't exist
+if [ ! -e $OUTPUT_DIR ]
+then
+	echo "creating output directory [$OUTPUT_DIR]"
+	mkdir -p $OUTPUT_DIR
+fi
+
+if [ ! -e $OUTPUT_DIR ]
+then
+	echo "ERROR: could not create output directory [$OUTPUT_DIR]"
+	echo "using default [$DFLT_OUTPUT_DIR]"
+fi
+
+RBNB_LOG=$OUTPUT_DIR/rbnb.log
+TSVR_LOG=$OUTPUT_DIR/osdt.log
+MODEL_LOG=$OUTPUT_DIR/model.log
+SIAM_LOG=$OUTPUT_DIR/siam.log
+
+RBNB_PID_FILE=$OUTPUT_DIR/rbnb.pid
+TSVR_PID_FILE=$OUTPUT_DIR/osdt.pid
+MODEL_PID_FILE=$OUTPUT_DIR/model.pid
+SIAM_PID_FILE=$OUTPUT_DIR/siam.pid
+
+echo "all args:$* COMMAND_NAME: $COMMAND_NAME"
+echo "doALL:$doALL doRBNB:$doRBNB doTSVR:$doTSVR doMODEL:$doMODEL doSIAM:$doSIAM"
+echo
+echo "RBNB_CMD:$RBNB_CMD RBNB_OPTIONS:$RBNB_OPTIONS"
+echo "TSVR_CMD:$TSVR_CMD TSVR_OPTIONS:$TSVR_OPTIONS"
+echo "TSVR_PROPERTIES:$TSVR_PROPERTIES"
+echo "MODEL_CMD:$MODEL_CMD MODEL_OPTIONS:$MODEL_OPTIONS"
+echo "MODEL_PROPERTIES:$MODEL_PROPERTIES"
+echo "OUTPUT_DIR=$OUTPUT_DIR"
+echo "RBNB_LOG:$RBNB_LOG"
+echo "TSVR_LOG:$TSVR_LOG"
+echo "MODEL_LOG:$MODEL_LOG"
+echo "SIAM_LOG:$SIAM_LOG"
+echo
+
+
+
+if [ "${COMMAND_NAME}" == "start" ] 
+then
+
+echo "`basename $0` $1 starting at `date`"
+
+
+cd $OUTPUT_DIR
+
+if [ "${doRBNB}" == "TRUE" ] || [ "${doALL}" == "TRUE" ]
+then
+echo "starting RBNB in $RBNB_HOME"
+$RBNB_CMD &> $RBNB_LOG &
+RBNB_PID=$!
+echo "writing PID $RBNB_PID to $RBNB_PID_FILE"
+rm $RBNB_PID_FILE
+echo $RBNB_PID>$RBNB_PID_FILE
+fi
+
+if [ "${doTSVR}" == "TRUE" ] || [ "${doALL}" == "TRUE" ]
+then
+echo "starting SIAM TSVR Server in $TESTHARNESS_HOME"
+sleep $START_WAIT_SEC
+START_CMD="$TSVR_CMD $TSVR_OPTIONS -f $TSVR_PROPERTIES"
+$START_CMD &> $TSVR_LOG &
+TSVR_PID=$!
+echo "writing PID $TSVR_PID to $TSVR_PID_FILE"
+rm $TSVR_PID_FILE
+echo $TSVR_PID>$TSVR_PID_FILE
+fi
+
+if [ "${doMODEL}" == "TRUE" ] || [ "${doALL}" == "TRUE" ]
+then
+sleep $START_WAIT_SEC
+START_CMD="$MODEL_CMD $MODEL_OPTIONS -f $MODEL_PROPERTIES"
+$START_CMD &> $MODEL_LOG &
+echo "starting SIAM model in $TESTHARNESS_HOME"
+MODEL_PID=$!
+echo "writing PID $MODEL_PID to $MODEL_PID_FILE"
+rm $MODEL_PID_FILE
+echo $MODEL_PID>$MODEL_PID_FILE
+fi
+
+if [ "${doSIAM}" == "TRUE" ] || [ "${doALL}" == "TRUE" ]
+then
+sleep $START_WAIT_SEC
+$SIAM_CMD &> $SIAM_LOG &
+echo "starting SIAM node in $TESTHARNESS_HOME"
+SIAM_PID=$!
+echo "writing PID $SIAM_PID to $SIAM_PID_FILE"
+rm $SIAM_PID_FILE
+echo $SIAM_PID>$SIAM_PID_FILE
+fi
+
+
+elif [ "${COMMAND_NAME}" == "stop" ] 
+then
+echo "`basename $0` $1 stopping at `date`"
+
+if [ "${doSIAM}" == "TRUE" ] || [ "${doALL}" == "TRUE" ]
+then
+read SIAM_PID < $SIAM_PID_FILE
+echo "stopping SIAM node [PID $SIAM_PID]"
+$SIAM_STOP_CMD
+#killGroup $SIAM_PID
+fi
+
+if [ "${doMODEL}" == "TRUE" ] || [ "${doALL}" == "TRUE" ]
+then
+read MODEL_PID < $MODEL_PID_FILE
+echo "stopping SIAM FOCE model [PID $MODEL_PID]"
+killGroup $MODEL_PID
+fi
+
+if [ "${doTSVR}" == "TRUE" ] || [ "${doALL}" == "TRUE" ]
+then
+read TSVR_PID < $TSVR_PID_FILE
+echo "stopping SIAM TSVR server [PID $TSVR_PID]"
+killGroup $TSVR_PID
+fi
+
+if [ "${doRBNB}" == "TRUE" ] || [ "${doALL}" == "TRUE" ]
+then
+read RBNB_PID < $RBNB_PID_FILE
+echo "stopping RBNB [PID $RBNB_PID]"
+killGroup $RBNB_PID
+fi
+
+else
+echo "Invalid command [${COMMAND_NAME}]"
+printUsage
+fi

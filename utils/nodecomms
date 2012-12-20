@@ -1,0 +1,23 @@
+#!/bin/sh
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+grep "Serial .*connect" /var/log/messages
+
+awkfile="/tmp/nodecomms.awk"
+
+cat > $awkfile << END_AWK
+BEGIN {
+  FS="=";
+}
+
+/^NodeService.leaseRenewalInterval/ {
+  interval= \$2;
+  printf "Node establishes link every %d sec\n", interval/1000;
+}
+
+END_AWK
+
+awk -f $awkfile $SIAM_HOME/properties/siamPort.cfg
+

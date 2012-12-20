@@ -1,0 +1,57 @@
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# This is a cygwin file that sets up the SIAM environment.
+
+# User specific aliases and functions
+export CVSROOT=:pserver:salamy@moonjelly.shore.mbari.org:/home/cvs
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+        . /etc/bashrc
+fi
+
+# Set "Unix" version of SIAM home
+export UX_SIAM_HOME=/cygdrive/c/siamdev/siam
+
+# Windows version of SIAM home path
+export SIAM_HOME=`cygpath -w $UX_SIAM_HOME`
+
+alias gosiam='cd $SIAM_HOME'
+
+# Set Java environment
+## export JAVA_HOME=/cygdrive/c/WINDOWS/system32/java
+export JAVA_HOME=/cygdrive/c/j2sdk1.4.2_10/
+export PATH=$JAVA_HOME/bin:$UX_SIAM_HOME/utils:$PATH
+export JAVA_DEV_ROOT=$SIAM_HOME
+export IS_UNIX=false
+
+# Java compiler
+export JAVAC=javac
+export JAVA=java
+export JAVA_OPTIONS="-Xmx1024M"
+
+alias pu='rm *~ .*~'
+alias e='emacs'
+
+alias inf='export LOG4J_THRESHOLD=INFO'
+alias dbg='export LOG4J_THRESHOLD=DEBUG'
+
+
+export SIAM_BIN=$UX_SIAM_HOME/bin/x86-win32
+
+export SIAM_CODEBASE=http://localhost/codebase
+
+# The classpath must be in Windows format, since windows Java executable 
+# doesn't know about cygwin stuff.
+export SIAM_CLASSPATH=$SIAM_HOME\\classes\;$SIAM_HOME\\jars\\javax.jar\;$SIAM_HOME\\jars\\log4j-1.2.8.jar\;$SIAM_HOME\\jars\\RXTXcomm.jar\;$SIAM_HOME\\jars\\ssds-client-pub-bob.jar\;$SIAM_HOME\\jars\\jddac-common.jar\;$SIAM_HOME\jars\jddac-probe-j2me.jar\;$SIAM_HOME\\codebase\;$SIAM_CODEBASE
+
+
+export JAVA=java
+export JAVA_OPTIONS=""
+
+
+# export CVSROOT=:pserver:oreilly@moonjelly.shore.mbari.org:/home/cvs
+
+alias ll='ls -l'

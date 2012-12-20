@@ -1,0 +1,115 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# checkProc 
+#
+# Visits the proc file system
+# searching the cmdline entries of each 
+# process for a search string (environment
+# variable CHECKPROC_SEARCH) indicating that
+# some process is running. Default search
+# string is "nodeTest".
+#
+# Returns 0 error status is the search
+# string is found in the cmdline entry of
+# a running process and 1 otherwise
+#
+# author: K. Headley
+# 17 oct 2008
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#################################
+# Script variable initialization
+#################################
+VERBOSE="FALSE"
+SEARCH_STRING="nodeTest"
+
+#################################
+# name: printUsage
+# description: print use message
+# args: none
+#################################
+printUsage(){
+    echo
+    echo "  `basename $0`: Checks to see if SIAM application is running."
+    echo "  Returns exit status (\$?) 0 if SIAM is running, 1 otherwise." 
+    echo
+    echo "  Usage: `basename $0` [options]"
+    echo
+    echo "    Options:"
+    echo "    -s : set search string = CHECKPROC_SEARCH [$SEARCH_STRING]"
+    echo "    -v : verbose output  [$VERBOSE]"
+    echo "    -h : print this help message"
+    echo
+}
+
+if [ "$1" == "--help" ]
+then
+    printUsage
+    exit 1
+fi
+
+while getopts svh Option
+do
+    case $Option in
+        s ) SEARCH_STRING="$CHECKPROC_SEARCH"
+        ;;
+        v ) VERBOSE="TRUE"
+        ;;
+        h )printUsage
+          exit 0
+        ;;
+        *) exit 0 # getopts outputs error message
+        ;;
+    esac
+done
+
+if [ "$VERBOSE" == "TRUE" ]
+then
+    echo "checking for process $SEARCH_STRING"
+fi
+if [ "$SEARCH_STRING" == "" ] || [ -z "$SEARCH_STRING" ]
+then
+
+  if [ "$VERBOSE" == "TRUE" ]
+  then
+    echo " Search string is null or unset"
+  fi
+  exit 1
+fi
+
+for proc in $( ls -d /proc/[0-9]* ); do
+  if [ "$VERBOSE" == "TRUE" ]
+  then
+      echo "checking process $proc"
+  fi
+
+  if [ -e "$proc/cmdline" ]
+  then
+    grep -iq $SEARCH_STRING $proc/cmdline
+    foundSiam="$?"
+    if [ "$foundSiam" -eq 0 ]
+      then
+	if [ "$VERBOSE" == "TRUE" ]
+	then
+	    echo "$SEARCH_STRING is running in $proc"
+	fi
+      exit 0
+    fi
+  else
+    if [ "$VERBOSE" == "TRUE" ]
+    then
+	echo "no cmdline in $proc"
+    fi
+    foo="bar"
+  fi
+done
+	
+if [ "$VERBOSE" == "TRUE" ]
+then
+    echo "$SEARCH_STRING not found"
+fi
+exit 1

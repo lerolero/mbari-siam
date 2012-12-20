@@ -1,0 +1,12 @@
+#!/bin/csh
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Run the DeviceTestHarness
+
+if (!($?LOG4J_THRESHOLD)) setenv LOG4J_THRESHOLD DEBUG
+
+echo "Starting Device Test Harness"
+
+$JAVA $JAVA_OPTIONS -cp $SIAM_HOME/jars/log4j-1.2.8.jar:$SIAM_HOME/classes:.:$SIAM_HOME/jars/ssds-client-pub-bob.jar:$SIAM_HOME/jars/XModem.jar:$SIAM_HOME/jars/RXTXcomm.jar -Djava.security.policy=$SIAM_HOME/properties/policy -Dsiam_home=$SIAM_HOME -Dlog4j.threshold=$LOG4J_THRESHOLD org.mbari.siam.tests.moos.devices.DeviceTestHarness $argv 

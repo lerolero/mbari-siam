@@ -1,0 +1,30 @@
+#!/bin/sh
+#
+# start/stop sa1100spi driver
+
+case "$1" in
+    start)
+        echo -n "Configuring sa1100_spi spi port: "
+	insmod -o sa1100_spi /root/sa1100spi.o
+	echo "done."
+	;;
+    stop)
+        echo -n "Deconfiguring sa1100_spi spi port: "
+        rmmod sa1100_spi
+	echo "done."
+	;;
+    reload)
+	;;
+    force-reload)
+	$0 restart
+	;;
+    restart)
+	;;
+    *)
+	echo "Usage: /etc/init.d/loadspi {start|stop|reload|restart}"
+	exit 1
+	;;
+esac
+
+exit 0
+

@@ -1,0 +1,128 @@
+#!/bin/tcsh
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Generate summaries of system health from portal stdout log. 
+
+if ($#argv != 2) then
+  echo usage: `basename $0` portalLogFile pppAddress
+  echo \"pppAddress\" must be specified as it appears in /var/log/messsages,
+  echo e.g. as \"10.1.36.2\"
+  exit 1
+endif
+
+set portalLog=$1
+set pppAddress=$2
+
+# Plot options
+@ plotThreads=1
+@ plotMemory=1
+@ plotClock=1
+
+# Look at last $TAIL lines of portal log, to prevent excessive 
+# summarization time
+set TAIL=-300000
+
+
+set awkdir=$SIAM_HOME/shoreUtils
+
+echo "<title>Node status summary</title>" 
+echo "<body><pre>" 
+
+set start=`awk '/Start portal at.*epoch msec/{printf "%d\n", $8/1000;exit}' $portalLog`
+
+echo "Portal started at " `et2ut $start`
+awk -f $awkdir/shoreConnectStats.awk $start /var/log/ppp.log
+
+# Determine last ppp link with mooring
+awk -f $awkdir/lastConnection.awk $pppAddress /var/log/ppp.log
+echo 
+
+# Plot ppp connection durations
+set pppPlot=ppp-duration.png
+plot-pppLog $pppAddress 3
+
+
+echo '<IMG SRC='\"$pppPlot\"'>' 
+
+set dataRateLog=$SIAM_HOME/logs/siamDataRate.log
+echo -n `date +%s` ' ' >> $dataRateLog
+awk -f $awkdir/siamDataRate.awk $portalLog | tee -a $dataRateLog
+
+echo '<p>'
+set nodes=`awk -f $awkdir/listNodes.awk $portalLog`
+foreach node ($nodes)
+
+  set nodeName=`echo $node | cut -d ':' -f 1`
+  set nodeID=`echo $node | cut -d ':' -f 2`
+  set aliasName=`awk -f $awkdir/nodeAliases.awk $nodeName /etc/hosts`
+
+  # Get portal log tail
+  # (plus log start, used for calculating dates)
+  grep -m 1 -e "^startRetrieveTime=" $portalLog > tail.out
+  tail $TAIL $portalLog >> tail.out
+
+  # Plot JVM memory
+  set memGraph=${nodeName}-mem.png
+  plotMemory -terminal png -output $memGraph $nodeID tail.out
+
+ 
+  # Plot JVM threads
+  set threadGraph=${nodeName}-threads.png
+  plotThreads -terminal png -output $threadGraph $nodeID tail.out
+
+  echo -n "<b>${nodeName} $aliasName (ID $nodeID): </b>" 
+  echo "" 
+  awk -f $awkdir/listPorts.awk $nodeID tail.out
+
+  # Summarize wakeup/comms success
+  echo "" 
+  awk -f $awkdir/wakeup.awk $nodeName tail.out
+
+  # Summarize sleep statistics
+  ### echo "" 
+  ### echo -n "$nodeName sleep stats: " 
+  ### awk -f $awkdir/sleepStats.awk $nodeID $portalLog | tail -1 
+
+  # List subnodes of this node
+  awk -f $awkdir/subnodes.awk $nodeID tail.out
+
+  # Summarize each data stream for this node
+  echo "\nDevice stream ages as received at portal, at " `date` ":"
+  if (-e $SIAM_HOME/logs/$nodeID) then 
+    foreach file ($SIAM_HOME/logs/$nodeID/*.dat) 
+      set totalBytes=`ls -l $file | awk '{print $5}'`
+      set deviceID=`echo $file:r:t | cut -d _ -f 1`
+      set serviceName=`getServiceName $nodeID $deviceID`
+      set age=`logView -age $deviceID $SIAM_HOME/logs/$nodeID | awk '{printf "%.1f hours\n", $0/3600.}'`
+      echo "ID $deviceID ($serviceName): age=$age"
+    end
+
+    set streamAgeGraph=${nodeName}-age.png
+
+    $SIAM_HOME/shoreUtils/plotStreamAges $SIAM_HOME/logs/$nodeID "Telemetry age, $nodeName ($aliasName)" $streamAgeGraph | tee /home/ops/plotStreamAges.out
+
+  endif
+
+  # Plot clock offsets
+  set clockGraph=${nodeName}-ntp-offset.png
+  plotNtpOffsets -terminal png -output $clockGraph $nodeName tail.out
+
+  echo '<IMG SRC='\"$streamAgeGraph\"'>'
+  echo '<IMG SRC='\"$clockGraph\"'>' 
+  echo '<IMG SRC='\"$memGraph\"'>' 
+  echo '<IMG SRC='\"$threadGraph\"'>' 
+
+  echo "<HR>" 
+end
+
+# Plot sampling error rates (all nodes)
+set sampleErrorRatesGraph=samplingErrorRates.png
+plotSamplingErrors -terminal png -output $sampleErrorRatesGraph tail.out
+echo '<IMG SRC='\"$sampleErrorRatesGraph\"'>' 
+
+echo "</pre></body>" 
+echo "Done"
+exit 0
+

@@ -1,0 +1,197 @@
+.header{
+position: fixed;
+top: 0%;
+bottom: 20%;
+left: 195px;
+right: 0;
+margin-bottom: 2px;
+margin-left: 2px;
+margin-right: 2px;
+background: #6D98dAB;
+max-height: 160px;
+min-height: 160px;
+/*
+background: #666666;
+background-image: url(../img/boats.jpg);
+background-repeat: no-repeat;
+*/
+}
+
+.headerText{
+position: fixed;
+left: 50%;
+top: 0%;
+font-family: Arial, sans-serif; 
+font-size: 1.2em;
+color: #04549a;
+/*color: #3366ff;*/
+text-align: center;
+}
+.commands1{
+position: relative;
+left: 0px;
+font-size: 0.9em;
+color: #00275E;
+font-style: normal;
+font-weight: bold;
+}
+
+.commands{
+position: relative;
+left: 20px;
+font-size: 0.9em;
+color: #00275E;
+font-style: normal;
+font-weight: bold;
+}
+.options{
+font-style: italic;
+font-weight: normal;
+}
+
+.indented{
+position: relative;
+left: 40px;
+}
+
+.emphasis{
+font-weight: bold;
+font-size: 0.9em;
+color: #8F2831;
+}
+.path{
+font-weight: bold;
+font-size: 0.9em;
+color: #677C97;
+}
+.darkpath{
+font-weight: bold;
+font-size: 0.9em;
+color: #00275E;
+}
+
+body{
+	font-size: 100%;
+	font-family: Arial, sans-serif;
+	background: #FFFFFF;
+	color: #000000;
+	width: auto;/*margin-left: 10px;*/
+	right: inherit;
+}
+h1{
+	font-size: 2.5em;
+	color: #01014f;
+}
+h2{
+	font-size: 1.85em;
+	color: #04549a;
+}
+h3{
+	font-size: 1.7em;
+	color: #04549a;
+}
+h4{
+	font-size: 1.55em;
+	color: #04549a;
+	font-family: Arial, sans-serif;
+}
+h5{
+	font-size: 1.4em;
+	font-weight: bold;
+	color: #42a8d2;
+}
+h6{
+font-size: 1.25em;
+font-weight: bold;
+color: #AEBD63;
+}
+h7{
+font-size: 1.0em;
+font-weight: bold;
+color: #6D98AB;
+}
+p{
+font-size: 1.0em;
+}
+
+table.altTable
+{
+font-family: Arial, sans-serif;
+width:75%;
+border-collapse:collapse;
+}
+table.altTable tr > td,table.altTable > th
+{
+font-size:0.8em;
+border:1px solid #04549a;/*AEBD63, 8F2831*/
+padding:3px 7px 2px 7px;
+}
+table.altTable tr > th 
+{
+font-size:1.0em;
+text-align:left;
+padding-top:5px;
+padding-bottom:4px;
+background-color:#04549a;/*#A7C942;*/
+color:#ffffff;
+}
+
+tr.alt, table.altTable > td 
+{
+color:#000000;
+background-color:#e1e2d5;/*#EAF2D3;*/
+}
+pre{
+position: relative;
+left: 20px;
+top: 0px;
+width: 60%;
+text-align: left;
+}
+
+div.img
+{
+  margin: 2px;
+  border: 1px solid #04549a;
+  height: auto;
+  width: auto;
+  float: left;
+  text-align: center;
+}	
+div.img img
+{
+  display: inline;
+  margin: 3px;
+  border: 1px solid #ffffff;
+}
+div.img a:hover img {border: 1px solid #0000ff;}
+div.desc
+{
+  text-align: center;
+  font-weight: normal;
+  width: 200px;
+  margin: 2px;
+}
+div.descwide
+{
+  text-align: center;
+  font-weight: normal;
+  margin: 2px;
+}
+.text_line{
+clear:both;
+}
+
+a:link
+{
+	color: #04549a;
+	text-decoration: none;
+}
+
+a:visited
+{
+	color: #0074d9;
+	text-decoration: none;
+}
+
+a:hover { text-decoration: underline; }

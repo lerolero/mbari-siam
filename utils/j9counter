@@ -1,0 +1,12 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Periodically count the number of executing 'j9' processes
+
+while [ 1 ]
+do
+  echo `ps -eaf | grep ' j9 ' | wc -l` '('`date`')'
+  sleep 30
+done

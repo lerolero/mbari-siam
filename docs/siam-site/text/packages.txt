@@ -1,0 +1,15 @@
+3rd Party Packages
+
+Required:
+Java Virtual Machine version 1.3 or greater
+Java SDK version 1.3 or greater
+GNU Make
+Open Source Data Turbine
+bash, csh
+RXTX
+Cygwin [required only for Windows]
+
+Optional:
+Apache Ant
+
+Perl (shore side)

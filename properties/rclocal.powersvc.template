@@ -1,0 +1,4 @@
+
+# Turn on power to the P2 (serial ADC) persistor 
+# hardware used by the power service
+/etc/siam/rfpower.ops 0 ON

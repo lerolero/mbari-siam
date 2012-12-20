@@ -1,0 +1,74 @@
+ArgArray{
+  	amplitude-0 : moos.measurement.SiamMeasurement : ArgArray{
+		units : java.lang.String : counts
+		dataType : java.lang.String : Integer32
+		description : java.lang.String : amplitudes, beam 0
+		value : moos.measurement.MutableIntegerArray : 0 0 -1 -1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+	}
+	pitch : moos.measurement.SiamMeasurement : ArgArray{
+		units : java.lang.String : .1 deg
+		dataType : java.lang.String : Integer32
+		description : java.lang.String : pitch
+		value : moos.measurement.MutableInteger : 270
+	}
+	roll : moos.measurement.SiamMeasurement : ArgArray{
+		units : java.lang.String : .1 deg
+		dataType : java.lang.String : Integer32
+		description : java.lang.String : roll
+		value : moos.measurement.MutableInteger : 284
+	}
+	voltage : moos.measurement.SiamMeasurement : ArgArray{
+		units : java.lang.String : .1 volt
+		dataType : java.lang.String : Integer32
+		description : java.lang.String : voltage
+		value : moos.measurement.MutableInteger : 151
+	}
+	velocity-2 : moos.measurement.SiamMeasurement : ArgArray{
+		units : java.lang.String : .1 m/sec
+		dataType : java.lang.String : Integer32
+		description : java.lang.String : water velocities, beam 2
+		value : moos.measurement.MutableIntegerArray : 0 -1 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 1 
+	}
+	soundSpeed : moos.measurement.SiamMeasurement : ArgArray{
+		units : java.lang.String : .1 m/sec
+		dataType : java.lang.String : Integer32
+		description : java.lang.String : sound speed
+		value : moos.measurement.MutableInteger : 14908
+	}
+	velocity-1 : moos.measurement.SiamMeasurement : ArgArray{
+		units : java.lang.String : .1 m/sec
+		dataType : java.lang.String : Integer32
+		description : java.lang.String : water velocities, beam 1
+		value : moos.measurement.MutableIntegerArray : 0 -1 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 1 
+	}
+	velocity-0 : moos.measurement.SiamMeasurement : ArgArray{
+		units : java.lang.String : .1 m/sec
+		dataType : java.lang.String : Integer32
+		description : java.lang.String : water velocities, beam 0
+		value : moos.measurement.MutableIntegerArray : 0 -1 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 1 
+	}
+	temperature : moos.measurement.SiamMeasurement : ArgArray{
+		units : java.lang.String : .01 deg
+		dataType : java.lang.String : Integer32
+		description : java.lang.String : temperature
+		value : moos.measurement.MutableInteger : 2388
+	}
+	amplitude-2 : moos.measurement.SiamMeasurement : ArgArray{
+		units : java.lang.String : counts
+		dataType : java.lang.String : Integer32
+		description : java.lang.String : amplitudes, beam 2
+		value : moos.measurement.MutableIntegerArray : 0 0 -1 -1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+	}
+	amplitude-1 : moos.measurement.SiamMeasurement : ArgArray{
+		units : java.lang.String : counts
+		dataType : java.lang.String : Integer32
+		description : java.lang.String : amplitudes, beam 1
+		value : moos.measurement.MutableIntegerArray : 0 0 -1 -1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+	}
+	heading : moos.measurement.SiamMeasurement : ArgArray{
+		units : java.lang.String : .1 deg
+		dataType : java.lang.String : Integer32
+		description : java.lang.String : heading
+		value : moos.measurement.MutableInteger : 3019
+	}
+ }

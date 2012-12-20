@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+  <meta name="Author" content="Tom O'Reilly">
+  <meta name="GENERATOR"
+ content="Mozilla/4.79 [en] (Windows NT 5.0; U) [Netscape]">
+  <title>Instrument Data Summaries and Telemetry Subsampling</title>
+</head>
+<body>
+<b>NAME</b>
+<blockquote>Instrument Data Summaries and Telemetry Subsampling</blockquote>
+<b>DESCRIPTION</b>
+<blockquote>SIAM instrument services acquire and log all raw data
+specified by their acquisition schedules. To aid management of limited
+telemetry bandwidth,
+an instrument service can be configured such that only every <i>nth</i>
+raw packet is returned in the telemetry stream; this feature is
+referred to as <i>telemetry subsampling</i>. The configurable
+  <i>defaultSkipInterval</i> <a href="instrumentProperties.html"><i>instrument
+service property</i></a> specifies the number of "raw"
+SensorDataPackets to skip when telemetering data. A property value of 0
+means to return all raw data for that instrument through the telemetry
+stream; a value of -1 means that <b>no</b> raw data for the instrument
+should be retrieved through the telemetry stream.
+  <p>For example, the following invocation of the <a
+ href="setProperty.html"><i>setProperty</i></a> utility specifies that
+only every
+10th raw sample from the instrument on port 3 of the local host should
+be retrieved via the shore-side <a href="portal.html"><i>portal</i></a>;
+as usual, setProperty should always be
+followed by <a href="restartPort.html"><i>restartPort</i></a>:
+  </p>
+  <pre>% setProperty localhost 3 defaultSkipInterval=10<br>% restartPort localhost 3<br></pre>
+Note that defaultSkipInterval is applied only to the telemetry stream;
+the
+instrument service continues to save <i>all</i> raw samples to its
+device log. Telemetry filtering can be manipulated further with
+the&nbsp;<a style="font-style: italic;" href="filters.html">getfilter,
+clearfilter, and setfilter</a> utilities.<br>
+  <p>
+In addition, some services can be configured to "summarize" as well as
+log their raw data, and to return only these summaries in the telemetry
+stream. Summaries are "moving", in the sense that as a new raw data
+sample is acquired by a service and added to the data set used in
+computing the summary, the oldest sample is dropped from the data set
+Note that not all services can generate summaries, and you currently
+must have <i>a priori</i> knowledge of which services can summarize.
+Moreover each instrument service may implement a different
+summarization algorithm; "moving averaging" is common, but other
+techniques can be implemented by the service developer.
+  </p>
+  <p>The following configurable <a href="instrumentProperties.html"><i>service
+properties</i></a> specify the frequency of summarization:
+  </p>
+  <pre>summaryTriggerCount Generate summary packet after this many raw samples are<br>                    acquired; width of the moving summary "window".<br><br>maxSummarySamples   Generate summary packet and initialize contents of the<br>                    moving summary "window" when this many raw samples<br>                    are acquired<br></pre>
+Note that in almost all cases, <b>NO</b> raw instrument data should be
+retrieved through the service's telemetry stream when summarization is
+enabled; thus you <b>must</b> set the service's defaultSkipInterval
+property to -1.
+  <p>For example, the following invocation of the <a
+ href="setProperty.html"><i>setProperty</i></a> utility specifies that
+for the
+service on port 3 of the local host, summary packets should be
+generated for
+every 36 samples, and that NO raw data should be retrieved by the
+shore-side
+portal:
+  </p>
+  <pre>% setProperty localhost 3 summaryTriggerCount=36 maxSummarySamples=36 defaultSkipInterval=-1<br></pre>
+</blockquote>
+<p><br>
+<b>KNOWN BUGS</b></p>
+<blockquote>Setting summarization properties with the <i>setProperty</i>
+utility followed by <i>restartPort</i> does NOT currently work as
+expected, i.e. the new summarization properties do not take effect. For
+the new properties to take effect, you should use <i>setProperty</i>
+to set the values as in the above
+example, then invoke the <a href="cachePort.html"><i>cachePort</i></a>
+utility,
+then terminate the service with the <a href="shutdownPort.html"><i>shutdownPort</i></a>
+utility, and finally invoke <a href="scanPort.html"><i>scanPort</i></a>
+to restart the service.
+</blockquote>
+<p><br>
+<b>SEE ALSO</b>
+</p>
+<blockquote>&nbsp;<a href="instrumentProperties.html">Instrument
+Service Properties</a> <br>
+&nbsp;</blockquote>
+</body>
+</html>

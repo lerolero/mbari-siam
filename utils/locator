@@ -1,0 +1,6 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+$JAVA -cp $SIAM_CLASSPATH:$SIAM_HOME/jars/jini-core.tar:$SIAM_HOME/jars/jini-ext.jar:$SIAM_HOME/jars/sun-util.tar -Djava.security.policy=$SIAM_HOME/properties/policy org.mbari.siam.distributed.jini.LocatorExample $*

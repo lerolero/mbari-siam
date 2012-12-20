@@ -1,0 +1,23 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+#
+if [ ! -n "$1" ] || [ ! -n "$2" ] || [ ! -n "$3" ]
+then
+  echo
+  echo "usage: `basename $0` nodeURL port scheduleName"
+  echo
+  exit 1
+fi  
+
+nodeURL=$1
+port=$2
+schedule=$3
+
+# Script executes org.mbari.siam.operations.utils.ResumeScheduleEntry.main()
+$JAVA -cp $SIAM_CLASSPATH -Djava.security.policy=$SIAM_HOME/properties/policy \
+-Dlog4j.threshold=$LOG4J_THRESHOLD \
+org.mbari.siam.operations.utils.ResumeSchedule $nodeURL $port "$schedule"
+

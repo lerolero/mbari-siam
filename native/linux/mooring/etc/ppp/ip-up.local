@@ -1,0 +1,5 @@
+#!/bin/bash
+# Executed when ppp link comes up
+
+# Add route to moored network nodes
+/sbin/route add -net 192.168.0.0 netmask 255.255.255.0 gw mooring

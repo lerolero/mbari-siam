@@ -1,0 +1,20 @@
+# Installing logView
+
+- make logview (creates ../logview.tar.gz)
+
+- tar xzvf logview.tar.gz (creates siam/)
+
+- . siam/shoreUtils/siamenv.win32 <path to SIAM_HOME> 
+	- e.g.: . siamenv.win32 c:/myhome/cvs/siam
+	- should append SIAM_HOME to path and set environement
+
+- logView with no args gives use message
+
+# Using getPacketStats
+
+- getPacketStats <logdir> will run
+
+	logView -statsOnly -noheader -notype 
+
+  for each node and device in <logdir>, appending the output to the file packetStats-all.out
+

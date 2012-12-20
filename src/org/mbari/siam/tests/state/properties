@@ -1,0 +1,13 @@
+xOffset = 10.0
+yOffset = 20.0
+zOffset = 30.0
+serialNo = fribbish123
+timeSync=true
+sampleMinutes = 50
+sampleSchedule = zkzkk
+isiID = -9
+powerPolicy = NEVER
+commsPowerPolicy = ALWAYS
+serviceStatus = 2
+serviceName = Triaxys
+coeffs = -111 222 888 101010

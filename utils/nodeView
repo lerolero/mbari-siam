@@ -1,0 +1,19 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+echo 
+echo "  You must kill any any running copies of nodeView"
+echo "  or NodeProxyServer before running this script"
+echo 
+
+read -p "  press any key to continue"
+
+cd $SIAM_HOME/classes
+export host=`hostname`
+### rmiregistry &
+
+java -cp $SIAM_HOME/classes -Djava.security.policy=$SIAM_HOME/properties/policy org.mbari.siam.moos.utils.nodeview.monitor.NodeProxyServer &
+sleep 3
+java -cp $SIAM_HOME/classes -Djava.security.policy=$SIAM_HOME/properties/policy org.mbari.siam.moos.utils.nodeview.monitor.NodeProxyClient ti="Port Status" s=$host p=3000 src=node node=$1

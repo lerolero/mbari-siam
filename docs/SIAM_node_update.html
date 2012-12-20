@@ -1,0 +1,42 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Tom O'Reilly">
+   <meta name="GENERATOR" content="Mozilla/4.79 [en] (Windows NT 5.0; U) [Netscape]">
+   <title>SIAM node update procedure</title>
+</head>
+<body>
+
+<center><b>Updating SIAM software on an MMC node</b>
+<br><b>Tom O'Reilly</b>
+<br><b>9/16/2004</b></center>
+<b></b>
+<p>1. Copy files deployed.tar.gz and gbpatches.tar.gz to the
+<br>node's /mnt/hda directory, e.g.:
+<p>&nbsp; scp deployed.tar.gz gbpatches.tar.gz ops@sidearm415:/mnt/hda/.
+<p>2. After logging onto the node, carry out the following steps.
+<p>3. Terminate the SIAM application running on the node:
+<br>&nbsp; exitNode localhost
+<p>4. In some cases, the new SIAM release is incompatible with data logs
+already
+<br>acquired. In this case, move the logs directory to an archive, e.g.
+<p>&nbsp; cd /mnt/hda
+<br>&nbsp; tar cvf logs.tar siam/logs
+<br>&nbsp; gzip logs.tar
+<br>&nbsp; rm siam/logs
+<br>&nbsp;
+<br>5. Extract the files from the 'deployed' tar file:
+<br>&nbsp; tar zxvf deployed.tar.gz
+<p>6. cp gbpatches.tar.gz /.
+<p>7. su; cd /; tar zxvf gbpatches.tar.gz
+<p>8. rm gbpatches.tar.gz
+<p>9. Run the 'config' script.
+<br>NOTE: If you are installing the software remotely
+<br>via radio or satellite, it is critical that you correctly specify the
+<br>communication link to the 'config' script. Failure to do so can
+<br>result in inability to communicate with the mooring.
+<p>10. Reboot the node
+<br>&nbsp;
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE doctype PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+    
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+    
+  <meta name="Author" content="Tom O'Reilly">
+    
+  <meta name="GENERATOR"
+ content="Mozilla/4.79 [en] (Windows NT 5.0; U) [Netscape]">
+  <title>shutdownPort</title>
+</head>
+  <body>
+ <b>NAME</b> 
+<blockquote>shutdownPort - shutdown the service on specified port(s) on specified
+MOOS node</blockquote>
+  
+<p><br>
+<b>SYNOPSIS</b> </p>
+<blockquote> 
+  <pre>shutdownPort nodeHost portName(s)</pre>
+ </blockquote>
+  
+<p><br>
+<b>DESCRIPTION</b> </p>
+<blockquote>The <i>shutdownPort</i> utility shuts down the instrument service 
+(if it is running) on the specified port(s) of the specified MOOS node. If
+there is no instrument service running on the specified port, or if the specified
+port does not exist on the node, an error is reported to the user. Multiple
+ports may be specified, e.g.</blockquote>
+  
+<blockquote> 
+  <blockquote> 
+    <pre>% shutdownPort sidearm6 /dev/ttySX1 /dev/ttySX2 /dev/ttySX3</pre>
+ </blockquote>
+ The portName(s) can be abbreviated as an integer, i.e. "/dev/ttySX1" can
+ be abbreviated as simply "1". Thus the above example is equivalent to 
+  <blockquote> 
+    <pre>% shutdownPort sidearm6 1 2 3</pre>
+ </blockquote>
+ 
+  <p> This utility may be run on the same host as the node, or on any networked 
+host from which the node host is accessible. If run on the node's host, then
+  <i>nodeHost</i> should be specified as "localhost".  <b></b> </p>
+  <p><br>
+  <b>ENVIRONMENT</b> </p>
+  <blockquote>The following environment variables must be set:</blockquote>
+  
+  <ul>
+ <li> JAVA_HOME - location of Java installation, e.g.<i> /j9</i> or <i>/opt/java/jdk1.3.1</i></li>
+  <li> JAVA - name of the JVM. E.g. on a Sidearm, JAVA should be set to <i>j9. 
+      </i>On a workstation with Sun's Java installed, JAVA could be set to
+      <i>java</i>.</li>
+  <li> SIAM_HOME - top of the SIAM directory tree</li>
+  <li> SIAM_CLASSPATH - on a Sidearm, SIAM_CLASSPATH should be set to <i>$JAVA_HOME/lib/jclMax/classes.zip:$JAVA_HOME/lib/prsnlmot.jar:$JAVA_HOME/lib/RXTXcomm.jar:$SIAM_HOME/classes</i>.&nbsp; 
+On X86 system, SIAM_CLASSPATH should be set to<i> $SIAM_HOME/classes</i></li>
+ 
+  </ul>
+ <b></b> 
+  <p><br>
+  <b>SEE ALSO</b> </p>
+  <blockquote>&nbsp;<a href="listPorts.html">listPorts</a> ,&nbsp; <a
+ href="scanPort.html">scanPort</a>&nbsp;</blockquote>
+  <br>
+&nbsp; </blockquote>
+<br>
+</body>
+</html>

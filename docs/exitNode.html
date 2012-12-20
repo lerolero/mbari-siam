@@ -1,0 +1,71 @@
+<!DOCTYPE doctype PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+            
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+            
+  <meta name="Author" content="Tom O'Reilly">
+            
+  <meta name="GENERATOR"
+ content="Mozilla/4.79 [en] (Windows NT 5.0; U) [Netscape]">
+  <title>exitNode</title>
+</head>
+  <body>
+   <b>NAME</b>   
+<blockquote>exitNode - "gracefully" terminate SIAM node service</blockquote>
+   <b>SYNOPSIS</b>   
+<blockquote>       
+  <pre>exitNode nodeHost</pre>
+   </blockquote>
+   <b>DESCRIPTION</b>   
+<blockquote>The exitNode utility "gracefully" shuts down each SIAM instrument 
+service on the specified node (effectively executing <a
+ href="shutdownPort.html"><i>shutdownPort</i></a> for each service), switches
+off power to all instrument ports, and then terminates the SIAM node service.
+E.g., the following shuts down the instrument and node services on "surface":<br>
+  &nbsp;       
+  <blockquote>           
+    <pre>% exitNode surface</pre>
+   </blockquote>
+ Note that delays will occur while each instrument service is being terminated, 
+depending on how the specific instrument service shuts down its device. If 
+for some reason these delays are excessive, it is possible to use <a
+ href="killj9.html"><i>killj9</i></a> to immediately terminate the node application. 
+Note however that <i>killj9</i> does not result in graceful instrument shutdown 
+or power shutoff. <br>
+   <br>
+ This utility may be run on the same host as the node, or on any networked 
+host from which the node host is accessible. If run on the node's host, then 
+  <i>nodeHost</i> can be specified as "localhost" or simply "loc". </blockquote>
+      
+<p><br>
+  <b>ENVIRONMENT</b> </p>
+   
+<blockquote>The following environment variables must be set:</blockquote>
+      
+<ul>
+   <li> JAVA_HOME - location of Java installation, e.g.<i> /j9</i> or <i>/opt/java/jdk1.3.1</i></li>
+    <li> JAVA - name of the JVM. E.g. on a Sidearm, JAVA should be set to 
+    <i>j9.      </i>On a workstation with Sun's Java installed, JAVA could 
+be set to     <i>java</i>.</li>
+    <li> SIAM_HOME - top of the SIAM directory tree</li>
+    <li> SIAM_CLASSPATH - on a Sidearm, SIAM_CLASSPATH should be set to <i>$JAVA_HOME/lib/jclMax/classes.zip:$JAVA_HOME/lib/prsnlmot.jar:$JAVA_HOME/lib/RXTXcomm.jar:$SIAM_HOME/classes</i>.&nbsp; 
+ On X86 system, SIAM_CLASSPATH should be set to<i> $SIAM_HOME/classes</i></li>
+     
+</ul>
+      
+<p><br>
+  <b>SEE ALSO</b> </p>
+   
+<blockquote>&nbsp;<a href="node.html">node</a>, <a href="killj9.html">killj9</a>, 
+  <a href="killBIN.html">killBIN</a>, <a href="shutdownPort.html">shutdownPort</a><br>
+  <br>
+   <br>
+    <br>
+  </blockquote>
+    <br>
+  <br>
+ <br>
+</body>
+</html>

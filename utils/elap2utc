@@ -1,0 +1,21 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Display UTC timestring corresponding to start UTC and elapsed seconds
+
+if [ ! -n "$2" ]
+then
+  echo "usage: " `basename $0` " 'm/d/yyyy H:m:s'  elapsedSeconds"
+  echo "NOTE: first arg (date) must have specified format, must be in quotes"
+  exit 1
+fi
+
+let base=`ut2et -format '%m/%d/%Y %H:%M:%S' "$1"`
+echo "base: $base"
+let epochSec=$base+$2
+echo "epochSec: $epochSec"
+et2ut $epochSec
+
+

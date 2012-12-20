@@ -1,0 +1,10 @@
+#!/bin/bash
+#
+# relay - Utility to turn on/off power relays on FOCE board stack
+# 11 April 2008, rah
+# 
+
+$JAVA -cp $SIAM_CLASSPATH -Dlog4j.threshold=DEBUG \
+    -Dsiam_home=$SIAM_HOME \
+    -Djava.security.policy=$SIAM_HOME/properties/policy \
+    org.mbari.siam.foce.deployed.FOCERemoteRelay $*

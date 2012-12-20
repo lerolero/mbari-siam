@@ -1,0 +1,538 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Simple CSS Test Page</title>
+<link href="../css/content.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+<a name="cfg_siam"></a>
+<h1>SIAM Configuration Guide</h1>
+<h2>Configuration Files</h2>
+<p>
+SIAM is configured primarily through environment variables and Java Properties files.
+The following table describes the main SIAM configuration files' location and purpose:
+</p>
+<table class="altTable">
+<tr>
+  <th>Configuration File</th>
+  <th>Description</th>
+  <th>-</th>
+</tr>
+<tr>
+<td>SIAM_HOME/properties/siamPort.cfg</td>
+<td>Configure SIAM ports and behavior (via Java Properties)</td>
+<td>-</td>
+</tr>
+<tr class="alt">
+<td>SIAM_HOME/properties/siam.log4j</td>
+<td>Configure SIAM logging output</td>
+<td>-</td>
+</tr>
+<tr>
+<td>/etc/siam/siamEnv</td>
+<td>Platform-specific SIAM environment (via Java properties)</td>
+<td>-</td>
+</tr>
+<tr class="alt">
+<td>SIAM_HOME/properties/policy</td>
+<td>Java security policy definition</td>
+<td>-</td>
+</tr>
+<!--
+<tr>
+<td></td>
+<td></td>
+<td>-</td>
+</tr>
+<tr class="alt">
+<td></td>
+<td></td>
+<td>-</td>
+</tr>
+-->
+</table>
+
+<a name="cfg_env"></a>
+<h2>Environment variables</h2>
+<p>The configuration of main SIAM environment variables is discussed in the <a href="../content/installGuide.html#install_env" target="mainFrame">Installation Guide</a>.
+</p>
+
+<h2>siamPort.cfg</h2>
+<p>The file siamPort.cfg (SIAM_HOME/properties/siamPort.cfg) is a Java properties file for SIAM node configuration. The Java API documentation describes the syntax rules 
+of properties files, but essentially they contain <em class="command">name=value</em> pairs that define configuration parameters.
+</p>
+<p>siamPort.cfg is conventionally organized in sections: port configuration, node configuration, platform-specific settings. However, no specific ordering is required. 
+If duplicate property names exist, the last one (towards the end of the file) is used.
+</p>
+<p>The sections below provide details about the various properties.</p>
+<p>The <a href="../content/examples.html" target="mainFrame">examples directory</a> contains a version of <a href="../content/examples/siamPort.cfg.example.text" target="mainFrame">siamPort.cfg</a></p>
+
+<h3>Instrument Service Ports</h3>
+<table class="altTable">
+<tr>
+  <th>Parameter</th>
+  <th>Description</th>
+  <th>Example</th>
+</tr>
+<tr>
+<td>serialPort0</td>
+<td></td>
+<td><div class="path">/dev/tty.KeySerial1</div></td>
+</tr>
+<tr class="alt">
+<td>NVTserialPort0</td>
+<td></td>
+<td>134.89.13.76</td>
+</tr>
+<tr>
+<td>powerPort0</td>
+<td></td>
+<td>NULL</td>
+</tr>
+<tr class="alt">
+<td>portName0</td>
+<td></td>
+<td>louver</td>
+</tr>
+</tr>
+<tr>
+<td>serviceJar0</td>
+<td></td>
+<td>ElmoLouver-1762.jar</td>
+</tr>
+</tr>
+<tr class="alt">
+<td>maxPorts</td>
+<td></td>
+<td>21</td>
+</tr>
+<tr>
+<td>platformSerialPorts</td>
+<td></td>
+<td> <div class="path"><pre>/dev/ttys0:\
+        /dev/ttys1:\
+        /dev/ttys2:\
+        /dev/ttys3:\
+        /dev/ttys4:\
+        /dev/ttys5:\
+        /dev/ttys6:\
+        /dev/ttys7:\
+        /dev/ttys8:\
+        /dev/ttys9:\
+        /dev/ttys10:\
+        /dev/tty.KeySerial1:\
+        /dev/ttysX15:
+		</pre></div>
+</td>
+</tr>
+<tr class="alt">
+<td></td>
+<td></td>
+<td>-</td>
+</tr>
+</table>
+
+
+<h3>Node Configuration Settings</h3>
+<table class="altTable">
+<tr>
+  <th>Parameter</th>
+  <th>Description</th>
+  <th>Example</th>
+</tr>
+<tr>
+<td>nodeID</td>
+<td></td>
+<td>1726</td>
+</tr>
+<tr class="alt">
+<td>nodeType</td>
+<td></td>
+<td>primary</td>
+</tr>
+<tr>
+<td>jarLocation</td>
+<td></td>
+<td>-</td>
+</tr>
+<tr class="alt">
+<td>logLocation</td>
+<td></td>
+<td>-</td>
+</tr>
+<tr>
+<td>codeBaseLocation</td>
+<td></td>
+<td><div class="path">/mnt/hda/codebase</div></td>
+</tr>
+<tr class="alt">
+<td></td>
+<td></td>
+<td>-</td>
+</tr>
+<!--
+<tr>
+<td></td>
+<td></td>
+<td>-</td>
+</tr>
+<tr class="alt">
+<td></td>
+<td></td>
+<td>-</td>
+</tr>
+-->
+</table>
+
+<h3>Network Configuration Settings</h3>
+
+<a name="cfg_platforms"></a>
+<h3>Platform-Specific (MMC, FOCE, etc.)</h3>
+<h4>FOCE</h4>
+<table class="altTable">
+<tr>
+  <th>Parameter</th>
+  <th>Description</th>
+  <th>Example</th>
+</tr>
+<tr>
+<td>platformPower</td>
+<td></td>
+<td> 0x310 0x320</td>
+</tr>
+<tr class="alt">
+<td>platformAnalog</td>
+<td></td>
+<td>0x300 0x330</td>
+</tr>
+<tr>
+<td>platformAnalogTypes</td>
+<td></td>
+<td>d s</td>
+</tr>
+<tr class="alt">
+<td>analogPort1</td>
+<td></td>
+<td>0 8-14,24-30</td>
+</tr>
+<tr>
+<td>analogName1</td>
+<td></td>
+<td>PMonitor</td>
+</tr>
+<!--
+<tr>
+<td></td>
+<td></td>
+<td>-</td>
+</tr>
+<tr class="alt">
+<td></td>
+<td></td>
+<td>-</td>
+</tr>
+-->
+</table>
+
+<h4>MMC</h4>
+<table class="altTable">
+<tr>
+  <th>Parameter</th>
+  <th>Description</th>
+  <th>Example</th>
+</tr>
+<tr>
+<td>networkNumberBase</td>
+<td></td>
+<td>35</td>
+</tr>
+<tr class="alt">
+<td>networkNumber</td>
+<td>Add to networkNumberBase to obtain 3rd octet of network address</td>
+<td>0</td>
+</tr>
+<tr>
+<td>ethernetAddressBase</td>
+<td>first two octets of network address</td>
+<td>134.89.</td>
+</tr>
+<tr class="alt">
+<td>pppAddressBase</td>
+<td></td>
+<td>-</td>
+</tr>
+<tr>
+<td>pppHostName</td>
+<td></td>
+<td>-</td>
+</tr>
+<tr class="alt">
+<td>pppHostName</td>
+<td></td>
+<td>enabled|disabled</td>
+</tr>
+<tr>
+<td>DHCP</td>
+<td></td>
+<td>enabled|disabled</td>
+</tr>
+<tr class="alt">
+<td></td>
+<td></td>
+<td>advertiseService</td>
+</tr>
+<tr>
+<td>lrrDevice</td>
+<td></td>
+<td>globalstar</td>
+</tr>
+<tr class="alt">
+<td>srrDevice</td>
+<td></td>
+<td>freewave</td>
+</tr>
+<tr>
+<td>lrrConnection</td>
+<td></td>
+<td>portal</td>
+</tr>
+<tr class="alt">
+<td>srrConnection</td>
+<td></td>
+<td>auxConsole</td>
+</tr>
+<tr>
+<td>SleepManager.enabled</td>
+<td>true to enable, false means you'll never go to sleep</td>
+<td>TRUE|FALSE</td>
+</tr>
+<tr class="alt">
+<td>SleepManager.sleepString</td>
+<td>command to invoke to put us to sleep</td>
+<td>nice --20 /root/suspend.sh</td>
+</tr>
+<tr>
+<td>SleepManager.pollSeconds</td>
+<td>How often we poll to see if we can go to sleep (sec)</td>
+<td>2</td>
+</tr>
+<tr class="alt">
+<td>SleepManager.wakeupSeconds </td>
+<td>How many seconds we wake up early, to allow things to stabilize before sampling.</td>
+<td>3</td>
+</tr>
+<tr>
+<td>SleepManager.sleepDelay</td>
+<td>How long to delay before going to sleep, to allow logs to sync</td>
+<td>3</td>
+</tr>
+<tr class="alt">
+<td>SleepManager.minSleepSeconds</td>
+<td>Minimum time we'll go to sleep.  If less than this, we'll just stay awake.</td>
+<td>5</td>
+</tr>
+<tr>
+<td>SleepManager.minAwakeSeconds</td>
+<td>Minimum to stay awake. Avoids race that puts node to sleep when trying to wake it up</td>
+<td>60</td>
+</tr>
+<tr class="alt">
+<td>CommsManager.enabled</td>
+<td></td>
+<td>TRUE|FALSE</td>
+</tr>
+<tr>
+<td>CommsManager.auxEnabled</td>
+<td></td>
+<td>TRUE|FALSE</td>
+</tr>
+<tr class="alt">
+<td>NodeService.leaseInterval</td>
+<td>(connection duration sec) 60000 primary nodes 10000 for the subnodes</td>
+<td>-</td>
+</tr>
+<tr>
+<td>NodeService.auxLeaseInterval </td>
+<td>(connection duration sec) 60000 primary nodes 10000 for the subnodes</td>
+<td>60000</td>
+</tr>
+<tr class="alt">
+<td>NodeService.leaseRenewalInterval</td>
+<td>(connection period) 60000 for deployment 120000 for testing on ethernet</td>
+<td>60000</td>
+</tr>
+<tr>
+<td>
+NodeService.auxLeaseRenewalInterval
+</td>
+<td>(connection period) 60000 for deployment 120000 for testing on ethernet</td>
+<td>60000</td>
+</tr>
+<tr class="alt">
+<td>CommsManager.parentLinkOn</td>
+<td>(system call to exec on connection) </td>
+<td>globalstarOn 300</td>
+</tr>
+<tr>
+<td>CommsManager.parentLinkOff</td>
+<td>(system call to exec on connection)</td>
+<td>commsOff</td>
+</tr>
+<tr class="alt">
+<td>CommsManager.parentLinkStatus</td>
+<td>(system call to check status of network interfaces)</td>
+<td>linkStatus ppp</td>
+</tr>
+<tr>
+<td>CommsManager.auxLinkOn</td>
+<td></td>
+<td>globalstarOn 300</td>
+</tr>
+<tr class="alt">
+<td>CommsManager.auxLinkOff</td>
+<td></td>
+<td>commsOff</td>
+</tr>
+<tr>
+<td>CommsManager.protocolWaitTime,auxProtocolWaitTime</td>
+<td>(time to wait when establishing connection)
+ 15000 primary nodes with Globalstar wireless
+ 5000 for other nodes
+ 0 for testing on ethernet
+</td>
+<td>5000</td>
+</tr>
+<tr class="alt">
+<td>CommsManager.processWaitTime, CommsManager.auxProcessWaitTime</td>
+<td>(time to wait when disconnection) 240000 for primary nodes with Globalstar wireless 60000 for primary nodes 30000 for the subnodes </td>
+<td>60000</td>
+</tr>
+<tr>
+<td>CommsManager.reassert</td>
+<td>Set true to reassert parent link
+ when it breaks or if there are leases 
+ pending when the link terminates.</td>
+<td>TRUE|FALSE</td>
+</tr>
+<tr class="alt">
+<td>CommsManager.maxReassertTries</td>
+<td>if CommsManager.reassert=true, retry this many times to reassert the link</td>
+<td>1</td>
+</tr>
+<!--
+<tr>
+<td></td>
+<td></td>
+<td>-</td>
+</tr>
+<tr class="alt">
+<td></td>
+<td></td>
+<td>-</td>
+</tr>
+-->
+</table>
+
+
+<h2>siam.log4j</h2>
+<p>
+The siam.log4j file is a configuration file for the log4j open source logging
+package. It may be used to determine what logging information appears in the
+SIAM application logs. 
+</p>
+<p>At runtime, the environment variable LOG4J_THRESHOLD sets the default logging output level,
+and is set by the script that runs the SIAM application.
+It may be overridden in siam.log4j. The configuratio file may also be used to format the debug output. 
+A sample file appears below:</p>
+<pre class="indented">
+# For the general syntax of property based configuration files see the
+# documenation of org.apache.log4j.PropertyConfigurator. See also
+# http://www.vipan.com/htdocs/log4jhelp.html
+
+#log4j.rootCategory=WARN, stdout, rolling, lf5
+log4j.rootCategory=INFO, rolling
+
+# Set logging level for specific packages 
+
+# Recommend leaving the following loggers in DEBUG to aid in 
+# diagnosis of bug SIAM-58 (EventManager loses track of DevicePacketAggregator
+# listener)
+#log4j.logger.org.mbari.siam.core.DevicePacketAggregator=DEBUG
+log4j.logger.org.mbari.siam.core.EventManager=INFO
+#log4j.logger.org.mbari.siam.devices.dummy.DummyInstrument=DEBUG
+
+# CONSOLE APPENDER (stdout) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+#log4j.appender.stdout.layout.ConversionPattern=%d{ISO8601} [%t] %-5p %c %x - %m%n
+log4j.appender.stdout.layout.ConversionPattern=%r %-5p %x %c{1} [%t]: %m%n
+
+# ROLLING FILE APPENDER (rolling) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+log4j.appender.rolling=org.apache.log4j.RollingFileAppender
+log4j.appender.rolling.File=${siam.node.log}
+log4j.appender.rolling.layout=org.apache.log4j.PatternLayout
+#log4j.appender.rolling.layout.ConversionPattern=%d{ISO8601} [%t] %-5p %c %x - %m%n
+log4j.appender.rolling.layout.ConversionPattern=%r %-5p %x %c{1} [%t]: %m%n
+log4j.appender.rolling.MaxFileSize=10000KB
+log4j.appender.rolling.MaxBackupIndex=5
+
+# LF5 APPENDER (lf5) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+log4j.appender.lf5=org.apache.log4j.lf5.LF5Appender
+log4j.appender.lf5.MaxNumberOfRecords=10000
+</pre>
+
+<p> SIAM directs stdout and stderr to the siam application logs (SIAM_HOME/logs/nodeName-startDate); log4j also uses this log file for its
+rolling log appender, so the logs are rotated so they will not grow beyond some maximum size defined in siam.log4j.
+As can be seen in the example, it is possible to configure the debug level on a class by class basis, or use a common default value for all appenders.
+</p>
+<h2>siamEnv</h2>
+<p> The file siamEnv (found in the distribution as SIAM_HOME/native/arm-linux/top/etc/siam/siamEnv) may be used to configure 
+key environment variables for the SIAM application. These settings may also be set in (or sourced from) .bashrc for user accounts used for SIAM administration.
+siamEnv also contains convenient aliases for frequently used commands, as well as options for the Java virtual machine used for SIAM.
+</p>
+<pre class="indent">
+# .bashrc
+
+# Environment for SIAM applications
+# Note that SIAM_HOME *must* be set prior to executing this script.
+
+# Setup Java
+. /j9/j9env
+export JAVA=j9
+export JAVA_OPTIONS=&quot;-mca:32 -mco:64 -mx:24576 -mo:1024 -moi:256&quot;
+
+export SIAM_BIN=$SIAM_HOME/bin/arm-linux
+export SIAM_CODEBASE=http://`hostname`/codebase/
+
+export PARENT_HOST=surface
+export SIAM_CLASSPATH=$JAVA_HOME/lib/jclMax/classes.zip:$JAVA_HOME/lib/prsnlmot.jar:$JAVA_HOME/lib/RXTXcomm.jar:$SIAM_HOME/classes:/mnt/hda/codebase:$SIAM_HOME/jars/javax.jar:$SIAM_HOME/jars/gnu_getopt.jar:$SIAM_HOME/jars/jrendezvous.jar:$SIAM_HOME/jars/log4j-1.2.13.jar:$SIAM_HOME/jars/XModem.jar:$SIAM_HOME/jars/jddac-common.jar:$SIAM_HOME/jars/jddac-probe-j2me.jar:$SIAM_HOME/jars/backport-util-concurrent.jar:$SIAM_HOME/jars/rbnb.jar
+
+# Set to TRUE if you want SIAM node app to start on reboot
+
+export LOG4J_THRESHOLD=DEBUG
+export SIAM_LOG4J=$SIAM_HOME/properties/siam.log4j
+
+export PATH=.:$PATH:$SIAM_HOME/utils:$SIAM_BIN:/etc/siam:$HOME/bin
+
+alias gosiam='cd $SIAM_HOME'
+alias java=j9
+alias ls='ls -F'
+alias ll='ls -AlF'
+alias dhcp=ifswitch-to-dhcp
+
+export SIAM_AUTOSTART=TRUE
+
+export ETHERNET_ADDRESS_PREFIX=134.89.37
+export PARENT_LINK_ON_SCRIPT=
+export PARENT_LINK_OFF_SCRIPT=
+export SIAM_EXIT_SCRIPT=/etc/siam/postSIAM
+</pre>
+
+
+<a name="cfg_sys"></a>
+<h3>System Files</h3>
+
+</body>
+</html>

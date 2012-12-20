@@ -1,0 +1,10 @@
+#!/bin/bash
+#
+
+# wrapper script for Java util for switching Elmo
+# motor controller power via the DMM32 A/D board.
+# use elmoPower with no args or --help for help
+$JAVA -cp $SIAM_CLASSPATH \
+-DLOG4J_THRESHOLD=$LOG4J_THRESHOLD \
+-DEXEC_NAME=`basename $0` \
+org.mbari.siam.foce.utils.FOCEElmoUtil $*

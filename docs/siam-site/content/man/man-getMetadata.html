@@ -1,0 +1,249 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>getMetadata Manual Page</title>
+		<link href="../../css/content.css" rel="stylesheet" type="text/css" />
+		<link href="../../css/manpage.css" rel="stylesheet" type="text/css" />
+		</head>
+	
+	<body>
+		
+		<div class="nameHeader">
+			<h1>Name</h1> 
+			<div class="nameText">
+				<h2>getMetadata <!-- name text here --></h2>
+				</div>
+			</div>
+		
+		<div class="synopsisHeader">
+			<h1>Synopsis</h1>
+			<div class="synopsisText">
+				<div class="commands">getMetadata <em class="options">nodeURL port [acilpsx]</em></div>
+				</div>
+			</div>
+		
+		<div class="descriptionHeader">
+			<h1>Description</h1>
+			<div class="descriptionText">
+				<p>
+				<!-- description text here -->
+				The getMetadata utility retrieves metadata
+				from the instrument service on the specified port(s) of the specified SIAM 
+				node.
+				</p>	 
+				<h2>Options</h2>
+				<table class="altTable">
+					<tr>
+						<th>Option</th>
+						<th>Description</th>
+						<th>Values</th>
+						</tr>
+					<tr>
+						<td>nodeURL</td>
+						<td>IP address or host name of SIAM node</td>
+						<td>e.g. 134.89.88.1, mooring.moos.mbari.org</td>
+						</tr>
+					<tr class="alt">
+						<td>portName</td>
+						<td>Name of instrument port (or alias) defined in siamPort.cfg</td>
+						<td>/dev/ttyS8, COM1, /dev/tty.KeySerial1</td>
+						</tr>
+					<tr>
+						<td>a,c,i,l,p,s,x</td>
+						<td>Optionally return one or more specific metadata components (default is all)
+							<ul> 
+								<li>a - components (default)</li>
+								<li>c - service cache</li>
+								<li>i - instrument state</li>
+								<li>l - log sample (for testing)</li>
+								<li>p - service properties (file defaults)</li>
+								<li>s - service attributes (current values)</li>
+								<li>x - service xml file</li>
+								</ul>
+							</td>
+						<td> 
+							</td>
+						</tr>
+					<!--
+					 <tr>
+					 <td></td>
+					 <td></td>
+					 <td>-</td>
+					 </tr>
+					 <tr class="alt">
+					 <td></td>
+					 <td></td>
+					 <td>-</td>
+					 </tr>
+					 -->
+					</table>
+				<p>
+				Example output:</p>
+				<pre>
+					getMetadata localhost /dev/tty.KeySerial1 
+					Looking for node server stub at rmi://localhost/node
+					Got proxy for node service &quot;org.mbari.siam.moos.deployed.MOOSNodeService&quot;
+					Requesting packet...components = 0x1f
+					Packet received:
+					
+					parentID=999, recordType=0
+					devid=1151, t=1285793339992, seqNo=0, mdref=0
+					cause=just checking
+					&lt;SRVC_MD&gt;
+					commPowerPolicy=ALWAYS
+					summaryTriggerCount=0
+					rbnbCacheFrames=1024
+					advertiseService=false
+					frameworkVersion=$Name:  $
+					svalue=2
+					dataShelfLifeHours=-1.0
+					serviceStatus=6
+					diagnosticSampleInterval=1
+					powerOnDelaySec=0
+					locationName=
+					peakCurrentMa=5000
+					maxSummarySamples=0
+					bvalue=1
+					powerPolicy=ALWAYS
+					sampleTimeoutMsec=1000
+					dvalue=5.0
+					parentID=999
+					currentLimitMa=500
+					extendedVersion=My extended version
+					nominalCurrentMa=1000
+					UUID=00000000-0000-0000-0000-000000000000
+					errCacheLimit=5
+					sampleSleepSec=30
+					maxSampleTries=3
+					strValue=six
+					publisherHost=
+					throwInitializeException=false
+					longValue=4
+					startDelayMsec=500
+					defaultSkipInterval=0
+					isiID=1151
+					instrumentName=UNKNOWN
+					rbnbArchiveFrames=102400
+					registryName=Dummy
+					timeSynch=false
+					serviceName=Dummy
+					className=org.mbari.siam.devices.dummy.DummyInstrument$Attributes
+					packetSetSize=10
+					sampleSchedule=R */30 */0 */0 */0 * * * * GMT *
+					ivalue=3
+					&lt;/SRVC_MD&gt;
+					&lt;SVP_MD&gt;
+					#Persisted
+					#Wed Sep 29 13:04:35 PDT 2010
+					commPowerPolicy=ALWAYS
+					summaryTriggerCount=0
+					rbnbCacheFrames=1024
+					advertiseService=false
+					svalue=2
+					dataShelfLifeHours=-1.0
+					diagnosticSampleInterval=1
+					powerOnDelaySec=0
+					locationName=
+					peakCurrentMa=5000
+					maxSummarySamples=0
+					bvalue=1
+					powerPolicy=ALWAYS
+					sampleTimeoutMsec=1000
+					dvalue=5.0
+					currentLimitMa=500
+					nominalCurrentMa=1000
+					UUID=00000000-0000-0000-0000-000000000000
+					errCacheLimit=5
+					sampleSleepSec=30
+					maxSampleTries=3
+					strValue=six
+					publisherHost=
+					throwInitializeException=false
+					longValue=4
+					startDelayMsec=500
+					defaultSkipInterval=0
+					isiID=1151
+					instrumentName=UNKNOWN
+					rbnbArchiveFrames=102400
+					registryName=Dummy
+					timeSynch=false
+					serviceName=Dummy
+					sampleSchedule=R */30 */0 */0 */0 * * * * GMT *
+					packetSetSize=10
+					ivalue=3
+					&lt;/SVP_MD&gt;
+					
+					&lt;DEV_MD&gt;
+					does not provide instrument state information
+					&lt;/DEV_MD&gt;
+					&lt;DOC_MD&gt;
+					[xml here...]
+					&lt;/DOC_MD&gt;
+					</pre>
+				<p></p>
+				</div>
+			</div>
+		
+		<div class="environmentHeader">
+			<h1>Environment</h1>
+			<div class="environmentText">
+				<p>
+				<!-- description text here -->
+				The following environment variables must be set:
+				</p>	 
+						<table class="altTable">
+							<tr>
+								<th>Variable</th>
+								<th>Description</th>
+								<th>Example</th>
+								</tr>
+							<tr>
+								<td>JAVA_HOME </td>
+								<td>location of Java installation</td>
+								<td><div class="path"> /j9, /opt/java/jdk1.3.1, etc.</div></td>
+								</tr>
+							<tr class="alt">
+								<td>JAVA</td>
+								<td>Path to JVM command</td>
+								<td>For MMC<div class="commands">$JAVA_HOME/bin/j9</div><br />For Sun JVM (e.g. linux, win32, mac OS) <div class="commands">$JAVA_HOME/bin/java</div>
+									</td>
+								</tr>
+							<tr>
+								<td>SIAM_HOME</td>
+								<td>top of the SIAM directory tree</td>
+								<td>-</td>
+								</tr>
+							<tr class="alt">
+								<td>SIAM_CLASSPATH</td>
+								<td>Path including all SIAM and supporting classes</td>
+								<td>For MMC<div class="path">$JAVA_HOME/lib/jclMax/classes.zip:$JAVA_HOME/lib/prsnlmot.jar:$JAVA_HOME/lib/RXTXcomm.jar:$SIAM_HOME/classes</div><br />
+									For linux/win32<div class="path"> $SIAM_HOME/classes</div></td>
+								</tr>
+							<!--
+							 <tr>
+							 <td></td>
+							 <td></td>
+							 <td>-</td>
+							 </tr>
+							 <tr class="alt">
+							 <td></td>
+							 <td></td>
+							 <td>-</td>
+							 </tr>
+							 -->
+							</table>
+						<p></p>
+						</div>
+			</div>
+		
+		<div class="seeAlsoHeader">
+			<h1>See Also</h1>
+			<div class="seeAlsoText">
+				<div class="command"><a href="man-listPorts.html#" target="mainFrame">listPorts</a></div>
+				</div>
+			</div>
+		
+		
+		</body>
+	</html>

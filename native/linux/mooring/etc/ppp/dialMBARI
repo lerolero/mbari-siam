@@ -1,0 +1,11 @@
+exec /usr/sbin/chat -v						\
+	TIMEOUT			9				\
+	ABORT			'\nBUSY\r'			\
+	ABORT			'\nNO ANSWER\r'			\
+	ABORT			'\nRINGING\r\n\rRINGING\r'	\
+        ABORT                   'NO CARRIER\r'                  \
+	''			'\d\d\d\rAT$QCPKND=2'    	\
+	'OK-\d+++\c\d-OK'	ATH0				\
+	TIMEOUT			180				\
+	'OK'			ATD*328218007589798		\
+	CONNECT			'\c'

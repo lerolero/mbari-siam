@@ -1,0 +1,49 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Bob Herlien">
+   <meta name="GENERATOR" content="Mozilla/4.79 [en] (Windows NT 5.0; U) [Netscape]">
+   <title>auxTelem.sh</title>
+</head>
+<body>
+<b>NAME</b>
+<blockquote>auxTelem.sh - Shell script passed to /etc/inittab to enable
+the secondary radio port as a Linux tty</blockquote>
+<b>SYNOPSIS</b>
+<blockquote>
+<pre>auxTelem.sh [-d device] [-b baud] [-t timeout] [-s sleep_time]
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [-p power_bit] [-y terminal_emulation]</pre>
+</blockquote>
+<b>DEFAULTS</b>
+<blockquote>device = ttySX13
+<br>baud = 115200
+<br>timeout = 30 (seconds)
+<br>sleep_time = 300 (seconds)
+<br>power_bit = 0
+<br>terminal_emulation = "vt100"</blockquote>
+<b>DESCRIPTION</b>
+<blockquote>auxTelem.sh is not an end-user utility -- it's a script that
+is passed to /etc/inittab to implement the secondary radio port as a Linux
+tty device.&nbsp; It's documented here so that system integrators will
+know what command-line arguments are available.</blockquote>
+<b>OPTIONS</b>
+<blockquote><b>-d device </b>- name of serial port to use. Passed directly
+to <b>getty.&nbsp; </b>A leading "/dev/" is not required
+<br><b>-b baud </b>- baud rate of the serial port
+<br><b>-t timeout </b>- timeout parameter passed to <b>getty.</b>&nbsp;
+Getty will print the login prompt and then wait for this number of seconds
+before timing out.&nbsp; After that time, the script will turn off the
+radio power.
+<br><b>-s sleep_time </b>- number of seconds that the script will sleep
+after <b>getty</b> returns.&nbsp; This becomes the amount of time that
+the radio will be off before inittab reruns the script.
+<br><b>-p power_bit</b> - bit number passed to <b>rfpower </b>to turn on/off&nbsp;
+the radio power.
+<br><b>-y terminal_emulation</b> - string passed to <b>getty</b> to indicate
+terminal type to emulate.</blockquote>
+<b>ENVIRONMENT</b>
+<blockquote>This script does not depend on any environment variables.</blockquote>
+
+</body>
+</html>

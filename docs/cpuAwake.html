@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+  <meta name="Author" content="Bob Herlien">
+  <meta name="GENERATOR"
+ content="Mozilla/4.79 [en] (Windows NT 5.0; U) [Netscape]">
+  <title>cpuAwake</title>
+</head>
+<body>
+<b>NAME</b>
+<blockquote>cpuAwake - Keep the CPU awake (veto sleep mode), or
+schedule
+a wakeup in the future.</blockquote>
+<b>SYNOPSIS</b>
+<blockquote>
+  <pre>cpuAwake [when] [howLong] [-r rqstID] [nodeHost]</pre>
+  <blockquote>
+    <pre>[when] - seconds in the future to schedule the CPU to wake up.&nbsp; 0 (zero) specifies now.<br>[howLong] - number of seconds you need the CPU awake<br>[-r rqstID] - requestor ID.&nbsp; Defaults to 1, the user ID<br>[nodeHost] - node you want awake.&nbsp; Defaults to "localhost".</pre>
+  </blockquote>
+</blockquote>
+<b>DEFAULTS</b>
+<blockquote>when = 0 (stay awake starting now)
+  <br>
+howLong = 600 (10 minutes)
+  <br>
+rqstID = 1 (the user ID)
+  <br>
+nodeHost = "localhost"</blockquote>
+<b>DESCRIPTION</b>
+<blockquote>The cpuAwake utility establishes a <i>cpu lease</i> to
+keep the CPU awake (when
+= 0), or to schedule a wakeup in the future.&nbsp; Note that all
+parameters
+have defaults, so if you just type "cpuAwake", it will keep the CPU
+awake
+for 10 minutes. If in addition to keeping the cpu awake you also want
+to maintain a wireless network connection, use the <a
+ style="font-style: italic;" href="lease.html">lease</a> utility
+instead.<br>
+  <p>If you provide just one number, it assumes you've specified
+"howLong",
+and the "when" is 0 (now).&nbsp; Thus, "cpuAwake 120" will keep the CPU
+awake for 2 minutes.
+  </p>
+  <p>The [-r rqstID] parameter allows the use of separate wakeup
+requests.&nbsp;
+Unlike<span style="font-style: italic;"> </span><a
+ style="font-style: italic;" href="lease.html">lease</a>, which gives
+you a new lease every
+time you call it, <b>cpuAwake</b> defaults to working on the single
+user
+request.&nbsp; Any subsequent calls to <b>cpuAwake </b>override the
+previous
+invocation.&nbsp; However, the [-r rqstID] allows operation on
+different
+requests.&nbsp; It's used mostly by system shell scripts, to allow them
+to issue separate requests from the user.
+  <br>
+&nbsp;</p>
+</blockquote>
+<b>EXAMPLES</b>
+<blockquote>"cpuAwake" - keep the CPU awake for 10 minutes starting
+now.
+  <p>"cpuAwake 120" - keep the CPU awake for 2 minutes starting now.
+  </p>
+  <p>"cpuAwake 60 120" - schedule a wakeup for 1&nbsp; minute from now,
+then
+keep the CPU awake for 2 minutes.
+  </p>
+  <p>"cpuAwake 0" - cancel any previous "cpuAwake"s, allowing the CPU
+sleep
+schedule to resume its normal cycle.</p>
+</blockquote>
+<blockquote>
+  <blockquote>
+    <pre></pre>
+  </blockquote>
+</blockquote>
+<b>ENVIRONMENT</b>
+<blockquote>This utiltity does not depend on any environment variables.</blockquote>
+<p><br>
+<b>SEE ALSO</b>
+</p>
+<blockquote><a href="lease.html">lease</a></blockquote>
+</body>
+</html>

@@ -1,0 +1,14 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+if [ ! -n "$2" ]
+then
+  echo "usage: `basename $0` -c channel -s slot"
+  exit 1
+fi  
+#
+# Script executes moos.utils.DpaPortTo485()
+$JAVA -cp $SIAM_CLASSPATH org.mbari.siam.moos.deployed.DpaPortTo485 $*
+

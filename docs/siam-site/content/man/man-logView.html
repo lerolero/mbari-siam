@@ -1,0 +1,349 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>logView Manual Page</title>
+		<link href="../../css/content.css" rel="stylesheet" type="text/css" />
+		<link href="../../css/manpage.css" rel="stylesheet" type="text/css" />
+		</head>
+	
+	<body>
+		
+		<div class="nameHeader">
+			<h1>Name</h1> 
+			<div class="nameText">
+				<h2>logView <!-- name text here --></h2>
+				</div>
+			</div>
+		
+		<div class="synopsisHeader">
+			<h1>Synopsis</h1>
+			<div class="synopsisText">
+				<div class="commands">logView <em class="options">[-utc] [-type type][-start startTime][-stop stopTime][-age][-skip n][-bin][-hex][-parse class] [-noheader][-stream][-e][-u][-r separator][-h separator][-notype][-stats][-stats][-sheader] deviceID directory</em></div>
+				</div>
+			</div>
+		
+		<div class="descriptionHeader">
+			<h1>Description</h1>
+			<div class="descriptionText">
+				<p>
+				<!-- description text here -->
+				The logView utility displays device log packet contents on the console. By default, the results
+				includes a header with packet metadata (timestamp, deviceID, packet sequence number, etc.) along
+				with the packet contents.
+				</p><p>
+				There are options to filter the results based on time and packet type,
+				and also to reformat the results. The reformatting options enable the 
+				user to select or remove packet metadata so that they may:
+                </p>
+				<ul>
+					<li>generate comma-separated records for additional processing </li>
+					<li>produce a file that duplicates instrument output for use with 3rd party processing software</li>
+					<li>generate packet header records for statistical analysis</li>
+					</ul>
+				<p>Occasionally, log file contain corrupt data entries that can prevent logView from searching past the corrupt entries because
+				the index entries do not match the data entries. There are additional options that may be used to check the log
+				integrity and repair a log index for a file that contains corrupt data entries. 
+				</p>
+				<div class="emphasis">Note: The -start and -stop &quot;time window&quot; options only work correctly if all packets 
+					in the log are sorted in ascending timestamp order; utilities such as getPackets may generate logs that are not ordered in this way.</div>
+				
+				<p>	 
+				The file names use the format</p>
+				<div class="path">&lt;deviceID&gt;_0.dat, &lt;deviceID&gt;_0.idx</div>
+				<p>	 
+				For example, the log for device 1473 consists of files 1473_0.dat and 1473_0.idx. If the log files for the 
+				specified device already exist, getPackets will append to the log.
+				</p>
+                <p>	 
+				</p>	
+				
+				<h2>Options</h2>
+				<table class="altTable">
+					<tr>
+						<th width="20%">Option</th>
+						<th>Description</th>
+						<th>Values</th>
+						</tr>
+					<tr>
+						<td>nodeURL</td>
+						<td>IP address or host name of SIAM node</td>
+						<td>e.g. 134.89.88.1, mooring.moos.mbari.org</td>
+						</tr>
+					<tr class="alt">
+						<td>logDirectory</td>
+						<td>Path to log files</td>
+						<td>$SIAM_HOME/logs</td>
+						</tr>
+					<tr>
+						<td>deviceID</td>
+						<td><p>long (64-bit) integer uniquely identifying the instrument service</p>
+							
+							<div class="emphasis">filter utilities use deviceIDs instead of instrument ports to specify an instrument</div>
+							</td>
+						<td>14533,997,1003, etc.
+							</td>
+						</tr>
+					<tr class="alt">
+						<td>-age</td>
+						<td>display age (seconds) of latest packet in log</td>
+						<td>-</td>
+						</tr>
+
+					<tr>
+						<th>Filter Options</th>
+						<th></th>
+						<th></th>
+						</tr>
+					<tr>
+						<td><p>-start &lt;startTime&gt;</p><p>-stop &lt;stopTime&gt;</p></td>
+						<td>Publish packets from within the specified time window. startTime and stopTime are date/time strings using the format:
+							<div class="commands">mm/dd/yyyy[Thh:mm[:ss]]</div>
+							
+							The time should be specified in UTC(?)
+							</td>
+						<td>04/01/2010, 03/15/2009T11:34</td>
+						</tr>
+					<tr class="alt">
+						<td>-type &lt;packetType&gt;</td>
+						<td><p>Indicates what types of packets to apply the filter to. Multiple values should be separated by spaces</p></td>
+						<td><p>Valid values are 'data', 'message', 'summary','metadata' or 'all'</p></td>
+						</tr>
+					<tr>
+						<td>-skip</td>
+						<td><p>Set skip interval (sub-sampling modulus) filter value.</p></td>
+							<td><p>valid values are integers greater than or equal to -1. </p>
+								<p> A value of -1 means skip all packets (don't return any packets of the specified type). </p>
+								<p>A value of 0 (zero) means skip no packets (return all packets of the specified type).  </p>
+								</td>
+							</tr>
+					<tr>
+						<th>Formatting Options</th>
+						<th></th>
+						<th></th>
+						</tr>
+					<tr>
+						<td>-bin</td>
+						<td>show data in raw binary form</td>
+						<td>-</td>
+						</tr>
+					<tr class="alt">
+						<td>-hex</td>
+						<td>show data in ASCII hex format</td>
+						<td>-</td>
+						</tr>
+					<tr>
+						<td>-utc</td>
+						<td>display human readable UTC timestamps</td>
+						<td>-</td>
+						</tr>
+					<tr class="alt">
+						<td>-parse &lt;class&gt;</td>
+						<td> parse data using &lt;class&gt; (must implement PacketParser); &lt;class&gt; is a fully qualified package name.</td>
+						<td>org.mbari.siam.devices.seabird.SBEPacketParser</td>
+						</tr>
+					<tr>
+						<td>-noheader</td>
+						<td>suppress headers</td>
+						<td>-</td>
+						</tr>
+					<tr class="alt">
+						<td>-stream </td>
+						<td>native bytes only; no headers or separators</td>
+						<td>-</td>
+						</tr>
+					<tr>
+						<td>-e</td>
+						<td>timestamp header (UTC ms since epoch)</td>
+						<td>-</td>
+						</tr>
+					<tr class="alt">
+						<td>-u</td>
+						<td>timestamp header (UTC human readable)</td>
+						<td>-</td>
+						</tr>
+					<tr>
+						<td> -r &lt;separator&gt;</td>
+						<td>record separator (between packets)</td>
+						<td>-</td>
+						</tr>
+					<tr class="alt">
+						<td>-h &lt;separator&gt;</td>
+						<td>header separator (between header and data)</td>
+						<td>-</td>
+						</tr>
+					<tr>
+						<td>-notype</td>
+						<td>suppress packet type text</td>
+						<td>-</td>
+						</tr>
+					<tr class="alt">
+						<td>-stats</td>
+						<td>include packet statistics</td>
+						<td>-</td>
+						</tr>
+					<tr>
+						<td>-statsOnly</td>
+						<td>show packet statistics only</td>
+						<td>-</td>
+						</tr>
+					<tr class="alt">
+						<td>-sheader</td>
+						<td>include stats header</td>
+						<td>-</td>
+						</tr>
+
+					<tr>
+						<th>Repair Options</th>
+						<th></th>
+						<th></th>
+						</tr>
+					<tr class="alt">
+						<td>-check</td>
+						<td>check logs and summarize</td>
+						<td>-</td>
+						</tr>
+					<tr>
+						<td>-repair</td>
+						<td>attempt to repair corrupt log</td>
+						<td>-</td>
+						</tr>
+					<!--
+					 <tr>
+					 <td></td>
+					 <td></td>
+					 <td>-</td>
+					 </tr>
+					 <tr class="alt">
+					 <td></td>
+					 <td></td>
+					 <td>-</td>
+					 </tr>
+					 -->
+					</table>
+				<p>
+				Example output:</p>
+				<pre>
+logView 1151 logs
+
+MetadataPacket
+parentID=999, recordType=0
+devid=1151, t=1285819054600, seqNo=0, mdref=0
+ cause=Service Init
+&lt;SRVC_MD&lt;uuuuquudud
+commPowerPolicy=ALWAYS
+summaryTriggerCount=0
+rbnbCacheFrames=1024
+advertiseService=false
+frameworkVersion=$Name:  $
+svalue=2
+dataShelfLifeHours=-1.0
+serviceStatus=2
+diagnosticSampleInterval=1
+powerOnDelaySec=0
+locationName=
+peakCurrentMa=5000
+maxSummarySamples=0
+bvalue=1
+powerPolicy=ALWAYS
+sampleTimeoutMsec=1000
+dvalue=5.0
+parentID=999
+...[lots more stuff]
+MetadataPacket
+parentID=999, recordType=0
+devid=1151, t=1285819078692, seqNo=1, mdref=0
+ cause=Service Init
+&lt;SRVC_MD&gt;
+commPowerPolicy=ALWAYS
+summaryTriggerCount=0
+rbnbCacheFrames=1024
+advertiseService=false
+frameworkVersion=$Name:  $
+svalue=2
+dataShelfLifeHours=-1.0
+...[lots more stuff]
+SummaryPacket
+parentID=999, recordType=0
+devid=1151, t=1285819108703, seqNo=2, mdref=1
+This is a SUMMARY
+SensorDataPacket
+parentID=999, recordType=0
+devid=1151, t=1285819108703, seqNo=3, mdref=1
+nBytes=42
+This is dummy instrument data - VERSION 2!
+SensorDataPacket
+parentID=999, recordType=0
+devid=1151, t=1285819138725, seqNo=4, mdref=1
+nBytes=42
+This is dummy instrument data - VERSION 2!
+...[many more packets of various types]
+					</pre>
+				<p></p>
+				</div>
+			</div>
+		
+		<div class="environmentHeader">
+			<h1>Environment</h1>
+			<div class="environmentText">
+				<p>
+				<!-- description text here -->
+				The following environment variables must be set:
+				</p>	 
+						<table class="altTable">
+							<tr>
+								<th>Variable</th>
+								<th>Description</th>
+								<th>Example</th>
+								</tr>
+							<tr>
+								<td>JAVA_HOME </td>
+								<td>location of Java installation</td>
+								<td><div class="path"> /j9, /opt/java/jdk1.3.1, etc.</div></td>
+								</tr>
+							<tr class="alt">
+								<td>JAVA</td>
+								<td>Path to JVM command</td>
+								<td>For MMC<div class="commands">$JAVA_HOME/bin/j9</div><br />For Sun JVM (e.g. linux, win32, mac OS) <div class="commands">$JAVA_HOME/bin/java</div>
+									</td>
+								</tr>
+							<tr>
+								<td>SIAM_HOME</td>
+								<td>top of the SIAM directory tree</td>
+								<td>-</td>
+								</tr>
+							<tr class="alt">
+								<td>SIAM_CLASSPATH</td>
+								<td>Path including all SIAM and supporting classes</td>
+								<td>For MMC<div class="path">$JAVA_HOME/lib/jclMax/classes.zip:$JAVA_HOME/lib/prsnlmot.jar:$JAVA_HOME/lib/RXTXcomm.jar:$SIAM_HOME/classes</div><br />
+									For linux/win32<div class="path"> $SIAM_HOME/classes</div></td>
+								</tr>
+							<!--
+							 <tr>
+							 <td></td>
+							 <td></td>
+							 <td>-</td>
+							 </tr>
+							 <tr class="alt">
+							 <td></td>
+							 <td></td>
+							 <td>-</td>
+							 </tr>
+							 -->
+							</table>
+						<p></p>
+						</div>
+			</div>
+		
+		<div class="seeAlsoHeader">
+			<h1>See Also</h1>
+			<div class="seeAlsoText">
+				<div class="command"><a href="man-logPublish.html#" target="mainFrame">logPublish</a>,
+					<a href="man-repubBatch.html#" target="mainFrame">repubBatch</a>
+					</div>
+				</div>
+			</div>
+		
+		
+		</body>
+	</html>

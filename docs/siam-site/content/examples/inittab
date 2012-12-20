@@ -1,0 +1,21 @@
+
+# This entry controls the wired serial console
+T0:23:respawn:/sbin/getty -L ttySA0 38400 vt100
+
+# The following defaults are normally configured 
+# automatically by configTool and will be used until
+# configTool is run
+
+# enable auxTelem (secondary radio) console
+# source inittab.auxtelem.template
+# T13:23:respawn:/etc/auxTelem.sh -b 38400 -t 30 -s 300 &>/dev/null
+
+# enable Iridium console
+# source: inittab.iridiumconsole.template
+I1:2:respawn:/etc/manageIridium &> /dev/null
+
+# Run the shore messaging service
+I0:2:respawn:/etc/runShoreMsgService &> /dev/null
+
+# Run the simulated shore messaging service
+#I0:2:respawn:/etc/runSimShoreMsgService &> /dev/null

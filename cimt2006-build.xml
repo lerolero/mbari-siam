@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id:$ -->
+<project name="cimt2006" basedir=".">
+	
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Load property files in this order:
+
+    1. User properties
+    2. This level properties
+
+    This allows a user to have specific settings that override any other
+    settings (other than command-line, which always take precedence).
+    -->
+    <property file="${user.home}/build.properties" />
+    <property file="build.properties" />
+	
+	<!-- show CIMT 2006 help  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	
+	<target name="help">
+	<local name="pname"/>
+    <property name="pname" value="cimt2006" />
+		<echo>
+		${pname}.all            - build all FOCE service JARs and native code
+		${pname}.adcp           -  service JARs
+		${pname}.ctd            - CTD(s) service JARs
+		${pname}.ictd           - Inductive CTD service JARs
+		${pname}.isus           - ISUS NO3 service JARs
+		${pname}.eco            - Wetlabs ECO fluorometer service JARs
+		${pname}.ek60.600       - EK60 echo sounder switch (600s on-time) service JARs
+		${pname}.ek60.180       - EK60 echo sounder switch (180s on-time) service JARs
+		${pname}.ek60.300       - EK60 echo sounder switch (300s on-time) service JARs
+		${pname}.gps            - GPS service JARs
+		${pname}.metsys         - metsys service JARs
+		${pname}.msp            - MSP430 service JARs
+		${pname}.ocr            - Satlantic OCR service JARs
+		${pname}.pco2           - pCO2 service JARs
+		${pname}.power          - power system service JARs
+		${pname}.soon           - MBARI SOON service JARs
+		</echo>
+	</target>
+		
+	<!-- Build all CIMT2006 Service JARs  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	
+	<target name="all" depends="cimt2006.isus,cimt2006.msp,cimt2006.power,cimt2006.pco2,cimt2006.ek60.180,cimt2006.ek60.300,cimt2006.ek60.600,cimt2006.ictd,cimt2006.ctd,cimt2006.soon,cimt2006.ocr,cimt2006.metsys,cimt2006.eco,cimt2006.gps,cimt2006.adcp">
+		<echo>Building CIMT2006 service JARs - complete</echo>
+	</target>
+
+	<!-- isus Service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="isus" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="moos.devices.slisus.SatlanticISUS 'Satlantic MBARI ISUS s/n 014' 1268 ${siam_home}/ports/SatlanticISUS-1268.jar ${siam_home}/puckxml/1268.xml 'powerPolicy = always' 'commPowerPolicy = sampling' 'sampleSchedule = 600' 'currentLimitMa = 10000' 'UUID = a012fd61-d12e-11d9-8c1e-00306e389969'" />
+		</exec>
+	</target>
+	<!-- msp Service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="msp" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="moos.devices.msp430.MSP430 'MSP430 (sidearm414)' 1556 ${siam_home}/ports/MSP430-1556.jar ${siam_home}/puckxml/1556.xml 'currentLimitMa = 3000' 'sampleSchedule = 600' 'UUID = 326b86d2-f599-11da-9cb2-00306e389969'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="moos.devices.msp430.MSP430 'MSP430 (sidearm415)' 1300 ${siam_home}/ports/MSP430-1300.jar ${siam_home}/puckxml/1300.xml 'currentLimitMa = 3000' 'sampleSchedule = 600' 'UUID = 292A775E-5AB9-4579-A557-51F57AAD4C9B'" />
+		</exec>
+	</target>
+	<!-- pco2 Service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="pco2" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="moos.devices.powerswitch.PowerSwitch 'PCO2 Power Control s/n M0' 1323 ${siam_home}/ports/PowerSwitch-1323.jar ${siam_home}/puckxml/1323.xml 'powerPolicy = always' 'commPowerPolicy = never' 'currentLimitMa = 12000' 'UUID = bc64556f-b35e-11d9-8c1e-00306e389969'" />
+		</exec>
+	</target>
+	<!-- ek60.300 Service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="ek60.300" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="moos.devices.powerswitch.PowerSwitch 'EK60 Power Control s/n M0' 1565 ${siam_home}/ports/PowerSwitch-1565-300.jar ${siam_home}/puckxml/1323.xml 'sampleSchedule = 3600' 'sampleTimeoutMsec = 300' 'powerPolicy = sampling' 'commPowerPolicy = never' 'currentLimitMa = 12000' 'UUID = f8e180d9-1349-11db-8ad0-00306e389969'" />
+		</exec>
+	</target>
+	<!-- ek60.600 Service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="ek60.600" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="moos.devices.powerswitch.PowerSwitch 'EK60 Power Control s/n M0' 1565 ${siam_home}/ports/PowerSwitch-1565-600.jar ${siam_home}/puckxml/1323.xml 'sampleSchedule = 3600' 'sampleTimeoutMsec = 600' 'powerPolicy = sampling' 'commPowerPolicy = never' 'currentLimitMa = 12000' 'UUID = f8e180d9-1349-11db-8ad0-00306e389969'" />
+		</exec>
+	</target>
+	<!--  ek60.180Service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="ek60.180" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="moos.devices.powerswitch.PowerSwitch 'EK60 Power Control s/n M0' 1565 ${siam_home}/ports/PowerSwitch-1565-180.jar ${siam_home}/puckxml/1323.xml 'sampleSchedule = 3600' 'sampleTimeoutMsec = 180' 'powerPolicy = sampling' 'commPowerPolicy = never' 'currentLimitMa = 12000' 'UUID = f8e180d9-1349-11db-8ad0-00306e389969'" />
+		</exec>
+	</target>
+	<!-- soon Service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="soon" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="moos.devices.soon.SOON 'MBARI pCO2 s/n MBARI-9' 1345 ${siam_home}/ports/SOON-1345.jar ${siam_home}/puckxml/1345.xml 'powerPolicy = always' 'commPowerPolicy = sampling' 'startDelayMsec=380000' 'currentLimitMa = 5000' 'UUID = 63eceaf2-deb8-11d9-a6fa-00306e389969'" />
+		</exec>
+	</target>
+	<!-- ctd Service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="ctd" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="moos.devices.seabird.SBE37 'Seabird-37SMP s/n 37SMP35635-3318' 1337 ${siam_home}/ports/Seabird-1337.jar ${siam_home}/puckxml/1337.xml 'sampleSchedule = 600' 'powerPolicy = always' 'commPowerPolicy = sampling' 'safeSampleIntervalSec = 600' 'currentLimitMa = 3000' 'UUID = 627514FF-E1F8-4C61-9171-49574FBB69E6'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="moos.devices.seabird.SBE37 'Seabird-37SMP s/n 37SMP35194-3531' 1314 ${siam_home}/ports/Seabird-1314.jar ${siam_home}/puckxml/1314.xml 'sampleSchedule = 600' 'powerPolicy = always' 'commPowerPolicy = sampling' 'safeSampleIntervalSec = 600' 'currentLimitMa = 3000' 'UUID = f671f7db-d50f-11d9-8c1e-00306e389969'" />
+		</exec>
+	</target>
+	<!-- ictd Service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="ictd" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="moos.devices.sbe37im.SeaBird37im 'Seabird Inductive CTD String S/N 0277' 1538 ${siam_home}/ports/Seabird-IM-1538.jar ${siam_home}/puckxml/1538.xml 'sampleSchedule = 3600' 'powerPolicy=sampling' 'commPowerPolicy=sampling' 'sampleInterval=600' 'idMicroCATs = 0-3' 'UUID = 9c453c11-ae3a-11da-bb39-00306e389969'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="moos.devices.sbe37im.SeaBird37im 'Seabird Inductive CTD String S/N 0278' 1319 ${siam_home}/ports/Seabird-IM-1319.jar ${siam_home}/puckxml/1319.xml 'sampleSchedule = 3600' 'powerPolicy=sampling' 'commPowerPolicy=sampling' 'sampleInterval=600' 'idMicroCATs = 0-3' 'UUID = F8866D9E-602E-4F01-8393-3F0734127BB1'" />
+		</exec>
+	</target>
+	<!-- ocr Service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="ocr" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="moos.devices.ocr3000.Ocr3000 'Satlantic Radiometer String' 1270 ${siam_home}/ports/SatOCR3000-1270.jar ${siam_home}/puckxml/1270.xml 'sampleSchedule = 600' 'powerPolicy=sampling' 'commPowerPolicy=sampling' 'baud = 57600' 'currentLimitMa = 10000' 'UUID = D749707C-295C-49BE-A026-3E296297CC1E'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="moos.devices.ocr3000.Ocr3000 'Satlantic Radiometer String' 1351 ${siam_home}/ports/SatOCR3000-1351.jar ${siam_home}/puckxml/1351.xml 'sampleSchedule = 600' 'powerPolicy=sampling' 'commPowerPolicy=sampling' 'baud = 57600' 'currentLimitMa = 10000' 'UUID = 035e91a2-d1e7-11d9-8c1e-00306e389969'" />
+		</exec>
+	</target>
+	<!-- metsys Service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="metsys" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="moos.devices.metsys.Metsys 'MBARI Metsys s/n 4' 1424 ${siam_home}/ports/Metsys-1424.jar ${siam_home}/puckxml/1424.xml 'sampleSchedule = 600' 'powerPolicy=always' 'commPowerPolicy=sampling' 'currentLimitMa = 3000' 'timeSynch = true' 'retroSave = 5' 'UUID = 4639e2f1-c41b-11d9-8c1e-00306e389969'" />
+		</exec>
+		<exec executable="mkpuck">
+		<arg line="moos.devices.metsys.Metsys 'Metsys s/n 2' 1453 ${siam_home}/ports/Metsys-1453.jar ${siam_home}/puckxml/1453.xml 'sampleSchedule = 600' 'powerPolicy=always' 'commPowerPolicy=sampling' 'currentLimitMa = 3000' 'timeSynch = true' 'retroSave = 5' 'UUID = c0128c4b-3f52-11da-9a03-00306e389969'" />
+		</exec>
+	</target>
+	<!-- eco Service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="eco" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="moos.devices.wetlabs.WetLabsECO 'WETLabs ECO-FLNTU s/n FLNTUS-518' 1562 ${siam_home}/ports/WetLabsECOFL-1562.jar ${siam_home}/puckxml/1562.xml 'powerPolicy = always' 'commPowerPolicy = sampling' 'sampleSchedule = 600' 'timeSynch = true' 'samplesPerPacket = 5' 'averageCount = 20' 'currentLimitMa = 3000' 'UUID = 406faac6-1346-11db-8ad0-00306e389969'" />
+		</exec>
+	</target>
+	<!-- gps Service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="gps" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="moos.devices.garmin.GarminGPS 'Garmin GPS s/n 33100493' 1564 ${siam_home}/ports/Garmin-1564.jar ${siam_home}/puckxml/1564.xml 'powerPolicy = always' 'commPowerPolicy = sampling' 'sampleSchedule = 600' 'currentLimitMa = 3000' 'UUID = 3b72c868-1349-11db-8ad0-00306e389969'" />
+		</exec>
+	</target>
+	<!-- power Service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="power" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="moos.devices.serialadc.PowerCan 'Mooring power can s/n 005' 1563 ${siam_home}/ports/PowerCan-1563.jar ${siam_home}/puckxml/1563.xml 'powerPolicy = always' 'commPowerPolicy = sampling' 'sampleSchedule = 600' 'captureParams = ALL' 'dataCountCheck = true' 'logTimeSync = true' 'powerStatusChannel = ADC99' 'powerWarningLow=9.0' 'powerOkLow=10.0' 'statusMinSamples = 10' 'currentLimitMa = 3000' 'sampleTimeoutMsec=15000' 'UUID = 70ce41c7-1348-11db-8ad0-00306e389969'" />
+		</exec>
+	</target>
+		
+	<!-- ADCP Service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="adcp" depends="puckxml">
+		<exec executable="mkpuck">
+		<arg line="moos.devices.workhorse.WorkhorseADCP 'WH Sentinel ADCP 300kHz s/n 3127' 1267 ${siam_home}/ports/Workhorse-1267.jar ${siam_home}/puckxml/1267.xml 'sampleSchedule = 3600' 'powerPolicy = always' 'commPowerPolicy = sampling' 'currentLimitMa = 12000' 'preemptionSec = 20' 'powerOnDelaySec = 0' 'internalLog = false' 'UUID = 6EB3A1F1-829B-4555-A1F5-82CBE5919529'" />
+		</exec>
+	</target>
+		
+	</project>

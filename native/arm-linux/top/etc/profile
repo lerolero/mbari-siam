@@ -1,0 +1,24 @@
+# The catch-all for ths distribution.  
+
+PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/X11R6/bin:/usr/local/bin:/usr/local/sbin:$PATH
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/X11R6/lib
+DISPLAY=:0.0
+
+export PATH LD_LIBRARY_PATH DISPLAY
+
+export VISUAL=ae
+export EDITOR=ae
+
+export HISTFILE=/tmp/${LOGNAME}"_bash_history"
+
+#Set variables/functions needed for timeout for ShortHaul modem
+if [ `tty` == "/dev/ttySX13" ]; then
+    export TMOUT=600
+    /etc/siam/cpuAwake -q -r 2 0 3600
+fi
+if [ `tty` == "/dev/ttySX12" ]; then
+    export TMOUT=300
+    /etc/siam/cpuAwake -q -r 2 0 3600
+fi
+alias rftimeout='source /etc/siam/rftimeout.sh'
+

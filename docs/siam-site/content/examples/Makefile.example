@@ -1,0 +1,54 @@
+
+#######################################
+# This file contains 
+# dummy PUCK targets
+#######################################
+
+# <!-- $Header:$	--> #
+
+example.help:
+	@echo ""
+	@echo "Build test instrument service jars to test SIAM and generate data streams"
+	@echo "These are not instrument emulations, but do produce fixed length records at a specified rate"
+	@echo ""
+	@echo "example.all   - build all test targets"
+	@echo "example.ctd   - ctd test instruments"
+	@echo "example.adcp  - adcp test instruments"
+	@echo "example.co2   - CO2 test instruments"
+	@echo "example.rad   - radiometer test instruments"
+	@echo "example.sum   - summarizer test instruments"
+	@echo "example.multi - using mksiamjar instead of mkpuck"
+	@echo ""
+
+example.all: example.test example.ctd example.adcp example.co2 example.rad example.sum 
+
+example.test:
+	mkpuck org.mbari.siam.devices.dummy.DummyInstrument 'Dummy' 9990 $(JAVA_DEV_ROOT)/ports/DummyInstrument-9990.jar $(JAVA_DEV_ROOT)/docs/siam-site/content/examples/example.xml 'sampleSchedule = 5' 'UUID = 00000000-0000-0000-0000-000000000000' ;\
+	mkpuck org.mbari.siam.devices.dummy.DummyInstrument 'Dummy' 9991 $(JAVA_DEV_ROOT)/ports/DummyInstrument-9991.jar $(JAVA_DEV_ROOT)/docs/siam-site/content/examples/example.xml 'sampleSchedule = 5' 'UUID = 00000000-0000-0000-0000-000000000000' ;\
+
+example.ctd: 
+	mkpuck org.mbari.siam.devices.dummy.VarDummyInstrument 'DummySeabird37' 9992 $(JAVA_DEV_ROOT)/ports/VarDummyInstrument-9992.jar $(JAVA_DEV_ROOT)/docs/siam-site/content/examples/example.xml  'sampleSchedule = 600' 'dataLength = 100' 'registryName = DummySeabird37' 'UUID = 00000000-0000-0000-0000-000000000000' ;\
+	mkpuck org.mbari.siam.devices.dummy.VarDummyInstrument 'DummySeabird' 9993 $(JAVA_DEV_ROOT)/ports/VarDummyInstrument-9993.jar $(JAVA_DEV_ROOT)/docs/siam-site/content/examples/example.xml  'sampleSchedule = 600' 'dataLength = 72' 'UUID = 00000000-0000-0000-0000-000000000000' ;\
+
+example.adcp: 
+	mkpuck org.mbari.siam.devices.dummy.VarDummyInstrument 'DummyWorkhorse' 9994 $(JAVA_DEV_ROOT)/ports/VarDummyInstrument-9994.jar $(JAVA_DEV_ROOT)/docs/siam-site/content/examples/example.xml  'sampleSchedule = 3600' 'dataLength = 1348' 'UUID = 00000000-0000-0000-0000-000000000000' ;\
+
+example.co2: 
+	mkpuck org.mbari.siam.devices.dummy.VarDummyInstrument 'DummypCO2' 9995 $(JAVA_DEV_ROOT)/ports/VarDummyInstrument-9995.jar $(JAVA_DEV_ROOT)/docs/siam-site/content/examples/example.xml 'sampleSchedule = 3600' 'dataLength = 182' 'registryName = DummypCO2' 'UUID = 00000000-0000-0000-0000-000000000000' ;\
+
+example.rad:
+	mkpuck org.mbari.siam.devices.dummy.VarDummyInstrument 'DummyOCR' 9996 $(JAVA_DEV_ROOT)/ports/VarDummyInstrument-9996.jar $(JAVA_DEV_ROOT)/docs/siam-site/content/examples/example.xml 'sampleSchedule = A */0 */10 6-18 * * * * GMT-7 *' 'dataLength = 2488' 'acquireSleepSec = 10' 'UUID = 00000000-0000-0000-0000-000000000000' ;\
+	mkpuck org.mbari.siam.devices.dummy.VarDummyInstrument 'DummyOCR' 9997 $(JAVA_DEV_ROOT)/ports/VarDummyInstrument-9997.jar $(JAVA_DEV_ROOT)/docs/siam-site/content/examples/example.xml 'sampleSchedule = A */0 */10 6-18 * * * * GMT-7 *' 'dataLength = 2488' 'acquireSleepSec = 10' 'UUID = 00000000-0000-0000-0000-000000000000' ;\
+
+example.sum:
+	mkpuck org.mbari.siam.devices.dummy.VarDummyInstrument 'DummyWETLabsSummarizer' 9998 $(JAVA_DEV_ROOT)/ports/VarDummyInstrument-9998.jar $(JAVA_DEV_ROOT)/docs/siam-site/content/examples/example.xml  'sampleSchedule = 3600' 'dataLength = 1450' 'UUID = 00000000-0000-0000-0000-000000000000' ;\
+	mkpuck org.mbari.siam.devices.dummy.VarDummyInstrument 'DummyAquadoppSummarizer' 9999 $(JAVA_DEV_ROOT)/ports/VarDummyInstrument-9999.jar $(JAVA_DEV_ROOT)/docs/siam-site/content/examples/example.xml  'sampleSchedule = 3600' 'dataLength = 719' 'UUID = 00000000-0000-0000-0000-000000000000' ;\
+	mkpuck org.mbari.siam.devices.dummy.VarDummyInstrument 'DummySeabirdSummarizer' 10000 $(JAVA_DEV_ROOT)/ports/VarDummyInstrument-10000.jar $(JAVA_DEV_ROOT)/docs/siam-site/content/examples/example.xml  'sampleSchedule = 3600' 'dataLength = 1500' 'UUID = 00000000-0000-0000-0000-000000000000' ;\
+
+# Using mksiamjar to build jars with classes from different packages
+# e.g., a base class, a sub-class, and addons
+# SBE16plus driver - polled/moored mode w/ event detector
+example.multi:
+	mksiamjar -service org.mbari.siam.devices.seabird.sbe16plus.SBE16plus -jar $(JAVA_DEV_ROOT)/ports/Seabird-16p-10001.jar -base $(SIAM_HOME)/classes -classdir org/mbari/siam/devices/seabird/base 
+	mksiamjar -service org.mbari.siam.devices.seabird.sbe16plus.SBE16plus -jar $(JAVA_DEV_ROOT)/ports/Seabird-16p-10001.jar -base $(SIAM_HOME)/classes -add -classdir org/mbari/siam/devices/seabird/eventDetector 
+	mksiamjar -service org.mbari.siam.devices.seabird.sbe16plus.SBE16plus -mnem 'SBE-16+ event detector' -id 10001 -jar $(JAVA_DEV_ROOT)/ports/Seabird-16p-10001.jar -xml $(JAVA_DEV_ROOT)/docs/siam-site/content/examples/example.xml -add -classdir org/mbari/siam/devices/seabird/sbe16plus 'sampleSchedule = 18' 'diagnosticSampleInterval=30' 'powerPolicy = always' 'commPowerPolicy = always' 'pumpMode=2' 'delayBeforeSamplingSec=10' 'log=true' 'safeSampleIntervalSec = 300' 'currentLimitMa = 8000' 'peakCurrentMa=8000' 'summaryTriggerCount = 100' 'maxSummarySamples = 100' 'defaultSkipInterval = -1' 'timeSynch=true' 'modemHost=node21' 'transmittSlope = 22.8441' 'transmittIntcpt = -1.2884' 'UUID = 7d11cc63-ab73-11dd-bd2b-81196419053c';

@@ -1,0 +1,256 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>BIN Power HOWTO</title>
+		<link href="../../css/content.css" rel="stylesheet" type="text/css" />
+		<link href="../../css/howto.css" rel="stylesheet" type="text/css" />
+	</head>
+	
+	<body>
+		
+		<div class="nameHeader">
+			<h1>Name</h1> 
+			<div class="nameText">
+				<h2>BIN Power HOWTO <!-- name text here --></h2>
+			</div>
+		</div>
+		
+		<div class="synopsisHeader">
+			<h1>Synopsis</h1>
+			<div class="synopsisText">
+				<div class="commands">Procedures for switching power to MOOS BINs</div>
+			</div>
+		</div>
+		
+		<div class="sectionHeader">
+			<!-- Section description -->
+			<h1>Shutdown SHELF BIN</h1>
+			<div class="sectionText">
+				<p>
+				<!-- description text here -->
+				Power down instruments with internal batteries
+				</p>
+				<div class="commands">
+					<!-- description text here -->
+					<ul>
+						<li>Minicomm to RDI Sentinal ADCP and send break character to halt sampling. Send command: “CZ” to sleep instrument.</li>
+						<li>Wetlabs – OK.</li>
+						<li>SBE 16?</li>
+						<li>Nortek</li>
+					</ul>
+				</div>
+			</div>
+			<div class="sectionText">
+				<p>
+				<!-- description text here -->
+				Halt SHELF BIN (disable backup ultra-capacitors and batteries, exit SIAM, sync filesystem, halt processor)
+				</p>
+				<div class="commands">
+					<p>
+					<!-- description text here -->
+					killBIN node1 -q
+					</p>
+				</div>
+			</div>
+			<div class="sectionText">
+				<p>
+				<!-- description text here -->
+				Shut down 400 volts to SHELF BIN from SURFACE node using
+				</p>
+				<div class="commands">
+					<p>
+					<!-- description text here -->
+					switchBIN400V surface 0 OFF
+					</p>
+				</div>
+			</div>
+		</div>
+		
+		
+		
+		<div class="sectionHeader">
+			<!-- Section description -->
+			<h1>Power SHELF BIN</h1>
+			<div class="sectionText">
+				<p>
+				<!-- description text here -->
+				Switch SURFACE 400V power on
+				</p>
+				<div class="commands">
+					<p>
+					<!-- description text here -->
+					switchBIN400V surface 0 ON
+					</p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="sectionHeader">
+			<!-- Section description -->
+			<h1>Power AXIS BIN</h1>
+			<div class="sectionText">
+				<p>
+				<!-- description text here -->
+				Power up SHELF BIN as above
+				</p>
+			</div>
+			<div class="sectionText">
+				<p>
+				<!-- description text here -->
+				Make sure backup ultra-caps and batteries are enabled on SHELF BIN 
+				</p>
+				<div class="commands">
+					<p>
+					<!-- command text here -->
+					binBackups node1 /dev/ttySX13 ALLEN
+					</p>
+				</div>
+			</div>
+			<div class="sectionText">
+				<p>
+				<!-- description text here -->
+				Power down SHELF BIN 400V (controlled by SURFACE node) <em>for not over 2 minutes</em>.
+				If power is off more then two minutes node will be depleting back-up batteries.
+				</p>
+				<div class="commands">
+					<p>
+					<!-- command text here -->
+					switchBIN400V surface 0 OFF
+					</p>
+				</div>
+			</div>
+			<div class="sectionText">
+				<p>
+				<!-- description text here -->
+				Immediately switch 400V AXIS BIN power on (controlled by SHELF BIN)
+				</p>
+				<div class="commands">
+					<p>
+					<!-- command text here -->
+					switchBIN400V node1 /dev/ttySX13 0ON
+					</p>
+				</div>
+			</div>
+			<div class="sectionText">
+				<p>
+				<!-- description text here -->
+				Immediately switch 400V power to SHELF BIN on (controlled by surface)
+				</p>
+				<div class="commands">
+					<p>
+					<!-- command text here -->
+					switchBIN400V surface 0 ON
+					</p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="sectionHeader">
+			<!-- Section description -->
+			<h1>Shutdown AXIS BIN</h1>
+			<div class="sectionText">
+				<p>
+				<!-- description text here -->
+				Shutdown instrument services for the following instruments.
+				</p>
+				<div class="commands">
+					<p>
+					<!-- command text here -->
+					commands
+					</p>
+				</div>
+			</div>
+			<div class="sectionText">
+				<p>
+				<!-- description text here -->
+				Enable power and communications to the instruments
+				</p>
+				<div class="commands">
+					<p>
+					<!-- command text here -->
+					powerUpPort &lt;node&gt; &lt;port&gt;<br />
+					node: node hostname, e.g., node1, node5, etc.<br />
+					port: port number, e.g., 7, /dev/ttySX4, etc.
+					</p>
+				</div>
+			</div>
+			<div class="sectionText">
+				<p>
+				<!-- description text here -->
+				Stop sampling in instruments with internal batteries
+				</p>
+				<div class="commands">
+					<!-- command text here -->
+					<ul>
+						<li>Minicom to RDI Sentinel ADCP and send break character to halt acquisition/logging. Send command: “CZ” to sleep instrument.</li>
+						<li>WETLabs ECO Triplet. Automtically goes to low-power state.</li>
+						<li>SBE-16+ and SBE-37SM - Automatically goes to low-power sleep after 2 minutes without receiving serial commands from host. To be sure, can a issue &quot;STOP&quot; command to instruments through 'stip' command</li>
+						<li>Nortek Aquadopp. Attach test cable to PC, use GUI to ensure that data streaming/logging was turned off.</li>
+					</ul>
+				</div>
+			</div>
+			<div class="sectionText">
+				<p>
+				<!-- description text here -->
+				Halt AXIS BIN (disable backup ultra-capacitors and batteries, exit SIAM, sync filesystem, halt processor) 
+				</p>
+				<div class="commands">
+					<p>
+					<!-- command text here -->
+					killBIN node5 -q
+					</p>
+				</div>
+			</div>
+			<div class="sectionText">
+				<p>
+				<!-- description text here -->
+				Switch 400 volts to AXIS BIN off (controlled by SHELF BIN)
+				</p>
+				<div class="commands">
+					<p>
+					<!-- command text here -->
+					switchBIN400V node1 /dev/ttySX13 0OFF
+					</p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="sectionHeader">
+			<!-- Section description -->
+			<h1>Shutdown Snubber Node</h1>
+			<div class="sectionText">
+				<p>
+				<!-- description text here -->
+				Sync filesystem and halt processor
+				</p>
+				<div class="commands">
+					<p>
+					<!-- command text here -->
+					killnode node10 -q
+					</p>
+				</div>
+			</div>
+			<div class="sectionText">
+				<p>
+				<!-- description text here -->
+				Shutdown power to SNUBBER (controlled by instrument service on SURFACE port /dev/ttySX1)
+				</p>
+				<div class="commands">
+					<p>
+					<!-- command text here -->
+					shutdownPort surface 1
+					</p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="seeAlsoHeader">
+			<h1>See Also</h1>
+			<div class="seeAlsoText">
+				<div class="command"><!-- <a href=".html#" target="mainFrame">link1</a>--></div>
+			</div>
+		</div>
+		
+		
+	</body>
+</html>

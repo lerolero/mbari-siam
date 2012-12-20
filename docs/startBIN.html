@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=iso-8859-1">
+  <meta name="Author" content="Tom O'Reilly">
+  <meta name="GENERATOR"
+ content="Mozilla/4.79 [en] (Windows NT 5.0; U) [Netscape]">
+  <title>switchBIN400V</title>
+</head>
+<body>
+<b>NAME</b>
+<blockquote>startBIN - enable BIN 400V power when node reboots<br>
+</blockquote>
+<b>SYNOPSIS</b>
+<blockquote>
+  <pre>startBIN <span
+ style="font-style: italic;">[-Vhd][-D -p -P -s -S]</span></pre>
+</blockquote>
+<b>DESCRIPTION</b>
+<blockquote>
+<table cellspacing="5">
+<tr>
+<th align="right">Option</td>
+<th align="center">Description</td>
+<th align="center">Default Value</td>
+</tr>
+<tr>
+<td align="right" >-d</col>
+<td align="left" >debug (read but don't set BIN power)</col>
+<td align="left">[FALSE]</col>
+</tr>
+<tr>
+<td align="right" >-D <sec></col>
+<td align="left" >start delay seconds</col>
+<td align="left">[90]</col>
+</tr>
+<tr>
+<td align="right" >-H</col>
+<td align="left" >host node</col>
+<td align="left"></col>
+</tr>
+<tr>
+<td align="right" >-h</col>
+<td align="left" >print this help message</col>
+<td align="left"></col>
+</tr>
+<tr>
+<td align="right" >-p <retries></col>
+<td align="left" >power retries</col>
+<td align="left">[5]</col>
+</tr>
+<tr>
+<td align="right" >-s <retries></col>
+<td align="left" >service retries</col>
+<td align="left">[3]</col>
+</tr>
+<tr>
+<td align="right" >-P <sec></col>
+<td align="left" >power wait seconds</col>
+<td align="left">[20]</col>
+</tr>
+<tr>
+<td align="right" >-S <sec></col>
+<td align="left" >service wait seconds</col>
+<td align="left">[20]</col>
+</tr>
+<tr>
+<td align="right" >-V</col>
+<td align="left" >verbose output</col>
+<td align="left">[FALSE]</col>
+</tr>
+<table>
+<p>
+Although it has always been standard operating procedure to exercise caution around BIN 400V power, please observe the following precaution/reminder:
+</p>
+<p>
+<b>CAUTION: BIN 400V power may be turned on at any time. Always treat the BIN as if 400V power is on.</b>
+</p>
+<p>
+The script is located in siam/utils/ directory and it is called from /etc/init.d/siamapp (the script that automatically starts SIAM when the node boots).
+</p>
+<p>
+For MUCE, startBIN is called using default parameters and the -V (verbose output). The output from the most recent startBIN invocation is directed to /tmp/startBIN.out. <br>
+To disable startBIN, the line in siamapp that calls startBIN may be commented out.
+</p>
+<p>
+startBIN waits for an optional start delay (so the power can service can start), then tries  several (service retries) times to detect the power service, waiting (service wait seconds) between retries to determine what port it is running on. If it successfully determines the power service port, it then it tries several (power retries) times to turn on the BIN power, waiting (power wait seconds) between retries.<br><br>
+
+startBIN returns 0 upon success, 1 on failure. 
+</p>
+</blockquote>
+<p><br>
+<b>ENVIRONMENT</b>
+</p>
+<blockquote>The following environment variables must be set:</blockquote>
+<ul>
+  <li>JAVA_HOME - location of Java installation, e.g.<i> /j9</i> or <i>/opt/java/jdk1.3.1</i></li>
+  <li>JAVA - name of the JVM. E.g. on a Sidearm, JAVA should be set to <i>j9.
+    </i>On
+a workstation with Sun's Java installed, JAVA could be set to <i>java</i>.</li>
+  <li>SIAM_HOME - top of the SIAM directory tree</li>
+  <li>SIAM_CLASSPATH - on a Sidearm, SIAM_CLASSPATH should be set to <i>$JAVA_HOME/lib/jclMax/classes.zip:$JAVA_HOME/lib/prsnlmot.jar:$JAVA_HOME/lib/RXTXcomm.jar:$SIAM_HOME/classes</i>.&nbsp;
+On X86 system, SIAM_CLASSPATH should be set to<i> $SIAM_HOME/classes</i></li>
+</ul>
+<p><br>
+<b>SEE ALSO</b>
+</p>
+<blockquote>&nbsp;<span style="text-decoration: underline;"><a
+ href="switchBIN400V.html">switchBIN400V</a></span><br>
+&nbsp;</blockquote>
+</body>
+</html>

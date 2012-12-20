@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>puckit Manual Page</title>
+<link href="../../css/content.css" rel="stylesheet" type="text/css" />
+<link href="../../css/manpage.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+<div class="nameHeader">
+	<h1>Name</h1> 
+ <div class="nameText">
+	<h2>puckit <!-- name text here --></h2>
+ </div>
+</div>
+
+<div class="synopsisHeader">
+	<h1>Synopsis</h1>
+ <div class="synopsisText">
+				<div class="commands">puckit <em class="options">serviceClassname servicePropertiesFile serviceXMLFile outputJarfile</em></div>
+ </div>
+</div>
+
+<div class="descriptionHeader">
+	<h1>Description</h1>
+ <div class="descriptionText">
+	<p>
+	<!-- description text here -->
+	The puckit script is not generally used directly by system operators. Rather, it is invoked by mkpuck (which is invoked by one of the Makefiles containing PUCK build targets) to build a JAR (Java Archive) file containing a SIAM instrument service and its associated metadata.
+	The instrument service JAR contains:</p>
+	<ul>
+	<li>Java classes implementing the instrument service</li>
+	<li>Java Properties file containing default service configuration</li>
+	<li>service.xml, a file that uses an XML schema to desribe the instrument service data format</li>
+	</ul>
+	<p>The resulting instrument service JAR may stored/loaded from PUCK memory (if its associated instrument is PUCK enabled), or from the host platform (SIAM node).
+	</p>	 
+	 <h2>Options</h2>
+	 <table class="altTable">
+		 <tr>
+			 <th>Option</th>
+			 <th>Description</th>
+			 <th>Values</th>
+			 </tr>
+		  <tr>
+		  <td>serviceClassname</td>
+		  <td>Fully qualified name of the instrument service class</td>
+		  <td>org.mbari.siam.devices.seabird.SBE37</td>
+		  </tr>
+		  <tr class="alt">
+		  <td>servicePropertiesFile</td>
+		  <td>Path to the Java Properties file containing the instrument service configuration parameters (properties)</td>
+		  <td>service.properties</td>
+		  </tr>
+		  <tr>
+		  <td>serviceXMLFile</td>
+		  <td>Path to an XML file containing metadata about the instrument service</td>
+		  <td>service.xml</td>
+		  </tr>
+		  <tr class="alt">
+		  <td>outputJarfile</td>
+		  <td>Name of the JAR file to create</td>
+		  <td>SBE37-ID1234.jar</td>
+		  </tr>
+		 <!--
+		  <tr>
+		  <td></td>
+		  <td></td>
+		  <td>-</td>
+		  </tr>
+		  <tr class="alt">
+		  <td></td>
+		  <td></td>
+		  <td>-</td>
+		  </tr>
+		  -->
+		 </table>
+		 <p>
+		Example output:
+        </p>
+		<pre>
+		none
+		</pre>
+		 <p></p>
+	 </div>
+</div>
+
+<div class="environmentHeader">
+	<h1>Environment</h1>
+ <div class="environmentText">
+	<p>
+	<!-- description text here -->
+	The following environment variables must be set:
+	</p>	 
+			 <table class="altTable">
+				 <tr>
+					 <th>Variable</th>
+					 <th>Description</th>
+					 <th>Example</th>
+					 </tr>
+				 <tr>
+					 <td>JAVA_HOME </td>
+					 <td>location of Java installation</td>
+					 <td><div class="path"> /j9, /opt/java/jdk1.3.1, etc.</div></td>
+					 </tr>
+				 <tr class="alt">
+					 <td>JAVA</td>
+					 <td>Path to JVM command</td>
+					 <td>For MMC<div class="commands">$JAVA_HOME/bin/j9</div><br />For Sun JVM (e.g. linux, win32, mac OS) <div class="commands">$JAVA_HOME/bin/java</div>
+						 </td>
+					 </tr>
+				 <tr>
+					 <td>SIAM_HOME</td>
+					 <td>top of the SIAM directory tree</td>
+					 <td>-</td>
+					 </tr>
+				 <tr class="alt">
+					 <td>SIAM_CLASSPATH</td>
+					 <td>Path including all SIAM and supporting classes</td>
+					 <td>For MMC<div class="path">$JAVA_HOME/lib/jclMax/classes.zip:$JAVA_HOME/lib/prsnlmot.jar:$JAVA_HOME/lib/RXTXcomm.jar:$SIAM_HOME/classes</div><br />
+						 For linux/win32<div class="path"> $SIAM_HOME/classes</div></td>
+					 </tr>
+				 <!--
+				  <tr>
+				  <td></td>
+				  <td></td>
+				  <td>-</td>
+				  </tr>
+				  <tr class="alt">
+				  <td></td>
+				  <td></td>
+				  <td>-</td>
+				  </tr>
+				  -->
+				 </table>
+			 <p></p>
+ </div>
+</div>
+
+<div class="seeAlsoHeader">
+	<h1>See Also</h1>
+ <div class="seeAlsoText">
+  <div class="command"><a href="man-catJar.html#" target="mainFrame">catJar</a></div>
+ </div>
+</div>
+
+
+</body>
+</html>

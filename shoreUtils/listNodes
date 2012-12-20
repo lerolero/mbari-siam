@@ -1,0 +1,24 @@
+#!/bin/tcsh
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# List ports on all nodes of moored network
+
+echo "Note that ppp link must be connected to run this script"
+
+rm list.out >& /dev/null
+
+foreach node (mooring node401 node405 node421 node423)
+
+  wakeup mooring $node; lease $node; 
+  echo "${node}:" >> list.out
+  listPorts $node -stats | tee -a list.out
+  echo "" >> list.out
+  
+end
+
+echo "Results written to list.out"
+
+exit 0
+

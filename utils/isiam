@@ -1,0 +1,21 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+#
+# Launches iSiam, the Iteractive SIAM Shell.
+#
+
+export SIAM_LOG4J=$SIAM_HOME/properties/siam.log4j
+
+# make sure the JLine library is in the class path:
+SIAM_CLASSPATH=$SIAM_HOME/jars/jline-0.9.94.jar:$SIAM_CLASSPATH
+
+$JAVA -cp $SIAM_CLASSPATH \
+	-Dlog4j.configuration=file:$SIAM_LOG4J \
+	-Dsiam.log4j=$SIAM_LOG4J \
+	-Dlog4j.threshold=$LOG4J_THRESHOLD \
+	-Dsiam_home=$SIAM_HOME \
+	-Djava.security.policy=$SIAM_HOME/properties/policy \
+	org.mbari.siam.utils.isiam.SiamShell $@

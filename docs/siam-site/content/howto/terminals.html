@@ -1,0 +1,283 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>Terminals HOWTO</title>
+		<link href="../../css/content.css" rel="stylesheet" type="text/css" />
+		<link href="../../css/howto.css" rel="stylesheet" type="text/css" />
+	</head>
+	
+	<body>
+		
+		<div class="nameHeader">
+			<h1>Name</h1> 
+			<div class="nameText">
+				<h2>Terminals HOWTO <!-- name text here --></h2>
+			</div>
+		</div>
+		
+		<div class="synopsisHeader">
+			<h1>Synopsis</h1>
+			<div class="synopsisText">
+				<div class="commands">Communications using SSH, minicom, stip, etc.</div>
+			</div>
+		</div>
+		
+		<div class="sectionHeader">			
+			<!-- Section description -->
+			<h1>Using SSH</h1>
+			<div class="sectionText">
+				<p>
+				<!-- description text here -->
+				Before starting an ssh session to another node, ensure that both hosts (“fromNode” and “toNode”) 
+				will stay awake by establishing a lease for each one:
+				</p>			
+				<div class="commands">
+					<p>
+					<!-- commands here -->
+					lease -establish 1200 fromNode
+					lease -establish 1200 toNode 
+					</p>
+				</div>
+			</div>
+			
+			<div class="sectionText">
+				<p>
+				<!-- description text here -->
+				Establishing  the lease on toNode may be difficult if toNode is sleeping frequently. 
+				In this case try starting the lease process in the background and then using the bcastc utility to wake up toNode:
+				</p>				
+				<div class="commands">
+					<p>
+					<!-- commands here -->
+					lease -establish 1200 toNode &amp;
+					bcastc
+					</p>
+				</div>	
+				<p>The examples above establishes a 1200 sec (20 min) lease on “toNode” and “fromNode”; adjust duration as needed.
+				</p>
+			</div>
+			
+			<div class="sectionText">
+				<p>
+				<!-- description text here -->
+				Start ssh session from fromNode to toNode using command
+				</p>				
+				<div class="commands">
+					<p>
+					<!-- commands here -->
+					ssh ops@toNode
+					</p>
+				</div>	
+				<p>The example above establishes an ssh session to toNode using login account ops; the host name may be given as either a host name or an IP address.
+				</p>
+			</div>
+		</div>
+		
+		
+		<div class="sectionHeader">			
+			<!-- Section description -->
+			<h1>Telemetry Consoles</h1>
+			
+			<div class="sectionText">
+				<p>
+				<!-- description text here -->
+				The console processes managed by the auxTelem script (SURFACE freewave, BIN consoles) differ from the dedicated console ports in a couple of ways:
+				They are active for 30 seconds once every 5 minutes. It may be necessary to wait for up to 5 minutes before the console login becomes available.
+				</p>
+				<p>
+				Once logged in, the console uses a default 30 sec inactivity timeout unless the TMOUT variable is set. 
+				Set TMOUT to a value long enough to allow for necessary operation. 
+				Setting TMOUT=0 disables the console inactivity timeout. 
+				</p>
+				<p>
+				<em>THIS MAY HAVE SERIOUS CONSEQUENCES</em> as it potentially leaves the radio powered indefinitely if the console link is broken inadvertently. 
+				</p>
+				<p>
+				In general, it is better set TMOUT to some reasonable value.
+				</p>
+			</div>
+		</div>
+		
+		<div class="sectionHeader">			
+			<!-- Section description -->
+			<h1>Instrument Consoles (SIAM application is running)</h1>
+			<div class="sectionText">
+				<p>
+				<!-- description text here -->
+				conPort utility provides a console to an instrument without explicitly halting the service:
+				</p>
+				<div class="commands">
+					<p>
+					<!-- commands here -->
+					conPort &lt;node&gt; &lt;port&gt;
+					</p>
+				</div>
+				<p>
+				Use ctrl-x x to exit conPort; it may be necessary to use scanPort to restart the instrument service after using conPort:
+				</p>
+				<div class="commands">
+					<p>
+					<!-- commands here -->
+					scanPort &lt;node&gt; &lt;port&gt;
+					</p>
+				</div>
+				<p>
+				Alternatively, shutdown the instrument service using the shutdownPort utility and restore power and communication to the instrument using the powerUpPort utility before using one of the terminal emulator programs to establish a console to the instrument. When finished, use scanPort to restart the instrument service:
+				</p>
+				<div class="commands">
+					<!-- commands here -->
+					<ul>
+						<li>shutdownPort &lt;node&gt; &lt;port&gt;</li>
+						<li>powerUpPort &lt;node&gt; &lt;port&gt;</li>
+						<li>&lt;your terminal session here…&gt;</li>
+						<li>scanPort &lt;node&gt; &lt;port&gt;</li>
+					</ul>		
+				</div>
+			</div>
+			
+			<div class="sectionHeader">			
+				<!-- Section description -->
+				<h1>Instrument Consoles (SIAM application is not running)</h1>
+				<div class="sectionText">
+					<p>
+					<!-- description text here -->
+					dpaView utility allows the user to enable power and communications prior to using a terminal emulator to establish a console to the instrument. The following commands are used to set current limit, turn on power and communications:
+                    </p>
+					<div class="commands">
+						<!-- commands here -->
+						<ul>
+							<li>dpaView scm &lt;dpa (0-11)&gt; &lt;port (0 or 1)&gt; &lt;currentLimitMilliamps&gt;</li>
+							<li>dpaView power &lt;dpa (0-11)&gt; &lt;port (0 or 1)&gt; &lt;ON|OFF&gt;</li>
+							<li>dpaView comms &lt;dpa (0-11)&gt; &lt;port (0 or 1)&gt; &lt;ON|OFF&gt;</li>
+						</ul>
+					</div>
+					<p>
+					Use the help command in dpaView for  full descriptions of all commands
+					dpaView commands give help when issued with no arguments.
+					</p>
+					<div style="width: 30%;">
+					<table class="altTable">
+						<tr>
+							<th>tty</th>
+							<th>DPA</th>
+							<th>Channel</th>
+						</tr>
+						<tr>
+							<td>ttySX0</td>
+							<td>0</td>
+							<td>0</td>
+						</tr>
+						<tr class="alt">
+							<td>ttySX1</td>
+							<td>0</td>
+							<td>1</td>
+						</tr>
+						<tr>
+							<td>ttySX2</td>
+							<td>1</td>
+							<td>0</td>
+						</tr>
+						<tr class="alt">
+							<td>ttySX3</td>
+							<td>1</td>
+							<td>1</td>
+						</tr>
+						<tr>
+							<td>ttySX4</td>
+							<td>2</td>
+							<td>0</td>
+						</tr>
+						<tr class="alt">
+							<td>ttySX5</td>
+							<td>2</td>
+							<td>1</td>
+						</tr>
+						<tr>
+							<td>ttySX6</td>
+							<td>3</td>
+							<td>0</td>
+						</tr>
+						<tr class="alt">
+							<td>ttySX7</td>
+							<td>3</td>
+							<td>1</td>
+						</tr>
+						<tr>
+							<td>ttySX8</td>
+							<td>4</td>
+							<td>0</td>
+						</tr>
+						<tr class="alt">
+							<td>ttySX9</td>
+							<td>4</td>
+							<td>1</td>
+						</tr>
+						<tr>
+							<td>ttySX10</td>
+							<td>5</td>
+							<td>0</td>
+						</tr>
+						<tr class="alt">
+							<td>ttySX11</td>
+							<td>5</td>
+							<td>1</td>
+						</tr>
+					</table>
+					</div>
+				</div>
+			</div>
+			
+			<div class="sectionHeader">			
+				<!-- Section description -->
+				<h1>Terminal Program Options</h1>
+				
+				<div class="sectionText">
+					<p>
+					<!-- description text here -->
+					stip (a variation of Unix tip) provides a basic serial console
+					</p>
+					<div class="commands">
+						<p>
+						<!-- commands here -->
+						stip –s &lt;baudRate e.g. 9600&gt; &lt;port name e.g. /dev/ttySX2&gt;
+						stip –help provides use message with all options
+						stip has no facility to issue a break
+						exit stip using the character sequence “~.”
+						</p>
+					</div>
+					<p>
+					stip is not compatible with RS422 instruments and may not be compatible with other terminal emulators and consoles.
+					</p>
+					
+				</div>
+			</div>
+			
+			<div class="sectionText">
+				<p>
+				<!-- description text here -->
+				minicom is a more fully featured terminal emulator
+				</p>
+				<div class="commands">
+					<p>
+					<!-- commands here -->
+					As root: use minicom –s to configure and save a console session
+					As  ops: use minicom &lt;session name&gt; to use a saved session
+					</p>
+				</div>
+				<p>
+				If starting minicom from within another minicom session, be sure to change the control sequence for the outer session to some thing other than the default (ctrl A) before starting the inner session.
+				</p>
+			</div>
+		</div>
+		
+			<div class="seeAlsoHeader">
+				<h1>See Also</h1>
+				<div class="seeAlsoText">
+					<div class="command"><!-- <a href=".html#" target="mainFrame">link1</a>--></div>
+				</div>
+			</div>
+			
+			
+			</body>
+</html>

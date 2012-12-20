@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# bcastc - broadcast test client
+# Sends a UDP broadcast packet to a waiting bcast server (see bcasts)
+# and waits for it to return the packet.
+# Use 'bcastc --help' for options
+
+$JAVA -cp $CLASSPATH org.mbari.siam.tests.bcast.bcastcli $*

@@ -1,0 +1,71 @@
+#!/bin/csh
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Look for 'autoscript' and if found, copy to surface node, where it will 
+# eventually get executed.
+#
+# Exit status values:
+# 0 - found and transferred file to destination node
+# 1 - general error code
+# 2 - no pending auto-file found
+
+if ($#argv != 2) then
+  echo usage: $0 autoScriptHome remoteAutoScriptHome 
+  echo "remoteAutoScriptHome is of form host:path," 
+  echo "e.g. 'mooring:/mnt/hda/siam/autoScript'"
+  exit 1
+endif
+
+set autoScriptHome=$argv[1]
+set nodeAutoScriptHome=$argv[2]
+
+
+set scriptName=autoscript
+set srcDir=$autoScriptHome/pending
+set dstDir=ops@$nodeAutoScriptHome/pending
+set copiedDir=$autoScriptHome/copied
+set logDir=$autoScriptHome/logs
+
+set completeTag="# AUTOSCRIPT EOF"
+
+# Ensure that autoscript directories exist at startup
+mkdir $autoScriptHome >& /dev/null
+mkdir $srcDir >& /dev/null
+mkdir $copiedDir >& /dev/null
+mkdir $logDir >& /dev/null
+
+# If autoscript file exists, copy it to surface node
+set src=$srcDir/$scriptName
+if (-e $src) then
+
+  # Make sure script is executable
+  chmod a+x $src
+
+  # Look for end-tag
+  tail -1 $src | grep $completeTag:q >& /dev/null
+  if ($status != 0) then
+    echo Autoscript \"$src\" not complete, missing end-tag on last line:
+    echo  $completeTag
+    exit 1
+  endif  
+
+
+  # Transfer $src to $dstDir
+  scp $src $dstDir  
+  if ($status != 0) then
+    echo scp failed
+    exit 1
+  endif
+
+  echo `date` : transferred autoscript to $dstDir :
+  cat $src
+
+  rm $src
+
+  exit 0
+else
+  echo "No pending auto-script to transfer to node"
+  exit 2
+endif

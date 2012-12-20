@@ -1,0 +1,265 @@
+#!/bin/bash
+
+#########################################
+# Name: parseDelay
+#
+# Summary: Compute sample delay for a list of device IDs
+#
+# Description:  
+# parseDelay uses logView and dataInterval.awk to produce
+# sample delay (jitter) data files for a specified set of device IDs.
+# The output may optionally be fed to plotDelay, which generates
+# a GNU plotutils command file and graphs the data in PDF
+# format using plotutils and ghostscript.
+#
+# inputs: 
+# - list of deviceIDs
+#
+# outputs: 
+# - data files ID[-suffix].sd
+# - text of plotDelay command line -> plotDelay.cmd
+#
+# dependencies:
+# - requires SIAM utils/logView and shoreUtils/dataInterval.awk
+#
+# Author: k. headley
+#
+# Copyright MBARI 2009
+#
+#########################################
+
+#########################################
+# Script configuration defaults
+# casual users should not need to change
+# anything below this section
+#########################################
+
+#START='-start 10/28/2009T00:00:00'
+#STOP='-stop 11/23/2009T23:00:00'
+START=""
+STOP=""
+SUFFIX="-delay"
+EXTENSION="sd"
+LOGVIEW_OPTIONS="-type data"
+LOGVIEW="$SIAM_HOME/utils/logView"
+AWK="awk"
+DATAINTERVAL="$SIAM_HOME/shoreUtils/dataInterval.awk"
+GRAPH_CMD=$SIAM_HOME/shoreUtils/plotDelay
+DEVICE_IDS=""
+TITLE=""
+RANGE_MIN=""
+RANGE_MAX=""
+OUTPUT_FILE=""
+
+#################################
+# Script variable initialization
+#################################
+VERBOSE="FALSE"
+TEST="FALSE"
+DEBUG="FALSE"
+doPLOT="FALSE"
+
+#################################
+# Function Definitions
+#################################
+
+#################################
+# name: printUsage
+# description: print use message
+# args: none
+#################################
+printUsage(){
+    echo
+    echo "parseDelay uses logView and dataInterval.awk to produce" 
+	echo "sample delay (jitter) data files for a specified set of device IDs."
+	echo "The output may optionally be fed to plotDelay, which generates"
+    echo "a GNU plotutils command file and graphs the data in PDF"
+	echo "format using plotutils."
+	echo
+    echo "usage: `basename $0` [options] deviceID... "
+    echo 
+	echo "Sample Delay Options:"
+    echo "-b <mm/dd/yyyyThh:mm:ss>    : begin time       [$START]"
+    echo "-e <mm/dd/yyyyThh:mm:ss>    : end  time        [$STOP]"
+	echo "-p                          : call plot script [$doPLOT]"
+	echo "-x <file suffix>            : SD file suffix   [$SUFFIX]"
+    echo "-t                          : test only        [$TEST]"
+    echo "-V (also passed to plot)    : verbose output   [$VERBOSE]"
+    echo "-h                          : print this help message"
+	echo ""
+	echo "Plot Options:"
+    echo "-d                          : debug            [$DEBUG]"
+    echo "-o <file name>  (w/o ext)   : output file name [$OUTPUT_FILE]"
+    echo "-r <min y>                  : y axis min value [$RANGE_MIN]"
+    echo "-R <max y>                  : y axis max value [$RANGE_MAX]"
+	echo "-T <title>                  : plot title       [$TITLE]"
+    echo 
+    echo
+}
+
+########################################
+# name: vout
+# description: print verbose message to stderr
+# args:
+#     msg: message
+########################################
+vout(){
+    if [ "$VERBOSE" == "TRUE" ]
+    then
+        echo "$1" >&2
+    fi
+}
+
+########################################
+# name: exitError
+# description: print use message to stderr
+# args:
+#     msg:        error message
+#     returnCode: exit status to return
+########################################
+exitError(){
+    echo >&2
+    echo "$1" >&2
+    exit $2
+}
+
+##########################
+# Script main entry point
+##########################
+# Argument processing
+if [ "$#" -eq 0 ];then
+    printUsage
+    exit 0
+fi
+
+while getopts b:de:ho:pr:R:tT:Vx: Option
+do
+    case $Option in
+        b ) START=$OPTARG
+        ;;
+        d ) DEBUG="TRUE"
+        ;;
+		e ) STOP=$OPTARG
+        ;;
+		o ) OUTPUT_FILE=$OPTARG
+		;;
+		p ) doPLOT="TRUE"
+		;;
+		r ) RANGE_MIN=$OPTARG
+		;;
+		R ) RANGE_MAX=$OPTARG
+		;;
+		t ) TEST="TRUE"
+		;;
+		T ) TITLE="$OPTARG"
+		;;
+		x ) SUFFIX="-$OPTARG"
+        ;;
+        V ) VERBOSE="TRUE"
+        ;;
+        h) printUsage
+          exit 0
+        ;;
+        *) exitError "unrecognized option [$OPTOPT]"
+        ;;
+    esac
+done
+
+let "scount=$OPTIND-1"
+while [ "$scount" -gt 0 ]
+do
+ shift
+ let "scount-=1"
+done
+
+vout "begin   = [$START]"
+vout "end     = [$STOP]"
+vout "suffix  = [$SUFFIX]"
+vout "verbose = [$VERBOSE]"
+vout "test    = [$TEST]"
+vout "do plot = [$doPLOT]"
+vout "debug   = [$DEBUG]"
+vout "min y   = [$RANGE_MIN]"
+vout "max y   = [$RANGE_MAX]"
+vout "title   = [$TITLE]"
+vout "output  = [$OUTPUT_FILE]"
+vout "device IDs = [$*]"
+
+fileList=""
+
+if [ "$START" ]
+then
+startOpt="-start"
+else
+startOpt=""
+fi
+
+if [ "$STOP" ]
+then
+stopOpt="-stop"
+else
+endOpt=""
+fi
+
+for ID in `echo $*`
+do
+ ID=`echo $ID`
+ OUTFILE="$ID$SUFFIX.$EXTENSION"
+ fileList="$fileList $OUTFILE"
+ echo "processing ID=$ID -> $OUTFILE"
+ if [ "$TEST" == "FALSE" ]
+ then
+  $LOGVIEW $startOpt "$START" $stopOpt "$STOP" $LOGVIEW_OPTIONS $ID .|$AWK -f "$DATAINTERVAL" > $OUTFILE
+  else 
+  echo "parseDelay command: [$LOGVIEW $startOpt \"$START\" $stopOpt \"$STOP\" $LOGVIEW_OPTIONS $ID .|$AWK -f \"$DATAINTERVAL\" > $OUTFILE]"
+ fi
+done
+
+# set options for the plot command
+if [ "$doPLOT" == "TRUE" ]
+then
+ vout "plot files: [$fileList]"
+
+ if [ "$VERBOSE" == "TRUE" ]
+ then
+  optVerbose="-V"
+  else
+  optVerbose=""
+ fi
+ if [ "$TITLE" ]
+ then
+  optTitle="-T"
+  else
+  optTitle=""
+ fi
+ if [ "$OUTPUT_FILE" ]
+ then
+  optOutput="-o"
+  else
+  optOutput=""
+ fi
+ if [ "$RANGE_MAX" ]
+ then
+	optRangeMax="-R"
+	else
+	optRangeMax=""
+ fi
+ if [ "$RANGE_MIN" ]
+ then
+	optRangeMin="-r"
+	else
+	optRangeMin=""
+ fi
+ if [ "$DEBUG" == "TRUE" ]
+ then
+	optDebug="-d"
+	else
+	optDebug=""
+ fi
+ vout "calling $GRAPH_CMD [...] $fileList"
+ if [ "$TEST" == "FALSE" ]
+ then
+  $GRAPH_CMD $optVerbose $optDebug $optRangeMin $RANGE_MIN $optRangeMax $RANGE_MAX $optTitle "$TITLE" $optOutput "$OUTPUT_FILE" $fileList
+ fi
+  echo "$GRAPH_CMD $optVerbose $optDebug $optRangeMin $RANGE_MIN $optRangeMax $RANGE_MAX $optTitle \"$TITLE\" $optOutput \"$OUTPUT_FILE\" $fileList" > `basename $GRAPH_CMD`.cmd
+fi

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id:$ -->
+
+<!-- use some project name, e.g., 2011FOCE -->
+<project name="puckdemo" basedir=".">
+	
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Load property files in this order:
+
+    1. User properties
+    2. This level properties
+
+    This allows a user to have specific settings that override any other
+    settings (other than command-line, which always take precedence).
+    -->
+    <property file="${user.home}/build.properties" />
+    <property file="build.properties" />
+	
+	<!-- show help  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	
+	<target name="help">
+	<local name="pname"/>
+    <property name="pname" value="puckdemo" />
+		<echo>
+		${pname}.all            - build all FOCE service JARs and native code
+		${pname}.demopucks      - set of demo PUCK service JARs
+		</echo>
+	</target>
+		
+	<!-- Build all Service JARs  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	
+	<target name="all" depends="puckdemo.jars">
+		<echo>Building service JARs - complete</echo>
+	</target>
+		
+	<!-- demopucks Service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="jars" depends="puckxml">
+		<echo>Building demo PUCK service JARs</echo>
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.devices.seabird.sbe37.SBE37 -jar ${siam_home}/ports/Seabird37-1534.jar -base ${siam_home}/classes -classdir org/mbari/siam/devices/seabird/base" />
+		</exec>
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.devices.seabird.sbe37.SBE37 -mnem 'Seabird SBE37' -id 1534 -jar ${siam_home}/ports/Seabird37-1534.jar -xml ${siam_home}/puckxml/1534.xml -add -classdir org/mbari/siam/devices/seabird/sbe37 'sampleSchedule = 5' 'powerPolicy = always' 'commPowerPolicy = never' 'currentLimitMa = 3000' 'log = false' 'defaultSkipInterval = -1' 'safeSampleIntervalSec = 600' 'timeSynch=true' 'publisherHost=localhost' 'UUID = dcfe7743-a3f2-4c31-b6b0-a7c3534cabb3'" />
+		</exec>
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.devices.axis.AxisCamera -id 1744 -xml puckxml/defaultInstrument.xml -jar ${siam_home}/ports/AxisCamera-1744.jar -base ${siam_home}/classes -classdir org/mbari/siam/devices/axis 'publisherHost=localhost' 'sampleSchedule=5' 'serviceName=Demo camera' 'advertiseService=true'" />
+		</exec>
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.devices.acti.ActiVideoServer -id 1748 -xml puckxml/defaultInstrument.xml -jar ${siam_home}/ports/ActiServer-1748.jar -base ${siam_home}/classes -classdir org/mbari/siam/devices/acti 'publisherHost=localhost' 'sampleSchedule=5' 'serviceName=Demo camera' 'advertiseService=true'" />
+		</exec>
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.devices.rbr.DataLogger -mnem 'RBR XR-420' -id 1771 -jar ${siam_home}/ports/RBR-1771.jar -xml ${siam_home}/puckxml/defaultInstrument.xml -classdir org/mbari/siam/devices/rbr 'sampleSchedule = 5' 'powerPolicy = never' 'commPowerPolicy = never' 'currentLimitMa = 3000' 'timeSynch=true' 'baud=19200' 'publisherHost=localhost' 'UUID = 70d1947e-28cb-11e0-8cb9-cb191be4ef2b'" />
+		</exec>
+	</target>
+
+	</project>

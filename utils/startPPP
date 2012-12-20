@@ -1,0 +1,13 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Start ppp link, synchronize time
+
+# Start ppp link
+$PARENT_LINK_ON_SCRIPT 
+
+# Sychronize clock with shore
+ntpdate -b shore
+

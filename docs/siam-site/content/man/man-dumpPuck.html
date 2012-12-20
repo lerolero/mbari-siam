@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>dumpPuck Manual Page</title>
+		<link href="../../css/content.css" rel="stylesheet" type="text/css" />
+		<link href="../../css/manpage.css" rel="stylesheet" type="text/css" />
+		</head>
+	
+	<body>
+		
+		<div class="nameHeader">
+			<h1>Name</h1> 
+			<div class="nameText">
+				<h2>dumpPuck <!-- name text here --></h2>
+				</div>
+			</div>
+		
+		<div class="synopsisHeader">
+			<h1>Synopsis</h1>
+			<div class="synopsisText">
+				<div class="commands">dumpPuck <em class="options">[-b baudHint] [-t triesPerBaud] port</em></div>
+				</div>
+			</div>
+		
+		<div class="descriptionHeader">
+			<h1>Description</h1>
+			<div class="descriptionText">
+				<p>
+				<!-- description text here -->
+				The dumpPuck utility dumps the contents PUCK memory to the console.<br />
+				Payload contents may be binary, which may not display properly and/or affect the operation of the terminal. 
+				</p>
+				
+				<h2>Options</h2>
+				<table class="altTable">
+					<tr>
+						<th>Option</th>
+						<th>Description</th>
+						<th>Values</th>
+						</tr>
+					<tr>
+						<td>-b baudHint</td>
+						<td>Suggested baud rate will be tried first to save time. By default, the utility will try at different baud rates.</td>
+						<td>300, 2400, 4800, 9600, 19200, 38400, 57600, 115200</td>
+						</tr>
+					<tr class="alt">
+						<td>-t triesPerBaud</td>
+						<td>Number of retries at each communication rate when trying to establish communication with the PUCK interface</td>
+						<td>-</td>
+						</tr>
+					<tr>
+						<td>port</td>
+						<td>Communications port to use for the PUCK connection.</td>
+						<td>COM1, /dev/tty.KeySerial1, /dev/ttyS0</td>
+						</tr>
+					<!--
+					 <tr>
+					 <td></td>
+					 <td></td>
+					 <td>-</td>
+					 </tr>
+					 <tr class="alt">
+					 <td></td>
+					 <td></td>
+					 <td>-</td>
+					 </tr>
+					 -->
+					</table>
+				<p>
+				Example output:</p>
+				<pre>
+					dumpPuck -b 115200 /dev/tty.KeySerial1 
+					Experimental:  JNI_OnLoad called.
+					Stable Library
+					=========================================
+					Native lib Version = RXTX-2.1-7
+					Java lib Version   = RXTX-2.1-7
+					Assuming PUCK v1.3 protocol
+					
+					0 INFO   Puck_1_3 [main]: Found PUCK mode at 115200 baud
+					
+					Datasheet:
+					uuid = 00000001-0002-0003-0004-000000000005
+					version = 2
+					size = 96
+					mfrID = 1
+					mfrModel = 0
+					mfrVersion = 0
+					serialNumber = 12345
+					instrument = MBARI Reference Design PUCK
+					
+					
+					Payload capacity = 1081248 bytes
+					
+					&lt;puck_payload type=MBARI.testPayload name=defaultInstrument.xml size=865 md5=a76296d1398a88997be56cdc2e241bd1 next_addr=-1 /&gt;
+					???&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+					&lt;!-- $Header: /home/cvs/puckxml/defaultInstrument.xml,v 1.1 2008/09/05 18:14:33 mccann Exp $	--&gt;
+					&lt;!-- Last edited by $Author: mccann $   --&gt;
+					&lt;Metadata xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+					xsi:noNamespaceSchemaLocation=&quot;http://dods.mbari.org/data/ssdsdata/config/schema/2004oasis/SSDS_Metadata.xsd&quot;
+					majorVersion=&quot;1&quot; minorVersion=&quot;2&quot; lastAuthor=&quot;$Author: mccann $&quot; lastUpdate=&quot;$Date: 2008/09/05 18:14:33 $&quot;&gt;
+					&lt;Deployment role=&quot;instrument&quot; &gt;
+					&lt;Device id=&quot;%DeviceId%&quot; /&gt;
+					&lt;description&gt;Default XML file due to missing or unreadable XML file specified in
+					configuration file&lt;/description&gt;
+					&lt;output&gt;
+					&lt;DataStream&gt;
+					&lt;description&gt;Data stream from default instrument metadata&lt;/description&gt;
+					&lt;RecordDescription parseable=&quot;false&quot; recordType=&quot;1&quot;/&gt;
+					&lt;/DataStream&gt;
+					&lt;/output&gt;
+					&lt;/Deployment&gt;
+					&lt;/Metadata&gt;
+					&lt;/&gt;???????????????????
+					</pre>
+				
+				<p></p>
+				</div>
+			</div>
+		
+		<div class="environmentHeader">
+			<h1>Environment</h1>
+			<div class="environmentText">
+				<p>
+				<!-- description text here -->
+				The following environment variables must be set:
+				</p>	 
+						<table class="altTable">
+							<tr>
+								<th>Variable</th>
+								<th>Description</th>
+								<th>Example</th>
+								</tr>
+							<tr>
+								<td>JAVA_HOME </td>
+								<td>location of Java installation</td>
+								<td><div class="path"> /j9, /opt/java/jdk1.3.1, etc.</div></td>
+								</tr>
+							<tr class="alt">
+								<td>JAVA</td>
+								<td>Path to JVM command</td>
+								<td>For MMC<div class="commands">$JAVA_HOME/bin/j9</div><br />For Sun JVM (e.g. linux, win32, mac OS) <div class="commands">$JAVA_HOME/bin/java</div>
+									</td>
+								</tr>
+							<tr>
+								<td>SIAM_HOME</td>
+								<td>top of the SIAM directory tree</td>
+								<td>-</td>
+								</tr>
+							<tr class="alt">
+								<td>SIAM_CLASSPATH</td>
+								<td>Path including all SIAM and supporting classes</td>
+								<td>For MMC<div class="path">$JAVA_HOME/lib/jclMax/classes.zip:$JAVA_HOME/lib/prsnlmot.jar:$JAVA_HOME/lib/RXTXcomm.jar:$SIAM_HOME/classes</div><br />
+									For linux/win32<div class="path"> $SIAM_HOME/classes</div></td>
+								</tr>
+							<!--
+							 <tr>
+							 <td></td>
+							 <td></td>
+							 <td>-</td>
+							 </tr>
+							 <tr class="alt">
+							 <td></td>
+							 <td></td>
+							 <td>-</td>
+							 </tr>
+							 -->
+							</table>
+						<p></p>
+						</div>
+			</div>
+		
+		<div class="seeAlsoHeader">
+			<h1>See Also</h1>
+			<div class="seeAlsoText">
+				<div class="command">
+					<a href="man-writePuck.html#" target="mainFrame">writePuck</a>, 
+					<a href="man-listPuck.html#" target="mainFrame">listPuck</a>, 
+					<a href="man-readDatasheet.html#" target="mainFrame">readDatasheet</a>, 
+					<a href="man-writeDatasheet.html#" target="mainFrame">writeDatasheet</a>, 
+					<a href="man-extractPuck.html#" target="mainFrame">extractPuck</a>, 
+					<a href="man-erasePuck.html#" target="mainFrame">erasePuck</a>
+					</div>
+				</div>
+			</div>
+		
+		
+		</body>
+	</html>

@@ -1,0 +1,40 @@
+#!/bin/bash
+#
+
+if [ "$#" -lt 2 ]
+then
+    echo
+    echo " usage: `basename $0` [-k] [-h <host>] <outputName> <id> [<id>...]"
+    echo
+    echo "   -k: keep going on error"
+    echo
+    exit 0
+fi
+
+HOST="localhost"
+KEEP_GOING=""
+
+# parse command line options...
+if [ "$1" == "-k" ]
+then
+ KEEP_GOING="-k"
+ shift
+fi
+if [ "$1" == "-h" ]
+then
+ shift
+ HOST="$1"
+ shift
+fi
+OUTPUT_PREFIX="$1"
+shift
+DEV_IDS="$*"
+
+# ---- should not need to configure anything below this line ----
+MONITOR_STREAMS="$SIAM_HOME/utils/monitorStreams $HOST"
+OUTPUT_FILE="$SIAM_HOME/logs/$OUTPUT_PREFIX.`date +%Y%m%d%H%M`"
+
+echo "monitoring streams $DEV_IDS, writing to $OUTPUT_FILE"
+
+$MONITOR_STREAMS $KEEP_GOING $DEV_IDS | tee $OUTPUT_FILE
+

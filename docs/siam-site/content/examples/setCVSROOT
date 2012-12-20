@@ -1,0 +1,117 @@
+#!/bin/bash
+
+#########################################
+# Name: setCVSROOT
+#
+# Summary: set CVSROOT variable and optionally login
+#
+# Description:
+# - file must be sourced to export CVSROOT
+# - run file (don't source) with no options for help
+# Author: k headley
+#
+# Copyright 2009 MBARI
+#
+#########################################
+
+#########################################
+# Script configuration defaults
+# casual users should not need to change
+# anything below this section
+#########################################
+DO_LOGIN="FALSE"
+CVS_USER="guest"
+
+#################################
+# Script variable initialization
+#################################
+VERBOSE="FALSE"
+
+
+#################################
+# Function Definitions
+#################################
+
+#################################
+# name: printUsage
+# description: print use message
+# args: none
+#################################
+printUsage(){
+    echo
+    echo "usage: . `basename $0` [options] -u <userName>"
+    echo "-l             : do CVS login            [$DO_LOGIN]"
+    echo "-u [user]      : set user                [$CVS_USER]"
+    echo "-V             : verbose output          [$VERBOSE]"
+    echo "-h             : print this help message"
+    echo ""
+    echo
+}
+
+########################################
+# name: vout
+# description: print verbose message to stderr
+# args:
+#     msg: message
+########################################
+vout(){
+    if [ "$VERBOSE" == "TRUE" ]
+    then
+	echo "$1" >&2
+    fi
+}
+
+########################################
+# name: exitError
+# description: print use message to stderr
+# args:
+#     msg:        error message
+#     returnCode: exit status to return
+########################################
+exitError(){
+    echo >&2
+    echo "$1" >&2
+    echo >&2
+    exit $2
+}
+
+##########################
+# Script main entry point
+##########################
+
+# Argument processing
+if [ "$#" -eq 0 ];then
+    printUsage
+    exit 0
+fi
+
+while [ "$#" -ge 1 ]
+do
+   case "$1" in
+	-l ) DO_LOGIN="TRUE";
+	;;
+	-u ) shift;
+	CVS_USER="$1";
+	;;
+	-V ) VERBOSE="TRUE";
+	;;
+	-h) printUsage;
+	;;
+	*) exit 0 # getopts outputs error message
+	;;
+    esac
+    shift
+done
+
+vout "DO_LOGIN=$DO_LOGIN"
+vout "CVS_USER=$CVS_USER"
+
+export CVSROOT=:pserver:$CVS_USER@moonjelly.shore.mbari.org:/home/cvs
+echo "CVSROOT = $CVSROOT"
+
+if [ "$DO_LOGIN" == "TRUE" ]
+then
+	cvs login $CVS_USER
+fi
+
+echo "setCVSROOT done"

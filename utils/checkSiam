@@ -1,0 +1,94 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# checkSiam 
+#
+# Visits the proc file system
+# searching the cmdline entries of each 
+# process for "nodeTest" indicating that
+# SIAM is running.
+#
+# Returns 0 error status is SIAM is running
+# and 1 otherwise
+#
+# author: K. Headley
+# 17 oct 2008
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#################################
+# Script variable initialization
+#################################
+VERBOSE="FALSE"
+
+#################################
+# name: printUsage
+# description: print use message
+# args: none
+#################################
+printUsage(){
+    echo
+    echo "  `basename $0`: Checks to see if SIAM application is running."
+    echo "  Returns exit status (\$?) 0 if SIAM is running, 1 otherwise." 
+    echo
+    echo "  Usage: `basename $0` [options]"
+    echo
+    echo "    Options:"
+    echo "    -v : verbose output  [$VERBOSE]"
+    echo "    -h : print this help message"
+    echo
+}
+
+if [ "$1" == "--help" ]
+then
+    printUsage
+    exit 1
+fi
+
+while getopts vh Option
+do
+    case $Option in
+        v ) VERBOSE="TRUE"
+        ;;
+        h )printUsage
+          exit 0
+        ;;
+        *) exit 0 # getopts outputs error message
+        ;;
+    esac
+done
+
+for proc in $( ls -d /proc/[0-9]* ); do
+  if [ "$VERBOSE" == "TRUE" ]
+  then
+      echo "checking process $proc"
+  fi
+
+  if [ -e "$proc/cmdline" ]
+  then
+    grep -iq nodeTest $proc/cmdline
+    foundSiam="$?"
+    if [ "$foundSiam" -eq 0 ]
+      then
+	if [ "$VERBOSE" == "TRUE" ]
+	then
+	    echo "SIAM is running in $proc"
+	fi
+      exit 0
+    fi
+  else
+    if [ "$VERBOSE" == "TRUE" ]
+    then
+	echo "no cmdline in $proc"
+    fi
+    foo="bar"
+  fi
+done
+	
+if [ "$VERBOSE" == "TRUE" ]
+then
+    echo "SIAM not found"
+fi
+exit 1

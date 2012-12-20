@@ -1,0 +1,250 @@
+/* color pal combos:
+6d98ab,00275e,feb729,A8B1B8,FFFFFF,000000: (blue,blue,yellow,gray,white,black)
+3D577A,677C97,E3E6EB,AEBD63,8F2831:(blue,blue,gray,green,red)
+F2BC00
+	
+FFF0BA,FF542E,CFD6DE,ADC1D6,7297BA (yellow, yellow, red,blue, blue, blue)
+background: #6D98AB;
+
+*/
+
+/* page default styles */
+body
+{
+	background-color: #04549a;
+	margin: 5px;
+	background-repeat: repeat;
+	background-attachment: fixed;
+	min-height: 800px;
+}
+
+/* default font styles */
+body
+{
+	font-family: Arial, sans-serif;
+	color: #000000;
+	font-size: 10px;
+}
+
+/* empty text line for image gallery divs */
+.textline{
+clear:both;
+}
+
+/* main page header region style*/
+.header{
+position: fixed;
+top: 0%;
+bottom: 5%;
+left: 100px;
+right: 100px;
+margin-bottom: 2px;
+margin-left: 0px;
+background: #01014f;
+max-height: 100px;
+min-height: 100px;
+}
+
+/* main page header text style*/
+.headerText{
+position: fixed;
+left: 300px;
+top: 0%;
+font-family: Arial, sans-serif; 
+font-size: 1.0em;
+color: #42a8d2;
+/*color: #3366ff;*/
+text-align: center;
+font-style: italic;
+}
+
+
+/* main page header (MBARI) logo style*/
+.headerLogo{
+	position: absolute;
+	top: 6px;
+	left: 6px;
+	margin-top: 2px;
+	margin-bottom: 4px;
+	margin-right: 2px;
+	width: 100px;
+	max-height: 90px;
+}
+
+/* main page header (SIAM) banner style*/
+.headerBanner{
+	position: absolute;
+	background: #01014f;
+	top: 2px;
+	left: 10px;
+	margin-top: 0px;
+	margin-bottom: 4px;
+	margin-right: 0px;
+	max-height: 125px;
+}
+
+/* main page navigation submenu */
+.headerSubmenu{
+	position: fixed;
+	top: 100px;
+	left: 0px;
+	right: 100px;
+	min-height: 25px;
+	max-height: 25px;
+	margin-left: 0px;
+	margin-right: 100px;
+	background: #AEBD63;
+	font-size: 1em;
+}
+
+
+/* main page navigation menu */
+.headerMenu{
+	position: fixed;
+	top: 100px;
+	left: 100px;
+	right: 100px;
+	min-height: 25px;
+	max-height: 25px;
+	min-width: 810px;
+	margin-left: 0px;
+	margin-right: 0px;
+	background-color: #04549a;
+	font-size: 1.2em;
+	text-align: left;
+	padding: 0px;
+	margin: 0px;
+	font-family: Arial, sans-serif;
+	color: #FFFFFF;
+}
+
+.headerMenu li
+{
+	display: inline;
+	margin: 0px;
+	padding: 0px 0px 0px 0px;
+	white-space: nowrap;
+	float: left;
+	height: 25px;
+}
+
+.headerMenu a:visited
+{
+	color: #ffffff;
+	text-decoration: none;
+}
+
+.headerMenu a:hover
+{
+	color: #ffffff;
+	text-decoration: none;
+	background-color: #0091cc;
+}
+/* main page navigation menu link style */
+.headerMenu a {
+	margin: 0px 0px 0px 0px;
+	padding: 6px 15px 6px 10px;
+	font-family: Arial, sans-serif;
+	font-size: 1.2em;
+	font-weight: bold;
+	display: block;
+}
+
+.headerMenu a:link
+{
+	color: #ffffff;
+	text-decoration: none;
+}
+
+/* main page navigation menu link mouseover style */
+.headerMenu a:hover {
+color: #ffffff;  
+}
+
+/* main page sidebar style */
+.sidebar{
+position: fixed;
+top: 125px;
+bottom: 0px;
+left: 100px;
+min-width: 175px;
+max-width: 175px;
+margin-top: 0px;
+margin-right: 0px;
+background: #01014f;
+font-size: 1.2em;
+font-weight: bold;
+color: #42a8d2; 
+overflow: auto;
+}
+
+/* main page sidebar list style */
+.navlist{
+padding-left: 5px;
+padding-top: 5px;
+margin-left: 0px;
+list-style-position: inside;
+color: #42a8d2;
+}
+
+/* content iframe style */
+.cframe{
+	bottom: 25px;
+width: 98%;
+height: 100%;
+min-height: 500px;
+margin: 0px;
+border: 0px;
+
+}
+
+/* content div style */
+.cdiv{
+position:fixed;
+top: 125px;
+bottom: 25px;
+left: 275px;
+right: 0px;
+min-width: 635px;
+margin-top: 0px;
+margin-left: 0px;
+margin-right: 100px;
+/*overflow: scroll;*/
+background: white;
+font-size: 1.5em;
+}
+
+/* main footer div style */
+.footer{
+position: fixed;
+bottom: 0%;
+left: 100px;
+right: 100px;
+margin-bottom: 0px;
+margin-left: 0px;
+margin-right: 0px;
+background: #01014f;
+max-height: 25px;
+min-height: 25px;
+}
+
+/* sidebar list link highlight style */
+
+li a.special, a.special:visited{
+color: #5ed0ff;
+font-weight: bold;
+text-decoration: none;
+}
+
+li a.special:hover{
+	color: #ffffff;
+}
+
+
+
+/* sidebar list link inactive style */
+li a.inactive{
+color: #5ed0ff;
+font-weight: bold;
+text-decoration: none;
+}

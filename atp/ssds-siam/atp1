@@ -1,0 +1,98 @@
+#!/bin/tcsh
+#########################################################################
+#               SIAM Acceptance Test Procedure
+#
+# $Id: atp1,v 1.1 2008/11/04 21:57:02 bobh Exp $
+#
+# Description: Scan port, which should cause metadata to be
+# generated.
+#
+# Requirements addressed:2
+# (Requirements document at http://blahblahblah) 
+#
+# Procedure:
+# This script is intended to be executed on the sidearm node.
+# You should be logged into the node as user 'ops' to ensure SIAM environment
+# Ensure that portal and SSDS are already running.
+# Ensure that node application is already running.
+# 
+#########################################################################
+if ($#argv != 1) then
+   echo usage: $0 portalName
+   exit 1
+endif
+  
+set portalName = $argv[1]
+
+# 
+cd $SIAM_HOME
+
+cat <<EOF > properties/siamPort.cfg
+
+serialPort0     = /dev/ttySX0
+powerPort0      = DPA
+serviceJar0     = DummyInstrument-1101.jar   
+
+serialPort1     = /dev/ttySX1
+powerPort1      = 
+serviceJar1     = 
+
+serialPort2     = /dev/ttySX2
+powerPort2      = 
+serviceJar2     =           
+
+serialPort3     = /dev/ttySX3
+powerPort3      = 
+serviceJar3     =    
+
+serialPort4     = /dev/ttySX4
+powerPort4      = 
+serviceJar4     = 
+
+serialPort5     = /dev/ttySX5
+powerPort5      = 
+serviceJar5     = 
+
+
+serialPort6     = /dev/ttySX6
+powerPort6      = 
+serviceJar6     = 
+
+
+serialPort7     = /dev/ttySX7
+powerPort7      = 
+serviceJar7     = 
+
+# NOTE: Environmental sensors are always on /dev/ttySX15 (no DPA on this port)
+serialPort8     = /dev/ttySX15
+powerPort8      = 
+serviceJar8     = MSP430-1100.jar
+
+nodeID = 1024
+
+
+jarLocation     =  ports    
+
+
+logLocation =  logs   
+
+platformSerialPorts     =       /dev/ttySX0:\
+                                /dev/ttySX1:\
+                                /dev/ttySX2:\
+                                /dev/ttySX3:\
+                                /dev/ttySX4:\
+                                /dev/ttySX5:\
+                                /dev/ttySX6:\
+                                /dev/ttySX7:\
+				/dev/ttySX15:\
+                                /dev/ttySA2
+                                
+
+codeBaseLocation        =  /mnt/hda/codebase
+
+
+EOF
+
+# Start the node application, specifying portal address
+node $portalName
+

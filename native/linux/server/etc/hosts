@@ -1,0 +1,7 @@
+# Do not remove the following line, or various programs
+# that require network functionality will fail.
+
+127.0.0.1	localhost.localdomain	localhost
+134.89.10.29	siam-portal-1	siam-portal-1.shore.mbari.org
+10.1.1.1   portal-mtm1 
+10.1.1.2   mtm-1

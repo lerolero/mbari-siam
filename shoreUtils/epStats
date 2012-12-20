@@ -1,0 +1,69 @@
+#!/bin/bash
+
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# epStats
+# Extract portal profile data 
+# from portal log
+#
+# Portal must use -profile option to enable profile output
+# Sends output to stdout by default
+
+PROFILE_IRE="profile"
+PROFILE_SRE=".*profiler"
+PROFILE_RRE="profiler"
+#PROFILE_SRE=" \[.* - "
+#PROFILE_RRE=";"
+
+########################
+# Function Definitions
+########################
+#
+# printUsage
+#
+printUsage(){
+echo
+echo "Usage: `basename $0` [-i <importRegExp>][-s <searchRegExp>] [-r <replaceRegExp>] <portalLog>"
+echo
+echo "       -i: set regexp to import profile data [$PROFILE_IRE]"
+echo "       -s: set search regexp                 [$PROFILE_SRE]"
+echo "       -r: set replace regexp                [$PROFILE_RRE]"
+echo "portalLog: portal log file"
+echo 
+echo "greps <portalLog> for <importRegExp>, replacing <searchRegExp> with <replaceRegExp>"
+echo "Note: portal must use -profile option to generate profile info"
+echo
+}
+
+if [ "$#" -lt 1 ]
+then
+ printUsage
+ exit 0
+fi
+
+while [ "$#" -ge 1 ]
+do
+case "$1" in
+-p) 	shift	
+	PROFILE_IRE="$1"
+	shift
+;; 
+-s) 	shift	
+	PROFILE_SRE="$1"
+	shift
+;; 
+-r) 	shift	
+	PROFILE_RRE="$1"
+	shift
+;; 
+*)	PORTAL_LOG="$1"
+	break;
+;;
+esac
+done
+
+#echo portalLog=$PORTAL_LOG importRE=\"$PROFILE_IRE\" searchRE=\"$PROFILE_SRE\" replaceRE=\"$PROFILE_RRE\"
+
+grep "$PROFILE_IRE" "$PORTAL_LOG" | sed -e "s/$PROFILE_SRE/$PROFILE_RRE/"

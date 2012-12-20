@@ -1,0 +1,64 @@
+.header-3col{
+position: relative;
+top: 0px;
+left: 50px;
+margin-bottom: 2px;
+margin-left: 2px;
+margin-right: 2px;
+background: #6D98AB;
+min-width: 900px;
+max-width: 900px;
+}
+
+.headerText-3col{
+font-family: Arial, Helvetica, sans-serif; 
+font-size: 1.5em;
+color: #00275E;
+/*color: #3366ff;*/
+text-align: center;
+font-style: italic;
+}
+.header-text{
+position: relative;
+top: 0;
+left: 0;
+background: #FFFFFF;
+padding: 10px;
+}
+.leftCol
+{
+position: absolute;
+/*top: 0;
+bottom: 0;*/
+left: 50px;
+right: 0;
+margin-left: 2px;
+margin-right: 2px;
+min-width: 300px;
+max-width: 300px;
+}
+
+.centerCol
+{
+position: absolute;
+/*top: 0;
+bottom: 0;*/
+left: 350px;
+right: 0;
+margin-left: 2px;
+margin-right: 2px;
+min-width: 300px;
+max-width: 300px;
+}
+.rightCol
+{
+position: absolute;
+/*top: 0;
+bottom: 0;*/
+left: 650px;
+right: 0;
+margin-left: 2px;
+margin-right: 2px;
+min-width: 300px;
+max-width: 300px;
+}

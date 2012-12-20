@@ -1,0 +1,8 @@
+#!/bin/bash
+# 
+# Executed when ppp link goes down
+
+echo "IP-DOWN `date +'%s %b %d %Y %H:%M:%S'` $*" >>/var/log/ppp.log
+su -l -c "/home/ops/siam/utils/portalLinkNotify $5 down" ops
+
+

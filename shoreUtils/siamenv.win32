@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# set up win32/cygwin SIAM build environment
+
+# show help message if no args
+if [ "$#" -lt 1 ]
+then
+	echo "Usage: `basename $0` SIAM_HOME"
+	exit 0	
+fi
+
+# set SIAM home directory
+export SIAM_HOME="$1"
+
+# set Java development root 
+export JAVA_DEV_ROOT="$SIAM_HOME"
+
+# set SIAM classpath
+export SIAM_CLASSPATH="$SIAM_HOME/classes;$SIAM_HOME/jars/jakarta-regexp-1.5.jar;$SIAM_HOME/jars/RXTXcomm.jar;$SIAM_HOME/jars/jcommon.kh.jar;$SIAM_HOME/jars/javax.jar;$SIAM_HOME/jars/log4j-1.2.13.jar;$SIAM_HOME/jars/ssds-client-pub-bob.jar;$SIAM_HOME/jars/commons-logging.jar;$SIAM_HOME/jars/javax.servlet.jar;$SIAM_HOME/jars/org.mortbay.jetty-jdk1.2.jar;$SIAM_HOME/jars/jddac-common.jar;$SIAM_HOME/jars/jddac-probe-j2me.jar"
+
+# set log4j level
+export LOG4J_THRESHOLD=INFO
+
+# add SIAM utils to path
+export PATH=$PATH:`cygpath -u $SIAM_HOME/utils`
+
+# create handy aliases
+alias dbg="export LOG4J_THRESHOLD=DEBUG"
+alias inf="export LOG4J_THRESHOLD=INFO"
+alias err="export LOG4J_THRESHOLD=ERROR"
+
+# show the environment
+echo SIAM_HOME=$SIAM_HOME
+echo JAVA_DEV_ROOT=$JAVA_DEV_ROOT
+echo SIAM_CLASSPATH=$SIAM_CLASSPATH

@@ -1,0 +1,8 @@
+# Set logging level for specific packages
+log4j.logger.tests.Aggregator.AggregatorTest=DEBUG
+log4j.logger.moos.deployed.DeviceLog=INFO
+log4j.logger.moos.deployed.FilteredDeviceLog=INFO
+log4j.logger.moos.deployed.DeviceLogIndex=INFO
+log4j.logger.moos.deployed.DeviceLogIterator=INFO
+log4j.logger.moos.deployed.DevicePacketAggregator=DEBUG
+

@@ -1,0 +1,1002 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="ProgId" content="Word.Document">
+   <meta name="Generator" content="Microsoft Word 9">
+   <meta name="Originator" content="Microsoft Word 9">
+   <meta name="Template" content="C:\Program Files\Microsoft Office\Office\html.dot">
+   <meta name="GENERATOR" content="Mozilla/4.79 [en] (Windows NT 5.0; U) [Netscape]">
+   <title>SIAM Code Daily Analysis and Testing</title>
+<link rel=File-List href="./SIAM_procedures_files/filelist.xml">
+<style>
+<!--
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+h1
+	{mso-style-next:Normal;
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:.25in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:1;
+	font-size:10.0pt;
+	font-family:Arial;
+	mso-bidi-font-family:"Times New Roman";
+	mso-font-kerning:0pt;
+	font-weight:bold;}
+h2
+	{mso-style-next:Normal;
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:2;
+	font-size:10.0pt;
+	font-family:Arial;
+	mso-bidi-font-family:"Times New Roman";
+	font-weight:bold;}
+h3
+	{mso-style-next:Normal;
+	margin:0in;
+	margin-bottom:.0001pt;
+	text-indent:.25in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	font-size:10.0pt;
+	font-family:Arial;
+	mso-bidi-font-family:"Times New Roman";
+	font-weight:bold;}
+p.MsoTitle, li.MsoTitle, div.MsoTitle
+	{margin:0in;
+	margin-bottom:.0001pt;
+	text-align:center;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	mso-bidi-font-size:10.0pt;
+	font-family:Arial;
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-font-family:"Times New Roman";
+	font-weight:bold;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+p
+	{margin-right:0in;
+	mso-margin-top-alt:auto;
+	mso-margin-bottom-alt:auto;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+@list l0
+	{mso-list-id:791747610;
+	mso-list-type:hybrid;
+	mso-list-template-ids:630996122 67698705 67698713 67698715 67698703 67698713 67698715 67698703 67698713 67698715;}
+@list l0:level1
+	{mso-level-start-at:14;
+	mso-level-text:"%1\)";
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l1
+	{mso-list-id:1796482710;
+	mso-list-type:hybrid;
+	mso-list-template-ids:1759957388 67698705 67698713 67698715 67698703 67698713 67698715 67698703 67698713 67698715;}
+@list l1:level1
+	{mso-level-text:"%1\)";
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+</head>
+<body link="#0000FF" vlink="#800080" lang="EN-US" style="tab-interval:.5in">
+
+<div class=Section1>
+<center><span style='font-size:10.0pt;
+mso-bidi-font-size:13.5pt;font-family:Arial'><b>SIAM
+Code Daily Analysis and Testing</b><o:p></o:p></span>
+<p><span style='font-size:10.0pt;
+mso-bidi-font-size:7.5pt;font-family:Arial'>by:<o:p></o:p></span>
+<p><span style='font-size:10.0pt;
+mso-bidi-font-size:7.5pt;font-family:Arial'>Karen
+A. Salamy<o:p></o:p></span>
+<p><span style='font-size:10.0pt;
+mso-bidi-font-size:7.5pt;font-family:Arial'>(prepared
+5/27/04)<o:p></o:p></span></center>
+
+<p><span style='font-size:10.0pt;font-family:Arial'><o:p></o:p></span>
+<p><span style='font-size:10.0pt;font-family:Arial'><b> This document describes
+how to generate and install SIAM software releases, and suggests standard
+methodology for SIAM output analysis.</b><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'>Preparation:<o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.5in;text-indent:-.25in;mso-list:l1 level1 lfo2;
+tab-stops:list .5in"><![if !supportLists]><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'>1)<span style='font:7.0pt "Times New Roman"'></span></span><![endif]><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'>@3:00PM
+<b>ASK</b> everyone to check-in their new code<o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.5in;text-indent:-.25in;mso-list:l1 level1 lfo2;
+tab-stops:list .5in"><![if !supportLists]><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'>2)<span style='font:7.0pt "Times New Roman"'></span></span><![endif]><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'>In
+/home/salamy/siam perform a:<span style="mso-spacerun:
+yes"></span><span style="mso-spacerun: yes"></span></span><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:"Courier New"'><b>#</span><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:Arial'></span><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:"Courier New"'>cvs
+update -d</b></span><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><span style="mso-spacerun: yes"></span></span><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:Arial'><span 
+style="mso-spacerun: yes"></span><o:p></o:p></span>
+
+<p class="MsoNormal" style="text-indent:.5in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><i>(can
+use GCVS GUI to do this)</i></span><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:Arial'><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.5in;text-indent:-.25in;mso-list:l1 level1 lfo2;
+tab-stops:list .5in"><![if !supportLists]><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'>3)<span style='font:7.0pt "Times New Roman"'></span></span><![endif]><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'>Run
+a:<span style="mso-spacerun: yes"></span></span><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:"Courier New"'><b>#
+make clean</span><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><span style="mso-spacerun: yes"></span></b>in
+/home/salamy/siam<o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.5in;text-indent:-.25in;mso-list:l1 level1 lfo2;
+tab-stops:list .5in"><![if !supportLists]><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'>4)<span style='font:7.0pt "Times New Roman"'></span></span><![endif]><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'>Run:<span style="mso-spacerun: yes"></span></span><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:"Courier New"'><b>#
+make</span><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><span style="mso-spacerun: yes"></span></b>in
+/home/salamy/siam<o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.5in;text-indent:-.25in;mso-list:l1 level1 lfo2;
+tab-stops:list .5in"><![if !supportLists]><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'>5)<span style='font:7.0pt "Times New Roman"'></span></span><![endif]><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'>Hope
+everything builds properly, otherwise talk to user whose code is causing
+problems.<o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.5in;text-indent:-.25in;mso-list:l1 level1 lfo2;
+tab-stops:list .5in"><![if !supportLists]><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'>6)<span style='font:7.0pt "Times New Roman"'></span></span><![endif]><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'>Perform
+a TAG in CVS with the current date (e.g., apr30)<span 
+style='mso-tab-count:1'></span><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.5in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'>First
+run list of last tag number (from ~/siam):<span style="mso-spacerun: yes"></span></span><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:"Courier New"'><b>#
+cvs log Makefile | more</b></span><span style='font-size:10.0pt;mso-bidi-font-size:
+12.0pt;font-family:Arial'><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.5in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.5in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'>Then
+Tag with new number for day-&nbsp;<span 
+style="mso-spacerun: yes"></span><i>cvs
+rtag tag_month_day_year siam</i>(from any directory is okay)<o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.5in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><span style="mso-spacerun:
+yes"></span></span><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'>Example:<span style="mso-spacerun: yes"></span><span 
+style="mso-spacerun: yes"></span></span><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Courier New"'><b>#
+cvs rtag apr30_2004-2 siam</b></span><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.5in;text-indent:-.25in;mso-list:l1 level1 lfo2;
+tab-stops:list .5in"><![if !supportLists]><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'>7)<span style='font:7.0pt "Times New Roman"'></span></span><![endif]><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'>Export
+the new TAG to a /home/salamy/tmp directory<o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.5in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Courier New"'><b>#
+cd /home/salamy/tmp</span><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:Arial'><span 
+style="mso-spacerun: yes"></span></span><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'></b>(create
+the /tmp directory if it does not exist)<o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.5in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Courier New"'><b>#
+rm –rf *</b><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.25in;text-indent:.25in"><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:"Courier New"'><b>#
+cvs export –r apr30_2004 siam</span><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><span style="mso-spacerun:
+yes"></span></b>(use
+the tag of the day – e.g., apr30)<o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.5in;text-indent:-.25in;mso-list:l1 level1 lfo2;
+tab-stops:list .5in"><![if !supportLists]><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'>8)<span style='font:7.0pt "Times New Roman"'></span></span><![endif]><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'>Manually
+set parameters (<b>BE CAREFUL!<span 
+style="mso-spacerun: yes"></span></b>Close
+window when done as this will affect your environment settings)<o:p></o:p></span>
+<h1 style="text-indent:.25in">
+<span style='mso-bidi-font-family:Arial'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></h1>
+
+<h1 style="text-indent:.25in">
+<span style='font-family:"Courier New"'># export JAVA_DEV_ROOT=/home/salamy/tmp/siam<o:p></o:p></span></h1>
+
+<div class="MsoNormal" style="margin-left:.25in;text-indent:.25in"><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:"Courier New"'><b>#
+export SIAM_HOME=/home/salamy/tmp/siam</b></span><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Courier New"'><o:p></o:p></span></div>
+
+
+<p class="MsoNormal" style="margin-left:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.5in;text-indent:-.25in;mso-list:l1 level1 lfo2;
+tab-stops:list .5in"><![if !supportLists]><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'>9)<span style='font:7.0pt "Times New Roman"'></span></span><![endif]><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'>cd
+into siam/ and make the following directories:<o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.5in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Courier New"'><b>#
+cd siam</b></span><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:"Courier New"'><o:p></o:p></span>
+
+<p class="MsoNormal" style="text-indent:.5in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Courier New"'><b>#
+mkdir classes</b><o:p></o:p></span>
+
+<p class="MsoNormal" style="text-indent:.5in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Courier New"'><b>#
+mkdir ports</b></span><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:Arial'><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.75in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.5in;text-indent:-.25in;mso-list:l1 level1 lfo2;
+tab-stops:list .5in"><![if !supportLists]><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'>10)<span style='font:7.0pt "Times New Roman"'></span></span><![endif]><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'>Now,
+ready to perform a make:<o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.5in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Courier New"'><b>#
+make</b></span><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:"Courier New"'><o:p></o:p></span>
+
+<p class="MsoNormal" style="text-indent:.5in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Courier New"'><b>#
+make cimtpucks</b><o:p></o:p></span>
+
+<p class="MsoNormal" style="text-indent:.5in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Courier New"'><b>#
+make distribution</b></span><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:Arial'><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.75in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.75in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.5in;text-indent:-.25in;mso-list:l1 level1 lfo2;
+tab-stops:list .5in"><![if !supportLists]><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'>11)<span style='font:7.0pt "Times New Roman"'></span></span><![endif]><span style='font-size:10.0pt;mso-bidi-font-size:
+12.0pt;font-family:"Courier New"'><b>#
+cd ../tmp</span><span style='font-size:
+10.0pt;mso-bidi-font-size:12.0pt;font-family:Arial'><span style="mso-spacerun:
+yes"></span></b>(one
+level above siam)<span style="mso-spacerun: yes"></span>- <b>ASK</b> everyone
+if it is okay to blow away old siam/.<o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.5in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.75in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'>Now
+have a deployed.tar.gz file for transferring first to <b>siam-portal-2</b>
+then to <b>mooring</b><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.75in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.75in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'>From
+greenflash:/home/salamy/tmp, copy all *.tar.gz files over to the portal:<o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.75in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal" style="text-indent:.5in"><span lang=FR style='font-size:
+10.0pt;mso-bidi-font-size:12.0pt;font-family:"Courier New";mso-ansi-language:
+FR'><b>#
+scp *.gz&nbsp;</span><span style='font-size:10.0pt;mso-bidi-font-size:
+12.0pt;font-family:"Courier New"'><span 
+lang=FR style='mso-ansi-language:FR'><a href="mailto:ops@siam-portal-2:/home/ops">ops@siam-portal-2:/home/ops</a></b></span></span><span 
+lang=FR style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:"Courier New";
+mso-ansi-language:FR'><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.75in"><span lang=FR style='font-size:
+10.0pt;mso-bidi-font-size:12.0pt;font-family:Arial;mso-ansi-language:FR'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.5in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'>Next,
+log in to siam-portal-2<o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.75in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.5in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Courier New"'><b>#
+ssh <a href="mailto:ops@siam-portal-2">ops@siam-portal-2</span><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:Arial'><span 
+style="mso-spacerun: yes"></span></a></b>(log
+in to siam-portal-2 for transfer to mooring)<o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.75in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.5in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.5in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'>Next,
+transfer compressed *.tars to mooring:<o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.75in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal" style="text-indent:.5in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Courier New"'><b>#
+cat /etc/hosts</span><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:Arial'><span 
+style="mso-spacerun: yes"></span></span><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'></b>(Gives
+list of hosts – verify mooring is in the list)<o:p></o:p></span>
+
+<p class="MsoNormal" style="text-indent:.5in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Courier New"'><b>#
+ping mooring&nbsp;</span><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:Arial'></b>(make
+sure the node is alive)<o:p></o:p></span>
+<p>Follow MMC node update procedures as described&nbsp; <a href="SIAM_node_update.html">here</a>
+.
+<div class="MsoNormal" style="text-indent:.5in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Courier New"'></div>
+
+<div class="MsoNormal" style="margin-left:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><u>Now
+ready to go but NEED TO SET UP PORTAL – Usually siam-portal-2</u><o:p></o:p></span></div>
+
+
+<p class="MsoNormal" style="margin-left:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'>Copy
+<b>shore.tar.gz</b> file to /home/ops on <b>siam-portal-2</b><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'>From
+salamy@greenflash:/home/salamy/tmp:<o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Courier New"'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Courier New"'>#<b>
+ssh ops@siam-portal-2</span><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:Arial'></span><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:Arial'></b>(login)<o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Courier New"'>#<b>
+rm –rf siam</b><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Courier New"'>#
+<b>tar xvzf shore.tar.gz</b><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Courier New"'>#
+<b>cd siam</b><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Courier New"'>#
+<b>mkdir logs</b><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Courier New"'>#<b>
+cd logs</b></span><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:Arial'><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal" style="text-indent:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'>Next,
+Verify no other portal running on portal (siam-portal-2) system:<o:p></o:p></span>
+
+<p class="MsoNormal" style="text-indent:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal" style="text-indent:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Courier New"'>#
+<b>ps –eaf | grep jdk</b><o:p></o:p></span>
+
+<p class="MsoNormal" style="text-indent:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal" style="text-indent:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'>If
+one or more exists, kill first jdk process running with:<span style="mso-spacerun: yes"></span></span><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:"Courier New"'><b>kill</b></span><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:Arial'><o:p></o:p></span>
+
+<p class="MsoNormal" style="text-indent:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal" style="text-indent:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'>Start
+portal:<o:p></o:p></span>
+
+<p class="MsoNormal" style="text-indent:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'>Publish
+in background:<span 
+style="mso-spacerun: yes"></span></span><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Courier New"'>#
+<b>portal –publish >&amp;<span style="mso-spacerun: yes"></span>portal.log
+&amp;</b></span><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:Arial'><o:p></o:p></span>
+
+<p class="MsoNormal" style="text-indent:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal" style="text-indent:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><u>OR</span><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:Arial'></u>
+in foreground:<span style="mso-spacerun: yes"></span></span><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:"Courier New"'>#
+<b>portal –publish mooring-cimt | tee portal.log</b></span><span style='font-size:
+10.0pt;mso-bidi-font-size:12.0pt;font-family:Arial'><o:p></o:p></span>
+<div style='border:none;border-bottom:solid windowtext .75pt;padding:0in 0in 1.0pt 0in'>
+<div class="MsoNormal" style="text-indent:.25in;border:none;mso-border-bottom-alt:
+solid windowtext .75pt;padding:0in;mso-padding-alt:0in 0in 1.0pt 0in"><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span></div>
+</div>
+
+<div class="MsoNormal" style="text-indent:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span></div>
+
+<div style='border:none;border-bottom:solid windowtext .75pt;padding:0in 0in 1.0pt 0in'>
+<div class="MsoNormal" style="text-indent:.25in;border:none;mso-border-bottom-alt:
+solid windowtext .75pt;padding:0in;mso-padding-alt:0in 0in 1.0pt 0in"><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:Arial'><b>Next,
+CHECK TO SEE IF YOU NEED TO BURN PUCKS!!!!&nbsp;</b><o:p></o:p></span></div>
+
+
+<p class="MsoNormal" style="text-indent:.25in;border:none;mso-border-bottom-alt:
+solid windowtext .75pt;padding:0in;mso-padding-alt:0in 0in 1.0pt 0in"><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span></div>
+
+<div class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span></div>
+
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'>Before
+starting the test, create a list of the changes to the evening’s code since
+it was last tagged to send out to the rest of the SIAM team in e-mail.<o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'>Skip
+this step if no code updates were performed for the day.<o:p></o:p></span>
+
+<p class="MsoNormal" style="text-indent:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal" style="text-indent:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'>From
+/home/salamy/siam type:<o:p></o:p></span>
+
+<p class="MsoNormal" style="text-indent:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+<h3>
+<span style='font-family:"Courier New"'># siamChanges 'mm/dd/yyyy hh:mm:ss'
+> junk</span><span style='mso-bidi-font-family:Arial'><o:p></o:p></span></h3>
+
+<div class="MsoNormal" style="text-indent:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span></div>
+
+
+<p class="MsoNormal" style="text-indent:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'>Where
+an example of the date/time of last tag is:<span style="mso-spacerun: yes"></span>‘05/07/2004
+16:00:00’<o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'>Piping
+out data into “junk” file makes it easier to read changes.<span style="mso-spacerun: yes"></span>E-mail
+these to the SIAM Users / SCRUM list.<o:p></o:p></span>
+<div style='border:none;border-bottom:solid windowtext .75pt;padding:0in 0in 1.0pt 0in'>
+<div class="MsoNormal" style="text-indent:.25in;border:none;mso-border-bottom-alt:
+solid windowtext .75pt;padding:0in;mso-padding-alt:0in 0in 1.0pt 0in"><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span></div>
+</div>
+
+<div class="MsoNormal" style="text-indent:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span></div>
+
+
+<p class="MsoNormal" style="text-indent:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><b>Start
+evening test:&nbsp;</span><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:Arial'></b>Usually
+from either greenflash or etna as root@mooring<o:p></o:p></span>
+
+<p class="MsoNormal" style="text-indent:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Courier New"'><b>#
+ssh <a href="mailto:root@mooring">root@mooring</a></b><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Courier New"'><b>#</span><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:"Courier New"'></b>
+<b>reboot
+</b>(or halt)</span><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><span style="mso-spacerun:
+yes"></span><b>Dial
+modem – 831-769-1050 to bring system back up.</b><o:p></o:p></span>
+
+<p class="MsoNormal" style="text-indent:.25in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'>Watch
+/logs directory on portalhost (siam-portal-2) (in first window) to see
+if data is being logged.<o:p></o:p></span>
+<div style='border:none;border-bottom:solid windowtext .75pt;padding:0in 0in 1.0pt 0in'>
+<div class="MsoNormal" style="border:none;mso-border-bottom-alt:solid windowtext .75pt;
+padding:0in;mso-padding-alt:0in 0in 1.0pt 0in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><b>NOTE:</span><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:Arial'><span 
+style="mso-spacerun: yes"></span></b>Most
+of the time, you will not manually enable the node.* file.<span style="mso-spacerun: yes"></span>This
+will be done by enabling the autostart parameter and rebooting.<o:p></o:p></span></div>
+
+
+<p class="MsoNormal" style="border:none;mso-border-bottom-alt:solid windowtext .75pt;
+padding:0in;mso-padding-alt:0in 0in 1.0pt 0in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal" style="border:none;mso-border-bottom-alt:solid windowtext .75pt;
+padding:0in;mso-padding-alt:0in 0in 1.0pt 0in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'>To
+view the bring up of the instruments, login <a href="mailto:ops@etna">ops@etna</a>
+and do the following:<o:p></o:p></span>
+
+<p class="MsoNormal" style="border:none;mso-border-bottom-alt:solid windowtext .75pt;
+padding:0in;mso-padding-alt:0in 0in 1.0pt 0in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal" style="border:none;mso-border-bottom-alt:solid windowtext .75pt;
+padding:0in;mso-padding-alt:0in 0in 1.0pt 0in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><span style="mso-spacerun: yes"></span><span style="mso-spacerun: yes"></span></span><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:"Courier New"'><b>#
+gosiam</b><o:p></o:p></span>
+
+<p class="MsoNormal" style="border:none;mso-border-bottom-alt:solid windowtext .75pt;
+padding:0in;mso-padding-alt:0in 0in 1.0pt 0in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:"Courier New"'><span style="mso-spacerun:
+yes"></span><b>#
+listPorts localhost –stats</b></span><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:Arial'><o:p></o:p></span>
+
+<p class="MsoNormal" style="border:none;mso-border-bottom-alt:solid windowtext .75pt;
+padding:0in;mso-padding-alt:0in 0in 1.0pt 0in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal" style="border:none;mso-border-bottom-alt:solid windowtext .75pt;
+padding:0in;mso-padding-alt:0in 0in 1.0pt 0in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span></div>
+
+<div class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><b>STANDARD
+DATA RETRIEVAL:</b><o:p></o:p></span></div>
+
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><b>To
+pull data off of system while it is running and is in its housing</b><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'>From
+siam-portal-2:/home/ops<o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Courier New"'><span style="mso-spacerun: yes"></span><b>#
+lease 1800 mooring</span><span style='font-size:10.0pt;mso-bidi-font-size:
+12.0pt;font-family:Arial'></span><span style='font-size:10.0pt;mso-bidi-font-size:
+12.0pt;font-family:Arial'></b>(obtains
+30 minute lease)<o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'>(This
+length of time is good for weekend data retrievals if the node was set
+to INFO mode for test.<span style="mso-spacerun: yes"></span>1200 should
+suffice for weekday retrievals<o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'>in
+INFO mode. Double the lease time if DEBUG mode was invoked as it produces
+more comments and larger files that take longer to download<o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'>to
+the portal.)<o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'>Wait
+for prompt to return, then:<o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Courier New"'><span style="mso-spacerun: yes"></span><b>#
+ssh <a href="mailto:ops@mooring">ops@mooring<span style="mso-spacerun: yes"></span></span><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'></a></b>(NOTE:
+If tests are not running, simply start here for data retrieval)</span><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Courier New"'><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Courier New"'><span style="mso-spacerun: yes"></span><b>#
+cd /mnt/hda/siam/logs</b><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Courier New"'><span style="mso-spacerun: yes"></span><b>#
+tar czf nodedata.tar *<span style="mso-spacerun: yes"></span></span><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:Arial'></b>(NOTE:
+If the node is running, first copy the node log (node.*) to another name
+as you cannot tar a file<o:p></o:p></span>
+
+<p class="MsoNormal" style="margin-left:2.0in;text-indent:.5in"><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:Arial'>that
+is being actively written to.<span style="mso-spacerun: yes"></span>You
+will need to exclude the active log file in the tar command in this case.)&nbsp;<o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Courier New"'><span style="mso-spacerun: yes"></span><b>#
+exit</b></span><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:Arial'><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'>From
+siam-portal-2:/home/ops<o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Courier New"'><span style="mso-spacerun: yes"></span><b>#
+scp <a href="mailto:ops@mooring:/mnt/had/siam/logs/nodedata.tar">ops@mooring:/mnt/hda/siam/logs/nodedata.tar</a>
+.</b><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'>To
+transfer data over to morgana:<o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Courier New"'><span style="mso-spacerun: yes"></span><b>#
+ssh ops@morgana</b><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Courier New"'><span style="mso-spacerun: yes"></span><span 
+style="mso-spacerun: yes"></span><b>#
+cd archive</b><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Courier New"'><span style="mso-spacerun: yes"></span><b>#
+mkdir <i>Tag_test_date-overnight</span><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:Arial'><span 
+style="mso-spacerun: yes"></span></span><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'></i></b>(Example:<span 
+style="mso-spacerun: yes"></span>mkdir
+may06_2004-overnight)<o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Courier New"'><span style="mso-spacerun: yes"></span><b>#
+cd <i>Tag_test_date-overnight</i></b><span 
+style="mso-spacerun: yes"></span><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Courier New"'><span style="mso-spacerun: yes"></span><b>#
+scp <a href="mailto:ops@siam-portal-2:/home/ops/nodedata.tar">ops@siam-portal-2:/home/ops/nodedata.tar</a>
+.</b><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'>Also,
+move the portal.log document into ops@morgana:/home/ops/archive/<i>tagged_run_of_day</i>:<o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Courier New"'><span style="mso-spacerun: yes"></span><b>#
+scp ops@siam-portal-2:/home/ops/siam/logs/portal.log .</b><o:p></o:p></span>
+<div style='border:none;border-bottom:solid windowtext .75pt;padding:0in 0in 1.0pt 0in'>
+<div class="MsoNormal" style="border:none;mso-border-bottom-alt:solid windowtext .75pt;
+padding:0in;mso-padding-alt:0in 0in 1.0pt 0in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span></div>
+</div>
+
+<div class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><b>///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////</b><o:p></o:p></span></div>
+
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><b>DO
+ONLY WHEN SYSTEM IS NOT PACKED IN ITS HOUSING (Testing in lab with Ethernet
+connection):<span style="mso-spacerun: yes"></span></span><span 
+style='font-size:10.0pt;mso-bidi-font-size:12.0pt;font-family:Arial'></b>To
+stop a test at any time do the following using a console port.<span 
+style="mso-spacerun: yes"></span>Plug
+DB9 cable into Etna’s serial port. From etna type:<o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Courier New"'><span style="mso-spacerun: yes"></span><b>#
+minicom</b><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Courier New"'><span style="mso-spacerun: yes"></span><b>#
+lease</b><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Courier New"'><span style="mso-spacerun: yes"></span><b>#
+exitNode localhost</b></span><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'>To
+bring up the Ethernet on node following a shutdown:<o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Courier New"'><span style="mso-spacerun: yes"></span><b>#
+ps –eaf | grep j9</b><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Courier New"'><span style="mso-spacerun: yes"></span><b>#
+poff</b><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Courier New"'><span style="mso-spacerun: yes"></span><span 
+style="mso-spacerun: yes"></span><b>#
+ifdown eth0 (just to be sure)</b><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Courier New"'><span style="mso-spacerun: yes"></span><b>#
+ifup eth0</b></span><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><o:p></o:p></span>
+<div style='border:none;border-bottom:solid windowtext .75pt;padding:0in 0in 1.0pt 0in'>
+<div class="MsoNormal" style="border:none;mso-border-bottom-alt:solid windowtext .75pt;
+padding:0in;mso-padding-alt:0in 0in 1.0pt 0in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span></div>
+</div>
+
+<div class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'>To
+bring up Ethernet on system that is <u>still</u> running do the following
+at the mooring-cimt prompt on Etna:<o:p></o:p></span></div>
+
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Courier New"'><span style="mso-spacerun: yes"></span><b>#
+cpuAwake</b><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Courier New"'><span style="mso-spacerun: yes"></span><b>#
+ifup eth0</b></span><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><o:p></o:p></span>
+<div style='border:none;border-bottom:solid windowtext .75pt;padding:0in 0in 1.0pt 0in'>
+<div class="MsoNormal" style="border:none;mso-border-bottom-alt:solid windowtext .75pt;
+padding:0in;mso-padding-alt:0in 0in 1.0pt 0in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span></div>
+
+
+<p class="MsoNormal" style="border:none;mso-border-bottom-alt:solid windowtext .75pt;
+padding:0in;mso-padding-alt:0in 0in 1.0pt 0in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><b>\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\</b><o:p></o:p></span></div>
+
+<div class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span></div>
+
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><b>Daily
+analysis of tests:</b><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'>The
+SIAM node puts out *.dat and *.idx binary files prefaced by ISI ID for
+each instrument.<o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'>Also
+puts out a node.* ASCII file that will be used to analyze test.<span style="mso-spacerun: yes"></span>These
+were placed into the archive directory on morgana in the Standard Data
+Retrieval step above:<o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Courier New"'><span style="mso-spacerun: yes"></span><b>#
+ssh <a href="mailto:ops@morgana">ops@morgana</a></b><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'>Change
+directory into the newly created directory (last step) of the most recent
+overnight tests: <a href="mailto:ops@morgana:/home/ops/archive/Tag_test_date-overnight">ops@morgana:/home/ops/archive/<i>Tag_test_date-overnight<span 
+style="mso-spacerun: yes"></span></i></a>and
+grep the node.* ASCII file for ERROR and WARN.<o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Courier New"'><span style="mso-spacerun: yes"></span><b>#
+grep ERROR node.* > errors</b><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:"Courier New"'><span style="mso-spacerun: yes"></span><b>#
+grep WARN node.* > warns</b><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span>
+
+<p class="MsoNormal"><span style='font-size:10.0pt;mso-bidi-font-size:12.0pt;
+font-family:Arial'>Compile
+all ERROR and WARN statements into an e-mail daily to the SCRUM group (oreilly,
+bobh, headley, mrisi, graybeal, kgomes, and chma).<o:p></o:p></span>
+<div style='border:none;border-bottom:solid windowtext .75pt;padding:0in 0in 1.0pt 0in'>
+<div class="MsoNormal" style="border:none;mso-border-bottom-alt:solid windowtext .75pt;
+padding:0in;mso-padding-alt:0in 0in 1.0pt 0in"><span style='font-size:10.0pt;
+mso-bidi-font-size:12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span></div>
+</div>
+
+<div style="margin-left:.5in"><span style='font-size:10.0pt;mso-bidi-font-size:
+12.0pt;font-family:Arial'><![if !supportEmptyParas]><![endif]><o:p></o:p></span></div>
+</div>
+
+</body>
+</html>

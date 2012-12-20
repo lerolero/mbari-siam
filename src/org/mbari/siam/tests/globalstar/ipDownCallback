@@ -1,0 +1,24 @@
+#!/bin/csh
+# Repeatedly try to reassert ppp connetion. This script assumes no control
+# over modem's power supply.
+
+set sleepTime=15
+@ nTries = 0
+
+while (1) 
+  @ nTries = $nTries + 1
+
+  echo "Connect to ppp"
+  /usr/sbin/pon globalstar
+
+  # Check for ppp connection
+  /sbin/ifconfig | grep ppp
+  if ($status == 0) then
+    echo "Got ppp connection after $nTries tries"
+    exit 0
+  endif
+
+  echo Sleep for $sleepTime sec to let modem go into low-power mode
+  sleep $sleepTime
+
+end

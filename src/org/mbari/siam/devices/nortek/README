@@ -1,0 +1,17 @@
+Note that the Aquadopp service does NOT comprehensively configure the 
+instrument at startup; thus it is very important that a technician properly 
+configure the device before running the service, e.g. using the AquaPro GUI. 
+These manual configuration steps include:
+
+1. You MUST properly set the instrument baud to 19200. To set the baud through
+AquaPro, select Communication->SerialPort and set the baud to 19200. Then you
+MUST start a deployment (see below) in order to make the selected baud 
+"stick". 
+
+2. To make your configuration choices "stick", you must start and then
+stop a recorder deployment with AquaPro before running the SIAM
+service. To start a deployment select 
+Deployment->StartRecorderDeployment, and answer the prompts appropriately.
+After the deployment is started, stop it by selecting 
+Deployment->StopRecorderDeployment. 
+

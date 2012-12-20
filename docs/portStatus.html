@@ -1,0 +1,88 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Tom O'Reilly">
+   <meta name="GENERATOR" content="Mozilla/4.79 [en] (Windows NT 5.0; U) [Netscape]">
+   <title>portStatus</title>
+</head>
+<body>
+<b>NAME</b>
+<blockquote>portStatus - display status of node instrument port
+MOOS node</blockquote>
+<b>SYNOPSIS</b>
+<blockquote>
+<pre>portStatus nodeHost portName(s)</pre>
+</blockquote>
+<b>DESCRIPTION</b>
+<blockquote>The <i>portStatus</i> utility displays the status of the specified 
+instrument port on the specified MOOS node, whether an instrument service is 
+running on the port or not. The output includes status of port registers
+(including overcurrent status), voltage, current limit setting, heatsink
+temperature, relay status, whether there is a PUCK attached to the port, 
+and the name of SIAM service, if any, running on the port. For example, to
+retrieve the status from port /dev/ttySX11 on the "surface" node:
+<pre>
+% portStatus surface /dev/ttySX11
+
+SIAM version $Name: HEAD $
+
+port #: 11
+relayReg: 0x2, controlReg: 0xc5, interruptReg: 0x38
+
+overCurrent: false
+voltage: 12.24636
+current: 0.0732
+currentLimit: 3000.0
+heatsinkTemperature: 28.328003
+
+RS485Term Relay: ISO
+commsIso Relay: ISO
+powerIso Relay: CON
+
+status: OK
+commTxPower: LOW
+commDuplex: FULL
+commMode: 232
+commSlew: FAST
+commsPower: OFF
+instrumentPower: ON
+has Puck: false
+service: Garmin GPS s/n 81108743 (ID=1590)
+</pre>
+<p>
+The portName(s) can be abbreviated as an integer, i.e. "/dev/ttySX11" can 
+be abbreviated as simply "11". Thus the above example is equivalent to
+<blockquote>
+<pre>% portStatus surface 11</pre>
+</blockquote>
+<p>
+This utility may be run on the same host as the node, or on any networked
+host from which the node host is accessible. If run on the node's host,
+then <i>nodeHost</i> should be specified as "localhost".
+<blockquote>
+<pre></pre>
+</blockquote>
+</blockquote>
+<b>ENVIRONMENT</b>
+<blockquote>The following environment variables must be set:</blockquote>
+
+<ul>
+<li>
+JAVA_HOME - location of Java installation, e.g.<i> /j9</i> or <i>/opt/java/jdk1.3.1</i></li>
+
+<li>
+JAVA - name of the JVM. E.g. on a Sidearm, JAVA should be set to <i>j9.
+</i>On
+a workstation with Sun's Java installed, JAVA could be set to <i>java</i>.</li>
+
+<li>
+SIAM_HOME - top of the SIAM directory tree</li>
+
+<li>
+SIAM_CLASSPATH - on a Sidearm, SIAM_CLASSPATH should be set to <i>$JAVA_HOME/lib/jclMax/classes.zip:$JAVA_HOME/lib/prsnlmot.jar:$JAVA_HOME/lib/RXTXcomm.jar:$SIAM_HOME/classes</i>.&nbsp;
+On X86 system, SIAM_CLASSPATH should be set to<i> $SIAM_HOME/classes</i></li>
+</ul>
+
+</body>
+</html>

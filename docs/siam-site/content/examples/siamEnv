@@ -1,0 +1,35 @@
+# .bashrc
+
+# Environment for SIAM applications
+# Note that SIAM_HOME *must* be set prior to executing this script.
+
+# Setup Java
+. /j9/j9env
+export JAVA=j9
+export JAVA_OPTIONS="-mca:32 -mco:64 -mx:24576 -mo:1024 -moi:256"
+
+export SIAM_BIN=$SIAM_HOME/bin/arm-linux
+export SIAM_CODEBASE=http://`hostname`/codebase/
+
+export PARENT_HOST=surface
+export SIAM_CLASSPATH=$JAVA_HOME/lib/jclMax/classes.zip:$JAVA_HOME/lib/prsnlmot.jar:$JAVA_HOME/lib/RXTXcomm.jar:$SIAM_HOME/classes:/mnt/hda/codebase:$SIAM_HOME/jars/javax.jar:$SIAM_HOME/jars/gnu_getopt.jar:$SIAM_HOME/jars/jrendezvous.jar:$SIAM_HOME/jars/log4j-1.2.13.jar:$SIAM_HOME/jars/XModem.jar:$SIAM_HOME/jars/jddac-common.jar:$SIAM_HOME/jars/jddac-probe-j2me.jar:$SIAM_HOME/jars/backport-util-concurrent.jar:$SIAM_HOME/jars/rbnb.jar
+
+# Set to TRUE if you want SIAM node app to start on reboot
+
+export LOG4J_THRESHOLD=DEBUG
+export SIAM_LOG4J=$SIAM_HOME/properties/siam.log4j
+
+export PATH=.:$PATH:$SIAM_HOME/utils:$SIAM_BIN:/etc/siam:$HOME/bin
+
+alias gosiam='cd $SIAM_HOME'
+alias java=j9
+alias ls='ls -F'
+alias ll='ls -AlF'
+alias dhcp=ifswitch-to-dhcp
+
+export SIAM_AUTOSTART=TRUE
+
+export ETHERNET_ADDRESS_PREFIX=134.89.37
+export PARENT_LINK_ON_SCRIPT=
+export PARENT_LINK_OFF_SCRIPT=
+export SIAM_EXIT_SCRIPT=/etc/siam/postSIAM

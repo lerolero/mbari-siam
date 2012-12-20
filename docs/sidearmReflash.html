@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>Sidearm 'Golden Bits' installation</title>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+</head>
+<body>
+<pre><br></pre>
+<h2 align="center"><font face="Helvetica, Arial, sans-serif">SideArm kernel
+and root filesystem reflash procedure</font><br>
+</h2>
+<pre><font face="Helvetica, Arial, sans-serif"><br>1. Cold boot a SideARM and get the bootloader's attention by typing ^C after the "CS8900A found" message. Next, erase the flash <br>allocated for the JFFS2 root filesystem. Erase blocks in the Intel Strataflash part that we use on the SideARM are 128KBytes <br>in length and equally sized (i.e. no boot block). The bootloader's 'eraseflash' command takes a starting and ending block number <br>to erase. In our case the starting block number is 3. <br></font><br></pre>
+<blockquote><tt>IBoot&gt; eraseflash 3<br>
+Do you wish to erase flash blocks 3-127? [y/n] y</tt><br>
+  <br>
+</blockquote>
+<pre><font face="Helvetica, Arial, sans-serif">2. Download the latest sidearm Linux kernel image from moonjelly. The file <font
+ face="Courier New, Courier, monospace">/tftpboot/sidearm4/zImage.current</font> always points to the most <br>current image. <br></font><br></pre>
+<blockquote><tt>IBoot&gt; download tftp:134.89.12.225 sidearm4/zImage.current
+0xc0000000<br>
+  <br>
+  </tt></blockquote>
+<pre><font face="Helvetica, Arial, sans-serif">3. Reprogram the Linux kernel<br></font><br></pre>
+<blockquote><tt>IBoot&gt; flashverify 0x60000 0xc0000000 0x100000</tt><br>
+  <tt>Flashing: 160000</tt><br>
+</blockquote>
+<small><font face="Helvetica, Arial, sans-serif">4. Download the root filesystem
+image.</font></small> <font face="Helvetica, Arial, sans-serif"><small>The
+file <font face="Courier New, Courier, monospace">/tftpboot/sidearm4/root-final.jffs2</font>
+always points to the most current image.</small></font><br>
+<font color="#ff0000"><small><font face="Helvetica, Arial, sans-serif">NOTE:
+make note of the hex size printed by this 'download' command, as it will
+be needed for the subsequent 'flashverify' command.<br>
+</font></small></font>
+<blockquote><tt><br>
+IBoot&gt; download tftp:134.89.12.225 sidearm4/root-final.jffs2 0xc0000000</tt><br>
+  <br>
+  <tt>Downloading sidearm.test/root-final.jffs2: 00900000</tt><br>
+  <tt>Downloaded 9437184 bytes at 60 kB/s</tt><br>
+</blockquote>
+<pre><br><font face="Helvetica, Arial, sans-serif">5. Program the flash with the bootloader's 'flashverify' command. <font
+ color="#ff0000">NOTE: You should use the hex size value indicated by the </font></font><font
+ color="#ff0000" face="Helvetica, Arial, sans-serif">previous 'download'</font><font
+ color="#ff0000"> </font><font face="Helvetica, Arial, sans-serif"><font
+ color="#ff0000"><br>command as the length argument to flashverify</font>. The starting offset is (0x60000 + 0x100000 = 0x160000). We have downloaded <br>the image to the start of SDRAM (0xc0000000), use this as the base address (2nd argument). <br></font><br></pre>
+<blockquote><tt>IBoot&gt; flashverify 0x160000 0xc0000000 0x<i>DownloadSizeHere</i><br>
+Flashing: 00A60000<br>
+  </tt></blockquote>
+<pre><br><font face="Helvetica, Arial, sans-serif">6. Issue the 'createfis' command which creates a redboot partition table. In this case, the important entry is <br>the last one (116 blocks), which indicates where the JFFS2 image starts. This entry number is used as a parameter to the <br>mtd driver at startup (root=1f04). <br></font><br></pre>
+<blockquote><tt>IBoot&gt; createfis 1 2 8 116</tt><br>
+  <tt>Flashing: 01000000</tt><br>
+</blockquote>
+<pre><br><font face="Helvetica, Arial, sans-serif">7. Finally, reboot the system</font>. <br><br></pre>
+<blockquote><tt>IBoot&gt; reboot<br>
+Restarting...<br>
+  </tt></blockquote>
+<pre><br><font face="Helvetica, Arial, sans-serif">The SideARM will come up and calculate some cryptographic key values for 'ssh', which will take a few minutes. You can then edit <br>/etc/hostname and change and specify the hostname of the sidearm. <br><br>Note that the procedure for making this filesystem is documented in a script file (clonesa.sh) in the moosmc/scripts directory. <br>Copy this file and edit it if you intend to use it. This file assumes that you have a working sidearm root filesystem, clones it, <br>and then creates the JFFS2 image file using mkfs.jffs2. You may have to install the jffs2 utilities on your SideARM if they are <br>not already installed. <br></font><br></pre>
+<br>
+</body>
+</html>

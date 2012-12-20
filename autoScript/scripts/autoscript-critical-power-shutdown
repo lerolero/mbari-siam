@@ -1,0 +1,43 @@
+#!/bin/bash
+#
+
+# MSE critical power shutdown 01/31/2007
+# To be run after "low power shutdown" script only
+# Shuts down BINs and turns off 400V to seafloor
+
+export LOG4J_THRESHOLD=INFO
+
+SURFACE=surface
+
+
+NODE=$SURFACE # shutdown ports on surface
+cpuAwake 900 $NODE
+
+#Shutdown axis BIN
+NODE=node411 #node411 deployed
+wakeup $SURFACE $NODE
+cpuAwake 900 $NODE
+binBackups $NODE /dev/ttySX13 ALLDI # no caps or batt backup
+binBackups $NODE /dev/ttySX13       # return status
+killBIN $NODE -q
+
+#Shutdown shelf BIN
+NODE=node401 #node401 deployed
+wakeup $SURFACE $NODE
+cpuAwake 900 $NODE
+binBackups $NODE /dev/ttySX13 ALLDI # no caps or batt backup
+binBackups $NODE /dev/ttySX13       # return status
+killBIN $NODE -q
+
+#Shut off 400V to BINs
+NODE=$SURFACE
+switchBIN400V $NODE 0 OFF
+sleep 5 # delay 5 sec
+switchBIN400V $NODE 0 OFF # issue command once more to be sure it was received
+sleep 5 # delay 5 sec
+switchBIN400V $NODE 0 OFF # issue command once more to be sure it was received
+
+listPorts $NODE -stats
+switchBIN400V $NODE 0
+
+# AUTOSCRIPT EOF

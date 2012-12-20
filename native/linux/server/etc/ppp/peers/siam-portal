@@ -1,0 +1,18 @@
+#
+# configuration for mbari SIAM portal server
+#
+linkname siam-portal
+noipdefault
+portal-mtm1:mtm-1
+ipparam mbari
+logfile /var/log/siam-portal-1.log
+#record /var/log/siam-portal-1.pppd
+debug
+auth
+require-pap
+maxconnect 3600         #disconnect after one hour
+deflate 14
+
+modem
+crtscts
+lock

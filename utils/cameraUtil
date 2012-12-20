@@ -1,0 +1,7 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Extract jpeg images from camera SIAM packets
+$JAVA -cp $SIAM_CLASSPATH org.mbari.siam.operations.utils.CameraUtil $*

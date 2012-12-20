@@ -1,0 +1,334 @@
+#!/bin/bash
+
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Configuration
+
+#######################
+# directories and files
+#######################
+GPP_HOME="."
+OUTPUT="$GPP_HOME/gpp-output"
+PDF="$OUTPUT/pdf"
+TMP="$OUTPUT/tmp"
+GPFILE="$GPP_HOME/gp.tmp"
+
+####################
+# intermediate files
+####################
+PROFILE="$OUTPUT/profile"
+PROFILE_TMP="$TMP/profile.tmp"
+PACKETSIZE_TMP="$TMP/packetSize.tmp"
+TEMP_FILES="$PROFILE_TMP $PACKETSIZE_TMP"
+
+####################
+# output files
+####################
+PROFILE_PDF=$PDF/portalProfile.pdf
+PACKETSIZE_PDF=$PDF/PacketSizeVsDeviceID.pdf
+#OTD_PS=$PS/opTimeDistribution.ps
+#BR_PS=$PS/BitrateVsTransferSize.ps
+#PS_PS=$PS/PacketSizeVsDeviceID.ps
+
+
+####################
+# commands
+####################
+GRAPH="/usr/bin/graph -T ps " 
+GNUPLOT="/usr/bin/gnuplot $GPFILE"
+
+####################
+# config options
+####################
+
+##################
+# initialization
+##################
+replot=0
+START_TIME=`date +"%m/%d/%Y %H:%M:%S"`
+END_TIME=`date +"%m/%d/%Y %H:%M:%S"`
+
+#
+# Make the plot definition for gnu plot
+#
+makeGP(){
+cat > $GPFILE << EOF
+#set terminal postscript color 
+set terminal pdf
+set xdata time
+set timefmt "%m/%d/%Y %H:%M:%S"
+set format x "%m/%d/%Y %H:%M:%S"
+set xrange ["$START_TIME":"$END_TIME"]
+set xlabel "Time"
+set xtics rotate
+
+################## 
+# Portal Profile
+# data for each category must be together in 
+# the data file. i.e.,:
+# 11/28/2006 21:24:35 UTC;1407;-1;"event";280;wakeSubnode;...
+# 11/28/2006 21:24:35 UTC;1407;-1;"event";280;wakeSubnode;...
+# 11/28/2006 21:24:35 UTC;1407;-1;"event";280;wakeSubnode;...
+# 11/28/2006 21:01:35 UTC;-1;-1;"SessionSummary";160;...
+# 11/28/2006 21:01:35 UTC;-1;-1;"SessionSummary";160;...
+# is OK, but
+# 11/28/2006 21:04:35 UTC;1407;-1;"event";180;resetWDT...
+# 11/28/2006 21:04:35 UTC;1407;-1;"event";190;syncNTP...
+# 11/28/2006 21:04:35 UTC;1407;-1;"event";200;deviceList...
+# 11/28/2006 21:04:35 UTC;1407;-1;"event";230;saveData...
+# 11/28/2006 21:04:35 UTC;1407;-1;"event";240;distributeData...
+# will result in points but no lines being plotted
+# presumably because of missing data
+
+################## 
+set output "$PROFILE_PDF"
+set title "Portal Download Profile"
+set ylabel "Operation Time (avgeTime*numberOfOperations)"
+set yrange [0:4000]
+set datafile separator ";"
+set style line 1 lt 1 lw 1 pt 1 ps 1
+set style data points
+set clip two
+set key outside Right noautotitle
+set multiplot
+
+# w errorlines , w linesp
+plot "$PROFILE_TMP"  using 1:(\$5 == 180 ? \$12*\$9/1000 : 1/0 ):(\$10/1000):(\$11/1000) t "resetWDT" w errorlines ,\
+"$PROFILE_TMP"  using 1:(\$5 == 190      ? \$12*\$9/1000 : 1/0 ) t "syncNTP"  ,\
+"$PROFILE_TMP"  using 1:(\$5 == 200      ? \$12*\$9/1000 : 1/0 ) t "deviceList"  ,\
+"$PROFILE_TMP"  using 1:(\$5 == 220      ? \$12*\$9/1000 : 1/0 ) t "rxPacketSet"  ,\
+"$PROFILE_TMP"  using 1:(\$5 == 230      ? \$12*\$9/1000 : 1/0 ) t "saveData"  ,\
+"$PROFILE_TMP"  using 1:(\$5 == 240      ? \$12*\$9/1000 : 1/0 ) t "distributeData"  ,\
+"$PROFILE_TMP"  using 1:(\$5 == 270      ? \$12*\$9/1000 : 1/0 ) t "disconnectNode"  ,\
+"$PROFILE_TMP"  using 1:(\$5 == 280      ? \$12*\$9/1000 : 1/0 ) t "wakeSubnode"  ,\
+"$PROFILE_TMP"  using 1:(\$5 == 160      ? \$15 : 1/0 ) t "connectTime" 
+
+unset multiplot
+
+##########################
+# Packet Size vs DeviceID
+##########################
+set output "$PACKETSIZE_PDF"
+set title "Packet Size Distribution"
+set ylabel "Packet Size (Bytes)"
+set xlabel "Device ID"
+
+set xdata 
+set format x
+set xrange [1200:1600]
+set style data points
+
+set datafile separator ";"
+set key   samplen 4 spacing 1 width 0 height 0 autotitles
+set multiplot
+
+set key noautotitle
+
+plot "$PACKETSIZE_TMP"  using 3:(\$5 == 50      ? \$6 : 1/0 ) t "SensorData Bytes" with points pt 1, \
+"$PACKETSIZE_TMP"  using 3:(\$5 == 80      ? \$6 : 1/0 ) t "Metadata Bytes", \
+"$PACKETSIZE_TMP"  using 3:(\$5 == 110      ? \$6 : 1/0 ) t "Message Bytes", \
+"$PACKETSIZE_TMP"  using 3:(\$5 == 140      ? \$6 : 1/0 ) t "Measurement Bytes", \
+"$PACKETSIZE_TMP"  using 3:(\$5 == 20      ? \$6 : 1/0 ) t "Total Bytes" with points pt 13 ps 0.5 
+
+unset multiplot
+
+##############################
+
+EOF
+}
+
+while [ "$#" -ge 1 ]
+do 
+case "$1" in
+-start)
+shift
+START_TIME="$1"
+shift
+;;
+-end)
+shift
+END_TIME="$1"
+shift
+;;
+-replot)
+replot=1
+shift
+;;
+-f)
+shift
+PROFILE="$1"
+shift
+;;
+*)
+break;
+;;
+esac
+done
+
+# Go to working directory
+cd $GPP_HOME
+
+# create directories if they don't exist
+if [ ! -d "$OUTPUT" ]
+then
+    mkdir "$OUTPUT"
+fi
+if [ ! -d "$PDF" ]
+then
+    mkdir "$PDF"
+fi
+if [ ! -d "$TMP" ]
+then
+    mkdir "$TMP"
+fi
+
+if [ "$replot" -lt 1 ]
+then
+# Clear old files
+rm -f $PS/*.ps
+rm -f $PDF/*.pdf
+
+
+# proprocess profile to generate
+# intermediate data files
+# (should move to external script)
+# $PREPROCESS $PROFILE
+
+echo pre-processing `basename $PROFILE`...
+# generate profile subset
+ grep resetWDT $PROFILE > $PROFILE_TMP
+ grep syncNTP $PROFILE >> $PROFILE_TMP
+ grep deviceList $PROFILE >> $PROFILE_TMP
+ grep saveData $PROFILE >> $PROFILE_TMP
+ grep distributeData $PROFILE >> $PROFILE_TMP
+ grep disconnectNode $PROFILE >> $PROFILE_TMP
+ grep rxPacketSet $PROFILE >> $PROFILE_TMP
+ grep wakeSubnode $PROFILE >> $PROFILE_TMP
+ grep connectTime $PROFILE >> $PROFILE_TMP
+ grep duration $PROFILE >> $PROFILE_TMP
+
+# generate packet size subset
+grep "packet bytes" $PROFILE|grep sensor > $PACKETSIZE_TMP
+grep "packet bytes" $PROFILE|grep metadata >> $PACKETSIZE_TMP
+grep "packet bytes" $PROFILE|grep message >> $PACKETSIZE_TMP
+grep "packet bytes" $PROFILE|grep total >> $PACKETSIZE_TMP
+
+fi
+
+# Generate gnuplot plot definition file
+# use configured file paths for output
+makeGP
+
+# Plot data with gnuplot
+echo Generating PDF...
+$GNUPLOT
+
+# remove temp gnuplot file
+#rm $GPFILE
+echo removing $TEMP_FILES
+rm $TEMP_FILES
+
+echo "`basename $0` done"
+exit
+
+#################################
+#################################
+snipz
+#################################
+#################################
+#
+# Make the plot definition for gnu plot
+#
+makeGP(){
+cat > $GPFILE << EOF
+#set terminal postscript color
+set terminal pdf
+set xdata time
+set timefmt "%m/%d/%Y %H:%M:%S"
+set format x "%m/%d/%Y %H:%M:%S"
+set xrange ["$START_TIME":"$END_TIME"]
+set xlabel "Time"
+set xtics rotate
+
+set output "$PP_PS"
+set title "Portal Download Profile"
+set ylabel "Operations (index)"
+set yrange [0:9]
+set datafile separator ","
+set key   samplen 4 spacing 1 width 0 height 0 autotitles
+set multiplot
+
+set key noautotitle
+plot "$PP_CSV" using 1:(\$5==1 ? \$5 : 1/0 ) t "session" with points pt 1,\
+     "$PP_CSV" using 1:(\$5==2 ? \$5 : 1/0 ) t "resetWDT",  \
+     "$PP_CSV" using 1:(\$5==3 ? \$5 : 1/0 ) t "nodeInfo",  \
+     "$PP_CSV" using 1:(\$5==4 ? \$5 : 1/0 ) t "RxDistData",\
+     "$PP_CSV" using 1:(\$5==5 ? \$5 : 1/0 ) t "packetSet",\
+     "$PP_CSV" using 1:(\$5==6 ? \$5 : 1/0 ) t "xferPacket",\
+     "$PP_CSV" using 1:(\$5==7 ? \$5 : 1/0 ) t "processPackets",\
+     "$PP_CSV" using 2:(\$5==1 ? \$5 : 1/0 ) with points pt 1,\
+     "$PP_CSV" using 2:(\$5==2 ? \$5 : 1/0 ) with points pt 2,\
+     "$PP_CSV" using 2:(\$5==3 ? \$5 : 1/0 ) with points pt 3,\
+     "$PP_CSV" using 2:(\$5==4 ? \$5 : 1/0 ) with points pt 4,\
+     "$PP_CSV" using 2:(\$5==5 ? \$5 : 1/0 ) with points pt 5,\
+     "$PP_CSV" using 2:(\$5==6 ? \$5 : 1/0 ) with points pt 6,\
+     "$PP_CSV" using 2:(\$5==7 ? \$5 : 1/0 ) with points pt 7
+
+unset multiplot
+##############################
+set xdata 
+set format x
+set output "$OTD_PS"
+set title "Distribution of Operation Times"
+set xlabel "Operation"
+set ylabel "Operation Duration (min)"
+set datafile separator ","
+set xtics norotate
+
+set key   samplen 4 spacing 1 width 0 height 0 noautotitles
+set xrange [0:8]
+#set yrange [0:7200]
+set autoscale y
+set multiplot
+
+plot "$PP_CSV" using 5:(\$5==1 && \$3>0 ? \$3/60000 : 1/0 ) t "connect" with points pt 1,\
+     "$PP_CSV" using 5:(\$5==2 && \$3>0 ? \$3/60000 : 1/0 ) t "resetWDT",  \
+     "$PP_CSV" using 5:(\$5==3 && \$3>0 ? \$3/60000 : 1/0 ) t "nodeInfo",  \
+     "$PP_CSV" using 5:(\$5==4 && \$3>0 ? \$3/60000 : 1/0 ) t "RxDistData",\
+     "$PP_CSV" using 5:(\$5==5 && \$3>0 ? \$3/60000 : 1/0 ) t "packetSet",\
+     "$PP_CSV" using 5:(\$5==6 && \$3>0 ? \$3/60000 : 1/0 ) t "xferPacket",\
+     "$PP_CSV" using 5:(\$5==7 && \$3>0 ? \$3/60000 : 1/0 ) t "processPackets"
+unset multiplot
+##############################
+
+set output "$BR_PS"
+set title "Bitrate vs Transfer Size"
+set xlabel "Transfer Size (bytes)"
+set ylabel "Bitrate (Normalized to nominal)"
+set datafile separator ","
+set key samplen 4 spacing 1 width 0 height 0 noautotitles
+set autoscale 
+set xtics norotate
+unset multiplot
+
+plot "$TS_CSV" using (\$2>=0 ? \$2 : 1/0):(\$3>=0 ? \$3 : 1/0 ) t "Bitrate" with points pt 4
+
+##############################
+
+set output "$PS_PS"
+set title "Packet Size vs DeviceID"
+set xlabel "Device ID"
+set ylabel "Packet Size (bytes)"
+set datafile separator ","
+set key samplen 4 spacing 1 width 0 height 0 noautotitles
+set autoscale 
+set xtics rotate 50,10
+unset multiplot
+
+plot "$TS_CSV" using 1:(\$4>=0 ? \$4 : 1/0 ) t "Packet Size" with points pt 5
+
+##############################
+
+EOF

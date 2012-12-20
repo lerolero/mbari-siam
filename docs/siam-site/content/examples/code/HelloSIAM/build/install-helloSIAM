@@ -1,0 +1,195 @@
+#!/bin/bash
+#########################################
+# Name:
+#
+# Summary:
+#
+# Description:
+#
+# Author:
+#
+# Copyright MBARI
+# Copyright 2000, Monterey Bay Aquarium Research Institute.
+# Licensed for PUCK-enabled oceanographic instrumentation field-of-use.
+# 
+# Intellectual Property Disclaimer
+# 
+# MBARI MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR IMPLIED. 
+# BY WAY OF EXAMPLE, BUT NOT LIMITATION, MBARI MAKES NO REPRESENTATIONS 
+# OR WARRANTIES OF MERCHANTABILITY OR FITNESS FOR ANY PARTICULAR PURPOSE 
+# OR THAT THE USE OF THE LICENSED SOFTWARE COMPONENTS OR DOCUMENTATION 
+# WILL NOT INFRINGE ANY PATENTS, COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS. 
+# MBARI SHALL NOT BE HELD LIABLE FOR ANY LIABILITY NOR FOR ANY DIRECT, 
+# INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIM BY RECIPIENT 
+# OR ANY THIRD PARTY ON ACCOUNT OF OR ARISING FROM THIS AGREEMENT OR USE 
+# OF THE SOFTWARE OR SPECIFICATION.
+#
+#########################################
+
+#########################################
+# Script configuration defaults
+# casual users should not need to change
+# anything below this section
+#########################################
+
+HELLO_HOME="$SIAM_HOME/docs/siam-site/content/examples/code/HelloSIAM"
+BUILD_DIR="$HELLO_HOME/build"
+HELLO_PKG="$BUILD_DIR/hello-install.tar.gz"
+INSTALL_DIR="$SIAM_HOME"
+
+# use -t option to run execute script in test mode
+TEST=""
+
+#################################
+# Script variable initialization
+#################################
+VERBOSE="FALSE"
+
+#################################
+# Function Definitions
+#################################
+
+#################################
+# name: sigTrap
+# description: signal trap callback
+# will interrupt 
+# args: none
+#################################
+#sigTrap(){
+#    exit 0;
+#}
+
+#################################
+# name: printUsage
+# description: print use message
+# args: none
+#################################
+printUsage(){
+    echo
+    echo "usage: `basename $0`"
+    echo "-t  : test (show, don't execute commands) [$TEST]"
+    echo "-V  : verbose output                      [$VERBOSE]"
+    echo "-h   : print this help message"
+    echo ""
+    echo
+}
+
+########################################
+# name: vout
+# description: print verbose message to stderr
+# args:
+#     msg: message
+########################################
+vout(){
+    if [ "$VERBOSE" == "TRUE" ]
+    then
+	echo "$1" >&2
+    fi
+}
+
+########################################
+# name: exitError
+# description: print use message to stderr
+# args:
+#     msg:        error message
+#     returnCode: exit status to return
+########################################
+exitError(){
+    echo >&2
+    echo "$1" >&2
+    echo >&2
+    exit $2
+}
+
+##########################
+# Script main entry point
+##########################
+echo ""
+read -p "This will install HelloSIAM to $INSTALL_DIR. Type y to continue [n] " test < /dev/stdin
+echo ""
+if [ "$test" != "y" ]
+then
+  echo ""
+  echo "exiting"
+  echo ""
+  exit 0
+fi
+
+# Argument processing
+#if [ "$#" -eq 0 ];then
+#    printUsage
+#    exit 0
+#fi
+
+while getopts thV Option
+do
+    case $Option in
+	t ) TEST="echo"
+	;;
+	V ) VERBOSE="TRUE"
+	;;
+	h)printUsage
+	  exit 0
+	;;
+	*) exit 0 # getopts outputs error message
+	;;
+    esac
+done
+
+# call sigTrap on INT,TERM or EXIT
+# trap sigTrap INT TERM EXIT
+
+# reset trapped signals
+# trap - INT TERM EXIT
+
+
+if [  ! -d "$BUILD_DIR" ]
+then
+echo ""
+echo "$BUILD_DIR is not a directory"
+echo ""
+exit 0
+fi
+
+if [  ! -d "$INSTALL_DIR" ]
+then
+echo ""
+echo "$INSTALL_DIR is not a directory"
+echo ""
+exit 0
+fi
+
+if [ ! -e "$HELLO_PKG" ]
+then
+  vout "distribution not found - building..."
+  $TEST cd $BUILD_DIR
+  $TEST mkdist
+fi
+
+vout "Installing files to $INSTALL_DIR"
+$TEST cd $INSTALL_DIR
+$TEST tar xzvf $HELLO_PKG 
+
+vout "Modifying $INSTALL_DIR/Makefile"
+ORIG_MAKE="Makefile.install-`date +%m%d%y-%H%M%S`"
+
+vout "saving Makefile to $ORIG_MAKE"
+$TEST cp Makefile $ORIG_MAKE
+
+vout "adding Makefile entries"
+$TEST sed '/^[\t ]*PACKAGES[ \t]*=[ \t]*/a\
+\	org.mbari.siam.devices.hello \\\
+\	org.mbari.siam.devices.fakeotron \\\
+' Makefile > Makefile.hstmp1
+
+
+$TEST sed '/^[\t ]*JARS_3RDPARTY[ \t]*=/a\
+\	jserial.jar \\\
+' Makefile.hstmp1 > Makefile.hstmp2
+
+vout "cleaning up"
+$TEST cp Makefile.hstmp2 Makefile
+
+$TEST rm Makefile.hstmp1
+$TEST rm Makefile.hstmp2
+

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+$JAVA -cp $SIAM_CLASSPATH org.mbari.siam.tests.utils.osdt.OSDTTestServer $*

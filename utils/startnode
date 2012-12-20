@@ -1,0 +1,66 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+#
+# Script to run the 'node' application 
+#
+
+# stdout dump location
+# must specify a file, since allowing stdout
+# to go to the console may cause the system to
+# lock up if the console cable is unplugged.
+# Also, be aware that setting this to a file
+# other than /dev/null will consume disk space
+# since the file's size is not managed
+STDOUT_DUMP="/dev/null"
+
+#source ops bashrc so SIAM environement is setup
+. /home/ops/.bashrc
+
+# check to see if you want auto start or not
+if [ "$SIAM_AUTOSTART" ] && [ $SIAM_AUTOSTART == FALSE ]
+then
+  echo "skipping SIAM auto start"
+  echo "SIAM_AUTOSTART = FALSE"
+  exit 0
+fi
+
+# Turn on comm link so that we can watch as system starts
+if [ -n "$PARENT_LINK_ON_SCRIPT" ]
+then
+  echo "Starting $PARENT_LINK_ON_SCRIPT ppp link and synchronizing clock"
+  $SIAM_HOME/utils/startPPP &
+else
+  # Try to synchronize clock with portal
+  ntpdate -b shore &
+fi
+
+
+# switch to SIAM_HOME dir
+cd $SIAM_HOME
+
+if [ ! -e logs ]; then
+  echo Creating log directory $SIAM_HOME/logs
+  mkdir logs
+fi
+
+export SIAM_NODE_LOG=$SIAM_HOME/logs/`hostname`.`/bin/date +%Y%m%d%H%M` 
+
+#start moosnode or nodeTest depending on wheter the PARENT_HOST env var is defined
+if [ -n "$PARENT_HOST" ] 
+then 
+  ./utils/moosnode $PARENT_HOST >& $STDOUT_DUMP &
+  ./utils/runAutoScript >& /dev/null &
+else
+  #issue warning if PARENT_HOST is not defined
+  echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+  echo "!             Warning PARENT_HOST not defined                 !"
+  echo "!             Starting node without portal                    !"
+  echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+  #make sure stdout gets flushed so the message shows up
+  sync
+  ./utils/nodeTest >& $STDOUT_DUMP &
+fi
+

@@ -1,0 +1,15 @@
+#!/bin/csh
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+if ($#argv != 1) then
+    echo "usage: $0 nodeURL"
+    exit 1
+endif
+
+set nodeURL = $argv[1]
+
+# Script executes moos.deployed.NodeTest.main()
+java -cp $SIAM_HOME/classes org.mbari.siam.operations.utils.StartServices $nodeURL
+

@@ -1,0 +1,11 @@
+#!/bin/bash
+# Start the shore messaging service
+
+export SIAM_HOME=/mnt/hda/siam
+. /etc/siam/siamEnv
+
+date >> /mnt/hda/logs/simShoreMsgService.out
+echo start runSimShoreMsgService >> /mnt/hda/logs/simShoreMsgService.out
+
+/mnt/hda/siam/utils/startSMS >> /mnt/hda/logs/simShoreMsgService.out
+

@@ -1,0 +1,513 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>HelloSIAM Example</title>
+<link href="../../css/content.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<h2>Hello SIAM: your first SIAM instrument service</h2>
+
+<p>The Instrument Service Framework simplifies the process of writing new instrument services by providing most of the basic facilities needed to acquire and log data.
+This example is intended to illustrate the basic steps involved in writing a very simple SIAM instrument service. 
+We'll make an instrument service that collects data through a serial port from a dummy instrument, the Fake-O-Tron.
+</p>
+
+<p>The Fake-O-Tron has a very simple serial API with three commands: &quot;getData&quot;, &quot;setInc&quot; and &quot;getInc&quot;<br />
+</p>
+<ul>
+<li>When the Fake-O-Tron receives the getData command followed by a newline or CRLF, it will return a pre-configured data message with a number incremented by a (configurable) dataIncrement variable (so you can see that the data changes)</li>
+<li>If it recieves an empty line, it simply returns the Fake-O-Tron prompt &quot;F&gt;&quot;</li>
+<li>if it receives anything else, it returns an error message followed by the prompt</li>
+<li>getInc returns the current value of the dataIncrement setting</li>
+<li>setInc=&lt;integer&gt; sets the value of the dataIncrement setting to &lt;integer&gt;</li>
+</ul>
+
+
+<p> This example illustrates several steps that most real-world service developers will want to know how to do.<br />
+Here's what you can learn with HelloSIAM:</p>
+<ul>
+<li>See the small set of abstract Instrument Service Framework methods that each service must implement (and how to implement them)</li>
+<li>Show methods you may wish to override to fit your instrument,e.g. initialization, collecting data</li>
+<li>Extend service attributes for run-time service configuration and default parameter settings</li>
+<li>Collect and report instrument metadata</li>
+<li>Configure and build an instrument service JAR file</li>
+<li>Run a service in SIAM</li>
+</ul>
+
+<h3>What you'll need</h3>
+<ul>
+<li>a computer with SIAM and two serial ports (USB serial adapters OK)</li>
+<li>null modem cable or equivalent</li>
+<li><a href="../examples/code/HelloSIAM/src/org/mbari/siam/devices/hello/HelloSIAM.java.text">HelloSIAM</a> </li>
+<li><a href="../examples/code/HelloSIAM/src/org/mbari/siam/devices/fakeotron/FakeOTron.java.text">Fake-O-Tron</a> dummy instrument</li>
+</ul>
+<p>The source code, binaries and associated files for this example may be found in <em class="emphasis">siam-site/content/examples/code/HelloSIAM</em>.<br />
+Please see the src directory, packages </p>
+<ul>
+<li><em class="emphasis">org.mbari.siam.devices.fakeotron</em></li>
+<li><em class="emphasis">and org.mbari.siam.devices.hello </em></li>
+</ul>
+
+<h3>Quick Start: Install Example Code</h3>
+<p>Instructions for installing and running the HelloSIAM example are found in <a href="#hello_build">this section</a> below.<br />
+SIAM must be installed and the SIAM environment configured (see the <a href="../quickStart.html">SIAM Quick Start Guide</a> for details).
+</p>
+<p>
+To uninstall the code for this example, see <a href="#hello_remove">this section</a> below
+</p>
+<!-- make code availble in example section -->
+<h3>Step 1: Choose a sampling strategy</h3>
+<p>The SIAM instrument service Framework uses PolledInstrumentService to implement basic services for instruments that are polled for their data.
+The Fake-O-Tron can be configured for polling (default) or streaming; we'll use PolledInstrumentService for our HelloSIAM service.
+</p>
+
+<h3>Step 2: Implement required methods</h3>
+<p>BaseInstrumentService defines several abstract methods that must be implemented by sub-classes.
+The table below briefly describes these:</p>
+<table class="altTable">
+<tr>
+  <th>Method</th>
+  <th>Signature</th>
+  <th>Description</th>
+</tr>
+<tr>
+<td>HelloSIAM</td>
+<td>public HelloSIAM() throws RemoteException</td>
+<td>No-argument constructor</td>
+</tr>
+<tr class="alt">
+<td>requestSample</td>
+<td>protected void requestSample() throws Exception</td>
+<td>Bytes to send to request a data sample</td>
+</tr>
+<tr>
+<td>initializeInstrument</td>
+<td>protected void initializeInstrument() throws InitializeException, Exception</td>
+<td>Initialize the instrument (executed once at service start)</td>
+</tr>
+<tr class="alt">
+<td>getInstrumentMetadata</td>
+<td>protected byte[] getInstrumentMetadata()</td>
+<td>Return metadata supplied directly by the instrument</td>
+</tr>
+<tr>
+<td>initPromptString</td>
+<td>protected byte[] initPromptString() </td>
+<td>Initialize instrument prompt string (used for parsing instrument response)</td>
+</tr>
+<tr class="alt">
+<td>initSampleTerminator</td>
+<td>protected byte[] initSampleTerminator() </td>
+<td>Specify character(s) that signal the end of sample data</td>
+</tr>
+<tr>
+<td>initMaxSampleBytes</td>
+<td>protected int initMaxSampleBytes() </td>
+<td>Specify maximum bytes received in raw sample</td>
+</tr>
+<tr class="alt">
+<td>createDefaultSampleSchedule</td>
+<td>protected ScheduleSpecifier createDefaultSampleSchedule() throws ScheduleParseException</td>
+<td>Return ScheduleSpecifier for default sampling schedule</td>
+</tr>
+<tr>
+<td>getSerialPortParameters</td>
+<td>public SerialPortParameters getSerialPortParameters() throws UnsupportedCommOperationException</td>
+<td>Return serial port configuration parameters</td>
+</tr>
+<tr class="alt">
+<td>initInstrumentStartDelay</td>
+<td>protected int initInstrumentStartDelay()</td>
+<td>Specify device startup delay between power on and sample request (millisec)</td>
+</tr>
+<tr>
+<td>setClock</td>
+<td>public void setClock() throws NotSupportedException</td>
+<td>Set instrument internal clock or throw NotSupportedException</td>
+</tr>
+<tr class="alt">
+<td>initCurrentLimit</td>
+<td>protected int initCurrentLimit()</td>
+<td>Specify current limit (mA) (the Fake-O-Tron doesn't use any current, so this may be set to anything)</td>
+</tr>
+<tr>
+<td>initInstrumentPowerPolicy</td>
+<td>protected PowerPolicy initInstrumentPowerPolicy() </td>
+<td>Return initial value of instrument power policy</td>
+</tr>
+<tr class="alt">
+<td>initCommunicationPowerPolicy</td>
+<td>protected PowerPolicy initCommunicationPowerPolicy()</td>
+<td>Return initial value of communication power policy (whether to power down RS232 tranceivers, etc. when not in use if supported by hardware</td>
+</tr>
+<tr>
+<td>test</td>
+<td>public int test()</td>
+<td>Perform instrument self-test</td>
+</tr>
+<tr class="alt">
+<td>enterSafeMode</td>
+<td>public void enterSafeMode()</td>
+<td>Enter safe mode, i.e. prepare for immediate power down.
+			This method may be invoked by the power management system,
+			allowing critical instruments to reduce sample rates, configure 
+			internal logging etc. and continue operating for as long as possible 
+			during an unscheduled power outage.</td>
+</tr>
+<!--
+<tr>
+<td>col 1</td>
+<td>col 2</td>
+<td>col 3</td>
+</tr>
+<tr class="alt">
+<td>col 1</td>
+<td>col 2</td>
+<td>col 3</td>
+</tr>
+-->
+</table>
+
+<p>The <a href="../examples/code/HelloSIAM/src/org/mbari/siam/devices/hello/HelloSIAM.java">HelloSIAM source</a> has example implementations of these.</p>
+
+<h3>Step 3: Implement the instrument-specific code</h3>
+<h4>Data members</h4>
+<p>
+We'll add a few member variables to represent instrument commands, and we'll also use extend the default service attributes.</p>
+<pre><code>
+	/** Command used to request a data sample */
+	public static final String CMD_GET_DATA=&quot;getData&quot;;
+	/** Command used to change instrument data increment */
+	public static final String CMD_SET_INC=&quot;setInc&quot;;
+	/** Command used to change instrument data increment */
+	public static final String CMD_GET_INC=&quot;getInc&quot;;
+
+	/** Extended attributes */
+	protected HelloAttributes _attributes;
+</code></pre>
+
+<h4>Methods</h4>
+<p>The HelloSIAM constructor is pretty simple. Since we are going to use an extension of the default ServiceAttributes class, we need to 
+instantiate our special attributes in the constructor:</p>
+<pre><code>
+	public HelloSIAM() throws RemoteException {
+		super();
+		_attributes = new HelloAttributes(this);
+	}
+</code></pre>
+
+<p>DeviceService has a protected member variable called _attributes. When we declare a member _attributes with a HelloAttributes type, it is distinct from the _attributes member in the base class.<br /> 
+Remember to cast it correctly ((HelloAttributes)_attributes).someMember when accessing HelloAttributes members.
+</p>
+<p>
+The requestSample() and readSample() methods are overridden to acquire a sample from the instrument. <br />
+These are called by the acquire() method in BaseInstrumentService, which manages power, comms, data logging etc. each time a sample is requested.<br />
+The BaseInstrumentService does have a default readSample(), and we'll override it to handle the echoed commands and a prompt string issued by the instrument.
+</p>
+<p>
+We'll also override the getInstrumentStateMetadata() method to return the dataIncrement setting of the instrument.
+</p>
+<p>
+Here are our versions of these methods:</p>
+<pre>
+ <code>
+	 protected void requestSample() throws Exception {
+		 // request data with getData command
+		 _toDevice.write(CMD_GET_DATA.getBytes());
+		 
+		 // flush the output stream
+		 _toDevice.flush();
+		 
+		 // Skip the echoed command characters
+		 StreamUtils.skipUntil(_fromDevice, CMD_GET_DATA.getBytes(), 2000);
+	 }
+	
+	protected int readSample(byte[] sample) throws TimeoutException,
+	IOException, Exception{
+		// use the super class readSample to read the data
+		super.readSample(getSampleBuf());
+		
+		// Also read the prompt that follows the data
+		StreamUtils.skipUntil(_fromDevice, getPromptString(), 2000);
+	}
+	
+	protected byte[] getInstrumentStateMetadata()
+	throws Exception {
+		String metadata=null;
+		try{
+			// Get the current instrument setting for the data increment value
+			int dataInc=getInc();
+			metadata=&quot;inc:&quot;+dataInc;
+		}catch (Exception e) {
+			metadata=&quot;Error: could not get metadata [&quot;+e.getMessage()+&quot;]&quot;;
+		}
+		return metadata.getBytes();
+	}
+</code>
+</pre>
+	
+
+<p>We'll add a few methods of our own. Two methods, setInc() and getInc()
+expose the corresponding commands in the Fake-O-Tron API.
+Additional methods are added for convenience and re-use:</p>
+<pre><code>
+	//////////////////////////////
+	// Instrument specific methods
+	//////////////////////////////
+	/** Expose setInc function in Fake-O-Tron API */
+	public void setInc(int newInc) 
+	throws Exception{
+		_log4j.debug(&quot;writing setInc&quot;);
+		writeRead((CMD_SET_INC+&quot; &quot;+newInc));			
+	}
+	
+	/** Expose getInc function in Fake-O-Tron API */
+	public int getInc() 
+	throws Exception{
+		_log4j.debug(&quot;writing getInc&quot;);
+		String inc=writeRead(CMD_GET_INC);
+		if(inc!=null){
+			return 	Integer.parseInt(inc.trim());
+		}	
+		throw new Exception(&quot;could not get increment [writeRead returned null]&quot;);	
+	}
+	
+	/** Utility method to send a Fake-O-Tron command and return the response */
+	public String writeRead(String dataToDevice)
+	throws Exception{
+		sendData(dataToDevice);
+		return readData();
+	}
+	
+	/** Send an output line and clean up the echoed characters */
+	public void sendData(String data) 
+	throws Exception{
+		_log4j.debug(&quot;writing data [&quot;+data+&quot;]&quot;);
+		byte[] outBytes=(data+&quot;\n&quot;).getBytes();
+		_toDevice.write(outBytes);
+		_toDevice.flush();
+		// Look for response
+		int len=StreamUtils.skipUntil(_fromDevice, outBytes, 2000);
+		_log4j.debug(&quot;skipping echoed command...&quot;);
+		_log4j.debug(&quot;skipped [&quot;+len+&quot;] bytes&quot;);
+	}
+	
+	/** Read to sample terminator and skip any bytes up to the prompt */
+	public String readData() 
+	throws Exception{
+		_log4j.debug(&quot;reading data&quot;);
+		byte[] dataIn=new byte[getSampleBuf().length];
+		Arrays.fill(dataIn,(byte)0);
+		String returnData=null;
+		try{
+			// read the data
+			int len=StreamUtils.readUntil(_fromDevice, dataIn, getSampleTerminator(),
+								  _instrumentAttributes.sampleTimeoutMsec);
+			_log4j.debug(&quot;read &quot;+len+&quot; bytes&quot;);
+			// Skip the prompt
+			StreamUtils.skipUntil(_fromDevice, getPromptString(), 2000);
+			if(len&lt;=0){
+				returnData= null;
+			}else{
+				returnData=new String(dataIn);
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return returnData;
+	}
+</code></pre>
+
+<p>There are other methods we could override, but will not for this example:</p>
+<table class="altTable">
+<tr>
+  <th>Method</th>
+  <th>Description</th>
+</tr>
+<tr>
+<td>protected void prepareToSample() throws Exception</td>
+<td>Prepare the device for sampling; called before requestSample(). By default this method does nothing.</td>
+</tr>
+<tr class="alt">
+<td>protected void postSample()</td>
+<td>Called after sample has been acquired, processed and logged. By default this method does nothing.</td>
+</tr>
+<tr>
+<td>protected void validateSample(byte[] sampleBuf, int nBytes) throws InvalidDataException</td>
+<td>This method can optionally be overriden so the sub-class can determines the validity of the sampled bytes. By default this method does nothing.</td>
+</tr>
+</table>
+
+<h4>Attributes</h4>
+<p>For illustration, we've also extended the instrument service attributes to expose the dataIncrement value.
+We can use this attribute to initialize the value when the service starts, and to change it at run time.
+First create an integer member and define a constructor for our attributes:</p>
+<pre><code>
+	protected class Attributes extends InstrumentServiceAttributes {
+		// amount to add to data counter for each request
+		int dataIncrement = 1;
+
+		protected Attributes(DeviceServiceIF service) {
+			super(service);
+		}
+	}
+</code></pre>
+
+<p>The value of this attribute may be set via setProperty() method in the BaseInstrumentService (there is a setProperties utility that does this at run-time).
+There are callbacks that may be overridden to perform validation or other actions before or after the value is changed.
+</p>
+<p>
+We'll implement a callback to validate the value (we'll apply a policy that it must be non-zero for our service, although the Fake-O-Tron will allow any integer),
+and also to change the instrument setting when the property is set:</p>
+<pre><code>
+	protected void setAttributeCallback(String attributeName, String valueString)
+	throws InvalidPropertyException {
+		if(attributeName.equals(&quot;dataIncrement&quot;)){
+			try{
+				// try to parse the value as an integer (type should be pre-validated)
+				int test=Integer.parseInt(valueString);
+				// if a non-zero int, try to set the instrument value
+				if(test!=0){
+					setInc(test);
+					// if successful update the attribute value
+					dataIncrement=test;
+				}
+			}catch (Exception e) {
+				// if we fail, throw an exception
+				throw new InvalidPropertyException(&quot;set dataIncrement failed [&quot;+e.getMessage()+&quot;]&quot;);
+			}
+			throw new InvalidPropertyException(&quot;Invalid dataIncrement value [&quot;+valueString+&quot;]&quot;);
+		}
+</code></pre>
+
+<a name="hello_build"></a>
+<h3>Step 4: Build the service classes</h3>
+<p>Before building the HelloSIAM example, ensure that your SIAM environment is correctly configured (you should be able to build the SIAM source tree).
+This configuration is described in the <a href="../quickStart.html">SIAM Quick Start</a><br />
+The environment variables SIAM_HOME, SIAM_CLASSPATH, JAVA_DEV_ROOT and JAVA_HOME should be set.
+</p>
+<p>We'll install the example code into the main SIAM source tree, modify the Makefiles and environment and build it there.</p>
+<ul>
+<li>Install the example code to the SIAM code tree
+	<ul>
+     <li><em class="commands">cd $SIAM_HOME</em></li>
+     <li><em class="commands">./docs/siam-site/content/examples/code/HelloSIAM/build/install-helloSIAM</em></li>
+	</ul>
+</li>
+<!--
+<li>Add HelloSIAM packages and jars to the SIAM Makefile ($SIAM_HOME/Makefile)</li>
+	<ul>
+	 <li>add line <em class="commands1">org.mbari.siam.devices.hello</em> in PACKAGES section</li>
+	 <li>add line <em class="commands1">org.mbari.siam.devices.fakeotron</em> in PACKAGES section</li>
+	 <li>add line <em class="commands1">jserial.jar</em> in JARS_3RDPARTY section</li>
+	</ul>
+-->
+<!--
+<li>Modify SIAM_CLASSPATH</li>
+	<ul>
+	 <li><em class="commands1">export SIAM_CLASSPATH="$SIAM_CLASSPATH:$SIAM_HOME/jars/jserial.jar"</em></li>
+	</ul>
+</ul>
+-->
+<li>Build the classes
+	<ul>
+	 <li>in SIAM_HOME: <em class="commands1">make</em></li>
+	</ul>
+</li>
+</ul>
+
+<h3>Step 5: Make an instrument service JAR</h3>
+<p>Instrument service JAR files are built using the mkpuck and mksiamjar utilties (described <a href="../installGuide.html#make_jars">here)</a>.
+These utilities are used to configure the service attributes at start up, for example the device ID of the service, as well as sample schedule, and 
+instrument-specific attributes like HelloSIAM's dataIncrement.
+</p>
+<p>These utilties may be run from the command line, a shell script or a Makefile. For HelloSIAM, we'll use a Makefile; installing the HelloSIAM code should have installed
+$SIAM_HOME/make/Makefile.helloSIAM
+</p>
+
+<p>You may optionally configure service attribute defaults (e.g., sample schedule, dataIncrement) by editing Makefile.helloSIAM. 
+If you change the device ID, remember also to change the name of the service XML file.<br />
+Here is the HelloSIAM JAR configuration line in Makefile.helloSIAM:</p>
+<pre><code>
+	hello.service:
+		mkpuck org.mbari.siam.devices.hello.HelloSIAM 'Hello Service' 9999 $(JAVA_DEV_ROOT)/ports/Hello-9999.jar $(JAVA_DEV_ROOT)/puckxml/9999.xml 'sampleSchedule = 30' 'registryName = Hello' 'dataIncrement=2' 'UUID = 00000000-0000-0000-0000-000000000000';
+</code></pre>
+<ul>
+<li>Build the JAR
+	<ul>
+	 <li>in SIAM_HOME: <em class="commands1">make -f make/Makefile.helloSIAM hello</em></li>
+	</ul>
+</li>
+</ul>
+
+
+<p>This should create the file $SIAM_HOME/ports/Hello-9999.jar</p>
+
+<h3>Step 6: Configure SIAM to run the service</h3>
+<p>In this example, we'll configure SIAM to load the HelloSIAM service from the SIAM host ($SIAM_HOME/ports directory)</p>
+<ul>
+<li>Add entry to siamPort.cfg
+	<ul>
+	 <li>Edit SIAM_HOME/properties/siamPort.cfg</li>
+	 <li>Add and entry for HelloSIAM (using one of your serial ports):
+<pre><code>
+	serialPort0   = /dev/tty.KeySerial1
+	powerPort0    = null
+	serviceJar0   = Hello-9999.jar
+</code></pre>
+     </li>
+	 <li>If you haven't done so already, make sure that the serial port assigned to HelloSIAM is also declared in the siamPort.cfg platformSerialPorts property:
+<pre><code>
+	platformSerialPorts     =       /dev/ttyS2:\
+									/dev/ttyS4:\
+									...
+									/dev/ttyS9:\
+									/dev/ttyS10:\
+									<em class="emphasis">/dev/tty.KeySerial1:</em>
+ </code></pre>
+	</li>
+    </ul>
+  </li>
+</ul>
+
+<h3>Step 7: Configure and run the Fake-O-Tron</h3>
+<p>Before the service is run, we must connect and start the Fake-O-Tron.</p>
+<div class="img">
+ <a target="_blank" href="../../img/HelloSIAMConnections.png"><img src="../../img/HelloSIAMConnections_tn.jpg" alt="" width="110" height="90" /></a>
+ <div class="desc">HelloSIAM hardware connections</div>
+</div>
+<div class="text_line"></div>
+<ul>
+<li>Connect the two serial ports using a null modem cable or equivalent</li>
+<li>Open a terminal session from which to run the Fake-O-Tron (&quot;instrument session&quot;)</li>
+<li>In the instrument session, start the Fake-O-Tron:
+	<ul>
+	 <li><em class="commands1">./utils/fakeotron.sh -m 'hello data' &lt;path to instrument serial port&gt;</em> (<em class="emphasis">not</em> the service port specified in siamPort.cfg)</li>
+	</ul>
+    </li>
+</ul>
+
+<h3>Step 8: Run the HelloSIAM service</h3>
+<p></p>
+<ul>
+<li>Open a second terminal sessions for running SIAM (&quot;SIAM session&quot;)</li>
+<li>In the SIAM session, start SIAM (easier to debug if run in the foreground):
+	<ul>
+	 <li><em class="commands1">cd $SIAM_HOME</em></li>
+	 <li><em class="commands1">node</em></li>
+	</ul>
+    </li>
+</ul>
+
+<a name="hello_remove"></a>
+<h3>Removing HelloSIAM</h3>
+<p>
+To uninstall the code for this example, run the uninstall script as follows:</p>
+<ul>
+<li><em class="commands">cd $SIAM_HOME</em></li>
+<li><em class="commands">./docs/siam-site/content/examples/code/HelloSIAM/build/remove-helloSIAM</em></li>
+</ul>
+
+</body>
+</html>

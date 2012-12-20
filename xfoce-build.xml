@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id: build.xml,v 1.2 2011/07/25 16:18:16 headley Exp $ -->
+<project name="xfoce" basedir=".">
+	
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Load property files in this order:
+
+    1. User properties
+    2. This level properties
+
+    This allows a user to have specific settings that override any other
+    settings (other than command-line, which always take precedence).
+    -->
+    <property file="${user.home}/build.properties" />
+    <property file="build.properties" />
+
+    <!-- Show XFOCE help  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="help">
+	<local name="pname"/>
+    <property name="pname" value="xfoce" />
+		<echo>
+		${pname}.system        - SIAM binaries 
+		</echo>
+	</target>
+	
+
+    <!-- Make SIAM system tar.gz ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <target name="system">
+	  <tar destfile="${dist}/siam-system.tar">
+	  
+	    <tarfileset dir="atp" prefix="siam/atp" username="ops" group="ops" filemode="775">
+		</tarfileset>
+	    <tarfileset dir="classes" prefix="siam/classes" username="ops" group="ops" filemode="664">
+			<include name="README" />
+		</tarfileset>
+		<tarfileset dir="utils" prefix="siam/utils" username="ops" group="ops" filemode="775">
+		</tarfileset>
+		<!--<tarfileset dir="ports" prefix="siam/ports" username="ops" group="ops" filemode="775">
+		</tarfileset>-->
+		<tarfileset dir="bin" prefix="siam/bin" username="ops" group="ops" filemode="775">
+		</tarfileset>
+		<tarfileset dir="properties" prefix="siam/properties" username="ops" group="ops" filemode="664">
+		</tarfileset>
+		<tarfileset dir="jars" prefix="siam/jars" username="ops" group="ops" filemode="775">
+			<include name="gnu_getopt.jar" />
+			<include name="jrendezvous.jar" />
+			<include name="junit.jar" />
+			<include name="log4j-1.2.13.jar" />
+			<include name="RXTXcomm.jar" />
+			<include name="javax.jar" />
+			<include name="javax.servlet.jar" />
+			<include name="org.mortbay.jetty-jdk1.2.jar" />
+			<include name="jakarta-regexp-1.5.jar" />
+			<include name="XModem.jar" />
+			<include name="jddac-common.jar" />
+			<include name="jddac-probe-j2me.jar" />
+			<include name="rbnb.jar" />
+		</tarfileset>
+		<tarfileset dir="build/dist" prefix="siam/jars" username="ops" group="ops" filemode="775">
+			<include name="siam.jar" />
+		</tarfileset>
+	  </tar>
+	  <gzip src="${dist}/siam-system.tar" destfile="${dist}/siam-system.tar.gz" />
+	 <delete file="${dist}/siam-system.tar"/>
+   </target>
+
+    <!-- Make distribution tar.gz ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <target name="distribution" depends="system">
+	<echo>Distribution build complete</echo>
+   </target>
+
+
+	</project>

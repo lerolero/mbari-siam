@@ -1,0 +1,133 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Bob Herlien">
+   <meta name="GENERATOR" content="Mozilla/4.79 [en] (Windows NT 5.0; U) [Netscape]">
+   <title>portal</title>
+</head>
+<body>
+<b>NAME</b>
+<blockquote>portal - launch a portal server</blockquote>
+<b>SYNOPSIS</b>
+<blockquote>
+<pre><b>portal</b> [options] [nodeHost [nodeHost2 [...]]]</pre>
+</blockquote>
+<b>DESCRIPTION</b>
+<blockquote><b>portal</b> launches a <i>portal server</i> for a SIAM-MMC
+mooring. A portal is the "gateway" between one or more SIAM nodes on the
+far side of a low bandwidth intermittent connection, acting as clients,
+and SSDS (shore side data service) located on shore.
+<p><b>portal </b>will accept connections from any valid SIAM node that
+has been started with the <a href="node.html">node</a> command with a command-line
+parameter that indicates the local portal machine.&nbsp; For example, if
+you start <b>portal </b>on a local machine called <i>siam-portal</i>, it
+will accept connections from any SIAM node that had been started with the
+command line "node siam-portal".
+<p>In addition, you can specify nodes that <b>portal</b> should look for
+at startup, by placing the [nodeHost] on the command line.&nbsp; For example,
+the command line
+<br><b>portal siam-node-1 siam-node-2</b>
+<br>will start the portal, and before running it as a server, attempt to
+contact siam-node-1 and then siam-node-2 to download their data.&nbsp;
+Whether or not these contacts are successful, <b>portal</b> will then go
+into server mode and accept all incoming connections.
+<p>Upon receiving an incoming connect attempt from a SIAM node, <b>portal</b>
+will use RMI calls to that node to download its data.&nbsp; It then places
+that data into its log directory (default is $SIAM_HOME/logs), under a
+subdirectory with the name given by the node's nodeID().&nbsp; The log
+directory can be overridden by the "-logdir" command-line option.&nbsp;
+If the "-publish" command-line option is given, it will then publish the
+data to SSDS.</blockquote>
+<b>OPTIONS</b>
+<ul>
+<li>
+<b>-publish </b>- publish the data to SSDS.&nbsp; In the absence of this
+parameter, the data is not published.&nbsp; In either case, the data is
+placed into the log directory, under a subdirectory given by the node's
+nodeID().</li>
+
+<li>
+<b>-logdir &lt;logDirectory></b> - place the data into &lt;logDirectory>,
+with a subdirectory of nodeID(), rather than into $SIAM_HOME/logs.</li>
+
+<li>
+<b>-since &lt;timespec></b> - only download data with timestamps later
+than &lt;timespec>.&nbsp; Valid timespecs are:</li>
+
+<ul>
+<li>
+"now" - the time that the <b>portal</b> started</li>
+
+<li>
+"0" - download all data</li>
+
+<li>
+mm/dd/yyyy - numeric month, day-of-month, and year</li>
+
+<li>
+mm/dd/yyyy:Thh:mm:ss - numeric month, day-of-month, and year, followed
+by letter 'T', followed by hour, minutes, seconds</li>
+</ul>
+</ul>
+<b>SYSTEM PROPERTIES</b>
+<blockquote><b>portal </b>recognizes the following system properties, which
+can be passed on the command line via the -D flag, or edited into the <b>portal</b>
+script.
+<ul>
+<li>
+<b>leaseTime</b> - the time, in ms, of the communications lease that it
+requests from the node.&nbsp; Default is 60000 (60 seconds).&nbsp; That
+is, it requests that the node leave the comms link on for this long before
+expiring the lease.&nbsp; <b>portal </b>renews this lease frequently during
+the download process, so a shorter time won't stop the process.&nbsp; It
+also terminates the lease when it's done with the download.</li>
+
+<li>
+<b>readTimeout </b>- the timeout, in ms, for the sockets that underlie
+the RMI calls.&nbsp; Default is 60000 (60 seconds).&nbsp; This timeout
+keeps RMI from creating "rogue" threads if the link dies, and allows <b>portal</b>&nbsp;
+to clean up in an orderly manner.</li>
+
+<li>
+<b>downloadInterval </b>- the minimum time between connects from any given
+node, in ms.&nbsp; Default is 900000 (15 minutes).&nbsp; If a node tries
+to reconnect before this interval expires, <b>portal</b> will not attempt
+another download.</li>
+
+<li>
+<b>sun.rmi.dgc.client.gcInterval </b>- This is a Sun/RMI property that
+configures RMI client runtime behavior.&nbsp; It specifies how often, in
+ms, that RMI checks to see whether a stub is no longer referenced by the
+rest of the client application. We set this by default to 7200000 (2 hours).</li>
+</ul>
+</blockquote>
+<b>BUGS</b>
+<blockquote>The timestring specified by the <i>-since</i> option is currently
+in local time, but should be in GMT.
+<br>Command-forwarding to the mooring is not yet implemented.
+<br>The name of the JMS server location and topic names are currently hardcoded;
+should be user-specifiable
+<br>&nbsp;</blockquote>
+<b>ENVIRONMENT</b>
+<blockquote>The following environment variables must be set:</blockquote>
+
+<ul>
+<li>
+JAVA - name of the JVM. E.g. on a Sidearm, JAVA should be set to <i>j9.
+</i>On
+a workstation with Sun's Java installed, JAVA could be set to <i>java</i>.</li>
+
+<li>
+SIAM_HOME - top of the SIAM directory tree</li>
+
+<li>
+SIAM_CLASSPATH - on a Sidearm, SIAM_CLASSPATH should be set to <i>$JAVA_HOME/lib/jclMax/classes.zip:$JAVA_HOME/lib/prsnlmot.jar:$JAVA_HOME/lib/RXTXcomm.jar:$SIAM_HOME/classes</i>.&nbsp;
+On X86 system, SIAM_CLASSPATH should be set to<i> $SIAM_HOME/classes</i></li>
+</ul>
+
+<li>
+<i></i></li>
+
+</body>
+</html>

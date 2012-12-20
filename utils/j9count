@@ -1,0 +1,8 @@
+#!/bin/bash
+# Copyright 2013 MBARI, all rights reserved. 
+# For license and copyright details, see COPYRIGHT.TXT in the SIAM project
+# home directory.
+
+# Count the number of executing 'j9' processes
+echo `ps -eaf | grep ' j9 ' | wc -l` '('`date`')'
+
