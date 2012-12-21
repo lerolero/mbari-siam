@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1726.xml,v 1.1 2009/05/18 23:58:01 graybeal Exp $	-->
+<!-- Last edited by $Author: graybeal $	$Date: 2009/05/18 23:58:01 $   -->
+
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ssds.mbari.org/xml/schema/SSDS_Metadata.xsd" 
+	majorVersion="1" minorVersion="1" lastAuthor="$Author: graybeal $" lastUpdate="$Date: 2009/05/18 23:58:01 $" >
+	
+	<Deployment role="Instrument" >
+		<Device id="1726" name="FOCE PC104 CPU" type="Controller" 
+			mfgName="LiPPERT Embedded Computers GmbH" mfgModel="Cool RoadRunner-LX800" mfgSerialNumber="803-0010-00 4208.135503">
+			<description>PC104 CPU</description>
+			<Person firstname="Bob" surname="Herlien" organization="MBARI" 
+			email="bobh@mbari.org" phone="831-775-1750"/>
+		</Device>
+		
+		<output>
+			<DataStream>
+				<description>FOCE Controller Data Stream</description>
+				<RecordDescription 
+					bufferStyle="ascii" 
+					bufferLengthType="variable" 
+					parseable="false" 
+					recordType="1">
+				</RecordDescription>
+			</DataStream>
+		</output>
+		
+	</Deployment>
+</Metadata>

@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1677.xml,v 1.1 2008/09/05 23:33:53 mccann Exp $	-->
+<!-- Last edited by $Author: mccann $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://dods.mbari.org/data/ssdsdata/config/schema/2004oasis/SSDS_Metadata.xsd"
+	majorVersion="1" minorVersion="1" lastAuthor="$Author: mccann $"
+	lastUpdate="$Date: 2008/09/05 23:33:53 $">
+	<Deployment role="instrument">
+		<Device id="1677"/>
+		<output>
+			<DataStream>
+				<RecordDescription bufferStyle="binary" bufferLengthType="fixed" parseable="false"
+					recordType="1">
+					<RecordVariable name="WETStar_data" longName="WETSTar Binary Analog Data Stream"
+						units="noUnits" columnIndex="1">
+						<description>Intel word of integer count that is converted to a voltage with
+							calibration available as OASIS channel 0 in the mooring .cfg
+						ffile.</description>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

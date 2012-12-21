@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ssds.shore.mbari.org/ssdsdata/config/schema/2004cimt/SSDS_Metadata.xsd">
+	<Deployment role="instrument" name="SOON Drifter Deployed on CIMT" startDate="2006-07-31T19:00:00Z">
+		<Device id="1345" type="Multipurpose" name="SOON" mfgModel="SOON" mfgName="MBARI" mfgSerialNumber="SOON MBARI-9" preferredDeploymentRole="instrument">
+			<description>SOON Drifter 9</description>
+			<Person firstname="Martin" surname="Suro" organization="MBARI" email="msuro@mbari.org"/>
+		</Device>
+		<description>Deployment of SOON Drifter on CIMT</description>
+		<output>
+			<DataFile contentType="flatfile" url="http://ssds.shore.mbari.org/ssdsdata/soondrifters/drifter9/drifter.txt" name="drifter.txt" original="true">
+				<description>Drifter data stream stored in file format</description>
+				<RecordDescription bufferStyle="ASCII" bufferParseType="ordered" bufferItemSeparator="," bufferLengthType="variable" parseable="true" recordType="1">
+					<!-- Sample Record:
+                          | 1   | 2|  3 | 4|  5  | 6 |  7 |  8  |  9  | 10 | 11|  12 | 13|  14 | 15 | 16 | 17 | 18  | 19  | 20 | 21 | 22 |#|#|#|#|#|#|#|#|#|32|33|34|35|#|#|#|#|#| 41 |  42  |   43   | 44 |
+                          050511,10,3489,85,102.0,129,3491,102.2,15.93,2.54,384,103.3,378,102.2,3966,98.7,3954,100.1,15.55,2.56,-999,-999,1,2,3,4,5,6,7,8,9,10,11,12,13,1,2,3,4,5,-999,36.834,-121.899,4213
+                          
+                          WHERE:
+                          (1) datetime (yyMMdd)
+                          (2) datetime (HH) NOTE: Set manually at init
+                          (3) CO2_1 (counts_times_10)
+                          (4) TMP_1 (counts_times_10)
+                          (5) PRESS_1 (counts)
+                          (6) BAT_1 (counts_times_10)
+                          (7) CO2_2 (counts_times_10)
+                          (8) PRESS_2 (counts)
+                          (9) O2_2 (counts_times_10)
+                          (10) HUM_2 (counts_times_10)
+                          (11) CO2_3 (counts_times_10)
+                          (12) PRESS_3 (counts)
+                          (13) CO2_4 (counts_times_10)
+                          (14) PRESS_4 (counts)
+                          (15) CO2_5 (counts_times_10)
+                          (16) PRESS_5 (counts)
+                          (17) CO2_6 (counts_times_10)
+                          (18) PRESS_6 (counts)
+                          (19) O2_6 (counts_times_10)
+                          (20) HUM_6 (counts_times_10)
+                          (21) CTD_TMP (degrees Celcius)
+                          (22) CTD_SAL (Conductivity)
+                          (23) HR2_1 (Volts)
+                          (24) HR2_2 (Volts)
+                          (25) HR2_3 (Volts)
+                          (26) HR2_4 (Volts)
+                          (27) HR2_5 (Volts)
+                          (28) HR2_6 (Volts)
+                          (29) HR2_7 (Volts)
+                          (30) HR2_8 (Volts)
+                          (31) HR2_9 (Volts)
+                          (32) HR2_10 (Volts)
+                          (33) HR2_11 (Volts)
+                          (34) HR2_12 (Volts)
+                          (35) HR2_13 (Volts)
+                          (36) HS1 (counts)
+                          (37) HS2 (counts)
+                          (38) HS3 (counts)
+                          (39) HS4 (counts)
+                          (40) HS5 (counts)
+                          (41) FLUOR (flourescence)
+                          (42) Latitude (degreesLatitude)
+                          (43) Longitude (degreesLongitude)
+                          (44) MINS ()
+					-->
+					<RecordVariable columnIndex="1" name="Day of Sample" longName="YearMonthDay Sample was taken" units="yyMMdd" format="datetime">
+						<description>This is the date (yyMMdd) the sample was taken</description>
+					</RecordVariable>
+					<RecordVariable columnIndex="2" name="Hour of Sample" longName="Hour of Day of Sample" units="HH" format="datetime">
+						<description>Hour of the day the sample was taken</description>
+					</RecordVariable>
+					<RecordVariable name="Licor_Equil_On_CO2" longName="Licor Equilibrator Pump On - CO2" units="counts_times_10" referenceScale="TBD" columnIndex="3" format="integer" missingValue="-999">
+						<description>Licor Equilibrator Pump On - CO2</description>
+					</RecordVariable>
+					<RecordVariable name="Licor_Equil_On_Temp" longName="Licor Equilibrator Pump On - Temp" units="counts_times_10" referenceScale="TBD" columnIndex="4" format="integer" missingValue="-999">
+						<description>Licor Equilibrator Pump On - Temp</description>
+					</RecordVariable>
+					<RecordVariable name="Licor_Equil_On_Press" longName="Licor Equilibrator Pump On - Press" units="counts" referenceScale="TBD" columnIndex="5" format="double" missingValue="-999">
+						<description>Licor Equilibrator Pump On - Press</description>
+					</RecordVariable>
+					<RecordVariable name="Licor_Equil_On_Bat" longName="Licor Equilibrator Pump On - Bat" units="counts_times_10" referenceScale="TBD" columnIndex="6" format="integer" missingValue="-999">
+						<description>Licor Equilibrator Pump On - Bat</description>
+					</RecordVariable>
+					<RecordVariable name="Licor_Equil_Off_CO2" longName="Licor Equilibrator Pump Off - CO2" units="counts_times_10" referenceScale="TBD" columnIndex="7" format="integer" missingValue="-999">
+						<description>Licor Equilibrator Pump Off - CO2</description>
+					</RecordVariable>
+					<RecordVariable name="Licor_Equil_Off_Press" longName="Licor Equilibrator Pump Off - Press" units="counts" referenceScale="TBD" columnIndex="8" format="double" missingValue="-999">
+						<description>Licor Equilibrator Pump Off - Press</description>
+					</RecordVariable>
+					<RecordVariable name="Licor_Equil_Off_O2" longName="Licor Equilibrator Pump Off - O2" units="counts_times_10" referenceScale="TBD" columnIndex="9" format="double" missingValue="-999">
+						<description>Licor Equilibrator Pump Off - O2</description>
+					</RecordVariable>
+					<RecordVariable name="Licor_Equil_Off_Hum" longName="Licor Equilibrator Pump Off - Humidity" units="counts_times_10" referenceScale="TBD" columnIndex="10" format="double" missingValue="-999">
+						<description>Licor Equilibrator Pump Off - Humidity</description>
+					</RecordVariable>
+					<RecordVariable name="Licor_Zero_On_CO2" longName="Licor Zero Pump On - CO2" units="counts_times_10" referenceScale="TBD" columnIndex="11" format="integer" missingValue="-999">
+						<description>Licor Zero Pump On - CO2</description>
+					</RecordVariable>
+					<RecordVariable name="Licor_Zero_On_Press" longName="Licor Zero Pump On - Press" units="counts" referenceScale="TBD" columnIndex="12" format="double" missingValue="-999">
+						<description>Licor Zero Pump On - Press</description>
+					</RecordVariable>
+					<RecordVariable name="Licor_Zero_Off_CO2" longName="Licor Zero Pump Off - CO2" units="counts_times_10" referenceScale="TBD" columnIndex="13" format="integer" missingValue="-999">
+						<description>Licor Zero Pump Off - CO2</description>
+					</RecordVariable>
+					<RecordVariable name="Licor_Zero_Off_Press" longName="Licor Zero Pump Off - Press" units="counts" referenceScale="TBD" columnIndex="14" format="double" missingValue="-999">
+						<description>Licor Zero Pump Off - Press</description>
+					</RecordVariable>
+					<RecordVariable name="Licor_Air_On_CO2" longName="Licor Air Pump On - CO2" units="counts_times_10" referenceScale="TBD" columnIndex="15" format="integer" missingValue="-999">
+						<description>Licor Air Pump On - CO2</description>
+					</RecordVariable>
+					<RecordVariable name="Licor_Air_On_Press" longName="Licor Air Pump On - Press" units="counts" referenceScale="TBD" columnIndex="16" format="double" missingValue="-999">
+						<description>Licor Air Pump On - Press</description>
+					</RecordVariable>
+					<RecordVariable name="Licor_Air_Off_CO2" longName="Licor Air Pump Off - CO2" units="counts_times_10" referenceScale="TBD" columnIndex="17" format="integer" missingValue="-999">
+						<description>Licor Air Pump Off - CO2</description>
+					</RecordVariable>
+					<RecordVariable name="Licor_Air_Off_Press" longName="Licor Air Pump Off - Press" units="counts" referenceScale="TBD" columnIndex="18" format="double" missingValue="-999">
+						<description>Licor Air Pump Off - Press</description>
+					</RecordVariable>
+					<RecordVariable name="Licor_Air_Off_O2" longName="Licor Air Pump Off - O2" units="counts_times_10" referenceScale="TBD" columnIndex="19" format="double" missingValue="-999">
+						<description>Licor Air Pump Off - O2</description>
+					</RecordVariable>
+					<RecordVariable name="Licor_Air_Off_Hum" longName="Licor Air Pump Off - Humidity" units="counts_times_10" referenceScale="TBD" columnIndex="20" format="double" missingValue="-999">
+						<description>Licor Air Pump Off - Humidity</description>
+					</RecordVariable>
+					<RecordVariable columnIndex="21" name="CTD_TMP" longName="" units="degrees C" format="float" missingValue="-999">
+						<description></description>
+					</RecordVariable>
+					<RecordVariable columnIndex="22" name="CTD_SAL" longName="" units="conductivity" format="float" missingValue="-999">
+						<description></description>
+					</RecordVariable>
+					<RecordVariable columnIndex="23" name="HR2_1" longName="" units="Volts" format="float" missingValue="-999">
+						<description></description>
+					</RecordVariable>
+					<RecordVariable columnIndex="24" name="HR2_2" longName="" units="Volts" format="float" missingValue="-999">
+						<description></description>
+					</RecordVariable>
+					<RecordVariable columnIndex="25" name="HR2_3" longName="" units="Volts" format="float" missingValue="-999">
+						<description></description>
+					</RecordVariable>
+					<RecordVariable columnIndex="26" name="HR2_4" longName="" units="Volts" format="float" missingValue="-999">
+						<description></description>
+					</RecordVariable>
+					<RecordVariable columnIndex="27" name="HR2_5" longName="" units="Volts" format="float" missingValue="-999">
+						<description></description>
+					</RecordVariable>
+					<RecordVariable columnIndex="28" name="HR2_6" longName="" units="Volts" format="float" missingValue="-999">
+						<description></description>
+					</RecordVariable>
+					<RecordVariable columnIndex="29" name="HR2_7" longName="" units="Volts" format="float" missingValue="-999">
+						<description></description>
+					</RecordVariable>
+					<RecordVariable columnIndex="30" name="HR2_8" longName="" units="Volts" format="float" missingValue="-999">
+						<description></description>
+					</RecordVariable>
+					<RecordVariable columnIndex="31" name="HR2_9" longName="" units="Volts" format="float" missingValue="-999">
+						<description></description>
+					</RecordVariable>
+					<RecordVariable columnIndex="32" name="HR2_10" longName="" units="Volts" format="float" missingValue="-999">
+						<description></description>
+					</RecordVariable>
+					<RecordVariable columnIndex="33" name="HR2_11" longName="" units="Volts" format="float" missingValue="-999">
+						<description></description>
+					</RecordVariable>
+					<RecordVariable columnIndex="34" name="HR2_12" longName="" units="Volts" format="float" missingValue="-999">
+						<description></description>
+					</RecordVariable>
+					<RecordVariable columnIndex="35" name="HR2_13" longName="" units="Volts" format="float" missingValue="-999">
+						<description></description>
+					</RecordVariable>
+					<RecordVariable columnIndex="36" name="HS1" longName="" units="Counts" format="integer" missingValue="-999">
+						<description></description>
+					</RecordVariable>
+					<RecordVariable columnIndex="37" name="HS2" longName="" units="Counts" format="integer" missingValue="-999">
+						<description></description>
+					</RecordVariable>
+					<RecordVariable columnIndex="38" name="HS3" longName="" units="Counts" format="integer" missingValue="-999">
+						<description></description>
+					</RecordVariable>
+					<RecordVariable columnIndex="39" name="HS4" longName="" units="Counts" format="integer" missingValue="-999">
+						<description></description>
+					</RecordVariable>
+					<RecordVariable columnIndex="40" name="HS5" longName="" units="Counts" format="integer" missingValue="-999">
+						<description></description>
+					</RecordVariable>
+					<RecordVariable columnIndex="41" name="FLUOR" longName="" units="Flourescence" format="float" missingValue="-999">
+						<description></description>
+					</RecordVariable>
+					<RecordVariable name="Latitude" longName="GPS Absolute Latitude" units="degreesLatitude" referenceScale="TBD" columnIndex="42" format="double" validMin="-90.0" validMax="90.0" missingValue="-999">
+						<description>latitude of GPS fix (signed fp degrees)</description>
+						<StandardVariable name="latitude"/>
+					</RecordVariable>
+					<RecordVariable name="Longitude" longName="GPS Absolute Longitude" units="degreesLongitude" referenceScale="TBD" columnIndex="43" format="double" validMin="-180.0" validMax="180.0" missingValue="-999">
+						<description>longitude of GPS fix (signed fp degrees)</description>
+						<StandardVariable name="longitude"/>
+					</RecordVariable>
+					<RecordVariable name="Minutes Since Sunday" longName="UTC Minutes Since Sunday at 00:00:00" units="minutes" referenceScale="TBD" columnIndex="44" format="integer" validMin="0" validMax="10080" missingValue="-999">
+						<description>Minutes since midnight on Sunday that GPS fix was obtained.</description>
+					</RecordVariable>
+				</RecordDescription>
+			</DataFile>
+		</output>
+	</Deployment>
+</Metadata>

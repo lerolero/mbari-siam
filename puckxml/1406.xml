@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1406.xml,v 1.2 2007/05/29 20:46:36 kgomes Exp $	-->
+<!-- Last edited by $Author: kgomes $	$Date: 2007/05/29 20:46:36 $   -->
+<!-- Test More -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://new-ssds.mbari.org/ssds-docs/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="1" lastAuthor="$Author: kgomes $" lastUpdate="$Date: 2007/05/29 20:46:36 $">
+	<Deployment role="instrument" name="ADCP Deployment">
+		<Device id="1406" name="RD Instruments Workhorse Sentinel 300KHz ADCP" type="ADCP" 
+		mfgName="RD Instruments" mfgModel="WHS 300KHZ" mfgSerialNumber="0702">
+			<description>measures current motions</description>
+			<Person firstname="Kent" surname="Headley" organization="MBARI" email="headley@mbari.org"/>
+		</Device>
+		<output>
+			<DataStream>
+				<description>ADCP Data Stream</description>
+				<RecordDescription bufferStyle="binary" bufferLengthType="fixed" parseable="false" recordType="1">
+				    <RecordVariable name="ADCP_data" longName="ADCP Binary Data Stream" units="noUnits" columnIndex="1" >
+						<description>All of ADCP data output packed into binary string.  Must be decoded for use.</description>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

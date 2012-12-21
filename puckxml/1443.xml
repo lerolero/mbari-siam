@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1443.xml,v 1.5 2006/06/09 20:58:01 graybeal Exp $	-->
+<!-- Last edited by $Author: graybeal $	$Date: 2006/06/09 20:58:01 $   -->
+
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ssds.mbari.org/xml/schema/SSDS_Metadata.xsd" 
+	majorVersion="2" minorVersion="1" 
+	lastAuthor="$Author: graybeal $" lastUpdate="$Date: 2006/06/09 20:58:01 $" >
+
+	<Deployment role="instrument" >
+		<Device	id="1443" name="ASIMET BPR" type="Air Pressure Sensor"	
+			mfgName="WHOI" mfgModel="BPR" mfgSerialNumber="BPR222"
+			preferredDeploymentRole="instrument">
+			<description>ASIMET Barometric pressure instrument</description>
+			<Person	firstname="Tom" surname="OReilly" organization="MBARI" email="oreilly@mbari.org" phone="831-775-1766"/>
+		</Device>
+		
+		<output>
+			<DataStream>
+			  <description>ASIMET BPR data stream</description>
+              <RecordDescription bufferStyle="ASCII"
+				bufferParseType="ordered"
+				bufferItemSeparator="whitespace"
+				bufferLengthType="variable"
+				parseable="true" recordType="1">
+	            <RecordVariable
+					name="Barometric_Pressure"
+					longName="Barometric Pressure"
+					units="millibars"	
+					columnIndex="1"
+					format="float"	>
+					<description>Calibrated barometric pressure in millibars</description>
+					<StandardVariable name="air_pressure"/>
+			    </RecordVariable>
+	          
+	            <RecordVariable
+		            name="Raw_Barometric_Pressure"
+		            longName="Raw Barometric Pressure"
+		            units="millibars"	
+		            columnIndex="2"
+		            format="float"	>
+	            	<description>Raw barometric pressure in millibars</description>
+	            	<StandardVariable name="air_pressure"/>
+	         	 </RecordVariable>
+        	   </RecordDescription>
+			 </DataStream>
+		 </output>
+	</Deployment>
+</Metadata>

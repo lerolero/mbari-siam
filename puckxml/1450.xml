@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1450.xml,v 1.5 2012/02/04 00:33:32 kgomes Exp $	-->
+<!-- Last edited by $Author: kgomes $	$Date: 2012/02/04 00:33:32 $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:noNamespaceSchemaLocation="http://new-ssds.mbari.org/ssds-docs/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="1" lastAuthor="$Author: kgomes $" lastUpdate="$Date: 2012/02/04 00:33:32 $" >
+	<Deployment role="instrument">
+		<Device id="1450" />
+		<!-- Satlantic HyperOCR has childsensors deployed at 10 meters depth.  Data is ouput for all from the in air instrument. -->
+		<Deployment role="sensor" nominalDepth="10">
+			<Device id="1451" />
+		</Deployment>
+		<Deployment role="sensor" nominalDepth="10">
+			<Device id="1452" />
+		</Deployment>
+		<Deployment role="sensor" nominalDepth="20">
+			<Device id="1625" />
+		</Deployment>
+		<Deployment role="sensor" nominalDepth="20">
+			<Device id="1627" />
+		</Deployment>
+		<output>
+			<DataStream>
+				<description>Satlantic Radiometer Datastream</description>
+				<RecordDescription bufferStyle="binary" bufferLengthType="fixed" parseable="false" recordType="1">
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

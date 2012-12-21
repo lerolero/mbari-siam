@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1402.xml,v 1.2 2007/08/29 22:59:29 mccann Exp $	-->
+<!-- Last edited by $Author: mccann $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://dods.mbari.org/data/ssdsdata/config/schema/2004oasis/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="1" lastAuthor="$Author: mccann $" lastUpdate="$Date: 2007/08/29 22:59:29 $" >
+	<Deployment role="instrument" name="Emeter M2 April 2004"
+		startDate="2004-04-08T19:43:00Z"
+		nominalLongitude="-122.3880" nominalLatitude="36.6900" nominalDepth="-2.5">
+
+		<Device	id="1402" name="Emeter" type="Multipurpose" mfgName="MBARI" 
+			mfgModel="Emeter" mfgSerialNumber="M2"
+			preferredDeploymentRole="Instrument">
+			<description>Measures battery voltage, current</description>
+			<Person firstname="Zorba" surname="Pickerill" organization="MBARI"
+			 email="zorba@mbari.org"/>
+		</Device>
+
+		<description>M2 deployment of Emeter</description>
+		<output>
+			<DataStream>
+				<description>Emeter data stream</description>
+				<!-- Comments:
+				-->
+				<RecordDescription bufferStyle="ASCII"
+				bufferParseType="ordered"
+				bufferItemSeparator=","
+				bufferLengthType="variable"
+				parseable="true" recordType="1">
+					<!-- COMMAND Sent:
+					-->
+					<!-- Sample Record:
+					28226,+00.08,+001.3,14.20,-0001.5,-0003.1,+0001.5,255.0,5,15
+					-->
+					<!-- Accuracy:
+					-->
+					<!--
+						Comments:
+							This XML assumes one data record per packet.
+					-->
+					<RecordVariable
+						name="RunTime"
+						longName="Time since last AHr reset"
+						units="seconds"	referenceScale="TBD"
+						columnIndex="1"
+						format="int" >
+							<description>Time since last AHr reset, seconds</description>
+							<StandardVariable name="seconds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="KWHrs"
+						longName="Kilowatt Hours"
+						units="KWH"	referenceScale="TBD"
+						columnIndex="2"
+						format="float" >
+							<description>Kilowatt Hours</description>
+					</RecordVariable>
+					<RecordVariable
+						name="Current"
+						longName="Current"
+						units="amps"	referenceScale="TBD"
+						columnIndex="3"
+						format="float" >
+							<description>Current draw in amperes</description>
+							<StandardVariable name="amps"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Volts"
+						longName="Battery Voltage"
+						units="volts"	referenceScale="TBD"
+						columnIndex="4"
+						format="float" >
+							<description>Battery voltage in volts</description>
+							<StandardVariable name="volts"/>
+					</RecordVariable>
+					<RecordVariable
+						name="AHrs"
+						longName="AmpHours"
+						units="AH"	referenceScale="TBD"
+						columnIndex="5"
+						format="float" >
+							<description>Total net Amp-Hours</description>
+					</RecordVariable>
+					<RecordVariable
+						name="PeukertAHrs"
+						longName="Peukert Ampere Hours"
+						units="AH"	referenceScale="TBD"
+						columnIndex="6"
+						format="float" >
+							<description>Not Used</description>
+					</RecordVariable>
+					<RecordVariable
+						name="PeukertAmps"
+						longName="Peukert Amps"
+						units="amps"	referenceScale="TBD"
+						columnIndex="7"
+						format="float" >
+							<description>Not Used</description>
+					</RecordVariable>
+					<RecordVariable
+						name="TimeRemaining"
+						longName="Time Remaining"
+						units="seconds"	referenceScale="TBD"
+						columnIndex="8"
+						format="float" >
+							<description>Not Used</description>
+					</RecordVariable>
+					<RecordVariable
+						name="BarGraphState"
+						longName="BarGraph State"
+						columnIndex="9"
+						format="int" >
+							<description>1.lt.20% 2.lt.40% 3.lt.60% 4.lt.80% 5.lt.100% 6=FULL</description>
+					</RecordVariable>
+					<RecordVariable
+						name="Temp"
+						longName="Temperature"
+						units="degrees C"	referenceScale="TBD"
+						columnIndex="10"
+						format="int" >
+							<description>Battery compartment temperature in degrees C</description>
+							<StandardVariable name="degrees"/>
+					</RecordVariable>
+
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

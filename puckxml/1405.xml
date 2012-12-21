@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1405.xml,v 1.5 2007/04/20 16:07:45 kgomes Exp $	-->
+<!-- Last edited by $Author: kgomes $	$Date: 2007/04/20 16:07:45 $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:noNamespaceSchemaLocation="http://new-ssds.mbari.org/ssds-docs/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="5" 
+	lastAuthor="$Author: kgomes $" lastUpdate="$Date: 2007/04/20 16:07:45 $">
+	<Deployment role="instrument" name="SeaHorse Profiler Deployment">
+		<Device id="1405" name="SeaHorse Profiler" type="Profiler Package" 
+			mfgName="Brooke Ocean Technologies Ltd" mfgModel="SH-200T-1" mfgSerialNumber="10322" 
+			preferredDeploymentRole="Instrument">
+			<description>CTD Vertical Profiler</description>
+			<Person firstname="Andrew" surname="Hamilton" organization="MBARI" email="hamilton@mbari.org"/>
+		</Device>
+		<output>
+			<DataStream>
+				<description>SeaHorse Profiler Data Stream</description>
+				<RecordDescription bufferStyle="binary" bufferLengthType="variable" parseable="false" recordType="1">
+				    <RecordVariable name="Seahorse_data" longName="Seahorse Binary Data Stream" units="noUnits" columnIndex="1" >
+					<description>All of seahorse data output packed into binary string.  Must be decoded for use.</description>
+				    </RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

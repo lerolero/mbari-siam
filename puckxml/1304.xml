@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1304.xml,v 1.1 2006/05/25 18:28:29 graybeal Exp $	-->
+<!-- Last edited by $Author: graybeal $	$Date: 2006/05/25 18:28:29 $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://ssds.shore.mbari.org/ssdsdata/config/schema/2004cimt/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="3" lastAuthor="$Author: graybeal $" lastUpdate="$Date: 2006/05/25 18:28:29 $" >
+
+	<Deployment role="platform" name="M0 Mooring Deployment" nominalLongitude="-121.903333" nominalLatitude="36.833333" nominalDepth="0" startDate="2004-04-30T00:00:00Z">
+		<Device id="1304" name="M0 Mooring" type="Mooring" mfgName="MBARI" preferredDeploymentRole="Platform">
+			<description>Oceanographic MOOS mooring; Doesn't produce data</description>
+			<Person firstname="Kent" surname="Headley" organization="MBARI" email="headley@mbari.org"/>
+		</Device>
+		<description>M0-CIMT Mooring Deployment</description>
+		<Deployment role="instrument" name="M0-CIMT" nominalLongitude="-121.903333" nominalLatitude="36.833333" nominalDepth="-3" startDate="2004-04-30T00:00:00Z">
+			<Device id="1299" name="MMC Node" type="Controller" mfgName="MBARI" preferredDeploymentRole="Instrument">
+				<description>MOOS Mooring Controller</description>
+				<Person firstname="Kent" surname="Headley" organization="MBARI" email="headley@mbari.org"/>
+			</Device>
+			<description>M0-CIMT deployment of MMC</description>
+		</Deployment>
+	</Deployment>
+</Metadata>

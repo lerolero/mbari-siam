@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1445.xml,v 1.1 2006/04/03 22:10:36 rich Exp $	-->
+<!-- Last edited by $Author: rich $	$Date: 2006/04/03 22:10:36 $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation="http://ssds.shore.mbari.org/ssdsdata/config/schema/2005mtm3/SSDS_Metadata.xsd" majorVersion="1" minorVersion="4" lastAuthor="$Author: rich $" lastUpdate="$Date: 2006/04/03 22:10:36 $" >
+
+	<Deployment role="instrument" >
+		<Device	id="1445" name="Aanderraa Oxygen Optode" type="Oxygen"	mfgName="Anderraa Instruments" mfgModel="Oxygen Optode 3830" mfgSerialNumber="605"
+			preferredDeploymentRole="instrument">
+			<description>Aanderraa Oxygen Optode</description>
+			<Person	firstname="Karen" surname="Salamy" organization="MBARI"
+			email="salamy@mbari.org" phone="831-775-1820"/>
+		</Device>
+		<output>
+			<DataStream>
+				<description>Aanderraa Oxygen Optode data stream</description>
+
+				<RecordDescription bufferStyle="ASCII"
+				bufferParseType="ordered"
+				bufferItemSeparator="space"
+				bufferLengthType="variable"
+				parseable="true" recordType="1">
+    
+ 	            <RecordVariable 
+					     name="Measurement"
+					     longName="MeasurementString" 
+					     units="string"
+					     columnIndex="1" format="string">
+						<description>Just the word MEASUREMENT</description>
+						<StandardVariable name="checkString"/>
+				</RecordVariable>
+
+				<RecordVariable 
+					     name="SensorModel"
+					     longName="SensorModel" 
+					     units="string"
+					     columnIndex="2" format="string">
+						<description>The model of the sensor reporting measurements</description>
+						<StandardVariable name="checkString"/>
+				</RecordVariable>
+				
+				<RecordVariable 
+					     name="SensorSerialNumber"
+					     longName="SensorSerialNumber" 
+					     units="string"
+					     columnIndex="3" format="string">
+						<description>The serial number of the sensor reporting measurements</description>
+						<StandardVariable name="checkString"/>
+				</RecordVariable>
+				
+				<RecordVariable 
+					     name="OxygenLabel"
+					     longName="OxygenLabel" 
+					     units="string"
+					     columnIndex="4" format="string">
+						<description>Just the word Oxygen:</description>
+						<StandardVariable name="checkString"/>
+				</RecordVariable>
+				
+				<RecordVariable
+						name="Oxygen"
+						longName="Dissolved Oxygen"
+						units="mmol/l"	referenceScale="TBD"
+						columnIndex="5"
+						format="float"	>
+						<description>Dissolved oxygen concentration in mmol per liter</description>
+						<StandardVariable name="Oxygen"/>
+				</RecordVariable>
+				
+				<RecordVariable 
+					     name="SaturationLabel"
+					     longName="SaturationLabel" 
+					     units="string"
+					     columnIndex="6" format="string">
+						<description>Just the word Saturation:</description>
+						<StandardVariable name="checkString"/>
+				</RecordVariable>
+				
+				<RecordVariable
+						name="Air Saturation"
+						longName="Air Saturation"
+						units="percent"	referenceScale="TBD"
+						columnIndex="7"
+						format="float"	>
+						<description>Air saturation value</description>
+						<StandardVariable name="OxygenAirSaturation"/>
+				</RecordVariable>
+				
+				<RecordVariable 
+					     name="TemperatureLabel"
+					     longName="TemperatureLabel" 
+					     units="string"
+					     columnIndex="8" format="string">
+						<description>Just the word Temperature:</description>
+						<StandardVariable name="checkString"/>
+				</RecordVariable>
+				
+				<RecordVariable
+						name="Temperature"
+						longName="Temperature"
+						units="deg C"	referenceScale="TBD"
+						columnIndex="9"
+						format="float"	>
+						<description>Temperature value</description>
+						<StandardVariable name="Temperature"/>
+				</RecordVariable>
+
+             </RecordDescription>
+		   </DataStream>
+		</output>
+	</Deployment>
+</Metadata>

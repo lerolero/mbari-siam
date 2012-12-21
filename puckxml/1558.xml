@@ -1,0 +1,1385 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1558.xml,v 1.3 2007/11/06 21:18:13 mccann Exp $	-->
+<!-- Last edited by $Author: mccann $	$Date: 2007/11/06 21:18:13 $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:noNamespaceSchemaLocation="http://new-ssds.mbari.org/ssds-docs/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="4" 
+	lastAuthor="$Author: mccann $" lastUpdate="$Date: 2007/11/06 21:18:13 $">
+	<Deployment role="instrument" nominalDepth="1">
+		<Device id="1558" />
+		<output>
+			<DataStream>
+				<description>ISUS data stream</description>
+				<RecordDescription bufferStyle="ASCII" bufferParseType="ordered" bufferItemSeparator="," bufferLengthType="fixed" parseable="true" recordType="1">
+					<RecordVariable name="Dk_SampleInfo" longName="DarkSamp Sample Info String" units="noUnits" columnIndex="1" format="string">
+						<description>tag string at beginning of a data record; includes model of instrument and whether this is light or dark sample (dark sample)</description>
+					</RecordVariable>
+					<RecordVariable name="Dk_SN" longName="DarkSamp Instrument serial number" units="id" referenceScale="none" columnIndex="2" format="int">
+						<description>serial number of the instrument (with the name, uniquely IDs instrument) (dark sample)</description>
+					</RecordVariable>
+					<RecordVariable name="Dk_Date" longName="DarkSamp Data of sample" units="YYYYDDD" referenceScale="none" columnIndex="3" format="string">
+						<description>temperature measured inside the MMC controller pressure housing (dark sample)</description>
+					</RecordVariable>
+					<RecordVariable name="Dk_Time" longName="DarkSamp GMT Time of Day" units="hourOfDay" referenceScale="TBD" columnIndex="4" format="double">
+						<description>hour of the day, in GMT floating point hours (dark sample)</description>
+						<StandardVariable name="time" namespaceUriString="http://marinemetadata.org/cf"/>
+					</RecordVariable>
+					<RecordVariable name="Dk_NTR_CONC" longName="DarkSamp Nitrate Concentration" units="uMol_L" referenceScale="tbd" columnIndex="5" format="double">
+						<description>Nitrate concentration to 2 decimal places, as calculated by ISUS (dark sample)</description>
+						<StandardVariable name="moles_of_nitrate_per_unit_mass_of_sea_water" namespaceUriString="http://marinemetadata.org/cf"/>
+					</RecordVariable>
+					<RecordVariable name="Dk_Salinity" longName="DarkSamp Salinity" units="psu" referenceScale="TBD" columnIndex="6" format="double">
+						<description>Salinity to 2 decimal places, as calculated by ISUS (dark sample)</description>
+						<StandardVariable name="sea_water_salinity" namespaceUriString="http://marinemetadata.org/cf"/>
+					</RecordVariable>
+					<RecordVariable name="Dk_RMS_Error" longName="DarkSamp Nitrate RMS Error" units="uMol_L" referenceScale="TBD" columnIndex="7" format="double">
+						<description>Root Mean Square error of the ISUS-calculated concentration, to 6 decimal places (dark sample)</description>
+					</RecordVariable>
+					<RecordVariable name="Dk_T_Int" longName="DarkSamp Instrument Housing Temperature" units="deg C" referenceScale="TBD" columnIndex="8" format="float">
+						<description>temperature inside the ISUS instrument housing, to 2 decimal places (dark sample)</description>
+					</RecordVariable>
+					<RecordVariable name="Dk_T_Spec" longName="DarkSamp Specrometer Temperature" units="deg C" referenceScale="TBD" columnIndex="9" format="float">
+						<description>temperature of the ISUS spectrometer, to 2 decimal places (dark sample)</description>
+					</RecordVariable>
+					<RecordVariable name="Dk_T_Lamp" longName="DarkSamp ISUS UV Light Source Temperature" units="deg C" referenceScale="TBD" columnIndex="10" format="float">
+						<description>temperature of the ISUS UV light source, to 2 decimal places (dark sample)</description>
+					</RecordVariable>
+					<RecordVariable name="Dk_Ref_Avg" longName="DarkSamp ISUS Reference Channel Average" units="" referenceScale="TBD" columnIndex="11" format="double">
+						<description>average reference channel measurement taken during the sample time, to 2 decimal places (dark sample)</description>
+					</RecordVariable>
+					<RecordVariable name="Dk_Ref_StdDev" longName="DarkSamp ISUS Reference Channel Std Dev" units="" referenceScale="TBD" columnIndex="12" format="float">
+						<description>variance of the Reference Channel measurement taken during the sample time, to 2 decimal places (dark sample)</description>
+					</RecordVariable>
+					<RecordVariable name="Dk_SW_Dark" longName="DarkSamp ISUS Sea-Water Dark Calculation" units="counts" referenceScale="TBD" columnIndex="13" format="double">
+						<description>Sea-Water Dark calculation, to 2 decimal places, in spectrometer counts (dark sample)</description>
+					</RecordVariable>
+					<RecordVariable name="Dk_Spec_Avg" longName="DarkSamp ISUS Spectrometer Average" units="counts" referenceScale="TBD" columnIndex="14" format="double">
+						<description>average value of all spectrometer channels, to 2 decimal places (dark sample)</description>
+					</RecordVariable>
+					<RecordVariable name="Dk_C_CTD" longName="DarkSamp ISUS External CTD (Future)" units="" referenceScale="TBD" columnIndex="15" format="double">
+						<description>Reserved for future use: Conductivity measurement from an external CTD device (dark sample)</description>
+					</RecordVariable>
+					<RecordVariable name="Dk_T_CTD" longName="DarkSamp ISUS External CTD Temp (Future)" units="" referenceScale="TBD" columnIndex="16" format="double">
+						<description>Reserved for future use: Temperature measurement from an external CTD device (dark sample)</description>
+					</RecordVariable>
+					<RecordVariable name="Dk_P_CTD" longName="DarkSamp ISUS External CTD Pressure (Future)" units="" referenceScale="TBD" columnIndex="17" format="double">
+						<description>Reserved for future use: Pressure measurement from an external CTD device (dark sample)</description>
+					</RecordVariable>
+					<RecordVariable name="Dk_RSRV1" longName="DarkSamp ISUS Reserved (Future)" units="" referenceScale="TBD" columnIndex="18" format="string">
+						<description>Reserved for future use (dark sample)</description>
+					</RecordVariable>
+					<RecordVariable name="Dk_RSRV2" longName="DarkSamp ISUS Reserved (Future)" units="" referenceScale="TBD" columnIndex="19" format="string">
+						<description>Reserved for future use (dark sample)</description>
+					</RecordVariable>
+					<RecordVariable name="Dk_RSRV3" longName="DarkSamp ISUS Reserved (Future)" units="" referenceScale="TBD" columnIndex="20" format="string">
+						<description>Reserved for future use (dark sample)</description>
+					</RecordVariable>
+					<RecordVariable name="Dk_RSRV3" longName="DarkSamp ISUS Reserved (Future)" units="" referenceScale="TBD" columnIndex="21" format="string">
+						<description>Reserved for future use (dark sample)</description>
+					</RecordVariable>
+					<!-- Insert Here ********************************* -->
+					<RecordVariable name="DarkCh_1" longName="Dark ISUS Ch# 1" units="A/D Counts" columnIndex="22" format="int">
+						<description>A/D counts for the spectrometer at wavelength number 1.</description>
+					</RecordVariable>
+					<RecordVariable name="DarkCh_2" longName="Dark ISUS Ch# 2" units="A/D Counts" columnIndex="23" format="int"/>
+					<RecordVariable name="DarkCh_3" longName="Dark ISUS Ch# 3" units="A/D Counts" columnIndex="24" format="int"/>
+					<RecordVariable name="DarkCh_4" longName="Dark ISUS Ch# 4" units="A/D Counts" columnIndex="25" format="int"/>
+					<RecordVariable name="DarkCh_5" longName="Dark ISUS Ch# 5" units="A/D Counts" columnIndex="26" format="int"/>
+					<RecordVariable name="DarkCh_6" longName="Dark ISUS Ch# 6" units="A/D Counts" columnIndex="27" format="int"/>
+					<RecordVariable name="DarkCh_7" longName="Dark ISUS Ch# 7" units="A/D Counts" columnIndex="28" format="int"/>
+					<RecordVariable name="DarkCh_8" longName="Dark ISUS Ch# 8" units="A/D Counts" columnIndex="29" format="int"/>
+					<RecordVariable name="DarkCh_9" longName="Dark ISUS Ch# 9" units="A/D Counts" columnIndex="30" format="int"/>
+					<RecordVariable name="DarkCh_10" longName="Dark ISUS Ch# 10" units="A/D Counts" columnIndex="31" format="int"/>
+					<RecordVariable name="DarkCh_11" longName="Dark ISUS Ch# 11" units="A/D Counts" columnIndex="32" format="int"/>
+					<RecordVariable name="DarkCh_12" longName="Dark ISUS Ch# 12" units="A/D Counts" columnIndex="33" format="int"/>
+					<RecordVariable name="DarkCh_13" longName="Dark ISUS Ch# 13" units="A/D Counts" columnIndex="34" format="int"/>
+					<RecordVariable name="DarkCh_14" longName="Dark ISUS Ch# 14" units="A/D Counts" columnIndex="35" format="int"/>
+					<RecordVariable name="DarkCh_15" longName="Dark ISUS Ch# 15" units="A/D Counts" columnIndex="36" format="int"/>
+					<RecordVariable name="DarkCh_16" longName="Dark ISUS Ch# 16" units="A/D Counts" columnIndex="37" format="int"/>
+					<RecordVariable name="DarkCh_17" longName="Dark ISUS Ch# 17" units="A/D Counts" columnIndex="38" format="int"/>
+					<RecordVariable name="DarkCh_18" longName="Dark ISUS Ch# 18" units="A/D Counts" columnIndex="39" format="int"/>
+					<RecordVariable name="DarkCh_19" longName="Dark ISUS Ch# 19" units="A/D Counts" columnIndex="40" format="int"/>
+					<RecordVariable name="DarkCh_20" longName="Dark ISUS Ch# 20" units="A/D Counts" columnIndex="41" format="int"/>
+					<RecordVariable name="DarkCh_21" longName="Dark ISUS Ch# 21" units="A/D Counts" columnIndex="42" format="int"/>
+					<RecordVariable name="DarkCh_22" longName="Dark ISUS Ch# 22" units="A/D Counts" columnIndex="43" format="int"/>
+					<RecordVariable name="DarkCh_23" longName="Dark ISUS Ch# 23" units="A/D Counts" columnIndex="44" format="int"/>
+					<RecordVariable name="DarkCh_24" longName="Dark ISUS Ch# 24" units="A/D Counts" columnIndex="45" format="int"/>
+					<RecordVariable name="DarkCh_25" longName="Dark ISUS Ch# 25" units="A/D Counts" columnIndex="46" format="int"/>
+					<RecordVariable name="DarkCh_26" longName="Dark ISUS Ch# 26" units="A/D Counts" columnIndex="47" format="int"/>
+					<RecordVariable name="DarkCh_27" longName="Dark ISUS Ch# 27" units="A/D Counts" columnIndex="48" format="int"/>
+					<RecordVariable name="DarkCh_28" longName="Dark ISUS Ch# 28" units="A/D Counts" columnIndex="49" format="int"/>
+					<RecordVariable name="DarkCh_29" longName="Dark ISUS Ch# 29" units="A/D Counts" columnIndex="50" format="int"/>
+					<RecordVariable name="DarkCh_30" longName="Dark ISUS Ch# 30" units="A/D Counts" columnIndex="51" format="int"/>
+					<RecordVariable name="DarkCh_31" longName="Dark ISUS Ch# 31" units="A/D Counts" columnIndex="52" format="int"/>
+					<RecordVariable name="DarkCh_32" longName="Dark ISUS Ch# 32" units="A/D Counts" columnIndex="53" format="int">
+						<description>A/D counts for the spectrometer at wavelength number 32.</description>
+					</RecordVariable>
+					<RecordVariable name="DarkCh_33" longName="Dark ISUS Ch# 33" units="A/D Counts" columnIndex="54" format="int"/>
+					<RecordVariable name="DarkCh_34" longName="Dark ISUS Ch# 34" units="A/D Counts" columnIndex="55" format="int"/>
+					<RecordVariable name="DarkCh_35" longName="Dark ISUS Ch# 35" units="A/D Counts" columnIndex="56" format="int"/>
+					<RecordVariable name="DarkCh_36" longName="Dark ISUS Ch# 36" units="A/D Counts" columnIndex="57" format="int"/>
+					<RecordVariable name="DarkCh_37" longName="Dark ISUS Ch# 37" units="A/D Counts" columnIndex="58" format="int"/>
+					<RecordVariable name="DarkCh_38" longName="Dark ISUS Ch# 38" units="A/D Counts" columnIndex="59" format="int"/>
+					<RecordVariable name="DarkCh_39" longName="Dark ISUS Ch# 39" units="A/D Counts" columnIndex="60" format="int"/>
+					<RecordVariable name="DarkCh_40" longName="Dark ISUS Ch# 40" units="A/D Counts" columnIndex="61" format="int"/>
+					<RecordVariable name="DarkCh_41" longName="Dark ISUS Ch# 41" units="A/D Counts" columnIndex="62" format="int"/>
+					<RecordVariable name="DarkCh_42" longName="Dark ISUS Ch# 42" units="A/D Counts" columnIndex="63" format="int"/>
+					<RecordVariable name="DarkCh_43" longName="Dark ISUS Ch# 43" units="A/D Counts" columnIndex="64" format="int"/>
+					<RecordVariable name="DarkCh_44" longName="Dark ISUS Ch# 44" units="A/D Counts" columnIndex="65" format="int"/>
+					<RecordVariable name="DarkCh_45" longName="Dark ISUS Ch# 45" units="A/D Counts" columnIndex="66" format="int"/>
+					<RecordVariable name="DarkCh_46" longName="Dark ISUS Ch# 46" units="A/D Counts" columnIndex="67" format="int"/>
+					<RecordVariable name="DarkCh_47" longName="Dark ISUS Ch# 47" units="A/D Counts" columnIndex="68" format="int"/>
+					<RecordVariable name="DarkCh_48" longName="Dark ISUS Ch# 48" units="A/D Counts" columnIndex="69" format="int"/>
+					<RecordVariable name="DarkCh_49" longName="Dark ISUS Ch# 49" units="A/D Counts" columnIndex="70" format="int"/>
+					<RecordVariable name="DarkCh_50" longName="Dark ISUS Ch# 50" units="A/D Counts" columnIndex="71" format="int"/>
+					<RecordVariable name="DarkCh_51" longName="Dark ISUS Ch# 51" units="A/D Counts" columnIndex="72" format="int"/>
+					<RecordVariable name="DarkCh_52" longName="Dark ISUS Ch# 52" units="A/D Counts" columnIndex="73" format="int"/>
+					<RecordVariable name="DarkCh_53" longName="Dark ISUS Ch# 53" units="A/D Counts" columnIndex="74" format="int"/>
+					<RecordVariable name="DarkCh_54" longName="Dark ISUS Ch# 54" units="A/D Counts" columnIndex="75" format="int"/>
+					<RecordVariable name="DarkCh_55" longName="Dark ISUS Ch# 55" units="A/D Counts" columnIndex="76" format="int"/>
+					<RecordVariable name="DarkCh_56" longName="Dark ISUS Ch# 56" units="A/D Counts" columnIndex="77" format="int"/>
+					<RecordVariable name="DarkCh_57" longName="Dark ISUS Ch# 57" units="A/D Counts" columnIndex="78" format="int"/>
+					<RecordVariable name="DarkCh_58" longName="Dark ISUS Ch# 58" units="A/D Counts" columnIndex="79" format="int"/>
+					<RecordVariable name="DarkCh_59" longName="Dark ISUS Ch# 59" units="A/D Counts" columnIndex="80" format="int"/>
+					<RecordVariable name="DarkCh_60" longName="Dark ISUS Ch# 60" units="A/D Counts" columnIndex="81" format="int"/>
+					<RecordVariable name="DarkCh_61" longName="Dark ISUS Ch# 61" units="A/D Counts" columnIndex="82" format="int"/>
+					<RecordVariable name="DarkCh_62" longName="Dark ISUS Ch# 62" units="A/D Counts" columnIndex="83" format="int"/>
+					<RecordVariable name="DarkCh_63" longName="Dark ISUS Ch# 63" units="A/D Counts" columnIndex="84" format="int"/>
+					<RecordVariable name="DarkCh_64" longName="Dark ISUS Ch# 64" units="A/D Counts" columnIndex="85" format="int">
+						<description>A/D counts for the spectrometer at wavelength number 64.</description>
+					</RecordVariable>
+					<RecordVariable name="DarkCh_65" longName="Dark ISUS Ch# 65" units="A/D Counts" columnIndex="86" format="int"/>
+					<RecordVariable name="DarkCh_66" longName="Dark ISUS Ch# 66" units="A/D Counts" columnIndex="87" format="int"/>
+					<RecordVariable name="DarkCh_67" longName="Dark ISUS Ch# 67" units="A/D Counts" columnIndex="88" format="int"/>
+					<RecordVariable name="DarkCh_68" longName="Dark ISUS Ch# 68" units="A/D Counts" columnIndex="89" format="int"/>
+					<RecordVariable name="DarkCh_69" longName="Dark ISUS Ch# 69" units="A/D Counts" columnIndex="90" format="int"/>
+					<RecordVariable name="DarkCh_70" longName="Dark ISUS Ch# 70" units="A/D Counts" columnIndex="91" format="int"/>
+					<RecordVariable name="DarkCh_71" longName="Dark ISUS Ch# 71" units="A/D Counts" columnIndex="92" format="int"/>
+					<RecordVariable name="DarkCh_72" longName="Dark ISUS Ch# 72" units="A/D Counts" columnIndex="93" format="int"/>
+					<RecordVariable name="DarkCh_73" longName="Dark ISUS Ch# 73" units="A/D Counts" columnIndex="94" format="int"/>
+					<RecordVariable name="DarkCh_74" longName="Dark ISUS Ch# 74" units="A/D Counts" columnIndex="95" format="int"/>
+					<RecordVariable name="DarkCh_75" longName="Dark ISUS Ch# 75" units="A/D Counts" columnIndex="96" format="int"/>
+					<RecordVariable name="DarkCh_76" longName="Dark ISUS Ch# 76" units="A/D Counts" columnIndex="97" format="int"/>
+					<RecordVariable name="DarkCh_77" longName="Dark ISUS Ch# 77" units="A/D Counts" columnIndex="98" format="int"/>
+					<RecordVariable name="DarkCh_78" longName="Dark ISUS Ch# 78" units="A/D Counts" columnIndex="99" format="int"/>
+					<RecordVariable name="DarkCh_79" longName="Dark ISUS Ch# 79" units="A/D Counts" columnIndex="100" format="int"/>
+					<RecordVariable name="DarkCh_80" longName="Dark ISUS Ch# 80" units="A/D Counts" columnIndex="101" format="int"/>
+					<RecordVariable name="DarkCh_81" longName="Dark ISUS Ch# 81" units="A/D Counts" columnIndex="102" format="int"/>
+					<RecordVariable name="DarkCh_82" longName="Dark ISUS Ch# 82" units="A/D Counts" columnIndex="103" format="int"/>
+					<RecordVariable name="DarkCh_83" longName="Dark ISUS Ch# 83" units="A/D Counts" columnIndex="104" format="int"/>
+					<RecordVariable name="DarkCh_84" longName="Dark ISUS Ch# 84" units="A/D Counts" columnIndex="105" format="int"/>
+					<RecordVariable name="DarkCh_85" longName="Dark ISUS Ch# 85" units="A/D Counts" columnIndex="106" format="int"/>
+					<RecordVariable name="DarkCh_86" longName="Dark ISUS Ch# 86" units="A/D Counts" columnIndex="107" format="int"/>
+					<RecordVariable name="DarkCh_87" longName="Dark ISUS Ch# 87" units="A/D Counts" columnIndex="108" format="int"/>
+					<RecordVariable name="DarkCh_88" longName="Dark ISUS Ch# 88" units="A/D Counts" columnIndex="109" format="int"/>
+					<RecordVariable name="DarkCh_89" longName="Dark ISUS Ch# 89" units="A/D Counts" columnIndex="110" format="int"/>
+					<RecordVariable name="DarkCh_90" longName="Dark ISUS Ch# 90" units="A/D Counts" columnIndex="111" format="int"/>
+					<RecordVariable name="DarkCh_91" longName="Dark ISUS Ch# 91" units="A/D Counts" columnIndex="112" format="int"/>
+					<RecordVariable name="DarkCh_92" longName="Dark ISUS Ch# 92" units="A/D Counts" columnIndex="113" format="int"/>
+					<RecordVariable name="DarkCh_93" longName="Dark ISUS Ch# 93" units="A/D Counts" columnIndex="114" format="int"/>
+					<RecordVariable name="DarkCh_94" longName="Dark ISUS Ch# 94" units="A/D Counts" columnIndex="115" format="int"/>
+					<RecordVariable name="DarkCh_95" longName="Dark ISUS Ch# 95" units="A/D Counts" columnIndex="116" format="int"/>
+					<RecordVariable name="DarkCh_96" longName="Dark ISUS Ch# 96" units="A/D Counts" columnIndex="117" format="int">
+						<description>A/D counts for the spectrometer at wavelength number 96.</description>
+					</RecordVariable>
+					<RecordVariable name="DarkCh_97" longName="Dark ISUS Ch# 97" units="A/D Counts" columnIndex="118" format="int"/>
+					<RecordVariable name="DarkCh_98" longName="Dark ISUS Ch# 98" units="A/D Counts" columnIndex="119" format="int"/>
+					<RecordVariable name="DarkCh_99" longName="Dark ISUS Ch# 99" units="A/D Counts" columnIndex="120" format="int"/>
+					<RecordVariable name="DarkCh_100" longName="Dark ISUS Ch# 100" units="A/D Counts" columnIndex="121" format="int"/>
+					<RecordVariable name="DarkCh_101" longName="Dark ISUS Ch# 101" units="A/D Counts" columnIndex="122" format="int"/>
+					<RecordVariable name="DarkCh_102" longName="Dark ISUS Ch# 102" units="A/D Counts" columnIndex="123" format="int"/>
+					<RecordVariable name="DarkCh_103" longName="Dark ISUS Ch# 103" units="A/D Counts" columnIndex="124" format="int"/>
+					<RecordVariable name="DarkCh_104" longName="Dark ISUS Ch# 104" units="A/D Counts" columnIndex="125" format="int"/>
+					<RecordVariable name="DarkCh_105" longName="Dark ISUS Ch# 105" units="A/D Counts" columnIndex="126" format="int"/>
+					<RecordVariable name="DarkCh_106" longName="Dark ISUS Ch# 106" units="A/D Counts" columnIndex="127" format="int"/>
+					<RecordVariable name="DarkCh_107" longName="Dark ISUS Ch# 107" units="A/D Counts" columnIndex="128" format="int"/>
+					<RecordVariable name="DarkCh_108" longName="Dark ISUS Ch# 108" units="A/D Counts" columnIndex="129" format="int"/>
+					<RecordVariable name="DarkCh_109" longName="Dark ISUS Ch# 109" units="A/D Counts" columnIndex="130" format="int"/>
+					<RecordVariable name="DarkCh_110" longName="Dark ISUS Ch# 110" units="A/D Counts" columnIndex="131" format="int"/>
+					<RecordVariable name="DarkCh_111" longName="Dark ISUS Ch# 111" units="A/D Counts" columnIndex="132" format="int"/>
+					<RecordVariable name="DarkCh_112" longName="Dark ISUS Ch# 112" units="A/D Counts" columnIndex="133" format="int"/>
+					<RecordVariable name="DarkCh_113" longName="Dark ISUS Ch# 113" units="A/D Counts" columnIndex="134" format="int"/>
+					<RecordVariable name="DarkCh_114" longName="Dark ISUS Ch# 114" units="A/D Counts" columnIndex="135" format="int"/>
+					<RecordVariable name="DarkCh_115" longName="Dark ISUS Ch# 115" units="A/D Counts" columnIndex="136" format="int"/>
+					<RecordVariable name="DarkCh_116" longName="Dark ISUS Ch# 116" units="A/D Counts" columnIndex="137" format="int"/>
+					<RecordVariable name="DarkCh_117" longName="Dark ISUS Ch# 117" units="A/D Counts" columnIndex="138" format="int"/>
+					<RecordVariable name="DarkCh_118" longName="Dark ISUS Ch# 118" units="A/D Counts" columnIndex="139" format="int"/>
+					<RecordVariable name="DarkCh_119" longName="Dark ISUS Ch# 119" units="A/D Counts" columnIndex="140" format="int"/>
+					<RecordVariable name="DarkCh_120" longName="Dark ISUS Ch# 120" units="A/D Counts" columnIndex="141" format="int"/>
+					<RecordVariable name="DarkCh_121" longName="Dark ISUS Ch# 121" units="A/D Counts" columnIndex="142" format="int"/>
+					<RecordVariable name="DarkCh_122" longName="Dark ISUS Ch# 122" units="A/D Counts" columnIndex="143" format="int"/>
+					<RecordVariable name="DarkCh_123" longName="Dark ISUS Ch# 123" units="A/D Counts" columnIndex="144" format="int"/>
+					<RecordVariable name="DarkCh_124" longName="Dark ISUS Ch# 124" units="A/D Counts" columnIndex="145" format="int"/>
+					<RecordVariable name="DarkCh_125" longName="Dark ISUS Ch# 125" units="A/D Counts" columnIndex="146" format="int"/>
+					<RecordVariable name="DarkCh_126" longName="Dark ISUS Ch# 126" units="A/D Counts" columnIndex="147" format="int"/>
+					<RecordVariable name="DarkCh_127" longName="Dark ISUS Ch# 127" units="A/D Counts" columnIndex="148" format="int"/>
+					<RecordVariable name="DarkCh_128" longName="Dark ISUS Ch# 128" units="A/D Counts" columnIndex="149" format="int">
+						<description>A/D counts for the spectrometer at wavelength number 128.</description>
+					</RecordVariable>
+					<RecordVariable name="DarkCh_129" longName="Dark ISUS Ch# 129" units="A/D Counts" columnIndex="150" format="int"/>
+					<RecordVariable name="DarkCh_130" longName="Dark ISUS Ch# 130" units="A/D Counts" columnIndex="151" format="int"/>
+					<RecordVariable name="DarkCh_131" longName="Dark ISUS Ch# 131" units="A/D Counts" columnIndex="152" format="int"/>
+					<RecordVariable name="DarkCh_132" longName="Dark ISUS Ch# 132" units="A/D Counts" columnIndex="153" format="int"/>
+					<RecordVariable name="DarkCh_133" longName="Dark ISUS Ch# 133" units="A/D Counts" columnIndex="154" format="int"/>
+					<RecordVariable name="DarkCh_134" longName="Dark ISUS Ch# 134" units="A/D Counts" columnIndex="155" format="int"/>
+					<RecordVariable name="DarkCh_135" longName="Dark ISUS Ch# 135" units="A/D Counts" columnIndex="156" format="int"/>
+					<RecordVariable name="DarkCh_136" longName="Dark ISUS Ch# 136" units="A/D Counts" columnIndex="157" format="int"/>
+					<RecordVariable name="DarkCh_137" longName="Dark ISUS Ch# 137" units="A/D Counts" columnIndex="158" format="int"/>
+					<RecordVariable name="DarkCh_138" longName="Dark ISUS Ch# 138" units="A/D Counts" columnIndex="159" format="int"/>
+					<RecordVariable name="DarkCh_139" longName="Dark ISUS Ch# 139" units="A/D Counts" columnIndex="160" format="int"/>
+					<RecordVariable name="DarkCh_140" longName="Dark ISUS Ch# 140" units="A/D Counts" columnIndex="161" format="int"/>
+					<RecordVariable name="DarkCh_141" longName="Dark ISUS Ch# 141" units="A/D Counts" columnIndex="162" format="int"/>
+					<RecordVariable name="DarkCh_142" longName="Dark ISUS Ch# 142" units="A/D Counts" columnIndex="163" format="int"/>
+					<RecordVariable name="DarkCh_143" longName="Dark ISUS Ch# 143" units="A/D Counts" columnIndex="164" format="int"/>
+					<RecordVariable name="DarkCh_144" longName="Dark ISUS Ch# 144" units="A/D Counts" columnIndex="165" format="int"/>
+					<RecordVariable name="DarkCh_145" longName="Dark ISUS Ch# 145" units="A/D Counts" columnIndex="166" format="int"/>
+					<RecordVariable name="DarkCh_146" longName="Dark ISUS Ch# 146" units="A/D Counts" columnIndex="167" format="int"/>
+					<RecordVariable name="DarkCh_147" longName="Dark ISUS Ch# 147" units="A/D Counts" columnIndex="168" format="int"/>
+					<RecordVariable name="DarkCh_148" longName="Dark ISUS Ch# 148" units="A/D Counts" columnIndex="169" format="int"/>
+					<RecordVariable name="DarkCh_149" longName="Dark ISUS Ch# 149" units="A/D Counts" columnIndex="170" format="int"/>
+					<RecordVariable name="DarkCh_150" longName="Dark ISUS Ch# 150" units="A/D Counts" columnIndex="171" format="int"/>
+					<RecordVariable name="DarkCh_151" longName="Dark ISUS Ch# 151" units="A/D Counts" columnIndex="172" format="int"/>
+					<RecordVariable name="DarkCh_152" longName="Dark ISUS Ch# 152" units="A/D Counts" columnIndex="173" format="int"/>
+					<RecordVariable name="DarkCh_153" longName="Dark ISUS Ch# 153" units="A/D Counts" columnIndex="174" format="int"/>
+					<RecordVariable name="DarkCh_154" longName="Dark ISUS Ch# 154" units="A/D Counts" columnIndex="175" format="int"/>
+					<RecordVariable name="DarkCh_155" longName="Dark ISUS Ch# 155" units="A/D Counts" columnIndex="176" format="int"/>
+					<RecordVariable name="DarkCh_156" longName="Dark ISUS Ch# 156" units="A/D Counts" columnIndex="177" format="int"/>
+					<RecordVariable name="DarkCh_157" longName="Dark ISUS Ch# 157" units="A/D Counts" columnIndex="178" format="int"/>
+					<RecordVariable name="DarkCh_158" longName="Dark ISUS Ch# 158" units="A/D Counts" columnIndex="179" format="int"/>
+					<RecordVariable name="DarkCh_159" longName="Dark ISUS Ch# 159" units="A/D Counts" columnIndex="180" format="int"/>
+					<RecordVariable name="DarkCh_160" longName="Dark ISUS Ch# 160" units="A/D Counts" columnIndex="181" format="int">
+						<description>A/D counts for the spectrometer at wavelength number 160.</description>
+					</RecordVariable>
+					<RecordVariable name="DarkCh_161" longName="Dark ISUS Ch# 161" units="A/D Counts" columnIndex="182" format="int"/>
+					<RecordVariable name="DarkCh_162" longName="Dark ISUS Ch# 162" units="A/D Counts" columnIndex="183" format="int"/>
+					<RecordVariable name="DarkCh_163" longName="Dark ISUS Ch# 163" units="A/D Counts" columnIndex="184" format="int"/>
+					<RecordVariable name="DarkCh_164" longName="Dark ISUS Ch# 164" units="A/D Counts" columnIndex="185" format="int"/>
+					<RecordVariable name="DarkCh_165" longName="Dark ISUS Ch# 165" units="A/D Counts" columnIndex="186" format="int"/>
+					<RecordVariable name="DarkCh_166" longName="Dark ISUS Ch# 166" units="A/D Counts" columnIndex="187" format="int"/>
+					<RecordVariable name="DarkCh_167" longName="Dark ISUS Ch# 167" units="A/D Counts" columnIndex="188" format="int"/>
+					<RecordVariable name="DarkCh_168" longName="Dark ISUS Ch# 168" units="A/D Counts" columnIndex="189" format="int"/>
+					<RecordVariable name="DarkCh_169" longName="Dark ISUS Ch# 169" units="A/D Counts" columnIndex="190" format="int"/>
+					<RecordVariable name="DarkCh_170" longName="Dark ISUS Ch# 170" units="A/D Counts" columnIndex="191" format="int"/>
+					<RecordVariable name="DarkCh_171" longName="Dark ISUS Ch# 171" units="A/D Counts" columnIndex="192" format="int"/>
+					<RecordVariable name="DarkCh_172" longName="Dark ISUS Ch# 172" units="A/D Counts" columnIndex="193" format="int"/>
+					<RecordVariable name="DarkCh_173" longName="Dark ISUS Ch# 173" units="A/D Counts" columnIndex="194" format="int"/>
+					<RecordVariable name="DarkCh_174" longName="Dark ISUS Ch# 174" units="A/D Counts" columnIndex="195" format="int"/>
+					<RecordVariable name="DarkCh_175" longName="Dark ISUS Ch# 175" units="A/D Counts" columnIndex="196" format="int"/>
+					<RecordVariable name="DarkCh_176" longName="Dark ISUS Ch# 176" units="A/D Counts" columnIndex="197" format="int"/>
+					<RecordVariable name="DarkCh_177" longName="Dark ISUS Ch# 177" units="A/D Counts" columnIndex="198" format="int"/>
+					<RecordVariable name="DarkCh_178" longName="Dark ISUS Ch# 178" units="A/D Counts" columnIndex="199" format="int"/>
+					<RecordVariable name="DarkCh_179" longName="Dark ISUS Ch# 179" units="A/D Counts" columnIndex="200" format="int"/>
+					<RecordVariable name="DarkCh_180" longName="Dark ISUS Ch# 180" units="A/D Counts" columnIndex="201" format="int"/>
+					<RecordVariable name="DarkCh_181" longName="Dark ISUS Ch# 181" units="A/D Counts" columnIndex="202" format="int"/>
+					<RecordVariable name="DarkCh_182" longName="Dark ISUS Ch# 182" units="A/D Counts" columnIndex="203" format="int"/>
+					<RecordVariable name="DarkCh_183" longName="Dark ISUS Ch# 183" units="A/D Counts" columnIndex="204" format="int"/>
+					<RecordVariable name="DarkCh_184" longName="Dark ISUS Ch# 184" units="A/D Counts" columnIndex="205" format="int"/>
+					<RecordVariable name="DarkCh_185" longName="Dark ISUS Ch# 185" units="A/D Counts" columnIndex="206" format="int"/>
+					<RecordVariable name="DarkCh_186" longName="Dark ISUS Ch# 186" units="A/D Counts" columnIndex="207" format="int"/>
+					<RecordVariable name="DarkCh_187" longName="Dark ISUS Ch# 187" units="A/D Counts" columnIndex="208" format="int"/>
+					<RecordVariable name="DarkCh_188" longName="Dark ISUS Ch# 188" units="A/D Counts" columnIndex="209" format="int"/>
+					<RecordVariable name="DarkCh_189" longName="Dark ISUS Ch# 189" units="A/D Counts" columnIndex="210" format="int"/>
+					<RecordVariable name="DarkCh_190" longName="Dark ISUS Ch# 190" units="A/D Counts" columnIndex="211" format="int"/>
+					<RecordVariable name="DarkCh_191" longName="Dark ISUS Ch# 191" units="A/D Counts" columnIndex="212" format="int"/>
+					<RecordVariable name="DarkCh_192" longName="Dark ISUS Ch# 192" units="A/D Counts" columnIndex="213" format="int">
+						<description>A/D counts for the spectrometer at wavelength number 192.</description>
+					</RecordVariable>
+					<RecordVariable name="DarkCh_193" longName="Dark ISUS Ch# 193" units="A/D Counts" columnIndex="214" format="int"/>
+					<RecordVariable name="DarkCh_194" longName="Dark ISUS Ch# 194" units="A/D Counts" columnIndex="215" format="int"/>
+					<RecordVariable name="DarkCh_195" longName="Dark ISUS Ch# 195" units="A/D Counts" columnIndex="216" format="int"/>
+					<RecordVariable name="DarkCh_196" longName="Dark ISUS Ch# 196" units="A/D Counts" columnIndex="217" format="int"/>
+					<RecordVariable name="DarkCh_197" longName="Dark ISUS Ch# 197" units="A/D Counts" columnIndex="218" format="int"/>
+					<RecordVariable name="DarkCh_198" longName="Dark ISUS Ch# 198" units="A/D Counts" columnIndex="219" format="int"/>
+					<RecordVariable name="DarkCh_199" longName="Dark ISUS Ch# 199" units="A/D Counts" columnIndex="220" format="int"/>
+					<RecordVariable name="DarkCh_200" longName="Dark ISUS Ch# 200" units="A/D Counts" columnIndex="221" format="int"/>
+					<RecordVariable name="DarkCh_201" longName="Dark ISUS Ch# 201" units="A/D Counts" columnIndex="222" format="int"/>
+					<RecordVariable name="DarkCh_202" longName="Dark ISUS Ch# 202" units="A/D Counts" columnIndex="223" format="int"/>
+					<RecordVariable name="DarkCh_203" longName="Dark ISUS Ch# 203" units="A/D Counts" columnIndex="224" format="int"/>
+					<RecordVariable name="DarkCh_204" longName="Dark ISUS Ch# 204" units="A/D Counts" columnIndex="225" format="int"/>
+					<RecordVariable name="DarkCh_205" longName="Dark ISUS Ch# 205" units="A/D Counts" columnIndex="226" format="int"/>
+					<RecordVariable name="DarkCh_206" longName="Dark ISUS Ch# 206" units="A/D Counts" columnIndex="227" format="int"/>
+					<RecordVariable name="DarkCh_207" longName="Dark ISUS Ch# 207" units="A/D Counts" columnIndex="228" format="int"/>
+					<RecordVariable name="DarkCh_208" longName="Dark ISUS Ch# 208" units="A/D Counts" columnIndex="229" format="int"/>
+					<RecordVariable name="DarkCh_209" longName="Dark ISUS Ch# 209" units="A/D Counts" columnIndex="230" format="int"/>
+					<RecordVariable name="DarkCh_210" longName="Dark ISUS Ch# 210" units="A/D Counts" columnIndex="231" format="int"/>
+					<RecordVariable name="DarkCh_211" longName="Dark ISUS Ch# 211" units="A/D Counts" columnIndex="232" format="int"/>
+					<RecordVariable name="DarkCh_212" longName="Dark ISUS Ch# 212" units="A/D Counts" columnIndex="233" format="int"/>
+					<RecordVariable name="DarkCh_213" longName="Dark ISUS Ch# 213" units="A/D Counts" columnIndex="234" format="int"/>
+					<RecordVariable name="DarkCh_214" longName="Dark ISUS Ch# 214" units="A/D Counts" columnIndex="235" format="int"/>
+					<RecordVariable name="DarkCh_215" longName="Dark ISUS Ch# 215" units="A/D Counts" columnIndex="236" format="int"/>
+					<RecordVariable name="DarkCh_216" longName="Dark ISUS Ch# 216" units="A/D Counts" columnIndex="237" format="int"/>
+					<RecordVariable name="DarkCh_217" longName="Dark ISUS Ch# 217" units="A/D Counts" columnIndex="238" format="int"/>
+					<RecordVariable name="DarkCh_218" longName="Dark ISUS Ch# 218" units="A/D Counts" columnIndex="239" format="int"/>
+					<RecordVariable name="DarkCh_219" longName="Dark ISUS Ch# 219" units="A/D Counts" columnIndex="240" format="int"/>
+					<RecordVariable name="DarkCh_220" longName="Dark ISUS Ch# 220" units="A/D Counts" columnIndex="241" format="int"/>
+					<RecordVariable name="DarkCh_221" longName="Dark ISUS Ch# 221" units="A/D Counts" columnIndex="242" format="int"/>
+					<RecordVariable name="DarkCh_222" longName="Dark ISUS Ch# 222" units="A/D Counts" columnIndex="243" format="int"/>
+					<RecordVariable name="DarkCh_223" longName="Dark ISUS Ch# 223" units="A/D Counts" columnIndex="244" format="int"/>
+					<RecordVariable name="DarkCh_224" longName="Dark ISUS Ch# 224" units="A/D Counts" columnIndex="245" format="int">
+						<description>A/D counts for the spectrometer at wavelength number 224.</description>
+					</RecordVariable>
+					<RecordVariable name="DarkCh_225" longName="Dark ISUS Ch# 225" units="A/D Counts" columnIndex="246" format="int"/>
+					<RecordVariable name="DarkCh_226" longName="Dark ISUS Ch# 226" units="A/D Counts" columnIndex="247" format="int"/>
+					<RecordVariable name="DarkCh_227" longName="Dark ISUS Ch# 227" units="A/D Counts" columnIndex="248" format="int"/>
+					<RecordVariable name="DarkCh_228" longName="Dark ISUS Ch# 228" units="A/D Counts" columnIndex="249" format="int"/>
+					<RecordVariable name="DarkCh_229" longName="Dark ISUS Ch# 229" units="A/D Counts" columnIndex="250" format="int"/>
+					<RecordVariable name="DarkCh_230" longName="Dark ISUS Ch# 230" units="A/D Counts" columnIndex="251" format="int"/>
+					<RecordVariable name="DarkCh_231" longName="Dark ISUS Ch# 231" units="A/D Counts" columnIndex="252" format="int"/>
+					<RecordVariable name="DarkCh_232" longName="Dark ISUS Ch# 232" units="A/D Counts" columnIndex="253" format="int"/>
+					<RecordVariable name="DarkCh_233" longName="Dark ISUS Ch# 233" units="A/D Counts" columnIndex="254" format="int"/>
+					<RecordVariable name="DarkCh_234" longName="Dark ISUS Ch# 234" units="A/D Counts" columnIndex="255" format="int"/>
+					<RecordVariable name="DarkCh_235" longName="Dark ISUS Ch# 235" units="A/D Counts" columnIndex="256" format="int"/>
+					<RecordVariable name="DarkCh_236" longName="Dark ISUS Ch# 236" units="A/D Counts" columnIndex="257" format="int"/>
+					<RecordVariable name="DarkCh_237" longName="Dark ISUS Ch# 237" units="A/D Counts" columnIndex="258" format="int"/>
+					<RecordVariable name="DarkCh_238" longName="Dark ISUS Ch# 238" units="A/D Counts" columnIndex="259" format="int"/>
+					<RecordVariable name="DarkCh_239" longName="Dark ISUS Ch# 239" units="A/D Counts" columnIndex="260" format="int"/>
+					<RecordVariable name="DarkCh_240" longName="Dark ISUS Ch# 240" units="A/D Counts" columnIndex="261" format="int"/>
+					<RecordVariable name="DarkCh_241" longName="Dark ISUS Ch# 241" units="A/D Counts" columnIndex="262" format="int"/>
+					<RecordVariable name="DarkCh_242" longName="Dark ISUS Ch# 242" units="A/D Counts" columnIndex="263" format="int"/>
+					<RecordVariable name="DarkCh_243" longName="Dark ISUS Ch# 243" units="A/D Counts" columnIndex="264" format="int"/>
+					<RecordVariable name="DarkCh_244" longName="Dark ISUS Ch# 244" units="A/D Counts" columnIndex="265" format="int"/>
+					<RecordVariable name="DarkCh_245" longName="Dark ISUS Ch# 245" units="A/D Counts" columnIndex="266" format="int"/>
+					<RecordVariable name="DarkCh_246" longName="Dark ISUS Ch# 246" units="A/D Counts" columnIndex="267" format="int"/>
+					<RecordVariable name="DarkCh_247" longName="Dark ISUS Ch# 247" units="A/D Counts" columnIndex="268" format="int"/>
+					<RecordVariable name="DarkCh_248" longName="Dark ISUS Ch# 248" units="A/D Counts" columnIndex="269" format="int"/>
+					<RecordVariable name="DarkCh_249" longName="Dark ISUS Ch# 249" units="A/D Counts" columnIndex="270" format="int"/>
+					<RecordVariable name="DarkCh_250" longName="Dark ISUS Ch# 250" units="A/D Counts" columnIndex="271" format="int"/>
+					<RecordVariable name="DarkCh_251" longName="Dark ISUS Ch# 251" units="A/D Counts" columnIndex="272" format="int"/>
+					<RecordVariable name="DarkCh_252" longName="Dark ISUS Ch# 252" units="A/D Counts" columnIndex="273" format="int"/>
+					<RecordVariable name="DarkCh_253" longName="Dark ISUS Ch# 253" units="A/D Counts" columnIndex="274" format="int"/>
+					<RecordVariable name="DarkCh_254" longName="Dark ISUS Ch# 254" units="A/D Counts" columnIndex="275" format="int"/>
+					<RecordVariable name="DarkCh_255" longName="Dark ISUS Ch# 255" units="A/D Counts" columnIndex="276" format="int"/>
+					<RecordVariable name="DarkCh_256" longName="Dark ISUS Ch# 256" units="A/D Counts" columnIndex="277" format="int">
+						<description>A/D counts for the spectrometer at wavelength number 256.</description>
+					</RecordVariable>
+					<!-- End Insert Here ********************************* -->
+					<RecordVariable name="L1_SampleInfo" longName="L1Samp Sample Info String" units="noUnits" columnIndex="278" format="string">
+						<description>tag string at beginning of a data record; includes model of instrument and whether this is light or dark sample (1st light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L1_SN" longName="L1Samp Instrument serial number" units="id" referenceScale="none" columnIndex="279" format="int">
+						<description>serial number of the instrument (with the name, uniquely IDs instrument) (1st light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L1_Date" longName="L1Samp Data of sample" units="YYYYDDD" referenceScale="none" columnIndex="280" format="string">
+						<description>temperature measured inside the MMC controller pressure housing (1st light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L1_Time" longName="L1Samp GMT Time of Day" units="hourOfDay" referenceScale="TBD" columnIndex="281" format="double">
+						<description>hour of the day, in GMT floating point hours (1st light sample)</description>
+						<StandardVariable name="time" namespaceUriString="http://marinemetadata.org/cf"/>
+					</RecordVariable>
+					<RecordVariable name="L1_NTR_CONC" longName="L1Samp Nitrate Concentration" units="uMol_L" referenceScale="tbd" columnIndex="282" format="double">
+						<description>Nitrate concentration to 2 decimal places, as calculated by ISUS (1st light sample)</description>
+						<StandardVariable name="moles_of_nitrate_per_unit_mass_in_sea_water" namespaceUriString="http://marinemetadata.org/cf"/>
+					</RecordVariable>
+					<RecordVariable name="L1_Salinity" longName="L1Samp Salinity" units="psu" referenceScale="TBD" columnIndex="283" format="double">
+						<description>Salinity to 2 decimal places, as calculated by ISUS (1st light sample)</description>
+						<StandardVariable name="sea_water_salinity" namespaceUriString="http://marinemetadata.org/cf"/>
+					</RecordVariable>
+					<RecordVariable name="L1_RMS_Error" longName="L1Samp Nitrate RMS Error" units="uMol_L" referenceScale="TBD" columnIndex="284" format="double">
+						<description>Root Mean Square error of the ISUS-calculated concentration, to 6 decimal places (1st light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L1_T_Int" longName="L1Samp Instrument Housing Temperature" units="deg C" referenceScale="TBD" columnIndex="285" format="float">
+						<description>temperature inside the ISUS instrument housing, to 2 decimal places (1st light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L1_T_Spec" longName="L1Samp Specrometer Temperature" units="deg C" referenceScale="TBD" columnIndex="286" format="float">
+						<description>temperature of the ISUS spectrometer, to 2 decimal places (1st light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L1_T_Lamp" longName="L1Samp ISUS UV Light Source Temperature" units="deg C" referenceScale="TBD" columnIndex="287" format="float">
+						<description>temperature of the ISUS UV light source, to 2 decimal places (1st light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L1_Ref_Avg" longName="L1Samp ISUS Reference Channel Average" units="" referenceScale="TBD" columnIndex="288" format="double">
+						<description>average reference channel measurement taken during the sample time, to 2 decimal places (1st light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L1_Ref_StdDev" longName="L1Samp ISUS Reference Channel Std Dev" units="" referenceScale="TBD" columnIndex="289" format="float">
+						<description>variance of the Reference Channel measurement taken during the sample time, to 2 decimal places (1st light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L1_SW_Dark" longName="L1Samp ISUS Sea-Water Dark Calculation" units="counts" referenceScale="TBD" columnIndex="290" format="double">
+						<description>Sea-Water Dark calculation, to 2 decimal places, in spectrometer counts (1st light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L1_Spec_Avg" longName="L1Samp ISUS Spectrometer Average" units="counts" referenceScale="TBD" columnIndex="291" format="double">
+						<description>average value of all spectrometer channels, to 2 decimal places (1st light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L1_C_CTD" longName="L1Samp ISUS External CTD (Future)" units="" referenceScale="TBD" columnIndex="292" format="double">
+						<description>Reserved for future use: Conductivity measurement from an external CTD device (1st light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L1_T_CTD" longName="L1Samp ISUS External CTD Temp (Future)" units="" referenceScale="TBD" columnIndex="293" format="double">
+						<description>Reserved for future use: Temperature measurement from an external CTD device (1st light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L1_P_CTD" longName="L1Samp ISUS External CTD Pressure (Future)" units="" referenceScale="TBD" columnIndex="294" format="double">
+						<description>Reserved for future use: Pressure measurement from an external CTD device (1st light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L1_RSRV1" longName="L1Samp ISUS Reserved (Future)" units="" referenceScale="TBD" columnIndex="295" format="string">
+						<description>Reserved for future use (1st light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L1_RSRV2" longName="L1Samp ISUS Reserved (Future)" units="" referenceScale="TBD" columnIndex="296" format="string">
+						<description>Reserved for future use (1st light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L1_RSRV3" longName="L1Samp ISUS Reserved (Future)" units="" referenceScale="TBD" columnIndex="297" format="string">
+						<description>Reserved for future use (1st light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L1_RSRV3" longName="L1Samp ISUS Reserved (Future)" units="" referenceScale="TBD" columnIndex="298" format="string">
+						<description>Reserved for future use (1st light sample)</description>
+					</RecordVariable>
+					<!-- Insert Here ********************************* -->
+					<RecordVariable name="L1Ch_1" longName="L1 ISUS Ch# 1" units="A/D Counts" columnIndex="299" format="int">
+						<description>A/D counts for the spectrometer at wavelength number 1.</description>
+					</RecordVariable>
+					<RecordVariable name="L1Ch_2" longName="L1 ISUS Ch# 2" units="A/D Counts" columnIndex="300" format="int"/>
+					<RecordVariable name="L1Ch_3" longName="L1 ISUS Ch# 3" units="A/D Counts" columnIndex="301" format="int"/>
+					<RecordVariable name="L1Ch_4" longName="L1 ISUS Ch# 4" units="A/D Counts" columnIndex="302" format="int"/>
+					<RecordVariable name="L1Ch_5" longName="L1 ISUS Ch# 5" units="A/D Counts" columnIndex="303" format="int"/>
+					<RecordVariable name="L1Ch_6" longName="L1 ISUS Ch# 6" units="A/D Counts" columnIndex="304" format="int"/>
+					<RecordVariable name="L1Ch_7" longName="L1 ISUS Ch# 7" units="A/D Counts" columnIndex="305" format="int"/>
+					<RecordVariable name="L1Ch_8" longName="L1 ISUS Ch# 8" units="A/D Counts" columnIndex="306" format="int"/>
+					<RecordVariable name="L1Ch_9" longName="L1 ISUS Ch# 9" units="A/D Counts" columnIndex="307" format="int"/>
+					<RecordVariable name="L1Ch_10" longName="L1 ISUS Ch# 10" units="A/D Counts" columnIndex="308" format="int"/>
+					<RecordVariable name="L1Ch_11" longName="L1 ISUS Ch# 11" units="A/D Counts" columnIndex="309" format="int"/>
+					<RecordVariable name="L1Ch_12" longName="L1 ISUS Ch# 12" units="A/D Counts" columnIndex="310" format="int"/>
+					<RecordVariable name="L1Ch_13" longName="L1 ISUS Ch# 13" units="A/D Counts" columnIndex="311" format="int"/>
+					<RecordVariable name="L1Ch_14" longName="L1 ISUS Ch# 14" units="A/D Counts" columnIndex="312" format="int"/>
+					<RecordVariable name="L1Ch_15" longName="L1 ISUS Ch# 15" units="A/D Counts" columnIndex="313" format="int"/>
+					<RecordVariable name="L1Ch_16" longName="L1 ISUS Ch# 16" units="A/D Counts" columnIndex="314" format="int"/>
+					<RecordVariable name="L1Ch_17" longName="L1 ISUS Ch# 17" units="A/D Counts" columnIndex="315" format="int"/>
+					<RecordVariable name="L1Ch_18" longName="L1 ISUS Ch# 18" units="A/D Counts" columnIndex="316" format="int"/>
+					<RecordVariable name="L1Ch_19" longName="L1 ISUS Ch# 19" units="A/D Counts" columnIndex="317" format="int"/>
+					<RecordVariable name="L1Ch_20" longName="L1 ISUS Ch# 20" units="A/D Counts" columnIndex="318" format="int"/>
+					<RecordVariable name="L1Ch_21" longName="L1 ISUS Ch# 21" units="A/D Counts" columnIndex="319" format="int"/>
+					<RecordVariable name="L1Ch_22" longName="L1 ISUS Ch# 22" units="A/D Counts" columnIndex="320" format="int"/>
+					<RecordVariable name="L1Ch_23" longName="L1 ISUS Ch# 23" units="A/D Counts" columnIndex="321" format="int"/>
+					<RecordVariable name="L1Ch_24" longName="L1 ISUS Ch# 24" units="A/D Counts" columnIndex="322" format="int"/>
+					<RecordVariable name="L1Ch_25" longName="L1 ISUS Ch# 25" units="A/D Counts" columnIndex="323" format="int"/>
+					<RecordVariable name="L1Ch_26" longName="L1 ISUS Ch# 26" units="A/D Counts" columnIndex="324" format="int"/>
+					<RecordVariable name="L1Ch_27" longName="L1 ISUS Ch# 27" units="A/D Counts" columnIndex="325" format="int"/>
+					<RecordVariable name="L1Ch_28" longName="L1 ISUS Ch# 28" units="A/D Counts" columnIndex="326" format="int"/>
+					<RecordVariable name="L1Ch_29" longName="L1 ISUS Ch# 29" units="A/D Counts" columnIndex="327" format="int"/>
+					<RecordVariable name="L1Ch_30" longName="L1 ISUS Ch# 30" units="A/D Counts" columnIndex="328" format="int"/>
+					<RecordVariable name="L1Ch_31" longName="L1 ISUS Ch# 31" units="A/D Counts" columnIndex="329" format="int"/>
+					<RecordVariable name="L1Ch_32" longName="L1 ISUS Ch# 32" units="A/D Counts" columnIndex="330" format="int">
+						<description>A/D counts for the spectrometer at wavelength number 32.</description>
+					</RecordVariable>
+					<RecordVariable name="L1Ch_33" longName="L1 ISUS Ch# 33" units="A/D Counts" columnIndex="331" format="int"/>
+					<RecordVariable name="L1Ch_34" longName="L1 ISUS Ch# 34" units="A/D Counts" columnIndex="332" format="int"/>
+					<RecordVariable name="L1Ch_35" longName="L1 ISUS Ch# 35" units="A/D Counts" columnIndex="333" format="int"/>
+					<RecordVariable name="L1Ch_36" longName="L1 ISUS Ch# 36" units="A/D Counts" columnIndex="334" format="int"/>
+					<RecordVariable name="L1Ch_37" longName="L1 ISUS Ch# 37" units="A/D Counts" columnIndex="335" format="int"/>
+					<RecordVariable name="L1Ch_38" longName="L1 ISUS Ch# 38" units="A/D Counts" columnIndex="336" format="int"/>
+					<RecordVariable name="L1Ch_39" longName="L1 ISUS Ch# 39" units="A/D Counts" columnIndex="337" format="int"/>
+					<RecordVariable name="L1Ch_40" longName="L1 ISUS Ch# 40" units="A/D Counts" columnIndex="338" format="int"/>
+					<RecordVariable name="L1Ch_41" longName="L1 ISUS Ch# 41" units="A/D Counts" columnIndex="339" format="int"/>
+					<RecordVariable name="L1Ch_42" longName="L1 ISUS Ch# 42" units="A/D Counts" columnIndex="340" format="int"/>
+					<RecordVariable name="L1Ch_43" longName="L1 ISUS Ch# 43" units="A/D Counts" columnIndex="341" format="int"/>
+					<RecordVariable name="L1Ch_44" longName="L1 ISUS Ch# 44" units="A/D Counts" columnIndex="342" format="int"/>
+					<RecordVariable name="L1Ch_45" longName="L1 ISUS Ch# 45" units="A/D Counts" columnIndex="343" format="int"/>
+					<RecordVariable name="L1Ch_46" longName="L1 ISUS Ch# 46" units="A/D Counts" columnIndex="344" format="int"/>
+					<RecordVariable name="L1Ch_47" longName="L1 ISUS Ch# 47" units="A/D Counts" columnIndex="345" format="int"/>
+					<RecordVariable name="L1Ch_48" longName="L1 ISUS Ch# 48" units="A/D Counts" columnIndex="346" format="int"/>
+					<RecordVariable name="L1Ch_49" longName="L1 ISUS Ch# 49" units="A/D Counts" columnIndex="347" format="int"/>
+					<RecordVariable name="L1Ch_50" longName="L1 ISUS Ch# 50" units="A/D Counts" columnIndex="348" format="int"/>
+					<RecordVariable name="L1Ch_51" longName="L1 ISUS Ch# 51" units="A/D Counts" columnIndex="349" format="int"/>
+					<RecordVariable name="L1Ch_52" longName="L1 ISUS Ch# 52" units="A/D Counts" columnIndex="350" format="int"/>
+					<RecordVariable name="L1Ch_53" longName="L1 ISUS Ch# 53" units="A/D Counts" columnIndex="351" format="int"/>
+					<RecordVariable name="L1Ch_54" longName="L1 ISUS Ch# 54" units="A/D Counts" columnIndex="352" format="int"/>
+					<RecordVariable name="L1Ch_55" longName="L1 ISUS Ch# 55" units="A/D Counts" columnIndex="353" format="int"/>
+					<RecordVariable name="L1Ch_56" longName="L1 ISUS Ch# 56" units="A/D Counts" columnIndex="354" format="int"/>
+					<RecordVariable name="L1Ch_57" longName="L1 ISUS Ch# 57" units="A/D Counts" columnIndex="355" format="int"/>
+					<RecordVariable name="L1Ch_58" longName="L1 ISUS Ch# 58" units="A/D Counts" columnIndex="356" format="int"/>
+					<RecordVariable name="L1Ch_59" longName="L1 ISUS Ch# 59" units="A/D Counts" columnIndex="357" format="int"/>
+					<RecordVariable name="L1Ch_60" longName="L1 ISUS Ch# 60" units="A/D Counts" columnIndex="358" format="int"/>
+					<RecordVariable name="L1Ch_61" longName="L1 ISUS Ch# 61" units="A/D Counts" columnIndex="359" format="int"/>
+					<RecordVariable name="L1Ch_62" longName="L1 ISUS Ch# 62" units="A/D Counts" columnIndex="360" format="int"/>
+					<RecordVariable name="L1Ch_63" longName="L1 ISUS Ch# 63" units="A/D Counts" columnIndex="361" format="int"/>
+					<RecordVariable name="L1Ch_64" longName="L1 ISUS Ch# 64" units="A/D Counts" columnIndex="362" format="int">
+						<description>A/D counts for the spectrometer at wavelength number 64.</description>
+					</RecordVariable>
+					<RecordVariable name="L1Ch_65" longName="L1 ISUS Ch# 65" units="A/D Counts" columnIndex="363" format="int"/>
+					<RecordVariable name="L1Ch_66" longName="L1 ISUS Ch# 66" units="A/D Counts" columnIndex="364" format="int"/>
+					<RecordVariable name="L1Ch_67" longName="L1 ISUS Ch# 67" units="A/D Counts" columnIndex="365" format="int"/>
+					<RecordVariable name="L1Ch_68" longName="L1 ISUS Ch# 68" units="A/D Counts" columnIndex="366" format="int"/>
+					<RecordVariable name="L1Ch_69" longName="L1 ISUS Ch# 69" units="A/D Counts" columnIndex="367" format="int"/>
+					<RecordVariable name="L1Ch_70" longName="L1 ISUS Ch# 70" units="A/D Counts" columnIndex="368" format="int"/>
+					<RecordVariable name="L1Ch_71" longName="L1 ISUS Ch# 71" units="A/D Counts" columnIndex="369" format="int"/>
+					<RecordVariable name="L1Ch_72" longName="L1 ISUS Ch# 72" units="A/D Counts" columnIndex="370" format="int"/>
+					<RecordVariable name="L1Ch_73" longName="L1 ISUS Ch# 73" units="A/D Counts" columnIndex="371" format="int"/>
+					<RecordVariable name="L1Ch_74" longName="L1 ISUS Ch# 74" units="A/D Counts" columnIndex="372" format="int"/>
+					<RecordVariable name="L1Ch_75" longName="L1 ISUS Ch# 75" units="A/D Counts" columnIndex="373" format="int"/>
+					<RecordVariable name="L1Ch_76" longName="L1 ISUS Ch# 76" units="A/D Counts" columnIndex="374" format="int"/>
+					<RecordVariable name="L1Ch_77" longName="L1 ISUS Ch# 77" units="A/D Counts" columnIndex="375" format="int"/>
+					<RecordVariable name="L1Ch_78" longName="L1 ISUS Ch# 78" units="A/D Counts" columnIndex="376" format="int"/>
+					<RecordVariable name="L1Ch_79" longName="L1 ISUS Ch# 79" units="A/D Counts" columnIndex="377" format="int"/>
+					<RecordVariable name="L1Ch_80" longName="L1 ISUS Ch# 80" units="A/D Counts" columnIndex="378" format="int"/>
+					<RecordVariable name="L1Ch_81" longName="L1 ISUS Ch# 81" units="A/D Counts" columnIndex="379" format="int"/>
+					<RecordVariable name="L1Ch_82" longName="L1 ISUS Ch# 82" units="A/D Counts" columnIndex="380" format="int"/>
+					<RecordVariable name="L1Ch_83" longName="L1 ISUS Ch# 83" units="A/D Counts" columnIndex="381" format="int"/>
+					<RecordVariable name="L1Ch_84" longName="L1 ISUS Ch# 84" units="A/D Counts" columnIndex="382" format="int"/>
+					<RecordVariable name="L1Ch_85" longName="L1 ISUS Ch# 85" units="A/D Counts" columnIndex="383" format="int"/>
+					<RecordVariable name="L1Ch_86" longName="L1 ISUS Ch# 86" units="A/D Counts" columnIndex="384" format="int"/>
+					<RecordVariable name="L1Ch_87" longName="L1 ISUS Ch# 87" units="A/D Counts" columnIndex="385" format="int"/>
+					<RecordVariable name="L1Ch_88" longName="L1 ISUS Ch# 88" units="A/D Counts" columnIndex="386" format="int"/>
+					<RecordVariable name="L1Ch_89" longName="L1 ISUS Ch# 89" units="A/D Counts" columnIndex="387" format="int"/>
+					<RecordVariable name="L1Ch_90" longName="L1 ISUS Ch# 90" units="A/D Counts" columnIndex="388" format="int"/>
+					<RecordVariable name="L1Ch_91" longName="L1 ISUS Ch# 91" units="A/D Counts" columnIndex="389" format="int"/>
+					<RecordVariable name="L1Ch_92" longName="L1 ISUS Ch# 92" units="A/D Counts" columnIndex="390" format="int"/>
+					<RecordVariable name="L1Ch_93" longName="L1 ISUS Ch# 93" units="A/D Counts" columnIndex="391" format="int"/>
+					<RecordVariable name="L1Ch_94" longName="L1 ISUS Ch# 94" units="A/D Counts" columnIndex="392" format="int"/>
+					<RecordVariable name="L1Ch_95" longName="L1 ISUS Ch# 95" units="A/D Counts" columnIndex="393" format="int"/>
+					<RecordVariable name="L1Ch_96" longName="L1 ISUS Ch# 96" units="A/D Counts" columnIndex="394" format="int">
+						<description>A/D counts for the spectrometer at wavelength number 96.</description>
+					</RecordVariable>
+					<RecordVariable name="L1Ch_97" longName="L1 ISUS Ch# 97" units="A/D Counts" columnIndex="395" format="int"/>
+					<RecordVariable name="L1Ch_98" longName="L1 ISUS Ch# 98" units="A/D Counts" columnIndex="396" format="int"/>
+					<RecordVariable name="L1Ch_99" longName="L1 ISUS Ch# 99" units="A/D Counts" columnIndex="397" format="int"/>
+					<RecordVariable name="L1Ch_100" longName="L1 ISUS Ch# 100" units="A/D Counts" columnIndex="398" format="int"/>
+					<RecordVariable name="L1Ch_101" longName="L1 ISUS Ch# 101" units="A/D Counts" columnIndex="399" format="int"/>
+					<RecordVariable name="L1Ch_102" longName="L1 ISUS Ch# 102" units="A/D Counts" columnIndex="400" format="int"/>
+					<RecordVariable name="L1Ch_103" longName="L1 ISUS Ch# 103" units="A/D Counts" columnIndex="401" format="int"/>
+					<RecordVariable name="L1Ch_104" longName="L1 ISUS Ch# 104" units="A/D Counts" columnIndex="402" format="int"/>
+					<RecordVariable name="L1Ch_105" longName="L1 ISUS Ch# 105" units="A/D Counts" columnIndex="403" format="int"/>
+					<RecordVariable name="L1Ch_106" longName="L1 ISUS Ch# 106" units="A/D Counts" columnIndex="404" format="int"/>
+					<RecordVariable name="L1Ch_107" longName="L1 ISUS Ch# 107" units="A/D Counts" columnIndex="405" format="int"/>
+					<RecordVariable name="L1Ch_108" longName="L1 ISUS Ch# 108" units="A/D Counts" columnIndex="406" format="int"/>
+					<RecordVariable name="L1Ch_109" longName="L1 ISUS Ch# 109" units="A/D Counts" columnIndex="407" format="int"/>
+					<RecordVariable name="L1Ch_110" longName="L1 ISUS Ch# 110" units="A/D Counts" columnIndex="408" format="int"/>
+					<RecordVariable name="L1Ch_111" longName="L1 ISUS Ch# 111" units="A/D Counts" columnIndex="409" format="int"/>
+					<RecordVariable name="L1Ch_112" longName="L1 ISUS Ch# 112" units="A/D Counts" columnIndex="410" format="int"/>
+					<RecordVariable name="L1Ch_113" longName="L1 ISUS Ch# 113" units="A/D Counts" columnIndex="411" format="int"/>
+					<RecordVariable name="L1Ch_114" longName="L1 ISUS Ch# 114" units="A/D Counts" columnIndex="412" format="int"/>
+					<RecordVariable name="L1Ch_115" longName="L1 ISUS Ch# 115" units="A/D Counts" columnIndex="413" format="int"/>
+					<RecordVariable name="L1Ch_116" longName="L1 ISUS Ch# 116" units="A/D Counts" columnIndex="414" format="int"/>
+					<RecordVariable name="L1Ch_117" longName="L1 ISUS Ch# 117" units="A/D Counts" columnIndex="415" format="int"/>
+					<RecordVariable name="L1Ch_118" longName="L1 ISUS Ch# 118" units="A/D Counts" columnIndex="416" format="int"/>
+					<RecordVariable name="L1Ch_119" longName="L1 ISUS Ch# 119" units="A/D Counts" columnIndex="417" format="int"/>
+					<RecordVariable name="L1Ch_120" longName="L1 ISUS Ch# 120" units="A/D Counts" columnIndex="418" format="int"/>
+					<RecordVariable name="L1Ch_121" longName="L1 ISUS Ch# 121" units="A/D Counts" columnIndex="419" format="int"/>
+					<RecordVariable name="L1Ch_122" longName="L1 ISUS Ch# 122" units="A/D Counts" columnIndex="420" format="int"/>
+					<RecordVariable name="L1Ch_123" longName="L1 ISUS Ch# 123" units="A/D Counts" columnIndex="421" format="int"/>
+					<RecordVariable name="L1Ch_124" longName="L1 ISUS Ch# 124" units="A/D Counts" columnIndex="422" format="int"/>
+					<RecordVariable name="L1Ch_125" longName="L1 ISUS Ch# 125" units="A/D Counts" columnIndex="423" format="int"/>
+					<RecordVariable name="L1Ch_126" longName="L1 ISUS Ch# 126" units="A/D Counts" columnIndex="424" format="int"/>
+					<RecordVariable name="L1Ch_127" longName="L1 ISUS Ch# 127" units="A/D Counts" columnIndex="425" format="int"/>
+					<RecordVariable name="L1Ch_128" longName="L1 ISUS Ch# 128" units="A/D Counts" columnIndex="426" format="int">
+						<description>A/D counts for the spectrometer at wavelength number 128.</description>
+					</RecordVariable>
+					<RecordVariable name="L1Ch_129" longName="L1 ISUS Ch# 129" units="A/D Counts" columnIndex="427" format="int"/>
+					<RecordVariable name="L1Ch_130" longName="L1 ISUS Ch# 130" units="A/D Counts" columnIndex="428" format="int"/>
+					<RecordVariable name="L1Ch_131" longName="L1 ISUS Ch# 131" units="A/D Counts" columnIndex="429" format="int"/>
+					<RecordVariable name="L1Ch_132" longName="L1 ISUS Ch# 132" units="A/D Counts" columnIndex="430" format="int"/>
+					<RecordVariable name="L1Ch_133" longName="L1 ISUS Ch# 133" units="A/D Counts" columnIndex="431" format="int"/>
+					<RecordVariable name="L1Ch_134" longName="L1 ISUS Ch# 134" units="A/D Counts" columnIndex="432" format="int"/>
+					<RecordVariable name="L1Ch_135" longName="L1 ISUS Ch# 135" units="A/D Counts" columnIndex="433" format="int"/>
+					<RecordVariable name="L1Ch_136" longName="L1 ISUS Ch# 136" units="A/D Counts" columnIndex="434" format="int"/>
+					<RecordVariable name="L1Ch_137" longName="L1 ISUS Ch# 137" units="A/D Counts" columnIndex="435" format="int"/>
+					<RecordVariable name="L1Ch_138" longName="L1 ISUS Ch# 138" units="A/D Counts" columnIndex="436" format="int"/>
+					<RecordVariable name="L1Ch_139" longName="L1 ISUS Ch# 139" units="A/D Counts" columnIndex="437" format="int"/>
+					<RecordVariable name="L1Ch_140" longName="L1 ISUS Ch# 140" units="A/D Counts" columnIndex="438" format="int"/>
+					<RecordVariable name="L1Ch_141" longName="L1 ISUS Ch# 141" units="A/D Counts" columnIndex="439" format="int"/>
+					<RecordVariable name="L1Ch_142" longName="L1 ISUS Ch# 142" units="A/D Counts" columnIndex="440" format="int"/>
+					<RecordVariable name="L1Ch_143" longName="L1 ISUS Ch# 143" units="A/D Counts" columnIndex="441" format="int"/>
+					<RecordVariable name="L1Ch_144" longName="L1 ISUS Ch# 144" units="A/D Counts" columnIndex="442" format="int"/>
+					<RecordVariable name="L1Ch_145" longName="L1 ISUS Ch# 145" units="A/D Counts" columnIndex="443" format="int"/>
+					<RecordVariable name="L1Ch_146" longName="L1 ISUS Ch# 146" units="A/D Counts" columnIndex="444" format="int"/>
+					<RecordVariable name="L1Ch_147" longName="L1 ISUS Ch# 147" units="A/D Counts" columnIndex="445" format="int"/>
+					<RecordVariable name="L1Ch_148" longName="L1 ISUS Ch# 148" units="A/D Counts" columnIndex="446" format="int"/>
+					<RecordVariable name="L1Ch_149" longName="L1 ISUS Ch# 149" units="A/D Counts" columnIndex="447" format="int"/>
+					<RecordVariable name="L1Ch_150" longName="L1 ISUS Ch# 150" units="A/D Counts" columnIndex="448" format="int"/>
+					<RecordVariable name="L1Ch_151" longName="L1 ISUS Ch# 151" units="A/D Counts" columnIndex="449" format="int"/>
+					<RecordVariable name="L1Ch_152" longName="L1 ISUS Ch# 152" units="A/D Counts" columnIndex="450" format="int"/>
+					<RecordVariable name="L1Ch_153" longName="L1 ISUS Ch# 153" units="A/D Counts" columnIndex="451" format="int"/>
+					<RecordVariable name="L1Ch_154" longName="L1 ISUS Ch# 154" units="A/D Counts" columnIndex="452" format="int"/>
+					<RecordVariable name="L1Ch_155" longName="L1 ISUS Ch# 155" units="A/D Counts" columnIndex="453" format="int"/>
+					<RecordVariable name="L1Ch_156" longName="L1 ISUS Ch# 156" units="A/D Counts" columnIndex="454" format="int"/>
+					<RecordVariable name="L1Ch_157" longName="L1 ISUS Ch# 157" units="A/D Counts" columnIndex="455" format="int"/>
+					<RecordVariable name="L1Ch_158" longName="L1 ISUS Ch# 158" units="A/D Counts" columnIndex="456" format="int"/>
+					<RecordVariable name="L1Ch_159" longName="L1 ISUS Ch# 159" units="A/D Counts" columnIndex="457" format="int"/>
+					<RecordVariable name="L1Ch_160" longName="L1 ISUS Ch# 160" units="A/D Counts" columnIndex="458" format="int">
+						<description>A/D counts for the spectrometer at wavelength number 160.</description>
+					</RecordVariable>
+					<RecordVariable name="L1Ch_161" longName="L1 ISUS Ch# 161" units="A/D Counts" columnIndex="459" format="int"/>
+					<RecordVariable name="L1Ch_162" longName="L1 ISUS Ch# 162" units="A/D Counts" columnIndex="460" format="int"/>
+					<RecordVariable name="L1Ch_163" longName="L1 ISUS Ch# 163" units="A/D Counts" columnIndex="461" format="int"/>
+					<RecordVariable name="L1Ch_164" longName="L1 ISUS Ch# 164" units="A/D Counts" columnIndex="462" format="int"/>
+					<RecordVariable name="L1Ch_165" longName="L1 ISUS Ch# 165" units="A/D Counts" columnIndex="463" format="int"/>
+					<RecordVariable name="L1Ch_166" longName="L1 ISUS Ch# 166" units="A/D Counts" columnIndex="464" format="int"/>
+					<RecordVariable name="L1Ch_167" longName="L1 ISUS Ch# 167" units="A/D Counts" columnIndex="465" format="int"/>
+					<RecordVariable name="L1Ch_168" longName="L1 ISUS Ch# 168" units="A/D Counts" columnIndex="466" format="int"/>
+					<RecordVariable name="L1Ch_169" longName="L1 ISUS Ch# 169" units="A/D Counts" columnIndex="467" format="int"/>
+					<RecordVariable name="L1Ch_170" longName="L1 ISUS Ch# 170" units="A/D Counts" columnIndex="468" format="int"/>
+					<RecordVariable name="L1Ch_171" longName="L1 ISUS Ch# 171" units="A/D Counts" columnIndex="469" format="int"/>
+					<RecordVariable name="L1Ch_172" longName="L1 ISUS Ch# 172" units="A/D Counts" columnIndex="470" format="int"/>
+					<RecordVariable name="L1Ch_173" longName="L1 ISUS Ch# 173" units="A/D Counts" columnIndex="471" format="int"/>
+					<RecordVariable name="L1Ch_174" longName="L1 ISUS Ch# 174" units="A/D Counts" columnIndex="472" format="int"/>
+					<RecordVariable name="L1Ch_175" longName="L1 ISUS Ch# 175" units="A/D Counts" columnIndex="473" format="int"/>
+					<RecordVariable name="L1Ch_176" longName="L1 ISUS Ch# 176" units="A/D Counts" columnIndex="474" format="int"/>
+					<RecordVariable name="L1Ch_177" longName="L1 ISUS Ch# 177" units="A/D Counts" columnIndex="475" format="int"/>
+					<RecordVariable name="L1Ch_178" longName="L1 ISUS Ch# 178" units="A/D Counts" columnIndex="476" format="int"/>
+					<RecordVariable name="L1Ch_179" longName="L1 ISUS Ch# 179" units="A/D Counts" columnIndex="477" format="int"/>
+					<RecordVariable name="L1Ch_180" longName="L1 ISUS Ch# 180" units="A/D Counts" columnIndex="478" format="int"/>
+					<RecordVariable name="L1Ch_181" longName="L1 ISUS Ch# 181" units="A/D Counts" columnIndex="479" format="int"/>
+					<RecordVariable name="L1Ch_182" longName="L1 ISUS Ch# 182" units="A/D Counts" columnIndex="480" format="int"/>
+					<RecordVariable name="L1Ch_183" longName="L1 ISUS Ch# 183" units="A/D Counts" columnIndex="481" format="int"/>
+					<RecordVariable name="L1Ch_184" longName="L1 ISUS Ch# 184" units="A/D Counts" columnIndex="482" format="int"/>
+					<RecordVariable name="L1Ch_185" longName="L1 ISUS Ch# 185" units="A/D Counts" columnIndex="483" format="int"/>
+					<RecordVariable name="L1Ch_186" longName="L1 ISUS Ch# 186" units="A/D Counts" columnIndex="484" format="int"/>
+					<RecordVariable name="L1Ch_187" longName="L1 ISUS Ch# 187" units="A/D Counts" columnIndex="485" format="int"/>
+					<RecordVariable name="L1Ch_188" longName="L1 ISUS Ch# 188" units="A/D Counts" columnIndex="486" format="int"/>
+					<RecordVariable name="L1Ch_189" longName="L1 ISUS Ch# 189" units="A/D Counts" columnIndex="487" format="int"/>
+					<RecordVariable name="L1Ch_190" longName="L1 ISUS Ch# 190" units="A/D Counts" columnIndex="488" format="int"/>
+					<RecordVariable name="L1Ch_191" longName="L1 ISUS Ch# 191" units="A/D Counts" columnIndex="489" format="int"/>
+					<RecordVariable name="L1Ch_192" longName="L1 ISUS Ch# 192" units="A/D Counts" columnIndex="490" format="int">
+						<description>A/D counts for the spectrometer at wavelength number 192.</description>
+					</RecordVariable>
+					<RecordVariable name="L1Ch_193" longName="L1 ISUS Ch# 193" units="A/D Counts" columnIndex="491" format="int"/>
+					<RecordVariable name="L1Ch_194" longName="L1 ISUS Ch# 194" units="A/D Counts" columnIndex="492" format="int"/>
+					<RecordVariable name="L1Ch_195" longName="L1 ISUS Ch# 195" units="A/D Counts" columnIndex="493" format="int"/>
+					<RecordVariable name="L1Ch_196" longName="L1 ISUS Ch# 196" units="A/D Counts" columnIndex="494" format="int"/>
+					<RecordVariable name="L1Ch_197" longName="L1 ISUS Ch# 197" units="A/D Counts" columnIndex="495" format="int"/>
+					<RecordVariable name="L1Ch_198" longName="L1 ISUS Ch# 198" units="A/D Counts" columnIndex="496" format="int"/>
+					<RecordVariable name="L1Ch_199" longName="L1 ISUS Ch# 199" units="A/D Counts" columnIndex="497" format="int"/>
+					<RecordVariable name="L1Ch_200" longName="L1 ISUS Ch# 200" units="A/D Counts" columnIndex="498" format="int"/>
+					<RecordVariable name="L1Ch_201" longName="L1 ISUS Ch# 201" units="A/D Counts" columnIndex="499" format="int"/>
+					<RecordVariable name="L1Ch_202" longName="L1 ISUS Ch# 202" units="A/D Counts" columnIndex="500" format="int"/>
+					<RecordVariable name="L1Ch_203" longName="L1 ISUS Ch# 203" units="A/D Counts" columnIndex="501" format="int"/>
+					<RecordVariable name="L1Ch_204" longName="L1 ISUS Ch# 204" units="A/D Counts" columnIndex="502" format="int"/>
+					<RecordVariable name="L1Ch_205" longName="L1 ISUS Ch# 205" units="A/D Counts" columnIndex="503" format="int"/>
+					<RecordVariable name="L1Ch_206" longName="L1 ISUS Ch# 206" units="A/D Counts" columnIndex="504" format="int"/>
+					<RecordVariable name="L1Ch_207" longName="L1 ISUS Ch# 207" units="A/D Counts" columnIndex="505" format="int"/>
+					<RecordVariable name="L1Ch_208" longName="L1 ISUS Ch# 208" units="A/D Counts" columnIndex="506" format="int"/>
+					<RecordVariable name="L1Ch_209" longName="L1 ISUS Ch# 209" units="A/D Counts" columnIndex="507" format="int"/>
+					<RecordVariable name="L1Ch_210" longName="L1 ISUS Ch# 210" units="A/D Counts" columnIndex="508" format="int"/>
+					<RecordVariable name="L1Ch_211" longName="L1 ISUS Ch# 211" units="A/D Counts" columnIndex="509" format="int"/>
+					<RecordVariable name="L1Ch_212" longName="L1 ISUS Ch# 212" units="A/D Counts" columnIndex="510" format="int"/>
+					<RecordVariable name="L1Ch_213" longName="L1 ISUS Ch# 213" units="A/D Counts" columnIndex="511" format="int"/>
+					<RecordVariable name="L1Ch_214" longName="L1 ISUS Ch# 214" units="A/D Counts" columnIndex="512" format="int"/>
+					<RecordVariable name="L1Ch_215" longName="L1 ISUS Ch# 215" units="A/D Counts" columnIndex="513" format="int"/>
+					<RecordVariable name="L1Ch_216" longName="L1 ISUS Ch# 216" units="A/D Counts" columnIndex="514" format="int"/>
+					<RecordVariable name="L1Ch_217" longName="L1 ISUS Ch# 217" units="A/D Counts" columnIndex="515" format="int"/>
+					<RecordVariable name="L1Ch_218" longName="L1 ISUS Ch# 218" units="A/D Counts" columnIndex="516" format="int"/>
+					<RecordVariable name="L1Ch_219" longName="L1 ISUS Ch# 219" units="A/D Counts" columnIndex="517" format="int"/>
+					<RecordVariable name="L1Ch_220" longName="L1 ISUS Ch# 220" units="A/D Counts" columnIndex="518" format="int"/>
+					<RecordVariable name="L1Ch_221" longName="L1 ISUS Ch# 221" units="A/D Counts" columnIndex="519" format="int"/>
+					<RecordVariable name="L1Ch_222" longName="L1 ISUS Ch# 222" units="A/D Counts" columnIndex="520" format="int"/>
+					<RecordVariable name="L1Ch_223" longName="L1 ISUS Ch# 223" units="A/D Counts" columnIndex="521" format="int"/>
+					<RecordVariable name="L1Ch_224" longName="L1 ISUS Ch# 224" units="A/D Counts" columnIndex="522" format="int">
+						<description>A/D counts for the spectrometer at wavelength number 224.</description>
+					</RecordVariable>
+					<RecordVariable name="L1Ch_225" longName="L1 ISUS Ch# 225" units="A/D Counts" columnIndex="523" format="int"/>
+					<RecordVariable name="L1Ch_226" longName="L1 ISUS Ch# 226" units="A/D Counts" columnIndex="524" format="int"/>
+					<RecordVariable name="L1Ch_227" longName="L1 ISUS Ch# 227" units="A/D Counts" columnIndex="525" format="int"/>
+					<RecordVariable name="L1Ch_228" longName="L1 ISUS Ch# 228" units="A/D Counts" columnIndex="526" format="int"/>
+					<RecordVariable name="L1Ch_229" longName="L1 ISUS Ch# 229" units="A/D Counts" columnIndex="527" format="int"/>
+					<RecordVariable name="L1Ch_230" longName="L1 ISUS Ch# 230" units="A/D Counts" columnIndex="528" format="int"/>
+					<RecordVariable name="L1Ch_231" longName="L1 ISUS Ch# 231" units="A/D Counts" columnIndex="529" format="int"/>
+					<RecordVariable name="L1Ch_232" longName="L1 ISUS Ch# 232" units="A/D Counts" columnIndex="530" format="int"/>
+					<RecordVariable name="L1Ch_233" longName="L1 ISUS Ch# 233" units="A/D Counts" columnIndex="531" format="int"/>
+					<RecordVariable name="L1Ch_234" longName="L1 ISUS Ch# 234" units="A/D Counts" columnIndex="532" format="int"/>
+					<RecordVariable name="L1Ch_235" longName="L1 ISUS Ch# 235" units="A/D Counts" columnIndex="533" format="int"/>
+					<RecordVariable name="L1Ch_236" longName="L1 ISUS Ch# 236" units="A/D Counts" columnIndex="534" format="int"/>
+					<RecordVariable name="L1Ch_237" longName="L1 ISUS Ch# 237" units="A/D Counts" columnIndex="535" format="int"/>
+					<RecordVariable name="L1Ch_238" longName="L1 ISUS Ch# 238" units="A/D Counts" columnIndex="536" format="int"/>
+					<RecordVariable name="L1Ch_239" longName="L1 ISUS Ch# 239" units="A/D Counts" columnIndex="537" format="int"/>
+					<RecordVariable name="L1Ch_240" longName="L1 ISUS Ch# 240" units="A/D Counts" columnIndex="538" format="int"/>
+					<RecordVariable name="L1Ch_241" longName="L1 ISUS Ch# 241" units="A/D Counts" columnIndex="539" format="int"/>
+					<RecordVariable name="L1Ch_242" longName="L1 ISUS Ch# 242" units="A/D Counts" columnIndex="540" format="int"/>
+					<RecordVariable name="L1Ch_243" longName="L1 ISUS Ch# 243" units="A/D Counts" columnIndex="541" format="int"/>
+					<RecordVariable name="L1Ch_244" longName="L1 ISUS Ch# 244" units="A/D Counts" columnIndex="542" format="int"/>
+					<RecordVariable name="L1Ch_245" longName="L1 ISUS Ch# 245" units="A/D Counts" columnIndex="543" format="int"/>
+					<RecordVariable name="L1Ch_246" longName="L1 ISUS Ch# 246" units="A/D Counts" columnIndex="544" format="int"/>
+					<RecordVariable name="L1Ch_247" longName="L1 ISUS Ch# 247" units="A/D Counts" columnIndex="545" format="int"/>
+					<RecordVariable name="L1Ch_248" longName="L1 ISUS Ch# 248" units="A/D Counts" columnIndex="546" format="int"/>
+					<RecordVariable name="L1Ch_249" longName="L1 ISUS Ch# 249" units="A/D Counts" columnIndex="547" format="int"/>
+					<RecordVariable name="L1Ch_250" longName="L1 ISUS Ch# 250" units="A/D Counts" columnIndex="548" format="int"/>
+					<RecordVariable name="L1Ch_251" longName="L1 ISUS Ch# 251" units="A/D Counts" columnIndex="549" format="int"/>
+					<RecordVariable name="L1Ch_252" longName="L1 ISUS Ch# 252" units="A/D Counts" columnIndex="550" format="int"/>
+					<RecordVariable name="L1Ch_253" longName="L1 ISUS Ch# 253" units="A/D Counts" columnIndex="551" format="int"/>
+					<RecordVariable name="L1Ch_254" longName="L1 ISUS Ch# 254" units="A/D Counts" columnIndex="552" format="int"/>
+					<RecordVariable name="L1Ch_255" longName="L1 ISUS Ch# 255" units="A/D Counts" columnIndex="553" format="int"/>
+					<RecordVariable name="L1Ch_256" longName="L1 ISUS Ch# 256" units="A/D Counts" columnIndex="554" format="int">
+						<description>A/D counts for the spectrometer at wavelength number 256.</description>
+					</RecordVariable>
+					<!-- End Insert Here ********************************* -->
+					<RecordVariable name="L2_SampleInfo" longName="L2Samp Sample Info String" units="noUnits" columnIndex="555" format="string">
+						<description>tag string at beginning of a data record; includes model of instrument and whether this is light or dark sample (2nd light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L2_SN" longName="L2Samp Instrument serial number" units="id" referenceScale="none" columnIndex="556" format="int">
+						<description>serial number of the instrument (with the name, uniquely IDs instrument) (2nd light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L2_Date" longName="L2Samp Data of sample" units="YYYYDDD" referenceScale="none" columnIndex="557" format="string">
+						<description>temperature measured inside the MMC controller pressure housing (2nd light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L2_Time" longName="L2Samp GMT Time of Day" units="hourOfDay" referenceScale="TBD" columnIndex="558" format="double">
+						<description>hour of the day, in GMT floating point hours (2nd light sample)</description>
+						<StandardVariable name="time" namespaceUriString="http://marinemetadata.org/cf"/>
+					</RecordVariable>
+					<RecordVariable name="L2_NTR_CONC" longName="L2Samp Nitrate Concentration" units="uMol_L" referenceScale="tbd" columnIndex="559" format="double">
+						<description>Nitrate concentration to 2 decimal places, as calculated by ISUS (2nd light sample)</description>
+						<StandardVariable name="moles_of_nitrate_per_unit_mass_in_sea_water" namespaceUriString="http://marinemetadata.org/cf"/>
+					</RecordVariable>
+					<RecordVariable name="L2_Salinity" longName="L2Samp Salinity" units="psu" referenceScale="TBD" columnIndex="560" format="double">
+						<description>Salinity to 2 decimal places, as calculated by ISUS (2nd light sample)</description>
+						<StandardVariable name="sea_water_salinity" namespaceUriString="http://marinemetadata.org/cf"/>
+					</RecordVariable>
+					<RecordVariable name="L2_RMS_Error" longName="L2Samp Nitrate RMS Error" units="uMol_L" referenceScale="TBD" columnIndex="561" format="double">
+						<description>Root Mean Square error of the ISUS-calculated concentration, to 6 decimal places (2nd light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L2_T_Int" longName="L2Samp Instrument Housing Temperature" units="deg C" referenceScale="TBD" columnIndex="562" format="float">
+						<description>temperature inside the ISUS instrument housing, to 2 decimal places (2nd light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L2_T_Spec" longName="L2Samp Specrometer Temperature" units="deg C" referenceScale="TBD" columnIndex="563" format="float">
+						<description>temperature of the ISUS spectrometer, to 2 decimal places (2nd light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L2_T_Lamp" longName="L2Samp ISUS UV Light Source Temperature" units="deg C" referenceScale="TBD" columnIndex="564" format="float">
+						<description>temperature of the ISUS UV light source, to 2 decimal places (2nd light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L2_Ref_Avg" longName="L2Samp ISUS Reference Channel Average" units="" referenceScale="TBD" columnIndex="565" format="double">
+						<description>average reference channel measurement taken during the sample time, to 2 decimal places (2nd light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L2_Ref_StdDev" longName="L2Samp ISUS Reference Channel Std Dev" units="" referenceScale="TBD" columnIndex="566" format="float">
+						<description>variance of the Reference Channel measurement taken during the sample time, to 2 decimal places (2nd light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L2_SW_Dark" longName="L2Samp ISUS Sea-Water Dark Calculation" units="counts" referenceScale="TBD" columnIndex="567" format="double">
+						<description>Sea-Water Dark calculation, to 2 decimal places, in spectrometer counts (2nd light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L2_Spec_Avg" longName="L2Samp ISUS Spectrometer Average" units="counts" referenceScale="TBD" columnIndex="568" format="double">
+						<description>average value of all spectrometer channels, to 2 decimal places (2nd light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L2_C_CTD" longName="L2Samp ISUS External CTD (Future)" units="" referenceScale="TBD" columnIndex="569" format="double">
+						<description>Reserved for future use: Conductivity measurement from an external CTD device (2nd light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L2_T_CTD" longName="L2Samp ISUS External CTD Temp (Future)" units="" referenceScale="TBD" columnIndex="570" format="double">
+						<description>Reserved for future use: Temperature measurement from an external CTD device (2nd light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L2_P_CTD" longName="L2Samp ISUS External CTD Pressure (Future)" units="" referenceScale="TBD" columnIndex="571" format="double">
+						<description>Reserved for future use: Pressure measurement from an external CTD device (2nd light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L2_RSRV1" longName="L2Samp ISUS Reserved (Future)" units="" referenceScale="TBD" columnIndex="572" format="string">
+						<description>Reserved for future use (2nd light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L2_RSRV2" longName="L2Samp ISUS Reserved (Future)" units="" referenceScale="TBD" columnIndex="573" format="string">
+						<description>Reserved for future use (2nd light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L2_RSRV3" longName="L2Samp ISUS Reserved (Future)" units="" referenceScale="TBD" columnIndex="574" format="string">
+						<description>Reserved for future use (2nd light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L2_RSRV3" longName="L2Samp ISUS Reserved (Future)" units="" referenceScale="TBD" columnIndex="575" format="string">
+						<description>Reserved for future use (2nd light sample)</description>
+					</RecordVariable>
+					<!-- Insert Here ********************************* -->
+					<RecordVariable name="L2Ch_1" longName="L2 ISUS Ch# 1" units="A/D Counts" columnIndex="576" format="int">
+						<description>A/D counts for the spectrometer at wavelength number 1.</description>
+					</RecordVariable>
+					<RecordVariable name="L2Ch_2" longName="L2 ISUS Ch# 2" units="A/D Counts" columnIndex="577" format="int"/>
+					<RecordVariable name="L2Ch_3" longName="L2 ISUS Ch# 3" units="A/D Counts" columnIndex="578" format="int"/>
+					<RecordVariable name="L2Ch_4" longName="L2 ISUS Ch# 4" units="A/D Counts" columnIndex="579" format="int"/>
+					<RecordVariable name="L2Ch_5" longName="L2 ISUS Ch# 5" units="A/D Counts" columnIndex="580" format="int"/>
+					<RecordVariable name="L2Ch_6" longName="L2 ISUS Ch# 6" units="A/D Counts" columnIndex="581" format="int"/>
+					<RecordVariable name="L2Ch_7" longName="L2 ISUS Ch# 7" units="A/D Counts" columnIndex="582" format="int"/>
+					<RecordVariable name="L2Ch_8" longName="L2 ISUS Ch# 8" units="A/D Counts" columnIndex="583" format="int"/>
+					<RecordVariable name="L2Ch_9" longName="L2 ISUS Ch# 9" units="A/D Counts" columnIndex="584" format="int"/>
+					<RecordVariable name="L2Ch_10" longName="L2 ISUS Ch# 10" units="A/D Counts" columnIndex="585" format="int"/>
+					<RecordVariable name="L2Ch_11" longName="L2 ISUS Ch# 11" units="A/D Counts" columnIndex="586" format="int"/>
+					<RecordVariable name="L2Ch_12" longName="L2 ISUS Ch# 12" units="A/D Counts" columnIndex="587" format="int"/>
+					<RecordVariable name="L2Ch_13" longName="L2 ISUS Ch# 13" units="A/D Counts" columnIndex="588" format="int"/>
+					<RecordVariable name="L2Ch_14" longName="L2 ISUS Ch# 14" units="A/D Counts" columnIndex="589" format="int"/>
+					<RecordVariable name="L2Ch_15" longName="L2 ISUS Ch# 15" units="A/D Counts" columnIndex="590" format="int"/>
+					<RecordVariable name="L2Ch_16" longName="L2 ISUS Ch# 16" units="A/D Counts" columnIndex="591" format="int"/>
+					<RecordVariable name="L2Ch_17" longName="L2 ISUS Ch# 17" units="A/D Counts" columnIndex="592" format="int"/>
+					<RecordVariable name="L2Ch_18" longName="L2 ISUS Ch# 18" units="A/D Counts" columnIndex="593" format="int"/>
+					<RecordVariable name="L2Ch_19" longName="L2 ISUS Ch# 19" units="A/D Counts" columnIndex="594" format="int"/>
+					<RecordVariable name="L2Ch_20" longName="L2 ISUS Ch# 20" units="A/D Counts" columnIndex="595" format="int"/>
+					<RecordVariable name="L2Ch_21" longName="L2 ISUS Ch# 21" units="A/D Counts" columnIndex="596" format="int"/>
+					<RecordVariable name="L2Ch_22" longName="L2 ISUS Ch# 22" units="A/D Counts" columnIndex="597" format="int"/>
+					<RecordVariable name="L2Ch_23" longName="L2 ISUS Ch# 23" units="A/D Counts" columnIndex="598" format="int"/>
+					<RecordVariable name="L2Ch_24" longName="L2 ISUS Ch# 24" units="A/D Counts" columnIndex="599" format="int"/>
+					<RecordVariable name="L2Ch_25" longName="L2 ISUS Ch# 25" units="A/D Counts" columnIndex="600" format="int"/>
+					<RecordVariable name="L2Ch_26" longName="L2 ISUS Ch# 26" units="A/D Counts" columnIndex="601" format="int"/>
+					<RecordVariable name="L2Ch_27" longName="L2 ISUS Ch# 27" units="A/D Counts" columnIndex="602" format="int"/>
+					<RecordVariable name="L2Ch_28" longName="L2 ISUS Ch# 28" units="A/D Counts" columnIndex="603" format="int"/>
+					<RecordVariable name="L2Ch_29" longName="L2 ISUS Ch# 29" units="A/D Counts" columnIndex="604" format="int"/>
+					<RecordVariable name="L2Ch_30" longName="L2 ISUS Ch# 30" units="A/D Counts" columnIndex="605" format="int"/>
+					<RecordVariable name="L2Ch_31" longName="L2 ISUS Ch# 31" units="A/D Counts" columnIndex="606" format="int"/>
+					<RecordVariable name="L2Ch_32" longName="L2 ISUS Ch# 32" units="A/D Counts" columnIndex="607" format="int">
+						<description>A/D counts for the spectrometer at wavelength number 32.</description>
+					</RecordVariable>
+					<RecordVariable name="L2Ch_33" longName="L2 ISUS Ch# 33" units="A/D Counts" columnIndex="608" format="int"/>
+					<RecordVariable name="L2Ch_34" longName="L2 ISUS Ch# 34" units="A/D Counts" columnIndex="609" format="int"/>
+					<RecordVariable name="L2Ch_35" longName="L2 ISUS Ch# 35" units="A/D Counts" columnIndex="610" format="int"/>
+					<RecordVariable name="L2Ch_36" longName="L2 ISUS Ch# 36" units="A/D Counts" columnIndex="611" format="int"/>
+					<RecordVariable name="L2Ch_37" longName="L2 ISUS Ch# 37" units="A/D Counts" columnIndex="612" format="int"/>
+					<RecordVariable name="L2Ch_38" longName="L2 ISUS Ch# 38" units="A/D Counts" columnIndex="613" format="int"/>
+					<RecordVariable name="L2Ch_39" longName="L2 ISUS Ch# 39" units="A/D Counts" columnIndex="614" format="int"/>
+					<RecordVariable name="L2Ch_40" longName="L2 ISUS Ch# 40" units="A/D Counts" columnIndex="615" format="int"/>
+					<RecordVariable name="L2Ch_41" longName="L2 ISUS Ch# 41" units="A/D Counts" columnIndex="616" format="int"/>
+					<RecordVariable name="L2Ch_42" longName="L2 ISUS Ch# 42" units="A/D Counts" columnIndex="617" format="int"/>
+					<RecordVariable name="L2Ch_43" longName="L2 ISUS Ch# 43" units="A/D Counts" columnIndex="618" format="int"/>
+					<RecordVariable name="L2Ch_44" longName="L2 ISUS Ch# 44" units="A/D Counts" columnIndex="619" format="int"/>
+					<RecordVariable name="L2Ch_45" longName="L2 ISUS Ch# 45" units="A/D Counts" columnIndex="620" format="int"/>
+					<RecordVariable name="L2Ch_46" longName="L2 ISUS Ch# 46" units="A/D Counts" columnIndex="621" format="int"/>
+					<RecordVariable name="L2Ch_47" longName="L2 ISUS Ch# 47" units="A/D Counts" columnIndex="622" format="int"/>
+					<RecordVariable name="L2Ch_48" longName="L2 ISUS Ch# 48" units="A/D Counts" columnIndex="623" format="int"/>
+					<RecordVariable name="L2Ch_49" longName="L2 ISUS Ch# 49" units="A/D Counts" columnIndex="624" format="int"/>
+					<RecordVariable name="L2Ch_50" longName="L2 ISUS Ch# 50" units="A/D Counts" columnIndex="625" format="int"/>
+					<RecordVariable name="L2Ch_51" longName="L2 ISUS Ch# 51" units="A/D Counts" columnIndex="626" format="int"/>
+					<RecordVariable name="L2Ch_52" longName="L2 ISUS Ch# 52" units="A/D Counts" columnIndex="627" format="int"/>
+					<RecordVariable name="L2Ch_53" longName="L2 ISUS Ch# 53" units="A/D Counts" columnIndex="628" format="int"/>
+					<RecordVariable name="L2Ch_54" longName="L2 ISUS Ch# 54" units="A/D Counts" columnIndex="629" format="int"/>
+					<RecordVariable name="L2Ch_55" longName="L2 ISUS Ch# 55" units="A/D Counts" columnIndex="630" format="int"/>
+					<RecordVariable name="L2Ch_56" longName="L2 ISUS Ch# 56" units="A/D Counts" columnIndex="631" format="int"/>
+					<RecordVariable name="L2Ch_57" longName="L2 ISUS Ch# 57" units="A/D Counts" columnIndex="632" format="int"/>
+					<RecordVariable name="L2Ch_58" longName="L2 ISUS Ch# 58" units="A/D Counts" columnIndex="633" format="int"/>
+					<RecordVariable name="L2Ch_59" longName="L2 ISUS Ch# 59" units="A/D Counts" columnIndex="634" format="int"/>
+					<RecordVariable name="L2Ch_60" longName="L2 ISUS Ch# 60" units="A/D Counts" columnIndex="635" format="int"/>
+					<RecordVariable name="L2Ch_61" longName="L2 ISUS Ch# 61" units="A/D Counts" columnIndex="636" format="int"/>
+					<RecordVariable name="L2Ch_62" longName="L2 ISUS Ch# 62" units="A/D Counts" columnIndex="637" format="int"/>
+					<RecordVariable name="L2Ch_63" longName="L2 ISUS Ch# 63" units="A/D Counts" columnIndex="638" format="int"/>
+					<RecordVariable name="L2Ch_64" longName="L2 ISUS Ch# 64" units="A/D Counts" columnIndex="639" format="int">
+						<description>A/D counts for the spectrometer at wavelength number 64.</description>
+					</RecordVariable>
+					<RecordVariable name="L2Ch_65" longName="L2 ISUS Ch# 65" units="A/D Counts" columnIndex="640" format="int"/>
+					<RecordVariable name="L2Ch_66" longName="L2 ISUS Ch# 66" units="A/D Counts" columnIndex="641" format="int"/>
+					<RecordVariable name="L2Ch_67" longName="L2 ISUS Ch# 67" units="A/D Counts" columnIndex="642" format="int"/>
+					<RecordVariable name="L2Ch_68" longName="L2 ISUS Ch# 68" units="A/D Counts" columnIndex="643" format="int"/>
+					<RecordVariable name="L2Ch_69" longName="L2 ISUS Ch# 69" units="A/D Counts" columnIndex="644" format="int"/>
+					<RecordVariable name="L2Ch_70" longName="L2 ISUS Ch# 70" units="A/D Counts" columnIndex="645" format="int"/>
+					<RecordVariable name="L2Ch_71" longName="L2 ISUS Ch# 71" units="A/D Counts" columnIndex="646" format="int"/>
+					<RecordVariable name="L2Ch_72" longName="L2 ISUS Ch# 72" units="A/D Counts" columnIndex="647" format="int"/>
+					<RecordVariable name="L2Ch_73" longName="L2 ISUS Ch# 73" units="A/D Counts" columnIndex="648" format="int"/>
+					<RecordVariable name="L2Ch_74" longName="L2 ISUS Ch# 74" units="A/D Counts" columnIndex="649" format="int"/>
+					<RecordVariable name="L2Ch_75" longName="L2 ISUS Ch# 75" units="A/D Counts" columnIndex="650" format="int"/>
+					<RecordVariable name="L2Ch_76" longName="L2 ISUS Ch# 76" units="A/D Counts" columnIndex="651" format="int"/>
+					<RecordVariable name="L2Ch_77" longName="L2 ISUS Ch# 77" units="A/D Counts" columnIndex="652" format="int"/>
+					<RecordVariable name="L2Ch_78" longName="L2 ISUS Ch# 78" units="A/D Counts" columnIndex="653" format="int"/>
+					<RecordVariable name="L2Ch_79" longName="L2 ISUS Ch# 79" units="A/D Counts" columnIndex="654" format="int"/>
+					<RecordVariable name="L2Ch_80" longName="L2 ISUS Ch# 80" units="A/D Counts" columnIndex="655" format="int"/>
+					<RecordVariable name="L2Ch_81" longName="L2 ISUS Ch# 81" units="A/D Counts" columnIndex="656" format="int"/>
+					<RecordVariable name="L2Ch_82" longName="L2 ISUS Ch# 82" units="A/D Counts" columnIndex="657" format="int"/>
+					<RecordVariable name="L2Ch_83" longName="L2 ISUS Ch# 83" units="A/D Counts" columnIndex="658" format="int"/>
+					<RecordVariable name="L2Ch_84" longName="L2 ISUS Ch# 84" units="A/D Counts" columnIndex="659" format="int"/>
+					<RecordVariable name="L2Ch_85" longName="L2 ISUS Ch# 85" units="A/D Counts" columnIndex="660" format="int"/>
+					<RecordVariable name="L2Ch_86" longName="L2 ISUS Ch# 86" units="A/D Counts" columnIndex="661" format="int"/>
+					<RecordVariable name="L2Ch_87" longName="L2 ISUS Ch# 87" units="A/D Counts" columnIndex="662" format="int"/>
+					<RecordVariable name="L2Ch_88" longName="L2 ISUS Ch# 88" units="A/D Counts" columnIndex="663" format="int"/>
+					<RecordVariable name="L2Ch_89" longName="L2 ISUS Ch# 89" units="A/D Counts" columnIndex="664" format="int"/>
+					<RecordVariable name="L2Ch_90" longName="L2 ISUS Ch# 90" units="A/D Counts" columnIndex="665" format="int"/>
+					<RecordVariable name="L2Ch_91" longName="L2 ISUS Ch# 91" units="A/D Counts" columnIndex="666" format="int"/>
+					<RecordVariable name="L2Ch_92" longName="L2 ISUS Ch# 92" units="A/D Counts" columnIndex="667" format="int"/>
+					<RecordVariable name="L2Ch_93" longName="L2 ISUS Ch# 93" units="A/D Counts" columnIndex="668" format="int"/>
+					<RecordVariable name="L2Ch_94" longName="L2 ISUS Ch# 94" units="A/D Counts" columnIndex="669" format="int"/>
+					<RecordVariable name="L2Ch_95" longName="L2 ISUS Ch# 95" units="A/D Counts" columnIndex="670" format="int"/>
+					<RecordVariable name="L2Ch_96" longName="L2 ISUS Ch# 96" units="A/D Counts" columnIndex="671" format="int">
+						<description>A/D counts for the spectrometer at wavelength number 96.</description>
+					</RecordVariable>
+					<RecordVariable name="L2Ch_97" longName="L2 ISUS Ch# 97" units="A/D Counts" columnIndex="672" format="int"/>
+					<RecordVariable name="L2Ch_98" longName="L2 ISUS Ch# 98" units="A/D Counts" columnIndex="673" format="int"/>
+					<RecordVariable name="L2Ch_99" longName="L2 ISUS Ch# 99" units="A/D Counts" columnIndex="674" format="int"/>
+					<RecordVariable name="L2Ch_100" longName="L2 ISUS Ch# 100" units="A/D Counts" columnIndex="675" format="int"/>
+					<RecordVariable name="L2Ch_101" longName="L2 ISUS Ch# 101" units="A/D Counts" columnIndex="676" format="int"/>
+					<RecordVariable name="L2Ch_102" longName="L2 ISUS Ch# 102" units="A/D Counts" columnIndex="677" format="int"/>
+					<RecordVariable name="L2Ch_103" longName="L2 ISUS Ch# 103" units="A/D Counts" columnIndex="678" format="int"/>
+					<RecordVariable name="L2Ch_104" longName="L2 ISUS Ch# 104" units="A/D Counts" columnIndex="679" format="int"/>
+					<RecordVariable name="L2Ch_105" longName="L2 ISUS Ch# 105" units="A/D Counts" columnIndex="680" format="int"/>
+					<RecordVariable name="L2Ch_106" longName="L2 ISUS Ch# 106" units="A/D Counts" columnIndex="681" format="int"/>
+					<RecordVariable name="L2Ch_107" longName="L2 ISUS Ch# 107" units="A/D Counts" columnIndex="682" format="int"/>
+					<RecordVariable name="L2Ch_108" longName="L2 ISUS Ch# 108" units="A/D Counts" columnIndex="683" format="int"/>
+					<RecordVariable name="L2Ch_109" longName="L2 ISUS Ch# 109" units="A/D Counts" columnIndex="684" format="int"/>
+					<RecordVariable name="L2Ch_110" longName="L2 ISUS Ch# 110" units="A/D Counts" columnIndex="685" format="int"/>
+					<RecordVariable name="L2Ch_111" longName="L2 ISUS Ch# 111" units="A/D Counts" columnIndex="686" format="int"/>
+					<RecordVariable name="L2Ch_112" longName="L2 ISUS Ch# 112" units="A/D Counts" columnIndex="687" format="int"/>
+					<RecordVariable name="L2Ch_113" longName="L2 ISUS Ch# 113" units="A/D Counts" columnIndex="688" format="int"/>
+					<RecordVariable name="L2Ch_114" longName="L2 ISUS Ch# 114" units="A/D Counts" columnIndex="689" format="int"/>
+					<RecordVariable name="L2Ch_115" longName="L2 ISUS Ch# 115" units="A/D Counts" columnIndex="690" format="int"/>
+					<RecordVariable name="L2Ch_116" longName="L2 ISUS Ch# 116" units="A/D Counts" columnIndex="691" format="int"/>
+					<RecordVariable name="L2Ch_117" longName="L2 ISUS Ch# 117" units="A/D Counts" columnIndex="692" format="int"/>
+					<RecordVariable name="L2Ch_118" longName="L2 ISUS Ch# 118" units="A/D Counts" columnIndex="693" format="int"/>
+					<RecordVariable name="L2Ch_119" longName="L2 ISUS Ch# 119" units="A/D Counts" columnIndex="694" format="int"/>
+					<RecordVariable name="L2Ch_120" longName="L2 ISUS Ch# 120" units="A/D Counts" columnIndex="695" format="int"/>
+					<RecordVariable name="L2Ch_121" longName="L2 ISUS Ch# 121" units="A/D Counts" columnIndex="696" format="int"/>
+					<RecordVariable name="L2Ch_122" longName="L2 ISUS Ch# 122" units="A/D Counts" columnIndex="697" format="int"/>
+					<RecordVariable name="L2Ch_123" longName="L2 ISUS Ch# 123" units="A/D Counts" columnIndex="698" format="int"/>
+					<RecordVariable name="L2Ch_124" longName="L2 ISUS Ch# 124" units="A/D Counts" columnIndex="699" format="int"/>
+					<RecordVariable name="L2Ch_125" longName="L2 ISUS Ch# 125" units="A/D Counts" columnIndex="700" format="int"/>
+					<RecordVariable name="L2Ch_126" longName="L2 ISUS Ch# 126" units="A/D Counts" columnIndex="701" format="int"/>
+					<RecordVariable name="L2Ch_127" longName="L2 ISUS Ch# 127" units="A/D Counts" columnIndex="702" format="int"/>
+					<RecordVariable name="L2Ch_128" longName="L2 ISUS Ch# 128" units="A/D Counts" columnIndex="703" format="int">
+						<description>A/D counts for the spectrometer at wavelength number 128.</description>
+					</RecordVariable>
+					<RecordVariable name="L2Ch_129" longName="L2 ISUS Ch# 129" units="A/D Counts" columnIndex="704" format="int"/>
+					<RecordVariable name="L2Ch_130" longName="L2 ISUS Ch# 130" units="A/D Counts" columnIndex="705" format="int"/>
+					<RecordVariable name="L2Ch_131" longName="L2 ISUS Ch# 131" units="A/D Counts" columnIndex="706" format="int"/>
+					<RecordVariable name="L2Ch_132" longName="L2 ISUS Ch# 132" units="A/D Counts" columnIndex="707" format="int"/>
+					<RecordVariable name="L2Ch_133" longName="L2 ISUS Ch# 133" units="A/D Counts" columnIndex="708" format="int"/>
+					<RecordVariable name="L2Ch_134" longName="L2 ISUS Ch# 134" units="A/D Counts" columnIndex="709" format="int"/>
+					<RecordVariable name="L2Ch_135" longName="L2 ISUS Ch# 135" units="A/D Counts" columnIndex="710" format="int"/>
+					<RecordVariable name="L2Ch_136" longName="L2 ISUS Ch# 136" units="A/D Counts" columnIndex="711" format="int"/>
+					<RecordVariable name="L2Ch_137" longName="L2 ISUS Ch# 137" units="A/D Counts" columnIndex="712" format="int"/>
+					<RecordVariable name="L2Ch_138" longName="L2 ISUS Ch# 138" units="A/D Counts" columnIndex="713" format="int"/>
+					<RecordVariable name="L2Ch_139" longName="L2 ISUS Ch# 139" units="A/D Counts" columnIndex="714" format="int"/>
+					<RecordVariable name="L2Ch_140" longName="L2 ISUS Ch# 140" units="A/D Counts" columnIndex="715" format="int"/>
+					<RecordVariable name="L2Ch_141" longName="L2 ISUS Ch# 141" units="A/D Counts" columnIndex="716" format="int"/>
+					<RecordVariable name="L2Ch_142" longName="L2 ISUS Ch# 142" units="A/D Counts" columnIndex="717" format="int"/>
+					<RecordVariable name="L2Ch_143" longName="L2 ISUS Ch# 143" units="A/D Counts" columnIndex="718" format="int"/>
+					<RecordVariable name="L2Ch_144" longName="L2 ISUS Ch# 144" units="A/D Counts" columnIndex="719" format="int"/>
+					<RecordVariable name="L2Ch_145" longName="L2 ISUS Ch# 145" units="A/D Counts" columnIndex="720" format="int"/>
+					<RecordVariable name="L2Ch_146" longName="L2 ISUS Ch# 146" units="A/D Counts" columnIndex="721" format="int"/>
+					<RecordVariable name="L2Ch_147" longName="L2 ISUS Ch# 147" units="A/D Counts" columnIndex="722" format="int"/>
+					<RecordVariable name="L2Ch_148" longName="L2 ISUS Ch# 148" units="A/D Counts" columnIndex="723" format="int"/>
+					<RecordVariable name="L2Ch_149" longName="L2 ISUS Ch# 149" units="A/D Counts" columnIndex="724" format="int"/>
+					<RecordVariable name="L2Ch_150" longName="L2 ISUS Ch# 150" units="A/D Counts" columnIndex="725" format="int"/>
+					<RecordVariable name="L2Ch_151" longName="L2 ISUS Ch# 151" units="A/D Counts" columnIndex="726" format="int"/>
+					<RecordVariable name="L2Ch_152" longName="L2 ISUS Ch# 152" units="A/D Counts" columnIndex="727" format="int"/>
+					<RecordVariable name="L2Ch_153" longName="L2 ISUS Ch# 153" units="A/D Counts" columnIndex="728" format="int"/>
+					<RecordVariable name="L2Ch_154" longName="L2 ISUS Ch# 154" units="A/D Counts" columnIndex="729" format="int"/>
+					<RecordVariable name="L2Ch_155" longName="L2 ISUS Ch# 155" units="A/D Counts" columnIndex="730" format="int"/>
+					<RecordVariable name="L2Ch_156" longName="L2 ISUS Ch# 156" units="A/D Counts" columnIndex="731" format="int"/>
+					<RecordVariable name="L2Ch_157" longName="L2 ISUS Ch# 157" units="A/D Counts" columnIndex="732" format="int"/>
+					<RecordVariable name="L2Ch_158" longName="L2 ISUS Ch# 158" units="A/D Counts" columnIndex="733" format="int"/>
+					<RecordVariable name="L2Ch_159" longName="L2 ISUS Ch# 159" units="A/D Counts" columnIndex="734" format="int"/>
+					<RecordVariable name="L2Ch_160" longName="L2 ISUS Ch# 160" units="A/D Counts" columnIndex="735" format="int">
+						<description>A/D counts for the spectrometer at wavelength number 160.</description>
+					</RecordVariable>
+					<RecordVariable name="L2Ch_161" longName="L2 ISUS Ch# 161" units="A/D Counts" columnIndex="736" format="int"/>
+					<RecordVariable name="L2Ch_162" longName="L2 ISUS Ch# 162" units="A/D Counts" columnIndex="737" format="int"/>
+					<RecordVariable name="L2Ch_163" longName="L2 ISUS Ch# 163" units="A/D Counts" columnIndex="738" format="int"/>
+					<RecordVariable name="L2Ch_164" longName="L2 ISUS Ch# 164" units="A/D Counts" columnIndex="739" format="int"/>
+					<RecordVariable name="L2Ch_165" longName="L2 ISUS Ch# 165" units="A/D Counts" columnIndex="740" format="int"/>
+					<RecordVariable name="L2Ch_166" longName="L2 ISUS Ch# 166" units="A/D Counts" columnIndex="741" format="int"/>
+					<RecordVariable name="L2Ch_167" longName="L2 ISUS Ch# 167" units="A/D Counts" columnIndex="742" format="int"/>
+					<RecordVariable name="L2Ch_168" longName="L2 ISUS Ch# 168" units="A/D Counts" columnIndex="743" format="int"/>
+					<RecordVariable name="L2Ch_169" longName="L2 ISUS Ch# 169" units="A/D Counts" columnIndex="744" format="int"/>
+					<RecordVariable name="L2Ch_170" longName="L2 ISUS Ch# 170" units="A/D Counts" columnIndex="745" format="int"/>
+					<RecordVariable name="L2Ch_171" longName="L2 ISUS Ch# 171" units="A/D Counts" columnIndex="746" format="int"/>
+					<RecordVariable name="L2Ch_172" longName="L2 ISUS Ch# 172" units="A/D Counts" columnIndex="747" format="int"/>
+					<RecordVariable name="L2Ch_173" longName="L2 ISUS Ch# 173" units="A/D Counts" columnIndex="748" format="int"/>
+					<RecordVariable name="L2Ch_174" longName="L2 ISUS Ch# 174" units="A/D Counts" columnIndex="749" format="int"/>
+					<RecordVariable name="L2Ch_175" longName="L2 ISUS Ch# 175" units="A/D Counts" columnIndex="750" format="int"/>
+					<RecordVariable name="L2Ch_176" longName="L2 ISUS Ch# 176" units="A/D Counts" columnIndex="751" format="int"/>
+					<RecordVariable name="L2Ch_177" longName="L2 ISUS Ch# 177" units="A/D Counts" columnIndex="752" format="int"/>
+					<RecordVariable name="L2Ch_178" longName="L2 ISUS Ch# 178" units="A/D Counts" columnIndex="753" format="int"/>
+					<RecordVariable name="L2Ch_179" longName="L2 ISUS Ch# 179" units="A/D Counts" columnIndex="754" format="int"/>
+					<RecordVariable name="L2Ch_180" longName="L2 ISUS Ch# 180" units="A/D Counts" columnIndex="755" format="int"/>
+					<RecordVariable name="L2Ch_181" longName="L2 ISUS Ch# 181" units="A/D Counts" columnIndex="756" format="int"/>
+					<RecordVariable name="L2Ch_182" longName="L2 ISUS Ch# 182" units="A/D Counts" columnIndex="757" format="int"/>
+					<RecordVariable name="L2Ch_183" longName="L2 ISUS Ch# 183" units="A/D Counts" columnIndex="758" format="int"/>
+					<RecordVariable name="L2Ch_184" longName="L2 ISUS Ch# 184" units="A/D Counts" columnIndex="759" format="int"/>
+					<RecordVariable name="L2Ch_185" longName="L2 ISUS Ch# 185" units="A/D Counts" columnIndex="760" format="int"/>
+					<RecordVariable name="L2Ch_186" longName="L2 ISUS Ch# 186" units="A/D Counts" columnIndex="761" format="int"/>
+					<RecordVariable name="L2Ch_187" longName="L2 ISUS Ch# 187" units="A/D Counts" columnIndex="762" format="int"/>
+					<RecordVariable name="L2Ch_188" longName="L2 ISUS Ch# 188" units="A/D Counts" columnIndex="763" format="int"/>
+					<RecordVariable name="L2Ch_189" longName="L2 ISUS Ch# 189" units="A/D Counts" columnIndex="764" format="int"/>
+					<RecordVariable name="L2Ch_190" longName="L2 ISUS Ch# 190" units="A/D Counts" columnIndex="765" format="int"/>
+					<RecordVariable name="L2Ch_191" longName="L2 ISUS Ch# 191" units="A/D Counts" columnIndex="766" format="int"/>
+					<RecordVariable name="L2Ch_192" longName="L2 ISUS Ch# 192" units="A/D Counts" columnIndex="767" format="int">
+						<description>A/D counts for the spectrometer at wavelength number 192.</description>
+					</RecordVariable>
+					<RecordVariable name="L2Ch_193" longName="L2 ISUS Ch# 193" units="A/D Counts" columnIndex="768" format="int"/>
+					<RecordVariable name="L2Ch_194" longName="L2 ISUS Ch# 194" units="A/D Counts" columnIndex="769" format="int"/>
+					<RecordVariable name="L2Ch_195" longName="L2 ISUS Ch# 195" units="A/D Counts" columnIndex="770" format="int"/>
+					<RecordVariable name="L2Ch_196" longName="L2 ISUS Ch# 196" units="A/D Counts" columnIndex="771" format="int"/>
+					<RecordVariable name="L2Ch_197" longName="L2 ISUS Ch# 197" units="A/D Counts" columnIndex="772" format="int"/>
+					<RecordVariable name="L2Ch_198" longName="L2 ISUS Ch# 198" units="A/D Counts" columnIndex="773" format="int"/>
+					<RecordVariable name="L2Ch_199" longName="L2 ISUS Ch# 199" units="A/D Counts" columnIndex="774" format="int"/>
+					<RecordVariable name="L2Ch_200" longName="L2 ISUS Ch# 200" units="A/D Counts" columnIndex="775" format="int"/>
+					<RecordVariable name="L2Ch_201" longName="L2 ISUS Ch# 201" units="A/D Counts" columnIndex="776" format="int"/>
+					<RecordVariable name="L2Ch_202" longName="L2 ISUS Ch# 202" units="A/D Counts" columnIndex="777" format="int"/>
+					<RecordVariable name="L2Ch_203" longName="L2 ISUS Ch# 203" units="A/D Counts" columnIndex="778" format="int"/>
+					<RecordVariable name="L2Ch_204" longName="L2 ISUS Ch# 204" units="A/D Counts" columnIndex="779" format="int"/>
+					<RecordVariable name="L2Ch_205" longName="L2 ISUS Ch# 205" units="A/D Counts" columnIndex="780" format="int"/>
+					<RecordVariable name="L2Ch_206" longName="L2 ISUS Ch# 206" units="A/D Counts" columnIndex="781" format="int"/>
+					<RecordVariable name="L2Ch_207" longName="L2 ISUS Ch# 207" units="A/D Counts" columnIndex="782" format="int"/>
+					<RecordVariable name="L2Ch_208" longName="L2 ISUS Ch# 208" units="A/D Counts" columnIndex="783" format="int"/>
+					<RecordVariable name="L2Ch_209" longName="L2 ISUS Ch# 209" units="A/D Counts" columnIndex="784" format="int"/>
+					<RecordVariable name="L2Ch_210" longName="L2 ISUS Ch# 210" units="A/D Counts" columnIndex="785" format="int"/>
+					<RecordVariable name="L2Ch_211" longName="L2 ISUS Ch# 211" units="A/D Counts" columnIndex="786" format="int"/>
+					<RecordVariable name="L2Ch_212" longName="L2 ISUS Ch# 212" units="A/D Counts" columnIndex="787" format="int"/>
+					<RecordVariable name="L2Ch_213" longName="L2 ISUS Ch# 213" units="A/D Counts" columnIndex="788" format="int"/>
+					<RecordVariable name="L2Ch_214" longName="L2 ISUS Ch# 214" units="A/D Counts" columnIndex="789" format="int"/>
+					<RecordVariable name="L2Ch_215" longName="L2 ISUS Ch# 215" units="A/D Counts" columnIndex="790" format="int"/>
+					<RecordVariable name="L2Ch_216" longName="L2 ISUS Ch# 216" units="A/D Counts" columnIndex="791" format="int"/>
+					<RecordVariable name="L2Ch_217" longName="L2 ISUS Ch# 217" units="A/D Counts" columnIndex="792" format="int"/>
+					<RecordVariable name="L2Ch_218" longName="L2 ISUS Ch# 218" units="A/D Counts" columnIndex="793" format="int"/>
+					<RecordVariable name="L2Ch_219" longName="L2 ISUS Ch# 219" units="A/D Counts" columnIndex="794" format="int"/>
+					<RecordVariable name="L2Ch_220" longName="L2 ISUS Ch# 220" units="A/D Counts" columnIndex="795" format="int"/>
+					<RecordVariable name="L2Ch_221" longName="L2 ISUS Ch# 221" units="A/D Counts" columnIndex="796" format="int"/>
+					<RecordVariable name="L2Ch_222" longName="L2 ISUS Ch# 222" units="A/D Counts" columnIndex="797" format="int"/>
+					<RecordVariable name="L2Ch_223" longName="L2 ISUS Ch# 223" units="A/D Counts" columnIndex="798" format="int"/>
+					<RecordVariable name="L2Ch_224" longName="L2 ISUS Ch# 224" units="A/D Counts" columnIndex="799" format="int">
+						<description>A/D counts for the spectrometer at wavelength number 224.</description>
+					</RecordVariable>
+					<RecordVariable name="L2Ch_225" longName="L2 ISUS Ch# 225" units="A/D Counts" columnIndex="800" format="int"/>
+					<RecordVariable name="L2Ch_226" longName="L2 ISUS Ch# 226" units="A/D Counts" columnIndex="801" format="int"/>
+					<RecordVariable name="L2Ch_227" longName="L2 ISUS Ch# 227" units="A/D Counts" columnIndex="802" format="int"/>
+					<RecordVariable name="L2Ch_228" longName="L2 ISUS Ch# 228" units="A/D Counts" columnIndex="803" format="int"/>
+					<RecordVariable name="L2Ch_229" longName="L2 ISUS Ch# 229" units="A/D Counts" columnIndex="804" format="int"/>
+					<RecordVariable name="L2Ch_230" longName="L2 ISUS Ch# 230" units="A/D Counts" columnIndex="805" format="int"/>
+					<RecordVariable name="L2Ch_231" longName="L2 ISUS Ch# 231" units="A/D Counts" columnIndex="806" format="int"/>
+					<RecordVariable name="L2Ch_232" longName="L2 ISUS Ch# 232" units="A/D Counts" columnIndex="807" format="int"/>
+					<RecordVariable name="L2Ch_233" longName="L2 ISUS Ch# 233" units="A/D Counts" columnIndex="808" format="int"/>
+					<RecordVariable name="L2Ch_234" longName="L2 ISUS Ch# 234" units="A/D Counts" columnIndex="809" format="int"/>
+					<RecordVariable name="L2Ch_235" longName="L2 ISUS Ch# 235" units="A/D Counts" columnIndex="810" format="int"/>
+					<RecordVariable name="L2Ch_236" longName="L2 ISUS Ch# 236" units="A/D Counts" columnIndex="811" format="int"/>
+					<RecordVariable name="L2Ch_237" longName="L2 ISUS Ch# 237" units="A/D Counts" columnIndex="812" format="int"/>
+					<RecordVariable name="L2Ch_238" longName="L2 ISUS Ch# 238" units="A/D Counts" columnIndex="813" format="int"/>
+					<RecordVariable name="L2Ch_239" longName="L2 ISUS Ch# 239" units="A/D Counts" columnIndex="814" format="int"/>
+					<RecordVariable name="L2Ch_240" longName="L2 ISUS Ch# 240" units="A/D Counts" columnIndex="815" format="int"/>
+					<RecordVariable name="L2Ch_241" longName="L2 ISUS Ch# 241" units="A/D Counts" columnIndex="816" format="int"/>
+					<RecordVariable name="L2Ch_242" longName="L2 ISUS Ch# 242" units="A/D Counts" columnIndex="817" format="int"/>
+					<RecordVariable name="L2Ch_243" longName="L2 ISUS Ch# 243" units="A/D Counts" columnIndex="818" format="int"/>
+					<RecordVariable name="L2Ch_244" longName="L2 ISUS Ch# 244" units="A/D Counts" columnIndex="819" format="int"/>
+					<RecordVariable name="L2Ch_245" longName="L2 ISUS Ch# 245" units="A/D Counts" columnIndex="820" format="int"/>
+					<RecordVariable name="L2Ch_246" longName="L2 ISUS Ch# 246" units="A/D Counts" columnIndex="821" format="int"/>
+					<RecordVariable name="L2Ch_247" longName="L2 ISUS Ch# 247" units="A/D Counts" columnIndex="822" format="int"/>
+					<RecordVariable name="L2Ch_248" longName="L2 ISUS Ch# 248" units="A/D Counts" columnIndex="823" format="int"/>
+					<RecordVariable name="L2Ch_249" longName="L2 ISUS Ch# 249" units="A/D Counts" columnIndex="824" format="int"/>
+					<RecordVariable name="L2Ch_250" longName="L2 ISUS Ch# 250" units="A/D Counts" columnIndex="825" format="int"/>
+					<RecordVariable name="L2Ch_251" longName="L2 ISUS Ch# 251" units="A/D Counts" columnIndex="826" format="int"/>
+					<RecordVariable name="L2Ch_252" longName="L2 ISUS Ch# 252" units="A/D Counts" columnIndex="827" format="int"/>
+					<RecordVariable name="L2Ch_253" longName="L2 ISUS Ch# 253" units="A/D Counts" columnIndex="828" format="int"/>
+					<RecordVariable name="L2Ch_254" longName="L2 ISUS Ch# 254" units="A/D Counts" columnIndex="829" format="int"/>
+					<RecordVariable name="L2Ch_255" longName="L2 ISUS Ch# 255" units="A/D Counts" columnIndex="830" format="int"/>
+					<RecordVariable name="L2Ch_256" longName="L2 ISUS Ch# 256" units="A/D Counts" columnIndex="831" format="int">
+						<description>A/D counts for the spectrometer at wavelength number 256.</description>
+					</RecordVariable>
+					<!-- End Here ********************************* -->
+					<RecordVariable name="L3_SampleInfo" longName="L3Samp Sample Info String" units="noUnits" columnIndex="832" format="string">
+						<description>tag string at beginning of a data record; includes model of instrument and whether this is light or dark sample (3rd light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L3_SN" longName="L3Samp Instrument serial number" units="id" referenceScale="none" columnIndex="833" format="int">
+						<description>serial number of the instrument (with the name, uniquely IDs instrument) (3rd light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L3_Date" longName="L3Samp Data of sample" units="YYYYDDD" referenceScale="none" columnIndex="834" format="string">
+						<description>temperature measured inside the MMC controller pressure housing (3rd light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L3_Time" longName="L3Samp GMT Time of Day" units="hourOfDay" referenceScale="TBD" columnIndex="835" format="double">
+						<description>hour of the day, in GMT floating point hours (3rd light sample)</description>
+						<StandardVariable name="time" namespaceUriString="http://marinemetadata.org/cf"/>
+					</RecordVariable>
+					<RecordVariable name="L3_NTR_CONC" longName="L3Samp Nitrate Concentration" units="uMol_L" referenceScale="tbd" columnIndex="836" format="double">
+						<description>Nitrate concentration to 2 decimal places, as calculated by ISUS (3rd light sample)</description>
+						<StandardVariable name="moles_of_nitrate_per_unit_mass_in_sea_water" namespaceUriString="http://marinemetadata.org/cf"/>
+					</RecordVariable>
+					<RecordVariable name="L3_Salinity" longName="L3Samp Salinity" units="psu" referenceScale="TBD" columnIndex="837" format="double">
+						<description>Salinity to 2 decimal places, as calculated by ISUS (3rd light sample)</description>
+						<StandardVariable name="sea_water_salinity" namespaceUriString="http://marinemetadata.org/cf"/>
+					</RecordVariable>
+					<RecordVariable name="L3_RMS_Error" longName="L3Samp Nitrate RMS Error" units="uMol_L" referenceScale="TBD" columnIndex="838" format="double">
+						<description>Root Mean Square error of the ISUS-calculated concentration, to 6 decimal places (3rd light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L3_T_Int" longName="L3Samp Instrument Housing Temperature" units="deg C" referenceScale="TBD" columnIndex="839" format="float">
+						<description>temperature inside the ISUS instrument housing, to 2 decimal places (3rd light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L3_T_Spec" longName="L3Samp Specrometer Temperature" units="deg C" referenceScale="TBD" columnIndex="840" format="float">
+						<description>temperature of the ISUS spectrometer, to 2 decimal places (3rd light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L3_T_Lamp" longName="L3Samp ISUS UV Light Source Temperature" units="deg C" referenceScale="TBD" columnIndex="841" format="float">
+						<description>temperature of the ISUS UV light source, to 2 decimal places (3rd light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L3_Ref_Avg" longName="L3Samp ISUS Reference Channel Average" units="" referenceScale="TBD" columnIndex="842" format="double">
+						<description>average reference channel measurement taken during the sample time, to 2 decimal places (3rd light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L3_Ref_StdDev" longName="L3Samp ISUS Reference Channel Std Dev" units="" referenceScale="TBD" columnIndex="843" format="float">
+						<description>variance of the Reference Channel measurement taken during the sample time, to 2 decimal places (3rd light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L3_SW_Dark" longName="L3Samp ISUS Sea-Water Dark Calculation" units="counts" referenceScale="TBD" columnIndex="844" format="double">
+						<description>Sea-Water Dark calculation, to 2 decimal places, in spectrometer counts (3rd light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L3_Spec_Avg" longName="L3Samp ISUS Spectrometer Average" units="counts" referenceScale="TBD" columnIndex="845" format="double">
+						<description>average value of all spectrometer channels, to 2 decimal places (3rd light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L3_C_CTD" longName="L3Samp ISUS External CTD (Future)" units="" referenceScale="TBD" columnIndex="846" format="double">
+						<description>Reserved for future use: Conductivity measurement from an external CTD device (3rd light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L3_T_CTD" longName="L3Samp ISUS External CTD Temp (Future)" units="" referenceScale="TBD" columnIndex="847" format="double">
+						<description>Reserved for future use: Temperature measurement from an external CTD device (3rd light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L3_P_CTD" longName="L3Samp ISUS External CTD Pressure (Future)" units="" referenceScale="TBD" columnIndex="848" format="double">
+						<description>Reserved for future use: Pressure measurement from an external CTD device (3rd light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L3_RSRV1" longName="L3Samp ISUS Reserved (Future)" units="" referenceScale="TBD" columnIndex="849" format="string">
+						<description>Reserved for future use (3rd light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L3_RSRV2" longName="L3Samp ISUS Reserved (Future)" units="" referenceScale="TBD" columnIndex="850" format="string">
+						<description>Reserved for future use (3rd light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L3_RSRV3" longName="L3Samp ISUS Reserved (Future)" units="" referenceScale="TBD" columnIndex="851" format="string">
+						<description>Reserved for future use (3rd light sample)</description>
+					</RecordVariable>
+					<RecordVariable name="L3_RSRV3" longName="L3Samp ISUS Reserved (Future)" units="" referenceScale="TBD" columnIndex="852" format="string">
+						<description>Reserved for future use (3rd light sample)</description>
+					</RecordVariable>
+					<!-- Insert Here ************************************** -->
+					<RecordVariable name="L3Ch_1" longName="L3 ISUS Ch# 1" units="A/D Counts" columnIndex="853" format="int">
+						<description>A/D counts for the spectrometer at wavelength number 1.</description>
+					</RecordVariable>
+					<RecordVariable name="L3Ch_2" longName="L3 ISUS Ch# 2" units="A/D Counts" columnIndex="854" format="int"/>
+					<RecordVariable name="L3Ch_3" longName="L3 ISUS Ch# 3" units="A/D Counts" columnIndex="855" format="int"/>
+					<RecordVariable name="L3Ch_4" longName="L3 ISUS Ch# 4" units="A/D Counts" columnIndex="856" format="int"/>
+					<RecordVariable name="L3Ch_5" longName="L3 ISUS Ch# 5" units="A/D Counts" columnIndex="857" format="int"/>
+					<RecordVariable name="L3Ch_6" longName="L3 ISUS Ch# 6" units="A/D Counts" columnIndex="858" format="int"/>
+					<RecordVariable name="L3Ch_7" longName="L3 ISUS Ch# 7" units="A/D Counts" columnIndex="859" format="int"/>
+					<RecordVariable name="L3Ch_8" longName="L3 ISUS Ch# 8" units="A/D Counts" columnIndex="860" format="int"/>
+					<RecordVariable name="L3Ch_9" longName="L3 ISUS Ch# 9" units="A/D Counts" columnIndex="861" format="int"/>
+					<RecordVariable name="L3Ch_10" longName="L3 ISUS Ch# 10" units="A/D Counts" columnIndex="862" format="int"/>
+					<RecordVariable name="L3Ch_11" longName="L3 ISUS Ch# 11" units="A/D Counts" columnIndex="863" format="int"/>
+					<RecordVariable name="L3Ch_12" longName="L3 ISUS Ch# 12" units="A/D Counts" columnIndex="864" format="int"/>
+					<RecordVariable name="L3Ch_13" longName="L3 ISUS Ch# 13" units="A/D Counts" columnIndex="865" format="int"/>
+					<RecordVariable name="L3Ch_14" longName="L3 ISUS Ch# 14" units="A/D Counts" columnIndex="866" format="int"/>
+					<RecordVariable name="L3Ch_15" longName="L3 ISUS Ch# 15" units="A/D Counts" columnIndex="867" format="int"/>
+					<RecordVariable name="L3Ch_16" longName="L3 ISUS Ch# 16" units="A/D Counts" columnIndex="868" format="int"/>
+					<RecordVariable name="L3Ch_17" longName="L3 ISUS Ch# 17" units="A/D Counts" columnIndex="869" format="int"/>
+					<RecordVariable name="L3Ch_18" longName="L3 ISUS Ch# 18" units="A/D Counts" columnIndex="870" format="int"/>
+					<RecordVariable name="L3Ch_19" longName="L3 ISUS Ch# 19" units="A/D Counts" columnIndex="871" format="int"/>
+					<RecordVariable name="L3Ch_20" longName="L3 ISUS Ch# 20" units="A/D Counts" columnIndex="872" format="int"/>
+					<RecordVariable name="L3Ch_21" longName="L3 ISUS Ch# 21" units="A/D Counts" columnIndex="873" format="int"/>
+					<RecordVariable name="L3Ch_22" longName="L3 ISUS Ch# 22" units="A/D Counts" columnIndex="874" format="int"/>
+					<RecordVariable name="L3Ch_23" longName="L3 ISUS Ch# 23" units="A/D Counts" columnIndex="875" format="int"/>
+					<RecordVariable name="L3Ch_24" longName="L3 ISUS Ch# 24" units="A/D Counts" columnIndex="876" format="int"/>
+					<RecordVariable name="L3Ch_25" longName="L3 ISUS Ch# 25" units="A/D Counts" columnIndex="877" format="int"/>
+					<RecordVariable name="L3Ch_26" longName="L3 ISUS Ch# 26" units="A/D Counts" columnIndex="878" format="int"/>
+					<RecordVariable name="L3Ch_27" longName="L3 ISUS Ch# 27" units="A/D Counts" columnIndex="879" format="int"/>
+					<RecordVariable name="L3Ch_28" longName="L3 ISUS Ch# 28" units="A/D Counts" columnIndex="880" format="int"/>
+					<RecordVariable name="L3Ch_29" longName="L3 ISUS Ch# 29" units="A/D Counts" columnIndex="881" format="int"/>
+					<RecordVariable name="L3Ch_30" longName="L3 ISUS Ch# 30" units="A/D Counts" columnIndex="882" format="int"/>
+					<RecordVariable name="L3Ch_31" longName="L3 ISUS Ch# 31" units="A/D Counts" columnIndex="883" format="int"/>
+					<RecordVariable name="L3Ch_32" longName="L3 ISUS Ch# 32" units="A/D Counts" columnIndex="884" format="int">
+						<description>A/D counts for the spectrometer at wavelength number 32.</description>
+					</RecordVariable>
+					<RecordVariable name="L3Ch_33" longName="L3 ISUS Ch# 33" units="A/D Counts" columnIndex="885" format="int"/>
+					<RecordVariable name="L3Ch_34" longName="L3 ISUS Ch# 34" units="A/D Counts" columnIndex="886" format="int"/>
+					<RecordVariable name="L3Ch_35" longName="L3 ISUS Ch# 35" units="A/D Counts" columnIndex="887" format="int"/>
+					<RecordVariable name="L3Ch_36" longName="L3 ISUS Ch# 36" units="A/D Counts" columnIndex="888" format="int"/>
+					<RecordVariable name="L3Ch_37" longName="L3 ISUS Ch# 37" units="A/D Counts" columnIndex="889" format="int"/>
+					<RecordVariable name="L3Ch_38" longName="L3 ISUS Ch# 38" units="A/D Counts" columnIndex="890" format="int"/>
+					<RecordVariable name="L3Ch_39" longName="L3 ISUS Ch# 39" units="A/D Counts" columnIndex="891" format="int"/>
+					<RecordVariable name="L3Ch_40" longName="L3 ISUS Ch# 40" units="A/D Counts" columnIndex="892" format="int"/>
+					<RecordVariable name="L3Ch_41" longName="L3 ISUS Ch# 41" units="A/D Counts" columnIndex="893" format="int"/>
+					<RecordVariable name="L3Ch_42" longName="L3 ISUS Ch# 42" units="A/D Counts" columnIndex="894" format="int"/>
+					<RecordVariable name="L3Ch_43" longName="L3 ISUS Ch# 43" units="A/D Counts" columnIndex="895" format="int"/>
+					<RecordVariable name="L3Ch_44" longName="L3 ISUS Ch# 44" units="A/D Counts" columnIndex="896" format="int"/>
+					<RecordVariable name="L3Ch_45" longName="L3 ISUS Ch# 45" units="A/D Counts" columnIndex="897" format="int"/>
+					<RecordVariable name="L3Ch_46" longName="L3 ISUS Ch# 46" units="A/D Counts" columnIndex="898" format="int"/>
+					<RecordVariable name="L3Ch_47" longName="L3 ISUS Ch# 47" units="A/D Counts" columnIndex="899" format="int"/>
+					<RecordVariable name="L3Ch_48" longName="L3 ISUS Ch# 48" units="A/D Counts" columnIndex="900" format="int"/>
+					<RecordVariable name="L3Ch_49" longName="L3 ISUS Ch# 49" units="A/D Counts" columnIndex="901" format="int"/>
+					<RecordVariable name="L3Ch_50" longName="L3 ISUS Ch# 50" units="A/D Counts" columnIndex="902" format="int"/>
+					<RecordVariable name="L3Ch_51" longName="L3 ISUS Ch# 51" units="A/D Counts" columnIndex="903" format="int"/>
+					<RecordVariable name="L3Ch_52" longName="L3 ISUS Ch# 52" units="A/D Counts" columnIndex="904" format="int"/>
+					<RecordVariable name="L3Ch_53" longName="L3 ISUS Ch# 53" units="A/D Counts" columnIndex="905" format="int"/>
+					<RecordVariable name="L3Ch_54" longName="L3 ISUS Ch# 54" units="A/D Counts" columnIndex="906" format="int"/>
+					<RecordVariable name="L3Ch_55" longName="L3 ISUS Ch# 55" units="A/D Counts" columnIndex="907" format="int"/>
+					<RecordVariable name="L3Ch_56" longName="L3 ISUS Ch# 56" units="A/D Counts" columnIndex="908" format="int"/>
+					<RecordVariable name="L3Ch_57" longName="L3 ISUS Ch# 57" units="A/D Counts" columnIndex="909" format="int"/>
+					<RecordVariable name="L3Ch_58" longName="L3 ISUS Ch# 58" units="A/D Counts" columnIndex="910" format="int"/>
+					<RecordVariable name="L3Ch_59" longName="L3 ISUS Ch# 59" units="A/D Counts" columnIndex="911" format="int"/>
+					<RecordVariable name="L3Ch_60" longName="L3 ISUS Ch# 60" units="A/D Counts" columnIndex="912" format="int"/>
+					<RecordVariable name="L3Ch_61" longName="L3 ISUS Ch# 61" units="A/D Counts" columnIndex="913" format="int"/>
+					<RecordVariable name="L3Ch_62" longName="L3 ISUS Ch# 62" units="A/D Counts" columnIndex="914" format="int"/>
+					<RecordVariable name="L3Ch_63" longName="L3 ISUS Ch# 63" units="A/D Counts" columnIndex="915" format="int"/>
+					<RecordVariable name="L3Ch_64" longName="L3 ISUS Ch# 64" units="A/D Counts" columnIndex="916" format="int">
+						<description>A/D counts for the spectrometer at wavelength number 64.</description>
+					</RecordVariable>
+					<RecordVariable name="L3Ch_65" longName="L3 ISUS Ch# 65" units="A/D Counts" columnIndex="917" format="int"/>
+					<RecordVariable name="L3Ch_66" longName="L3 ISUS Ch# 66" units="A/D Counts" columnIndex="918" format="int"/>
+					<RecordVariable name="L3Ch_67" longName="L3 ISUS Ch# 67" units="A/D Counts" columnIndex="919" format="int"/>
+					<RecordVariable name="L3Ch_68" longName="L3 ISUS Ch# 68" units="A/D Counts" columnIndex="920" format="int"/>
+					<RecordVariable name="L3Ch_69" longName="L3 ISUS Ch# 69" units="A/D Counts" columnIndex="921" format="int"/>
+					<RecordVariable name="L3Ch_70" longName="L3 ISUS Ch# 70" units="A/D Counts" columnIndex="922" format="int"/>
+					<RecordVariable name="L3Ch_71" longName="L3 ISUS Ch# 71" units="A/D Counts" columnIndex="923" format="int"/>
+					<RecordVariable name="L3Ch_72" longName="L3 ISUS Ch# 72" units="A/D Counts" columnIndex="924" format="int"/>
+					<RecordVariable name="L3Ch_73" longName="L3 ISUS Ch# 73" units="A/D Counts" columnIndex="925" format="int"/>
+					<RecordVariable name="L3Ch_74" longName="L3 ISUS Ch# 74" units="A/D Counts" columnIndex="926" format="int"/>
+					<RecordVariable name="L3Ch_75" longName="L3 ISUS Ch# 75" units="A/D Counts" columnIndex="927" format="int"/>
+					<RecordVariable name="L3Ch_76" longName="L3 ISUS Ch# 76" units="A/D Counts" columnIndex="928" format="int"/>
+					<RecordVariable name="L3Ch_77" longName="L3 ISUS Ch# 77" units="A/D Counts" columnIndex="929" format="int"/>
+					<RecordVariable name="L3Ch_78" longName="L3 ISUS Ch# 78" units="A/D Counts" columnIndex="930" format="int"/>
+					<RecordVariable name="L3Ch_79" longName="L3 ISUS Ch# 79" units="A/D Counts" columnIndex="931" format="int"/>
+					<RecordVariable name="L3Ch_80" longName="L3 ISUS Ch# 80" units="A/D Counts" columnIndex="932" format="int"/>
+					<RecordVariable name="L3Ch_81" longName="L3 ISUS Ch# 81" units="A/D Counts" columnIndex="933" format="int"/>
+					<RecordVariable name="L3Ch_82" longName="L3 ISUS Ch# 82" units="A/D Counts" columnIndex="934" format="int"/>
+					<RecordVariable name="L3Ch_83" longName="L3 ISUS Ch# 83" units="A/D Counts" columnIndex="935" format="int"/>
+					<RecordVariable name="L3Ch_84" longName="L3 ISUS Ch# 84" units="A/D Counts" columnIndex="936" format="int"/>
+					<RecordVariable name="L3Ch_85" longName="L3 ISUS Ch# 85" units="A/D Counts" columnIndex="937" format="int"/>
+					<RecordVariable name="L3Ch_86" longName="L3 ISUS Ch# 86" units="A/D Counts" columnIndex="938" format="int"/>
+					<RecordVariable name="L3Ch_87" longName="L3 ISUS Ch# 87" units="A/D Counts" columnIndex="939" format="int"/>
+					<RecordVariable name="L3Ch_88" longName="L3 ISUS Ch# 88" units="A/D Counts" columnIndex="940" format="int"/>
+					<RecordVariable name="L3Ch_89" longName="L3 ISUS Ch# 89" units="A/D Counts" columnIndex="941" format="int"/>
+					<RecordVariable name="L3Ch_90" longName="L3 ISUS Ch# 90" units="A/D Counts" columnIndex="942" format="int"/>
+					<RecordVariable name="L3Ch_91" longName="L3 ISUS Ch# 91" units="A/D Counts" columnIndex="943" format="int"/>
+					<RecordVariable name="L3Ch_92" longName="L3 ISUS Ch# 92" units="A/D Counts" columnIndex="944" format="int"/>
+					<RecordVariable name="L3Ch_93" longName="L3 ISUS Ch# 93" units="A/D Counts" columnIndex="945" format="int"/>
+					<RecordVariable name="L3Ch_94" longName="L3 ISUS Ch# 94" units="A/D Counts" columnIndex="946" format="int"/>
+					<RecordVariable name="L3Ch_95" longName="L3 ISUS Ch# 95" units="A/D Counts" columnIndex="947" format="int"/>
+					<RecordVariable name="L3Ch_96" longName="L3 ISUS Ch# 96" units="A/D Counts" columnIndex="948" format="int">
+						<description>A/D counts for the spectrometer at wavelength number 96.</description>
+					</RecordVariable>
+					<RecordVariable name="L3Ch_97" longName="L3 ISUS Ch# 97" units="A/D Counts" columnIndex="949" format="int"/>
+					<RecordVariable name="L3Ch_98" longName="L3 ISUS Ch# 98" units="A/D Counts" columnIndex="950" format="int"/>
+					<RecordVariable name="L3Ch_99" longName="L3 ISUS Ch# 99" units="A/D Counts" columnIndex="951" format="int"/>
+					<RecordVariable name="L3Ch_100" longName="L3 ISUS Ch# 100" units="A/D Counts" columnIndex="952" format="int"/>
+					<RecordVariable name="L3Ch_101" longName="L3 ISUS Ch# 101" units="A/D Counts" columnIndex="953" format="int"/>
+					<RecordVariable name="L3Ch_102" longName="L3 ISUS Ch# 102" units="A/D Counts" columnIndex="954" format="int"/>
+					<RecordVariable name="L3Ch_103" longName="L3 ISUS Ch# 103" units="A/D Counts" columnIndex="955" format="int"/>
+					<RecordVariable name="L3Ch_104" longName="L3 ISUS Ch# 104" units="A/D Counts" columnIndex="956" format="int"/>
+					<RecordVariable name="L3Ch_105" longName="L3 ISUS Ch# 105" units="A/D Counts" columnIndex="957" format="int"/>
+					<RecordVariable name="L3Ch_106" longName="L3 ISUS Ch# 106" units="A/D Counts" columnIndex="958" format="int"/>
+					<RecordVariable name="L3Ch_107" longName="L3 ISUS Ch# 107" units="A/D Counts" columnIndex="959" format="int"/>
+					<RecordVariable name="L3Ch_108" longName="L3 ISUS Ch# 108" units="A/D Counts" columnIndex="960" format="int"/>
+					<RecordVariable name="L3Ch_109" longName="L3 ISUS Ch# 109" units="A/D Counts" columnIndex="961" format="int"/>
+					<RecordVariable name="L3Ch_110" longName="L3 ISUS Ch# 110" units="A/D Counts" columnIndex="962" format="int"/>
+					<RecordVariable name="L3Ch_111" longName="L3 ISUS Ch# 111" units="A/D Counts" columnIndex="963" format="int"/>
+					<RecordVariable name="L3Ch_112" longName="L3 ISUS Ch# 112" units="A/D Counts" columnIndex="964" format="int"/>
+					<RecordVariable name="L3Ch_113" longName="L3 ISUS Ch# 113" units="A/D Counts" columnIndex="965" format="int"/>
+					<RecordVariable name="L3Ch_114" longName="L3 ISUS Ch# 114" units="A/D Counts" columnIndex="966" format="int"/>
+					<RecordVariable name="L3Ch_115" longName="L3 ISUS Ch# 115" units="A/D Counts" columnIndex="967" format="int"/>
+					<RecordVariable name="L3Ch_116" longName="L3 ISUS Ch# 116" units="A/D Counts" columnIndex="968" format="int"/>
+					<RecordVariable name="L3Ch_117" longName="L3 ISUS Ch# 117" units="A/D Counts" columnIndex="969" format="int"/>
+					<RecordVariable name="L3Ch_118" longName="L3 ISUS Ch# 118" units="A/D Counts" columnIndex="970" format="int"/>
+					<RecordVariable name="L3Ch_119" longName="L3 ISUS Ch# 119" units="A/D Counts" columnIndex="971" format="int"/>
+					<RecordVariable name="L3Ch_120" longName="L3 ISUS Ch# 120" units="A/D Counts" columnIndex="972" format="int"/>
+					<RecordVariable name="L3Ch_121" longName="L3 ISUS Ch# 121" units="A/D Counts" columnIndex="973" format="int"/>
+					<RecordVariable name="L3Ch_122" longName="L3 ISUS Ch# 122" units="A/D Counts" columnIndex="974" format="int"/>
+					<RecordVariable name="L3Ch_123" longName="L3 ISUS Ch# 123" units="A/D Counts" columnIndex="975" format="int"/>
+					<RecordVariable name="L3Ch_124" longName="L3 ISUS Ch# 124" units="A/D Counts" columnIndex="976" format="int"/>
+					<RecordVariable name="L3Ch_125" longName="L3 ISUS Ch# 125" units="A/D Counts" columnIndex="977" format="int"/>
+					<RecordVariable name="L3Ch_126" longName="L3 ISUS Ch# 126" units="A/D Counts" columnIndex="978" format="int"/>
+					<RecordVariable name="L3Ch_127" longName="L3 ISUS Ch# 127" units="A/D Counts" columnIndex="979" format="int"/>
+					<RecordVariable name="L3Ch_128" longName="L3 ISUS Ch# 128" units="A/D Counts" columnIndex="980" format="int">
+						<description>A/D counts for the spectrometer at wavelength number 128.</description>
+					</RecordVariable>
+					<RecordVariable name="L3Ch_129" longName="L3 ISUS Ch# 129" units="A/D Counts" columnIndex="981" format="int"/>
+					<RecordVariable name="L3Ch_130" longName="L3 ISUS Ch# 130" units="A/D Counts" columnIndex="982" format="int"/>
+					<RecordVariable name="L3Ch_131" longName="L3 ISUS Ch# 131" units="A/D Counts" columnIndex="983" format="int"/>
+					<RecordVariable name="L3Ch_132" longName="L3 ISUS Ch# 132" units="A/D Counts" columnIndex="984" format="int"/>
+					<RecordVariable name="L3Ch_133" longName="L3 ISUS Ch# 133" units="A/D Counts" columnIndex="985" format="int"/>
+					<RecordVariable name="L3Ch_134" longName="L3 ISUS Ch# 134" units="A/D Counts" columnIndex="986" format="int"/>
+					<RecordVariable name="L3Ch_135" longName="L3 ISUS Ch# 135" units="A/D Counts" columnIndex="987" format="int"/>
+					<RecordVariable name="L3Ch_136" longName="L3 ISUS Ch# 136" units="A/D Counts" columnIndex="988" format="int"/>
+					<RecordVariable name="L3Ch_137" longName="L3 ISUS Ch# 137" units="A/D Counts" columnIndex="989" format="int"/>
+					<RecordVariable name="L3Ch_138" longName="L3 ISUS Ch# 138" units="A/D Counts" columnIndex="990" format="int"/>
+					<RecordVariable name="L3Ch_139" longName="L3 ISUS Ch# 139" units="A/D Counts" columnIndex="991" format="int"/>
+					<RecordVariable name="L3Ch_140" longName="L3 ISUS Ch# 140" units="A/D Counts" columnIndex="992" format="int"/>
+					<RecordVariable name="L3Ch_141" longName="L3 ISUS Ch# 141" units="A/D Counts" columnIndex="993" format="int"/>
+					<RecordVariable name="L3Ch_142" longName="L3 ISUS Ch# 142" units="A/D Counts" columnIndex="994" format="int"/>
+					<RecordVariable name="L3Ch_143" longName="L3 ISUS Ch# 143" units="A/D Counts" columnIndex="995" format="int"/>
+					<RecordVariable name="L3Ch_144" longName="L3 ISUS Ch# 144" units="A/D Counts" columnIndex="996" format="int"/>
+					<RecordVariable name="L3Ch_145" longName="L3 ISUS Ch# 145" units="A/D Counts" columnIndex="997" format="int"/>
+					<RecordVariable name="L3Ch_146" longName="L3 ISUS Ch# 146" units="A/D Counts" columnIndex="998" format="int"/>
+					<RecordVariable name="L3Ch_147" longName="L3 ISUS Ch# 147" units="A/D Counts" columnIndex="999" format="int"/>
+					<RecordVariable name="L3Ch_148" longName="L3 ISUS Ch# 148" units="A/D Counts" columnIndex="1000" format="int"/>
+					<RecordVariable name="L3Ch_149" longName="L3 ISUS Ch# 149" units="A/D Counts" columnIndex="1001" format="int"/>
+					<RecordVariable name="L3Ch_150" longName="L3 ISUS Ch# 150" units="A/D Counts" columnIndex="1002" format="int"/>
+					<RecordVariable name="L3Ch_151" longName="L3 ISUS Ch# 151" units="A/D Counts" columnIndex="1003" format="int"/>
+					<RecordVariable name="L3Ch_152" longName="L3 ISUS Ch# 152" units="A/D Counts" columnIndex="1004" format="int"/>
+					<RecordVariable name="L3Ch_153" longName="L3 ISUS Ch# 153" units="A/D Counts" columnIndex="1005" format="int"/>
+					<RecordVariable name="L3Ch_154" longName="L3 ISUS Ch# 154" units="A/D Counts" columnIndex="1006" format="int"/>
+					<RecordVariable name="L3Ch_155" longName="L3 ISUS Ch# 155" units="A/D Counts" columnIndex="1007" format="int"/>
+					<RecordVariable name="L3Ch_156" longName="L3 ISUS Ch# 156" units="A/D Counts" columnIndex="1008" format="int"/>
+					<RecordVariable name="L3Ch_157" longName="L3 ISUS Ch# 157" units="A/D Counts" columnIndex="1009" format="int"/>
+					<RecordVariable name="L3Ch_158" longName="L3 ISUS Ch# 158" units="A/D Counts" columnIndex="1010" format="int"/>
+					<RecordVariable name="L3Ch_159" longName="L3 ISUS Ch# 159" units="A/D Counts" columnIndex="1011" format="int"/>
+					<RecordVariable name="L3Ch_160" longName="L3 ISUS Ch# 160" units="A/D Counts" columnIndex="1012" format="int">
+						<description>A/D counts for the spectrometer at wavelength number 160.</description>
+					</RecordVariable>
+					<RecordVariable name="L3Ch_161" longName="L3 ISUS Ch# 161" units="A/D Counts" columnIndex="1013" format="int"/>
+					<RecordVariable name="L3Ch_162" longName="L3 ISUS Ch# 162" units="A/D Counts" columnIndex="1014" format="int"/>
+					<RecordVariable name="L3Ch_163" longName="L3 ISUS Ch# 163" units="A/D Counts" columnIndex="1015" format="int"/>
+					<RecordVariable name="L3Ch_164" longName="L3 ISUS Ch# 164" units="A/D Counts" columnIndex="1016" format="int"/>
+					<RecordVariable name="L3Ch_165" longName="L3 ISUS Ch# 165" units="A/D Counts" columnIndex="1017" format="int"/>
+					<RecordVariable name="L3Ch_166" longName="L3 ISUS Ch# 166" units="A/D Counts" columnIndex="1018" format="int"/>
+					<RecordVariable name="L3Ch_167" longName="L3 ISUS Ch# 167" units="A/D Counts" columnIndex="1019" format="int"/>
+					<RecordVariable name="L3Ch_168" longName="L3 ISUS Ch# 168" units="A/D Counts" columnIndex="1020" format="int"/>
+					<RecordVariable name="L3Ch_169" longName="L3 ISUS Ch# 169" units="A/D Counts" columnIndex="1021" format="int"/>
+					<RecordVariable name="L3Ch_170" longName="L3 ISUS Ch# 170" units="A/D Counts" columnIndex="1022" format="int"/>
+					<RecordVariable name="L3Ch_171" longName="L3 ISUS Ch# 171" units="A/D Counts" columnIndex="1023" format="int"/>
+					<RecordVariable name="L3Ch_172" longName="L3 ISUS Ch# 172" units="A/D Counts" columnIndex="1024" format="int"/>
+					<RecordVariable name="L3Ch_173" longName="L3 ISUS Ch# 173" units="A/D Counts" columnIndex="1025" format="int"/>
+					<RecordVariable name="L3Ch_174" longName="L3 ISUS Ch# 174" units="A/D Counts" columnIndex="1026" format="int"/>
+					<RecordVariable name="L3Ch_175" longName="L3 ISUS Ch# 175" units="A/D Counts" columnIndex="1027" format="int"/>
+					<RecordVariable name="L3Ch_176" longName="L3 ISUS Ch# 176" units="A/D Counts" columnIndex="1028" format="int"/>
+					<RecordVariable name="L3Ch_177" longName="L3 ISUS Ch# 177" units="A/D Counts" columnIndex="1029" format="int"/>
+					<RecordVariable name="L3Ch_178" longName="L3 ISUS Ch# 178" units="A/D Counts" columnIndex="1030" format="int"/>
+					<RecordVariable name="L3Ch_179" longName="L3 ISUS Ch# 179" units="A/D Counts" columnIndex="1031" format="int"/>
+					<RecordVariable name="L3Ch_180" longName="L3 ISUS Ch# 180" units="A/D Counts" columnIndex="1032" format="int"/>
+					<RecordVariable name="L3Ch_181" longName="L3 ISUS Ch# 181" units="A/D Counts" columnIndex="1033" format="int"/>
+					<RecordVariable name="L3Ch_182" longName="L3 ISUS Ch# 182" units="A/D Counts" columnIndex="1034" format="int"/>
+					<RecordVariable name="L3Ch_183" longName="L3 ISUS Ch# 183" units="A/D Counts" columnIndex="1035" format="int"/>
+					<RecordVariable name="L3Ch_184" longName="L3 ISUS Ch# 184" units="A/D Counts" columnIndex="1036" format="int"/>
+					<RecordVariable name="L3Ch_185" longName="L3 ISUS Ch# 185" units="A/D Counts" columnIndex="1037" format="int"/>
+					<RecordVariable name="L3Ch_186" longName="L3 ISUS Ch# 186" units="A/D Counts" columnIndex="1038" format="int"/>
+					<RecordVariable name="L3Ch_187" longName="L3 ISUS Ch# 187" units="A/D Counts" columnIndex="1039" format="int"/>
+					<RecordVariable name="L3Ch_188" longName="L3 ISUS Ch# 188" units="A/D Counts" columnIndex="1040" format="int"/>
+					<RecordVariable name="L3Ch_189" longName="L3 ISUS Ch# 189" units="A/D Counts" columnIndex="1041" format="int"/>
+					<RecordVariable name="L3Ch_190" longName="L3 ISUS Ch# 190" units="A/D Counts" columnIndex="1042" format="int"/>
+					<RecordVariable name="L3Ch_191" longName="L3 ISUS Ch# 191" units="A/D Counts" columnIndex="1043" format="int"/>
+					<RecordVariable name="L3Ch_192" longName="L3 ISUS Ch# 192" units="A/D Counts" columnIndex="1044" format="int">
+						<description>A/D counts for the spectrometer at wavelength number 192.</description>
+					</RecordVariable>
+					<RecordVariable name="L3Ch_193" longName="L3 ISUS Ch# 193" units="A/D Counts" columnIndex="1045" format="int"/>
+					<RecordVariable name="L3Ch_194" longName="L3 ISUS Ch# 194" units="A/D Counts" columnIndex="1046" format="int"/>
+					<RecordVariable name="L3Ch_195" longName="L3 ISUS Ch# 195" units="A/D Counts" columnIndex="1047" format="int"/>
+					<RecordVariable name="L3Ch_196" longName="L3 ISUS Ch# 196" units="A/D Counts" columnIndex="1048" format="int"/>
+					<RecordVariable name="L3Ch_197" longName="L3 ISUS Ch# 197" units="A/D Counts" columnIndex="1049" format="int"/>
+					<RecordVariable name="L3Ch_198" longName="L3 ISUS Ch# 198" units="A/D Counts" columnIndex="1050" format="int"/>
+					<RecordVariable name="L3Ch_199" longName="L3 ISUS Ch# 199" units="A/D Counts" columnIndex="1051" format="int"/>
+					<RecordVariable name="L3Ch_200" longName="L3 ISUS Ch# 200" units="A/D Counts" columnIndex="1052" format="int"/>
+					<RecordVariable name="L3Ch_201" longName="L3 ISUS Ch# 201" units="A/D Counts" columnIndex="1053" format="int"/>
+					<RecordVariable name="L3Ch_202" longName="L3 ISUS Ch# 202" units="A/D Counts" columnIndex="1054" format="int"/>
+					<RecordVariable name="L3Ch_203" longName="L3 ISUS Ch# 203" units="A/D Counts" columnIndex="1055" format="int"/>
+					<RecordVariable name="L3Ch_204" longName="L3 ISUS Ch# 204" units="A/D Counts" columnIndex="1056" format="int"/>
+					<RecordVariable name="L3Ch_205" longName="L3 ISUS Ch# 205" units="A/D Counts" columnIndex="1057" format="int"/>
+					<RecordVariable name="L3Ch_206" longName="L3 ISUS Ch# 206" units="A/D Counts" columnIndex="1058" format="int"/>
+					<RecordVariable name="L3Ch_207" longName="L3 ISUS Ch# 207" units="A/D Counts" columnIndex="1059" format="int"/>
+					<RecordVariable name="L3Ch_208" longName="L3 ISUS Ch# 208" units="A/D Counts" columnIndex="1060" format="int"/>
+					<RecordVariable name="L3Ch_209" longName="L3 ISUS Ch# 209" units="A/D Counts" columnIndex="1061" format="int"/>
+					<RecordVariable name="L3Ch_210" longName="L3 ISUS Ch# 210" units="A/D Counts" columnIndex="1062" format="int"/>
+					<RecordVariable name="L3Ch_211" longName="L3 ISUS Ch# 211" units="A/D Counts" columnIndex="1063" format="int"/>
+					<RecordVariable name="L3Ch_212" longName="L3 ISUS Ch# 212" units="A/D Counts" columnIndex="1064" format="int"/>
+					<RecordVariable name="L3Ch_213" longName="L3 ISUS Ch# 213" units="A/D Counts" columnIndex="1065" format="int"/>
+					<RecordVariable name="L3Ch_214" longName="L3 ISUS Ch# 214" units="A/D Counts" columnIndex="1066" format="int"/>
+					<RecordVariable name="L3Ch_215" longName="L3 ISUS Ch# 215" units="A/D Counts" columnIndex="1067" format="int"/>
+					<RecordVariable name="L3Ch_216" longName="L3 ISUS Ch# 216" units="A/D Counts" columnIndex="1068" format="int"/>
+					<RecordVariable name="L3Ch_217" longName="L3 ISUS Ch# 217" units="A/D Counts" columnIndex="1069" format="int"/>
+					<RecordVariable name="L3Ch_218" longName="L3 ISUS Ch# 218" units="A/D Counts" columnIndex="1070" format="int"/>
+					<RecordVariable name="L3Ch_219" longName="L3 ISUS Ch# 219" units="A/D Counts" columnIndex="1071" format="int"/>
+					<RecordVariable name="L3Ch_220" longName="L3 ISUS Ch# 220" units="A/D Counts" columnIndex="1072" format="int"/>
+					<RecordVariable name="L3Ch_221" longName="L3 ISUS Ch# 221" units="A/D Counts" columnIndex="1073" format="int"/>
+					<RecordVariable name="L3Ch_222" longName="L3 ISUS Ch# 222" units="A/D Counts" columnIndex="1074" format="int"/>
+					<RecordVariable name="L3Ch_223" longName="L3 ISUS Ch# 223" units="A/D Counts" columnIndex="1075" format="int"/>
+					<RecordVariable name="L3Ch_224" longName="L3 ISUS Ch# 224" units="A/D Counts" columnIndex="1076" format="int">
+						<description>A/D counts for the spectrometer at wavelength number 224.</description>
+					</RecordVariable>
+					<RecordVariable name="L3Ch_225" longName="L3 ISUS Ch# 225" units="A/D Counts" columnIndex="1077" format="int"/>
+					<RecordVariable name="L3Ch_226" longName="L3 ISUS Ch# 226" units="A/D Counts" columnIndex="1078" format="int"/>
+					<RecordVariable name="L3Ch_227" longName="L3 ISUS Ch# 227" units="A/D Counts" columnIndex="1079" format="int"/>
+					<RecordVariable name="L3Ch_228" longName="L3 ISUS Ch# 228" units="A/D Counts" columnIndex="1080" format="int"/>
+					<RecordVariable name="L3Ch_229" longName="L3 ISUS Ch# 229" units="A/D Counts" columnIndex="1081" format="int"/>
+					<RecordVariable name="L3Ch_230" longName="L3 ISUS Ch# 230" units="A/D Counts" columnIndex="1082" format="int"/>
+					<RecordVariable name="L3Ch_231" longName="L3 ISUS Ch# 231" units="A/D Counts" columnIndex="1083" format="int"/>
+					<RecordVariable name="L3Ch_232" longName="L3 ISUS Ch# 232" units="A/D Counts" columnIndex="1084" format="int"/>
+					<RecordVariable name="L3Ch_233" longName="L3 ISUS Ch# 233" units="A/D Counts" columnIndex="1085" format="int"/>
+					<RecordVariable name="L3Ch_234" longName="L3 ISUS Ch# 234" units="A/D Counts" columnIndex="1086" format="int"/>
+					<RecordVariable name="L3Ch_235" longName="L3 ISUS Ch# 235" units="A/D Counts" columnIndex="1087" format="int"/>
+					<RecordVariable name="L3Ch_236" longName="L3 ISUS Ch# 236" units="A/D Counts" columnIndex="1088" format="int"/>
+					<RecordVariable name="L3Ch_237" longName="L3 ISUS Ch# 237" units="A/D Counts" columnIndex="1089" format="int"/>
+					<RecordVariable name="L3Ch_238" longName="L3 ISUS Ch# 238" units="A/D Counts" columnIndex="1090" format="int"/>
+					<RecordVariable name="L3Ch_239" longName="L3 ISUS Ch# 239" units="A/D Counts" columnIndex="1091" format="int"/>
+					<RecordVariable name="L3Ch_240" longName="L3 ISUS Ch# 240" units="A/D Counts" columnIndex="1092" format="int"/>
+					<RecordVariable name="L3Ch_241" longName="L3 ISUS Ch# 241" units="A/D Counts" columnIndex="1093" format="int"/>
+					<RecordVariable name="L3Ch_242" longName="L3 ISUS Ch# 242" units="A/D Counts" columnIndex="1094" format="int"/>
+					<RecordVariable name="L3Ch_243" longName="L3 ISUS Ch# 243" units="A/D Counts" columnIndex="1095" format="int"/>
+					<RecordVariable name="L3Ch_244" longName="L3 ISUS Ch# 244" units="A/D Counts" columnIndex="1096" format="int"/>
+					<RecordVariable name="L3Ch_245" longName="L3 ISUS Ch# 245" units="A/D Counts" columnIndex="1097" format="int"/>
+					<RecordVariable name="L3Ch_246" longName="L3 ISUS Ch# 246" units="A/D Counts" columnIndex="1098" format="int"/>
+					<RecordVariable name="L3Ch_247" longName="L3 ISUS Ch# 247" units="A/D Counts" columnIndex="1099" format="int"/>
+					<RecordVariable name="L3Ch_248" longName="L3 ISUS Ch# 248" units="A/D Counts" columnIndex="1100" format="int"/>
+					<RecordVariable name="L3Ch_249" longName="L3 ISUS Ch# 249" units="A/D Counts" columnIndex="1101" format="int"/>
+					<RecordVariable name="L3Ch_250" longName="L3 ISUS Ch# 250" units="A/D Counts" columnIndex="1102" format="int"/>
+					<RecordVariable name="L3Ch_251" longName="L3 ISUS Ch# 251" units="A/D Counts" columnIndex="1103" format="int"/>
+					<RecordVariable name="L3Ch_252" longName="L3 ISUS Ch# 252" units="A/D Counts" columnIndex="1104" format="int"/>
+					<RecordVariable name="L3Ch_253" longName="L3 ISUS Ch# 253" units="A/D Counts" columnIndex="1105" format="int"/>
+					<RecordVariable name="L3Ch_254" longName="L3 ISUS Ch# 254" units="A/D Counts" columnIndex="1106" format="int"/>
+					<RecordVariable name="L3Ch_255" longName="L3 ISUS Ch# 255" units="A/D Counts" columnIndex="1107" format="int"/>
+					<RecordVariable name="L3Ch_256" longName="L3 ISUS Ch# 256" units="A/D Counts" columnIndex="1108" format="int">
+						<description>A/D counts for the spectrometer at wavelength number 256.</description>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

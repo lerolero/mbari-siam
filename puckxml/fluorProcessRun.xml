@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://new-ssds.mbari.org/ssds-docs/xml/schema/SSDS_Metadata.xsd"
+	majorVersion="1" minorVersion="1" lastAuthor="$Author: mccann $" lastUpdate="$Date: 2007/11/06 21:17:35 $">
+	<ProcessRun name="Fluorometer Process">
+		<Software name="ProcessAnalog" softwareVersion="1.1"
+			url="http://moonjelly.shore.mbari.org/cgi-bin/cvsweb.cgi/DPforSSDS/oasis/src/java/oasis/ssds/process/ProcessAnalog.java?rev=1.1&amp;content-type=text/x-cvsweb-markup">
+			<description>Software to process Oasis Analog data to produce WETStar Fluorometer output</description>
+			<Person firstname="Bob" surname="Herlien" organization="consultant"
+				email="bob@herlien.com"/>
+			<Resource name="fluorProcessRun.xml"
+				uri="http://dods.mbari.org/data/ssdsdata/mooring/m1/2007/xml/fluorProcessRun.xml"/>
+		</Software>
+
+		<Resource name="processFluorometer.log"
+			uri="http://dods.mbari.org/data/ssdsdata/mooring/m1/2007/logs/processFluor.log"
+			resourceType="text/x-mbari-proclog">
+			<description>Output log from the Fluorometer software process</description>
+		</Resource>
+
+		<Resource name="m1.cfg" uri="http://dods.mbari.org/data/oasis/cfg/m1.cfg">
+			<description>M1 configuration file</description>
+		</Resource>
+		<output>
+			<!-- A data file which needs to be described in order to be parsed/plotted by SSDS. -->
+			<!-- Note the data file is in the data subdirectory, rather than the netcdf subdirectory. -->
+			<DataFile contentType="flatfile"
+				url="http://dods.mbari.org/data/ssdsdata/mooring/m1/2007/data/fluor.dat"
+				dodsAccessible="true" name="fluor.dat" original="false">
+				<HeaderDescription>
+					<CommentTag tagString="#"/>
+					<!-- lines beginning with # at start of file will be ignored -->
+				</HeaderDescription>
+
+				<description>Processed data from WETStar Fluorometer 021</description>
+				<RecordDescription bufferStyle="ASCII" bufferParseType="ordered"
+					bufferItemSeparator="whitespace" bufferLengthType="variable" parseable="true"
+					recordType="1">
+					<!-- Sample Record: 
+			    	    #java_time oasis_time fluor_value
+						1102546931000 2004343.95985 .243
+			      	-->
+					<RecordVariable name="time" longName="Date and time of sample"
+						referenceScale="TBD" columnIndex="1" format="int">
+						<description>date and time as milliseconds since Java epoch</description>
+					</RecordVariable>
+					<RecordVariable name="oasis_time" longName="Date and time in Oasis format"
+						referenceScale="TBD" columnIndex="2" format="float">
+						<description>Date/time as YYYYddd.ttttt, for year, day in year, fractional
+							day</description>
+					</RecordVariable>
+					<RecordVariable name="fluorescence" longName="Fluorometer output in volts"
+						units="volts" referenceScale="TBD" columnIndex="3" format="float">
+						<description>Wetstar fluorometer output in volts</description>
+					</RecordVariable>
+				</RecordDescription>
+			</DataFile>
+		</output>
+	</ProcessRun>
+</Metadata>

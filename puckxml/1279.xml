@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1279.xml,v 1.2 2009/02/26 00:36:39 graybeal Exp $	-->
+<!-- Last edited by $Author: graybeal $	$Date: 2009/02/26 00:36:39 $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ssds.mbari.org/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="7" lastAuthor="$Author: graybeal $" lastUpdate="$Date: 2009/02/26 00:36:39 $" >
+	<Deployment role="instrument" name="M0-CIMT" nominalLongitude="-121.903333" nominalLatitude="36.833333" nominalDepth="0">
+		<Device	id="1279" name="Wetlabs ECO Fluorometer" type="fluorometer" mfgName="Wetlabs" mfgModel="ECO FL" mfgSerialNumber="BBSB-024R"
+			preferredDeploymentRole="Instrument">
+			<description>Wetlabs ECO FL fluorometer (1st deployed on M0-CIMT)</description>
+			<Person	firstname="Tim" surname="Pennington" organization="MBARI"
+			email="peti@mbari.org" phone="831-775-1715"/>
+		</Device>
+		<description>M0-CIMT installation of Wetlabs ECO FL</description>
+		<output>
+			<DataStream>
+				<description>Wetlabs ECO FL data stream</description>
+				<!-- Comments:
+					- Doesn't use fixedPosition parsing yet
+				-->
+				<RecordDescription bufferStyle="ASCII"
+				bufferParseType="ordered"
+				bufferItemSeparator="whitespace"
+				bufferLengthType="variable"
+				parseable="true" recordType="1">  fluorescense ref, fluorescence signal, NTU ref, NTU signal, internal thermistor 
+					<!-- COMMAND Sent:
+					-->
+					<!-- Sample Record:
+						mvs 1
+						06/02/06	11:27:01	1398	57	1327	461	8328
+						06/02/06	11:27:01	1398	57	1326	460	8328
+						06/02/06	11:27:02	1399	55	1326	460	8328
+						06/02/06	11:27:03	1399	56	1326	459	8328
+						06/02/06	11:27:03	1399	56	1326	460	8328
+						mvs 0
+					-->
+					<!-- Accuracy:
+					-->
+					<!--
+						Comments:
+							This XML presents each of the 5 data packets from each record separately.
+					-->
+					<RecordVariable
+						name="Date_1"
+						longName="Date of Sample 1"
+						units="dd_mm_yy"
+						columnIndex="1"
+						format="string"	>
+							<description>date in dd/mm/yy format of 1st sample in this record</description>
+						<StandardVariable name="date" namespaceUriString="http://marinemetadata.org/cf/>
+					</RecordVariable>
+					<RecordVariable
+						name="Time_1"
+						longName="Time of Day 1"
+						units="hh_mm_ss"
+						columnIndex="2"
+						format="string"	>
+							<description>time of day in hh:mm:ss format of 1st sample in this record</description>
+							<!-- StandardVariable name="time" / -->
+					</RecordVariable>
+					<RecordVariable
+						name="Fluor_RefSignal_1"
+						longName="Fluorescence Reference Signal 1"
+						units="counts"
+						columnIndex="3"
+						format="int" >
+						<description>fluorescence reference light signal of 1st sample in this record</description>
+					</RecordVariable>
+					<RecordVariable
+						name="Fluorescence_1"
+						longName="Fluorescence signal 1"
+						units="counts"
+						columnIndex="4"
+						format="int" >
+						<description>fluorescence signal of 1st sample in this record</description>
+					</RecordVariable>
+					<RecordVariable
+						name="NTU_RefSignal_1"
+						longName="NTU (Turbidity) Reference Signal 1"
+						units="counts"
+						columnIndex="3"
+						format="int" >
+						<description>Nephalometry turbidity units reference signal of 1st sample in this record</description>
+					</RecordVariable>
+					<RecordVariable
+						name="NTU_1"
+						longName="NTU (Turbidity) Signal 1"
+						units="counts"
+						columnIndex="4"
+						format="int" >
+						<description>Nephalometry turbidity units signal of 1st sample in this record</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ThermistorTemp_1"
+						longName="Thermistor Temperature 1"
+						units="counts"
+						columnIndex="5"
+						format="int" >
+							<description>thermistor temperature of 1st sample in this record</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Date_2"
+						longName="Date of Sample 2"
+						units="dd_mm_yy"
+						columnIndex="6"
+						format="string"	>
+							<description>date in dd/mm/yy format of 2nd sample in this record</description>
+							<StandardVariable name="date"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Time_2"
+						longName="Time of Day 2"
+						units="hh_mm_ss"
+						columnIndex="7"
+						format="string"	>
+							<description>time of day in hh:mm:ss format of 2nd sample in this record</description>
+					</RecordVariable>
+					<RecordVariable
+						name="Fluor_RefSignal_2"
+						longName="Fluorescence Reference Signal 2"
+						units="counts"
+						columnIndex="8"
+						format="int" >
+							<description>fluorescence reference light signal of 2nd sample in this record</description>
+					</RecordVariable>
+					<RecordVariable
+						name="Fluorescence_2"
+						longName="Fluorescence signal 2"
+						units="counts"
+						columnIndex="9"
+						format="int" >
+							<description>fluorescence signal of 2nd sample in this record</description>
+					</RecordVariable>
+					<RecordVariable
+						name="NTU_RefSignal_1"
+						longName="NTU (Turbidity) Reference Signal 1"
+						units="counts"
+						columnIndex="3"
+						format="int" >
+						<description>Nephalometry turbidity units reference signal of 1st sample in this record</description>
+					</RecordVariable>
+					<RecordVariable
+						name="NTU_1"
+						longName="NTU (Turbidity) Signal 1"
+						units="counts"
+						columnIndex="4"
+						format="int" >
+						<description>Nephalometry turbidity units signal of 1st sample in this record</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ThermistorTemp_2"
+						longName="Thermistor Temperature 2"
+						units="counts"
+						columnIndex="10"
+						format="int" >
+							<description>thermistor temperature of 2nd sample in this record</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Date_3"
+						longName="Date of Sample 3"
+						units="dd_mm_yy"
+						columnIndex="11"
+						format="string"	>
+							<description>date in dd/mm/yy format of 3rd sample in this record</description>
+							<StandardVariable name="date"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Time_3"
+						longName="Time of Day 3"
+						units="hh_mm_ss"
+						columnIndex="12"
+						format="string"	>
+							<description>time of day in hh:mm:ss format of 3rd sample in this record</description>
+					</RecordVariable>
+					<RecordVariable
+						name="Fluor_RefSignal_3"
+						longName="Fluorescence Reference Signal 3"
+						units="counts"
+						columnIndex="13"
+						format="int" >
+							<description>fluorescence reference light signal of 3rd sample in this record</description>
+					</RecordVariable>
+					<RecordVariable
+						name="Fluorescence_3"
+						longName="Fluorescence signal 3"
+						units="counts"
+						columnIndex="14"
+						format="int" >
+							<description>fluorescence signal of 3rd sample in this record</description>
+					</RecordVariable>
+					<RecordVariable
+						name="NTU_RefSignal_1"
+						longName="NTU (Turbidity) Reference Signal 1"
+						units="counts"
+						columnIndex="3"
+						format="int" >
+						<description>Nephalometry turbidity units reference signal of 1st sample in this record</description>
+					</RecordVariable>
+					<RecordVariable
+						name="NTU_1"
+						longName="NTU (Turbidity) Signal 1"
+						units="counts"
+						columnIndex="4"
+						format="int" >
+						<description>Nephalometry turbidity units signal of 1st sample in this record</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ThermistorTemp_3"
+						longName="Thermistor Temperature 3"
+						units="counts"
+						columnIndex="15"
+						format="int" >
+							<description>thermistor temperature of 3rd sample in this record</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Date_4"
+						longName="Date of Sample 4"
+						units="dd_mm_yy"
+						columnIndex="16"
+						format="string"	>
+							<description>date in dd/mm/yy format of 4th sample in this record</description>
+							<StandardVariable name="date"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Time_4"
+						longName="Time of Day 4"
+						units="hh_mm_ss"
+						columnIndex="17"
+						format="string"	>
+							<description>time of day in hh:mm:ss format of 4th sample in this record</description>
+							<StandardVariable name="time"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Fluor_RefSignal_4"
+						longName="Fluorescence Reference Signal 4"
+						units="counts"
+						columnIndex="18"
+						format="int" >
+							<description>fluorescence reference light signal of 4th sample in this record</description>
+					</RecordVariable>
+					<RecordVariable
+						name="Fluorescence_4"
+						longName="Fluorescence signal 4"
+						units="counts"
+						columnIndex="19"
+						format="int" >
+							<description>fluorescence signal of 4th sample in this record</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ThermistorTemp_4"
+						longName="Thermistor Temperature 4"
+						units="counts"
+						columnIndex="20"
+						format="int" >
+							<description>thermistor temperature of 4th sample in this record</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Date_5"
+						longName="Date of Sample 5"
+						units="dd_mm_yy"
+						columnIndex="21"
+						format="string"	>
+							<description>date in dd/mm/yy format of 5th sample in this record</description>
+							<StandardVariable name="date"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Time_5"
+						longName="Time of Day 5"
+						units="hh_mm_ss"
+						columnIndex="22"
+						format="string"	>
+							<description>time of day in hh:mm:ss format of 5th sample in this record</description>
+							<StandardVariable name="time"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Fluor_RefSignal_5"
+						longName="Fluorescence Reference Signal 5"
+						units="counts"
+						columnIndex="23"
+						format="int" >
+							<description>fluorescence reference light signal of 5th sample in this record</description>
+					</RecordVariable>
+					<RecordVariable
+						name="Fluorescence_5"
+						longName="Fluorescence signal 5"
+						units="counts"
+						columnIndex="24"
+						format="int" >
+							<description>fluorescence signal of 5th sample in this record</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ThermistorTemp_5"
+						longName="Thermistor Temperature 5"
+						units="counts"
+						columnIndex="25"
+						format="int" >
+							<description>thermistor temperature of 5th sample in this record</description>
+					</RecordVariable>
+
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

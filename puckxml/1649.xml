@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1649.xml,v 1.4 2009/05/23 03:46:03 graybeal Exp $	-->
+<!-- Last edited by $Author: graybeal $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ssds.mbari.org/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="8" lastAuthor="$Author: graybeal $" lastUpdate="$Date: 2009/05/23 03:46:03 $" >
+	<Deployment role="instrument">
+		<Device	id="1649" name="Seabird SBE 52-MP CTD" type="CTD" 
+			mfgName="Seabird" mfgModel="SBE52MP" mfgSerialNumber="5248478-0045">
+			<description>SBE 52-MP Moored Profiler CTD + Optional DO Sensor (7000M)</description>
+			<Person	firstname="Bob" surname="Herlien" organization="MBARI"
+			email="bobh@mbari.org" phone="831-775-1750"/>
+		</Device>
+		<description>FOCE installation of Seabird SBE 52-MP CTD</description>
+		<output>
+			<DataStream>
+				<description>SBE 52-MP data stream</description>
+				<RecordDescription bufferStyle="ASCII"
+				bufferParseType="ordered"
+				bufferItemSeparator=","
+				bufferLengthType="variable"
+				parseable="true" recordType="1">
+					<!-- Sample Record:
+						32.6057, 10.5358,   27.53,32.781
+					-->
+					<!--
+						Comments:
+							This XML assumes one data record per packet.
+					-->
+					<RecordVariable
+						name="Conductivity"
+						longName="Conductivity"
+						units="mS/cm"	referenceScale="TBD"
+						columnIndex="1"
+						format="float" >
+							<description>sea water conductivity</description>
+						<StandardVariable name="sea_water_electrical_conductivity" namespaceUriString="http://mmisw.org/cf/parameter/"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Temperature"
+						longName="Water Temperature"
+						units="deg C"	referenceScale="TBD"
+						columnIndex="2"
+						format="float" >
+							<description>water temperature</description>
+						<StandardVariable name="sea_water_temperature" namespaceUriString="http://mmisw.org/cf/parameter/"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Pressure"
+						longName="Pressure"
+						units="decibars"	referenceScale="TBD"
+						columnIndex="3"
+						format="float" >
+							<description>pressure of sea water</description>
+						<StandardVariable name="sea_water_pressure" namespaceUriString="http://mmisw.org/cf/parameter/"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Oxygen"
+						longName="Oxygen"
+						units="ml/l"	referenceScale="TBD"
+						columnIndex="4"
+						format="float"	>
+							<description>Oxygen in ml/l</description>
+						<StandardVariable name="fractional_saturation_of_oxygen_in_sea_water" namespaceUriString="http://mmisw.org/cf/parameter/"/>
+					</RecordVariable>
+
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

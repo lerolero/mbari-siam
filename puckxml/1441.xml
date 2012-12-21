@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1441.xml,v 1.5 2009/10/30 17:45:35 mccann Exp $	-->
+<!-- Last edited by $Author: mccann $	$Date: 2009/10/30 17:45:35 $   -->
+
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:noNamespaceSchemaLocation="http://ssds.mbari.org/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="4" 
+	lastAuthor="$Author: mccann $" lastUpdate="$Date: 2009/10/30 17:45:35 $">
+	
+	<Deployment role="instrument">
+		<Device id="1441" name="MBARI Medusa" type="Network Hub-Power Controller" 
+		    mfgName="MBARI" mfgModel="Medusa Rev 2" mfgSerialNumber="2">
+			<description>Medusa Board</description>
+			<Person email="headley@mbari.org" surname="Headley"
+			firstname="Kent" organization="MBARI">
+			</Person>
+		</Device>
+		<output>
+
+			<DataStream>
+				<description>Medusa Data Stream</description>
+				<!-- Sample Record:
+				    channel=3, temp=46.48, vcc=3.2482, txBiasI=2.5593, txPower=-2.7114, rxPower=-5.3160, status=0x0
+				-->
+				<RecordDescription bufferLengthType="variable" 
+					bufferStyle="ASCII" 
+					parseable="false"
+					recordType="1">
+					<RecordVariable 
+						columnIndex="1" 
+						format="String" 
+						longName="Medusa" 
+						name="Medusa"
+						units="noUnits">
+						<description>Medusa board channel report, repeats for multiple channels.
+							Must be decoded by external program for use.</description>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

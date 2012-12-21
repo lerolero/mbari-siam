@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1020.xml,v 1.2 2010/11/01 05:08:04 kgomes Exp $	-->
+<!-- Last edited by $Author: kgomes $	$Date: 2010/11/01 05:08:04 $   -->
+
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:noNamespaceSchemaLocation="http://ssds.shore.mbari.org/ssdsdata/config/schema/2004cimt/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="0" lastAuthor="$Author: kgomes $" lastUpdate="$Date: 2010/11/01 05:08:04 $">
+	<Deployment role="instrument">
+		<Device id="1020" 
+		name="VarDummyInstrument" 
+		type="Multipurpose" 
+		mfgName="MBARI" 
+		mfgModel="Variable Data Length Dummy Service" 
+		mfgSerialNumber="unknown"
+		preferredDeploymentRole="Instrument">
+			<description>Test instrument service</description>
+			<Person firstname="Tom" surname="Oreilly" 
+			organization="MBARI" email="oreilly@mbari.org"/>
+		</Device>
+		<output>
+			<DataStream>
+				<description>Dummy Data Stream For Testing</description>
+				<RecordDescription bufferStyle="binary" bufferLengthType="variable" parseable="true" recordType="1">
+				    <RecordVariable name="Var_Dummy_Instrument_Data" longName="Variable_Length_Dummy_Instrument_Datastream" units="noUnits" columnIndex="1" >
+						<description>Dummy Instrument data must be decoded for use.</description>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

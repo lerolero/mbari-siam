@@ -1,0 +1,227 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1339.xml,v 1.9 2009/10/27 19:46:38 mccann Exp $	-->
+<!-- Last edited by $Author: mccann $	$Date: 2009/10/27 19:46:38 $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation="http://ssds.shore.mbari.org/ssdsdata/config/schema/2005mtm3/SSDS_Metadata.xsd" majorVersion="1" minorVersion="7" 	lastAuthor="$Author: mccann $" lastUpdate="$Date: 2009/10/27 19:46:38 $">
+	
+	<Deployment role="instrument">
+		<Device id="1339" name="Triaxys Heave Sensor" type="Heave" 
+		mfgName="Axys Environmental Systems" mfgModel="Heave Sensor" mfgSerialNumber="750"> 
+			<description>Ocean wave heave sensor (senses vertical, not direction)</description>
+			<Person	firstname="Andrew" surname="Hamilton" organization="MBARI"
+			email="hamilton@mbari.org" phone="831-775-1861"/>
+		</Device>
+		
+		<output>
+			<DataStream>
+				<description>Heave sensor data stream</description>
+				<!-- Comments:
+					- Doesn't use fixedPosition parsing yet
+				-->
+				<RecordDescription bufferStyle="ASCII"
+				bufferParseType="ordered"
+				bufferItemSeparator=","
+				bufferLengthType="variable"
+				parseable="true" recordType="1"
+				recordTerminator="\n\n">
+					
+					<!-- Sample Records: 
+					1339,27 Oct 2009 14:37:01 GMT,1256654221009,
+					$WC,81,091027,1410,13.85,6000,00750,3.63,,253,0,-0.230,0.000,1.700,0.00,28.6,0.00,149,75,4325
+
+					1339,27 Oct 2009 15:07:00 GMT,1256656020889,
+					$WC,80,091027,1440,13.86,6000,00750,3.63,,254,0,-0.230,0.000,1.700,0.00,28.6,0.00,84,76,4280
+
+					-->
+					<!--
+						Comments:
+						- One could parse for $WC as a double-check - if that isn't found, record is bad.
+					-->
+					<RecordVariable
+						name="RecordTypeLabel"
+						longName="Label	of Record Type"
+						units="noUnits"	referenceScale="TBD"
+						columnIndex="1"
+						format="String"	>
+							<description>label indicating type of heave sensor record returned (correct is $WC)</description>
+							<StandardVariable name="checkString"/>
+					</RecordVariable>
+					<RecordVariable
+						name="MessageSize"
+						longName="Number of Data Bytes in Message"
+						units="count" referenceScale="TBD"
+						columnIndex="2"
+						format="int"
+						validMin="0" validMax="100" >
+							<description>Number of bytes in the message not including the message type, size, or checksum characters</description>
+							<StandardVariable name="bytecount"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Date"
+						longName="Date of Measurement"
+						units="yearMonthDay" referenceScale="TBD"
+						columnIndex="3"
+						format="int"
+						validMin="000000" validMax="991231" >
+							<description>date of measurement, expressed	in yymmdd format</description>
+							<StandardVariable name="Date"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Time"
+						longName="Time of Measurement"
+						units="hhmm" referenceScale="TBD"
+						columnIndex="4"
+						format="int"
+						validMin="0" validMax="2400" >
+							<description>Time the measurement was obtained, in hhmm format</description>
+							<StandardVariable name="timeOfDay"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Voltage"
+						longName="Voltage"
+						units="volts"	referenceScale="TBD"
+						columnIndex="5"
+						format="float" >
+							<description>voltage of unit</description>
+							<StandardVariable name="volts"/>
+					</RecordVariable>
+					<RecordVariable
+						name="NumSamples"
+						longName="Number of Samples"
+						units="count"	referenceScale="TBD"
+						columnIndex="6"
+						format="int" >
+							<description>number of samples, found as the sample frequency times the sample duration</description>
+							<StandardVariable name="count.samples"/>
+					</RecordVariable>
+					<RecordVariable
+						name="SerialNumber"
+						longName="Serial Number"
+						units="uid"	referenceScale="TBD"
+						columnIndex="7"
+						format="int" >
+							<description>Serial number of the unit (does not match external serial number?)</description>
+							<StandardVariable name="uid"/>
+					</RecordVariable>
+					<RecordVariable
+						name="GpucEpromVersion"
+						longName="Version of the Gpuc EPROM"
+						units="version"	referenceScale="TBD"
+						columnIndex="8"
+						format="float" >
+							<description>version of the Gpuc EPROM</description>
+							<StandardVariable name="version"/>
+					</RecordVariable>
+					<RecordVariable
+						name="PC104EpromVersion"
+						longName="Version of the PC104 EPROM"
+						units="version"	referenceScale="TBD"
+						columnIndex="9"
+						format="float" >
+							<description>version of the PC104 EPROM</description>
+							<StandardVariable name="version"/>
+					</RecordVariable>
+					<RecordVariable
+						name="NumberBoots"
+						longName="Number of Boot Times"
+						units="count"	referenceScale="TBD"
+						columnIndex="10"
+						format="int" >
+							<description>number of boot times</description>
+							<StandardVariable name="count"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Status"
+						longName="Status Code"
+						units=""	referenceScale="TBD"
+						columnIndex="11"
+						format="int" >
+							<description></description>
+							<StandardVariable name=""/>
+					</RecordVariable>
+					<RecordVariable
+						name="xOffset"
+						longName="X Offset"
+						units="meters"	referenceScale="TBD"
+						columnIndex="12"
+						format="float" >
+							<description>offset for the X component of the translation displacements, forward from wave sensor to the center of mass of the body (wave sensor is origin)</description>
+							<StandardVariable name="distance"/>
+					</RecordVariable>
+					<RecordVariable
+						name="yOffset"
+						longName="Y Offset"
+						units="meters"	referenceScale="TBD"
+						columnIndex="13"
+						format="float" >
+							<description>offset for the X component of the translation displacements, starboard from wave sensor to the center of mass of the body (wave sensor is origin).</description>
+							<StandardVariable name="distance"/>
+					</RecordVariable>
+					<RecordVariable
+						name="zOffset"
+						longName="Z Offset"
+						units="meters"	referenceScale="TBD"
+						columnIndex="14"
+						format="float" >
+							<description>offset for the X component of the translation displacements, down from wave sensor back to the center of mass of the body (wave sensor is origin).</description>
+							<StandardVariable name="distance"/>
+					</RecordVariable>
+					<RecordVariable
+						name="WaveHeight"
+						longName="Significant Wave Height (Hs)"
+						units="meters"	referenceScale="TBD"
+						columnIndex="15"
+						format="float" >
+							<description>Zero down-crossing significant wave height, Hs, where Hs is the average height of the highest third of the waves.</description>
+							<StandardVariable name="height.wave"/>
+					</RecordVariable>
+					<RecordVariable
+						name="PeakPeriod"
+						longName="Peak Period (Tp)"
+						units="seconds"	referenceScale="TBD"
+						columnIndex="16"
+						format="float" >
+							<description>Peak wave period Tp (= 1.0/fp where fp is the frequency at which the wave spectrum S(f) has its maximum value).</description>
+							<StandardVariable name=""/>
+					</RecordVariable>
+					<RecordVariable
+						name="MaxWaveHeight"
+						longName="Maximum Wave Height (Hmax)"
+						units="meters"	referenceScale="TBD"
+						columnIndex="17"
+						format="float" >
+							<description>Maximum zero down-crossing wave height (trough to peak) </description>
+							<StandardVariable name="height.wave"/>
+					</RecordVariable>
+					<RecordVariable
+						name="MeanDirection"
+						longName="[Unused] Mean Direction"
+						units="degrees"	referenceScale="TBD"
+						columnIndex="18"
+						format="int" >
+							<description>[Unused] average direction from which waves arrived (?)</description>
+							<StandardVariable name="degrees.wavedirection"/>
+					</RecordVariable>
+					<RecordVariable
+						name="DirectionSpread"
+						longName="[Unused] Direction Spread"
+						units="degrees"	referenceScale="TBD"
+						columnIndex="19"
+						format="int" >
+							<description>[Unused] spread of the direction from which waves arrived</description>
+							<StandardVariable name="degrees.range"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Checksum"
+						longName="Checksum"
+						units="count" referenceScale="TBD"
+						columnIndex="20"
+						format="int" >
+							<description>checksum for data record</description>
+							<StandardVariable name="checksum"/>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

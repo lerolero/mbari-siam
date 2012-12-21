@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1292.xml,v 1.4 2006/04/29 08:29:47 graybeal Exp $	-->
+<!-- Last edited by $Author: graybeal $	$Date: 2006/04/29 08:29:47 $   -->
+
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ssds.mbari.org/xml/schema/SSDS_Metadata.xsd"
+	majorVersion="1" minorVersion="4" 
+	lastAuthor="$Author: graybeal $" lastUpdate="$Date: 2006/04/29 08:29:47 $">
+
+	<Deployment role="instrument">
+		<Device id="1292" name="ASIMET SWR" type="Radiometer-Shortwave"
+			mfgModel="SWR" mfgName="WHOI" mfgSerialNumber="SWR344" 
+			preferredDeploymentRole="instrument" >
+			<description>ASIMET Shortwave radiometer</description>
+			<Person email="ryjo@mbari.org" firstname="John" organization="MBARI"
+				phone="831-775-1978" surname="Ryan"></Person>
+		</Device>
+		<output>
+			<DataStream>
+				<description>ASIMET SWR data stream</description>
+				<!--  see http://frodo.whoi.edu/asimet/asimet_sampling_definitions.html -->
+
+				<RecordDescription bufferItemSeparator=":" bufferLengthType="variable"
+					bufferParseType="ordered" bufferStyle="ASCII" parseable="true" recordType="1">
+
+					<RecordVariable columnIndex="1" format="float" longName="Radiation"
+						name="Radiation"  units="watts per square meter">
+						<description> radiation in watts per square meter</description>
+						<StandardVariable name="downwelling_shortwave_radiance_in_air"></StandardVariable>
+					</RecordVariable>
+
+					<RecordVariable columnIndex="2" format="int" longName="Raw Radiation"
+						name="Raw_Radiation"  units="count" 
+						validMax="65535" validMin="0">
+						<description>Raw SWR counts (16 bit)</description>
+						<StandardVariable name="downwelling_shortwave_radiance_in_air"></StandardVariable>
+					</RecordVariable>
+
+
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

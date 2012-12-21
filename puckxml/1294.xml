@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1294.xml,v 1.4 2009/03/09 21:56:31 mccann Exp $	-->
+<!-- Last edited by $Author: mccann $	$Date: 2009/03/09 21:56:31 $   -->
+
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:noNamespaceSchemaLocation="http://ssds.mbari.org/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="3" 
+	lastAuthor="$Author: mccann $" lastUpdate="$Date: 2009/03/09 21:56:31 $">
+	
+	<Deployment role="instrument">
+		<Device id="1294"/>
+		<output>
+			<DataStream>
+				<description>ADCP Data Stream</description>
+				<RecordDescription bufferStyle="binary" bufferLengthType="variable" parseable="false" recordType="1">
+				    <RecordVariable name="ADCP_data" longName="ADCP Binary Data Stream" units="noUnits" columnIndex="1" >
+						<description>All of ADCP data output packed into binary string.  Must be decoded for use.</description>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

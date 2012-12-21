@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1454.xml,v 1.3 2007/11/06 21:18:13 mccann Exp $	-->
+<!-- Last edited by $Author: mccann $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://dods.mbari.org/data/ssdsdata/config/schema/2005oasis/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="1" lastAuthor="$Author: mccann $" lastUpdate="$Date: 2007/11/06 21:18:13 $" >
+	<Deployment role="instrument" nominalDepth="10">
+		<Device id="1454" />
+		<output>
+			<DataStream>
+				<RecordDescription bufferStyle="ASCII"
+				bufferParseType="ordered"
+				bufferItemSeparator=","
+				bufferLengthType="variable"
+				parseable="true" recordType="1">
+					<!-- Sample Record:
+						22.9091, 0.00004, 10.0000, 30 Apr 2004, 22:52:25
+					-->
+					<RecordVariable
+						name="Temperature"
+						longName="Water Temperature"
+						units="deg C"	referenceScale="TBD"
+						columnIndex="1"
+						format="float" >
+							<description>water temperature</description>
+							<StandardVariable name="temperature"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Conductivity"
+						longName="Conductivity"
+						units="S/m"	referenceScale="TBD"
+						columnIndex="2"
+						format="float" >
+							<description>sea water conductivity</description>
+							<StandardVariable name="conductivity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Pressure"
+						longName="Pressure"
+						units="decibars"	referenceScale="TBD"
+						columnIndex="3"
+						format="float" >
+							<description>pressure of sea water</description>
+							<StandardVariable name="pressure"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Date"
+						longName="Date of Sample"
+						units="dd_MMM_yyyy"	referenceScale="TBD"
+						columnIndex="4"
+						format="string"	>
+							<description>date in 'dd MMM yyyy' format</description>
+							<StandardVariable name="date"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Time"
+						longName="Time of Day"
+						units="hh-mm-ss"	referenceScale="TBD"
+						columnIndex="5"
+						format="string"	>
+							<description>time of day in hh:mm:ss format</description>
+							<StandardVariable name="time"/>
+					</RecordVariable>
+
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

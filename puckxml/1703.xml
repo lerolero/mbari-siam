@@ -1,0 +1,238 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1703.xml,v 1.2 2009/03/12 00:01:30 mccann Exp $	-->
+<!-- Last edited by $Author: mccann $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://dods.mbari.org/data/ssdsdata/config/schema/2004oasis/SSDS_Metadata.xsd"
+	majorVersion="1" minorVersion="1" lastAuthor="$Author: mccann $"
+	lastUpdate="$Date: 2009/03/12 00:01:30 $">
+	<Deployment role="instrument">
+		<Device id="1703"/>
+		
+		<!-- This is way more complicated than it should be...
+			Make sure that the ssds device ids and nominalDepths match the deployed configuration, 
+			then make sure that the parseRegExp attributes are correct in the output element. 
+			(DStoNetCDF processing depends on it!)
+			.-->
+		<Deployment role="sensor" nominalDepth="20">
+			<Device id="1362" />
+		</Deployment>
+		<Deployment role="sensor" nominalDepth="40">
+			<Device id="1359"/>
+		</Deployment>
+		<Deployment role="sensor" nominalDepth="60">
+			<Device id="1370" />
+		</Deployment>
+		<Deployment role="sensor" nominalDepth="80">
+			<Device id="1367" />
+		</Deployment>
+		<Deployment role="sensor" nominalDepth="100">
+			<Device id="1365" />
+		</Deployment>
+		<Deployment role="sensor" nominalDepth="150">
+			<Device id="1507" />
+		</Deployment>
+		<Deployment role="sensor" nominalDepth="200">
+			<Device id="1506" />
+		</Deployment>
+		<Deployment role="sensor" nominalDepth="250">
+			<Device id="1371" />
+		</Deployment>
+		<Deployment role="sensor" nominalDepth="300">
+			<Device id="1366" />
+		</Deployment>
+
+		<output>
+			<DataStream>
+				<description>Serial CTD data stream</description>
+
+				<RecordDescription bufferStyle="ASCII" bufferParseType="ordered"
+					bufferItemSeparator="," bufferLengthType="variable" parseable="true"
+					recordType="1">
+					
+					<!-- 20 m -->
+					<RecordVariable name="SensorString_1" longName="Originating CTD Serial No."
+						columnIndex="1" format="int" parseRegExp="00826"> </RecordVariable>
+					<RecordVariable name="Temperature_1" longName="Temperature @ 20m" units="deg C"
+						columnIndex="2" missingValue="-99999" format="float">
+						<StandardVariable name="sea_water_temperature"/>
+					</RecordVariable>
+					<RecordVariable name="Conductivity_1" longName="Conductivity @ 20m" units="S/m"
+						columnIndex="3" missingValue="-99999" format="float">
+						<StandardVariable name="sea_water_electrical_conductivity"/>
+					</RecordVariable>
+					<RecordVariable name="Pressure_1" longName="Pressure @ 20m" units="dbar"
+						columnIndex="4" missingValue="-99999" format="float">
+						<StandardVariable name="sea_water_pressure"/>
+					</RecordVariable>
+					<RecordVariable name="Date_1" longName="Date of Sample @ 20m"
+						units="dd_MMM_yyyy" columnIndex="5" format="string"> </RecordVariable>
+					<RecordVariable name="Time_1" longName="Time of Sample @ 20m" units="hh-mm-ss"
+						columnIndex="6" format="string"> </RecordVariable>
+					<RecordVariable name="SampNum_1" longName="Instr_Sample_Number_1" units="tbd"
+						columnIndex="7" missingValue="-99999" format="int"> </RecordVariable>
+
+					<!-- 40 m -->
+					<RecordVariable name="SensorString_2" longName="Originating CTD Serial No."
+						columnIndex="8" format="int" parseRegExp="00471"> </RecordVariable>
+					<RecordVariable name="Temperature_2" longName="Water Temperature @ 40m"
+						units="deg C" columnIndex="9" missingValue="-99999" format="float">
+						<StandardVariable name="sea_water_temperature"/>
+					</RecordVariable>
+					<RecordVariable name="Conductivity_2" longName="Conductivity @ 40m" units="S/m"
+						columnIndex="10" missingValue="-99999" format="float">
+						<StandardVariable name="sea_water_electrical_conductivity"/>
+					</RecordVariable>
+					<RecordVariable name="Date_2" longName="Date of Sample @ 40m"
+						units="dd_MMM_yyyy" columnIndex="11" format="string"> </RecordVariable>
+					<RecordVariable name="Time_2" longName="Time of Sample @ 40m" units="hh-mm-ss"
+						columnIndex="12" format="string"> </RecordVariable>
+					<RecordVariable name="SampNum_2" longName="Instr_Sample_Number_2" units="tbd"
+						columnIndex="13" missingValue="-99999" format="int"> </RecordVariable>
+
+					<!-- 60 m -->
+					<RecordVariable name="SensorString_3" longName="Originating CTD Serial No."
+						columnIndex="14" format="int" parseRegExp="00476"> </RecordVariable>
+					<RecordVariable name="Temperature_3" longName="Water Temperature @ 60m"
+						units="deg C" columnIndex="15" missingValue="-99999" format="float">
+						<StandardVariable name="sea_water_temperature"/>
+					</RecordVariable>
+					<RecordVariable name="Conductivity_3" longName="Conductivity @ 60m" units="S/m"
+						columnIndex="16" missingValue="-99999" format="float">
+						<StandardVariable name="sea_water_electrical_conductivity"/>
+					</RecordVariable>
+					<RecordVariable name="Pressure_3" longName="Pressure @ 60m" units="dbar"
+						columnIndex="17" missingValue="-99999" format="float">
+						<StandardVariable name="sea_water_pressure"/>
+					</RecordVariable>
+					<RecordVariable name="Date_3" longName="Date of Sample @ 60m"
+						units="dd_MMM_yyyy" columnIndex="18" format="string"> </RecordVariable>
+					<RecordVariable name="Time_3" longName="Time of Sample @ 60m" units="hh-mm-ss"
+						columnIndex="19" format="string"> </RecordVariable>
+					<RecordVariable name="SampNum_3" longName="Instr_Sample_Number_3" units="tbd"
+						columnIndex="20" missingValue="-99999" format="int"> </RecordVariable>
+
+					<!-- 80 m -->
+					<RecordVariable name="SensorString_4" longName="Originating CTD Serial No."
+						columnIndex="21" format="int" parseRegExp="00409"> </RecordVariable>
+					<RecordVariable name="Temperature_4" longName="Water Temperature @ 80m"
+						units="deg C" columnIndex="22" missingValue="-99999" format="float">
+						<StandardVariable name="sea_water_temperature"/>
+					</RecordVariable>
+					<RecordVariable name="Conductivity_4" longName="Conductivity @ 80m" units="S/m"
+						columnIndex="23" missingValue="-99999" format="float">
+						<StandardVariable name="sea_water_electrical_conductivity"/>
+					</RecordVariable>
+					<RecordVariable name="Date_4" longName="Date of Sample @ 80m"
+						units="dd_MMM_yyyy" columnIndex="24" format="string"> </RecordVariable>
+					<RecordVariable name="Time_4" longName="Time of Sample @ 80m" units="hh-mm-ss"
+						columnIndex="25" format="string"> </RecordVariable>
+					<RecordVariable name="SampNum_4" longName="Instr_Sample_Number_4" units="tbd"
+						columnIndex="26" missingValue="-99999" format="int"> </RecordVariable>
+
+					<!-- 100 m -->
+					<RecordVariable name="SensorString_5" longName="Originating CTD Serial No."
+						columnIndex="27" format="int" parseRegExp="00827"> </RecordVariable>
+					<RecordVariable name="Temperature_5" longName="Water Temperature @ 100m"
+						units="deg C" columnIndex="28" missingValue="-99999" format="float">
+						<StandardVariable name="sea_water_temperature"/>
+					</RecordVariable>
+					<RecordVariable name="Conductivity_5" longName="Conductivity @ 100m" units="S/m"
+						columnIndex="29" missingValue="-99999" format="float">
+						<StandardVariable name="sea_water_electrical_conductivity"/>
+					</RecordVariable>
+					<RecordVariable name="Pressure_5" longName="Pressure @ 100m" units="dbar"
+						columnIndex="30" missingValue="-99999" format="float">
+						<StandardVariable name="sea_water_pressure"/>
+					</RecordVariable>
+					<RecordVariable name="Date_5" longName="Date of Sample @ 100m"
+						units="dd_MMM_yyyy" columnIndex="31" format="string"> </RecordVariable>
+					<RecordVariable name="Time_5" longName="Time of Sample @ 100m" units="hh-mm-ss"
+						columnIndex="32" format="string"> </RecordVariable>
+					<RecordVariable name="SampNum_5" longName="Instr_Sample_Number_5" units="tbd"
+						columnIndex="33" missingValue="-99999" format="int"> </RecordVariable>
+
+					<!-- 150 m -->
+					<RecordVariable name="SensorString_6" longName="Originating CTD Serial No."
+						columnIndex="34" format="int" parseRegExp="00473"> </RecordVariable>
+					<RecordVariable name="Temperature_6" longName="Water Temperature @ 150m"
+						units="deg C" columnIndex="35" missingValue="-99999" format="float">
+						<StandardVariable name="sea_water_temperature"/>
+					</RecordVariable>
+					<RecordVariable name="Conductivity_6" longName="Conductivity @ 150m" units="S/m"
+						columnIndex="36" missingValue="-99999" format="float">
+						<StandardVariable name="sea_water_electrical_conductivity"/>
+					</RecordVariable>
+					<RecordVariable name="Date_6" longName="Date of Sample @ 150m"
+						units="dd_MMM_yyyy" columnIndex="37" format="string"> </RecordVariable>
+					<RecordVariable name="Time_6" longName="Time of Sample @ 150m" units="hh-mm-ss"
+						columnIndex="38" format="string"> </RecordVariable>
+					<RecordVariable name="SampNum_6" longName="Instr_Sample_Number_6" units="tbd"
+						columnIndex="39" missingValue="-99999" format="int"> </RecordVariable>
+
+					<!-- 200 m -->
+					<RecordVariable name="SensorString_7" longName="Originating CTD Serial No."
+						columnIndex="40" format="int" parseRegExp="00828"> </RecordVariable>
+					<RecordVariable name="Temperature_7" longName="Water Temperature @ 200m"
+						units="deg C" columnIndex="41" missingValue="-99999" format="float">
+						<StandardVariable name="sea_water_temperature"/>
+					</RecordVariable>
+					<RecordVariable name="Conductivity_7" longName="Conductivity @ 200m" units="S/m"
+						columnIndex="42" missingValue="-99999" format="float">
+						<StandardVariable name="sea_water_electrical_conductivity"/>
+					</RecordVariable>
+					<RecordVariable name="Pressure_7" longName="Pressure @ 200m" units="dbar"
+						columnIndex="43" missingValue="-99999" format="float">
+						<StandardVariable name="sea_water_pressure"/>
+					</RecordVariable>
+					<RecordVariable name="Date_7" longName="Date of Sample @ 200m"
+						units="dd_MMM_yyyy" columnIndex="44" format="string"> </RecordVariable>
+					<RecordVariable name="Time_7" longName="Time of Sample @ 200m" units="hh-mm-ss"
+						columnIndex="45" format="string"> </RecordVariable>
+					<RecordVariable name="SampNum_7" longName="Instr_Sample_Number_7" units="tbd"
+						columnIndex="46" missingValue="-99999" format="int"> </RecordVariable>
+
+					<!-- 250 m -->
+					<RecordVariable name="SensorString_8" longName="Originating CTD Serial No."
+						columnIndex="47" format="int" parseRegExp="00661"> </RecordVariable>
+					<RecordVariable name="Temperature_8" longName="Water Temperature @ 250m"
+						units="deg C" columnIndex="48" missingValue="-99999" format="float">
+						<StandardVariable name="sea_water_temperature"/>
+					</RecordVariable>
+					<RecordVariable name="Conductivity_8" longName="Conductivity @ 250m" units="S/m"
+						columnIndex="49" missingValue="-99999" format="float">
+						<StandardVariable name="sea_water_electrical_conductivity"/>
+					</RecordVariable>
+					<RecordVariable name="Date_8" longName="Date of Sample @ 250m"
+						units="dd_MMM_yyyy" columnIndex="50" format="string"> </RecordVariable>
+					<RecordVariable name="Time_8" longName="Time of Sample @ 250m" units="hh-mm-ss"
+						columnIndex="51" format="string"> </RecordVariable>
+					<RecordVariable name="SampNum_8" longName="Instr_Sample_Number_8" units="tbd"
+						columnIndex="52" missingValue="-99999" format="int"> </RecordVariable>
+
+					<!-- 300 m -->
+					<RecordVariable name="SensorString_9" longName="Originating CTD Serial No."
+						columnIndex="53" format="int" parseRegExp="00829"> </RecordVariable>
+					<RecordVariable name="Temperature_9" longName="Water Temperature @ 300m"
+						units="deg C" columnIndex="54" missingValue="-99999" format="float">
+						<StandardVariable name="sea_water_temperature"/>
+					</RecordVariable>
+					<RecordVariable name="Conductivity_9" longName="Conductivity @ 300m" units="S/m"
+						columnIndex="55" missingValue="-99999" format="float">
+						<StandardVariable name="sea_water_electrical_conductivity"/>
+					</RecordVariable>
+					<RecordVariable name="Pressure_9" longName="Pressure @ 300m" units="dbar"
+						columnIndex="56" missingValue="-99999" format="float">
+						<StandardVariable name="sea_water_pressure"/>
+					</RecordVariable>
+					<RecordVariable name="Date_9" longName="Date of Sample @ 300m"
+						units="dd_MMM_yyyy" columnIndex="57" format="string"> </RecordVariable>
+					<RecordVariable name="Time_9" longName="Time of Sample @ 300m" units="hh-mm-ss"
+						columnIndex="58" format="string"> </RecordVariable>
+					<RecordVariable name="SampNum_9" longName="Instr_Sample_Number_9" units="tbd"
+						columnIndex="59" missingValue="-99999" format="int"> </RecordVariable>
+
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

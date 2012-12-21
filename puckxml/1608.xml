@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1608.xml,v 1.3 2007/04/16 18:13:28 bobh Exp $	-->
+<!-- Last edited by $Author: bobh $	$Date: 2007/04/16 18:13:28 $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://ssds.shore.mbari.org/ssdsdata/config/schema/2004cimt/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="7" lastAuthor="$Author: bobh $" lastUpdate="$Date: 2007/04/16 18:13:28 $" >
+	<Deployment role="instrument" name="UW-ALOHA" nominalLongitude="-122.36773" nominalLatitude="47.48227" nominalDepth="30">
+		<Device	id="1608" name="Wetlabs ECO-BB2F Fluorometer" type="fluorometer" mfgName="Wetlabs" mfgModel="ECO BB2F" mfgSerialNumber="BB2FSSC-219"
+			preferredDeploymentRole="Instrument">
+			<description>Wetlabs ECO FL fluorometer on UW test deployment at Seahurst</description>
+			<Person	firstname="Tim" surname="McGinnis" organization="University of Washington"
+			email="tmcginnis@apl.washington.edu" phone=""/>
+		</Device>
+		<description>UW-Seahurst installation of Wetlabs ECO-BB2F</description>
+		<output>
+			<DataStream>
+				<description>Wetlabs ECO BB2F data stream</description>
+				<!-- Comments:
+					- Doesn't use fixedPosition parsing yet
+				-->
+				<RecordDescription bufferStyle="ASCII"
+				bufferParseType="ordered"
+				bufferItemSeparator="whitespace"
+				bufferLengthType="variable"
+				parseable="true" recordType="1">
+					<!-- COMMAND Sent:
+					-->
+					<!-- Sample Record:
+						03/23/07        15:23:09        1331    4120    1277    530     1134    539
+						03/23/07        15:23:10        1332    4120    1275    527     1136    539
+						03/23/07        15:23:11        1333    4120    1274    527     1129    539
+						03/23/07        15:23:12        1333    4120    1273    528     1136    539
+						03/23/07        15:23:12        1333    4120    1273    529     1131    539
+
+						05/23/04        15:50:35        6832    79      561
+						05/23/04        15:50:35        6831    79      560
+						05/23/04        15:50:36        6834    80      560
+						05/23/04        15:50:36        6836    81      559
+						05/23/04        15:50:36        6837    83      559
+					-->
+					<!-- Accuracy:
+					-->
+					<!--
+						Comments:
+							This XML assumes one data record per packet.
+					-->
+					<RecordVariable
+						name="Date_1"
+						longName="Date of Sample 1"
+						units="dd_mm_yy"	referenceScale="TBD"
+						columnIndex="1"
+						format="string"	>
+							<description>date in dd/mm/yy format of 1st sample in this record</description>
+							<StandardVariable name="date"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Time_1"
+						longName="Time of Day 1"
+						units="hh_mm_ss"	referenceScale="TBD"
+						columnIndex="2"
+						format="string"	>
+							<description>time of day in hh:mm:ss format of 1st sample in this record</description>
+							<StandardVariable name="time"/>
+					</RecordVariable>
+					<RecordVariable
+						name="BlueRef_1"
+						longName="Blue Reference Signal 1"
+						units="counts"	referenceScale="TBD"
+						columnIndex="3"
+						format="int" >
+							<description>blue reference light signal of 1st sample in this record</description>
+							<StandardVariable name="intensity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="BlueSignal_1"
+						longName="Blue signal 1"
+						units="counts"	referenceScale="TBD"
+						columnIndex="4"
+						format="int" >
+							<description>blue signal of 1st sample in this record</description>
+							<StandardVariable name="intensity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="RedRef_1"
+						longName="Red Reference Signal 1"
+						units="counts"	referenceScale="TBD"
+						columnIndex="5"
+						format="int" >
+							<description>red reference light signal of 1st sample in this record</description>
+							<StandardVariable name="intensity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="RedSignal_1"
+						longName="Red signal 1"
+						units="counts"	referenceScale="TBD"
+						columnIndex="6"
+						format="int" >
+							<description>red signal of 1st sample in this record</description>
+							<StandardVariable name="intensity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Chlorophyll_1"
+						longName="Chlorophyll signal 1"
+						units="counts"	referenceScale="TBD"
+						columnIndex="7"
+						format="int" >
+							<description>chlorophyll signal of 1st sample in this record</description>
+							<StandardVariable name="intensity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="ThermistorTemp_1"
+						longName="Thermistor Temperature 1"
+						units="counts"	referenceScale="TBD"
+						columnIndex="8"
+						format="int" >
+							<description>thermistor temperature of 1st sample in this record</description>
+							<StandardVariable name="temperature"/>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Date_2"
+						longName="Date of Sample 2"
+						units="dd_mm_yy"	referenceScale="TBD"
+						columnIndex="9"
+						format="string"	>
+							<description>date in dd/mm/yy format of 2nd sample in this record</description>
+							<StandardVariable name="date"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Time_2"
+						longName="Time of Day 2"
+						units="hh_mm_ss"	referenceScale="TBD"
+						columnIndex="10"
+						format="string"	>
+							<description>time of day in hh:mm:ss format of 2nd sample in this record</description>
+							<StandardVariable name="time"/>
+					</RecordVariable>
+					<RecordVariable
+						name="BlueRef_2"
+						longName="Blue Reference Signal 2"
+						units="counts"	referenceScale="TBD"
+						columnIndex="11"
+						format="int" >
+							<description>blue reference light signal of 2nd sample in this record</description>
+							<StandardVariable name="intensity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="BlueSignal_2"
+						longName="Blue signal 2"
+						units="counts"	referenceScale="TBD"
+						columnIndex="12"
+						format="int" >
+							<description>blue signal of 2nd sample in this record</description>
+							<StandardVariable name="intensity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="RedRef_2"
+						longName="Red Reference Signal 2"
+						units="counts"	referenceScale="TBD"
+						columnIndex="13"
+						format="int" >
+							<description>red reference light signal of 2nd sample in this record</description>
+							<StandardVariable name="intensity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="RedSignal_2"
+						longName="Red signal 2"
+						units="counts"	referenceScale="TBD"
+						columnIndex="14"
+						format="int" >
+							<description>red signal of 2nd sample in this record</description>
+							<StandardVariable name="intensity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Chlorophyll_2"
+						longName="Chlorophyll signal 2"
+						units="counts"	referenceScale="TBD"
+						columnIndex="15"
+						format="int" >
+							<description>chlorophyll signal of 2nd sample in this record</description>
+							<StandardVariable name="intensity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="ThermistorTemp_2"
+						longName="Thermistor Temperature 2"
+						units="counts"	referenceScale="TBD"
+						columnIndex="16"
+						format="int" >
+							<description>thermistor temperature of 2nd sample in this record</description>
+							<StandardVariable name="temperature"/>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Date_3"
+						longName="Date of Sample 3"
+						units="dd_mm_yy"	referenceScale="TBD"
+						columnIndex="17"
+						format="string"	>
+							<description>date in dd/mm/yy format of 3rd sample in this record</description>
+							<StandardVariable name="date"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Time_3"
+						longName="Time of Day 3"
+						units="hh_mm_ss"	referenceScale="TBD"
+						columnIndex="18"
+						format="string"	>
+							<description>time of day in hh:mm:ss format of 3rd sample in this record</description>
+							<StandardVariable name="time"/>
+					</RecordVariable>
+					<RecordVariable
+						name="BlueRef_3"
+						longName="Blue Reference Signal 3"
+						units="counts"	referenceScale="TBD"
+						columnIndex="19"
+						format="int" >
+							<description>blue reference light signal of 3rd sample in this record</description>
+							<StandardVariable name="intensity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="BlueSignal_3"
+						longName="Blue signal 3"
+						units="counts"	referenceScale="TBD"
+						columnIndex="20"
+						format="int" >
+							<description>blue signal of 3rd sample in this record</description>
+							<StandardVariable name="intensity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="RedRef_3"
+						longName="Red Reference Signal 3"
+						units="counts"	referenceScale="TBD"
+						columnIndex="21"
+						format="int" >
+							<description>red reference light signal of 3rd sample in this record</description>
+							<StandardVariable name="intensity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="RedSignal_3"
+						longName="Red signal 3"
+						units="counts"	referenceScale="TBD"
+						columnIndex="22"
+						format="int" >
+							<description>red signal of 3rd sample in this record</description>
+							<StandardVariable name="intensity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Chlorophyll_3"
+						longName="Chlorophyll signal 3"
+						units="counts"	referenceScale="TBD"
+						columnIndex="23"
+						format="int" >
+							<description>chlorophyll signal of 3rd sample in this record</description>
+							<StandardVariable name="intensity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="ThermistorTemp_3"
+						longName="Thermistor Temperature 3"
+						units="counts"	referenceScale="TBD"
+						columnIndex="24"
+						format="int" >
+							<description>thermistor temperature of 3rd sample in this record</description>
+							<StandardVariable name="temperature"/>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Date_4"
+						longName="Date of Sample 4"
+						units="dd_mm_yy"	referenceScale="TBD"
+						columnIndex="25"
+						format="string"	>
+							<description>date in dd/mm/yy format of 4th sample in this record</description>
+							<StandardVariable name="date"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Time_4"
+						longName="Time of Day 4"
+						units="hh_mm_ss"	referenceScale="TBD"
+						columnIndex="26"
+						format="string"	>
+							<description>time of day in hh:mm:ss format of 4th sample in this record</description>
+							<StandardVariable name="time"/>
+					</RecordVariable>
+					<RecordVariable
+						name="BlueRef_4"
+						longName="Blue Reference Signal 4"
+						units="counts"	referenceScale="TBD"
+						columnIndex="27"
+						format="int" >
+							<description>blue reference light signal of 4th sample in this record</description>
+							<StandardVariable name="intensity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="BlueSignal_4"
+						longName="Blue signal 4"
+						units="counts"	referenceScale="TBD"
+						columnIndex="28"
+						format="int" >
+							<description>blue signal of 4th sample in this record</description>
+							<StandardVariable name="intensity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="RedRef_4"
+						longName="Red Reference Signal 4"
+						units="counts"	referenceScale="TBD"
+						columnIndex="29"
+						format="int" >
+							<description>red reference light signal of 4th sample in this record</description>
+							<StandardVariable name="intensity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="RedSignal_4"
+						longName="Red signal 4"
+						units="counts"	referenceScale="TBD"
+						columnIndex="30"
+						format="int" >
+							<description>red signal of 4th sample in this record</description>
+							<StandardVariable name="intensity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Chlorophyll_4"
+						longName="Chlorophyll signal 4"
+						units="counts"	referenceScale="TBD"
+						columnIndex="31"
+						format="int" >
+							<description>chlorophyll signal of 4th sample in this record</description>
+							<StandardVariable name="intensity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="ThermistorTemp_4"
+						longName="Thermistor Temperature 4"
+						units="counts"	referenceScale="TBD"
+						columnIndex="32"
+						format="int" >
+							<description>thermistor temperature of 4th sample in this record</description>
+							<StandardVariable name="temperature"/>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Date_5"
+						longName="Date of Sample 5"
+						units="dd_mm_yy"	referenceScale="TBD"
+						columnIndex="33"
+						format="string"	>
+							<description>date in dd/mm/yy format of 5th sample in this record</description>
+							<StandardVariable name="date"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Time_5"
+						longName="Time of Day 5"
+						units="hh_mm_ss"	referenceScale="TBD"
+						columnIndex="34"
+						format="string"	>
+							<description>time of day in hh:mm:ss format of 5th sample in this record</description>
+							<StandardVariable name="time"/>
+					</RecordVariable>
+					<RecordVariable
+						name="BlueRef_5"
+						longName="Blue Reference Signal 5"
+						units="counts"	referenceScale="TBD"
+						columnIndex="35"
+						format="int" >
+							<description>blue reference light signal of 5th sample in this record</description>
+							<StandardVariable name="intensity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="BlueSignal_5"
+						longName="Blue signal 5"
+						units="counts"	referenceScale="TBD"
+						columnIndex="36"
+						format="int" >
+							<description>blue signal of 5th sample in this record</description>
+							<StandardVariable name="intensity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="RedRef_5"
+						longName="Red Reference Signal 5"
+						units="counts"	referenceScale="TBD"
+						columnIndex="37"
+						format="int" >
+							<description>red reference light signal of 5th sample in this record</description>
+							<StandardVariable name="intensity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="RedSignal_5"
+						longName="Red signal 5"
+						units="counts"	referenceScale="TBD"
+						columnIndex="38"
+						format="int" >
+							<description>red signal of 5th sample in this record</description>
+							<StandardVariable name="intensity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Chlorophyll_5"
+						longName="Chlorophyll signal 5"
+						units="counts"	referenceScale="TBD"
+						columnIndex="39"
+						format="int" >
+							<description>chlorophyll signal of 5th sample in this record</description>
+							<StandardVariable name="intensity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="ThermistorTemp_5"
+						longName="Thermistor Temperature 5"
+						units="counts"	referenceScale="TBD"
+						columnIndex="40"
+						format="int" >
+							<description>thermistor temperature of 5th sample in this record</description>
+							<StandardVariable name="temperature"/>
+					</RecordVariable>
+
+
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

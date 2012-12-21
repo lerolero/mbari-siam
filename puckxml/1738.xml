@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1738.xml,v 1.1 2009/08/19 23:36:49 bobh Exp $	-->
+<!-- Last edited by $Author: bobh $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ssds.mbari.org/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="2" lastAuthor="$Author: bobh $" lastUpdate="$Date: 2009/08/19 23:36:49 $" >
+	<Deployment role="Instrument">
+		<Device	id="1738" name="Water Monitor" type="Water Sensor" 
+			mfgName="MBARI" mfgModel="Environmental Board" mfgSerialNumber="1">
+			<description>Water Sensor portion of FOCE Environmental Board</description>
+			<!-- If the CPU stack is changed, e.g. to foce2, a different equipment ID number should be used -->
+			<Person	firstname="Bob" surname="Herlien" organization="MBARI"
+			email="bobh@mbari.org" phone="831-775-1750"/>
+		</Device>
+		<output>
+			<DataStream>
+				<description>Water Monitor data stream</description>
+				<RecordDescription bufferStyle="ASCII"
+					bufferParseType="ordered"
+					bufferItemSeparator=" "
+					bufferLengthType="variable"
+					parseable="true" recordType="1">
+					<!-- Sample Record:
+						20.0000 20.0000 20.0000 20.0000 20.0000
+					-->
+					<!--
+						Comments:
+					-->
+					<RecordVariable
+						name="Water1"
+						longName="Water Sensor 1"
+						units="boolean"
+						columnIndex="1"
+						format="integer" >
+						<description>Water sensor, 0=Water detected, 1=no water</description>
+						<StandardVariable name="water_sensor" namespaceUriString="http://mmisw.org/ont/mmi/eqtenvirons/" />
+					</RecordVariable>
+					<RecordVariable
+						name="Water2"
+						longName="Water Sensor 2"
+						units="boolean"
+						columnIndex="2"
+						format="integer" >
+						<description>Water sensor, 0=Water detected, 1=no water</description>
+						<StandardVariable name="water_sensor" namespaceUriString="http://mmisw.org/ont/mmi/eqtenvirons/" />
+					</RecordVariable>
+					<RecordVariable
+						name="Water3"
+						longName="Water Sensor 3"
+						units="boolean"
+						columnIndex="3"
+						format="integer" >
+						<description>Water sensor, 0=Water detected, 1=no water</description>
+						<StandardVariable name="water_sensor" namespaceUriString="http://mmisw.org/ont/mmi/eqtenvirons/" />
+					</RecordVariable>
+					<RecordVariable
+						name="Water4"
+						longName="Water Sensor 4
+						units="boolean"
+						columnIndex="4"
+						format="integer" >
+						<description>Water sensor, 0=Water detected, 1=no water</description>
+						<StandardVariable name="water_sensor" namespaceUriString="http://mmisw.org/ont/mmi/eqtenvirons/" />
+					</RecordVariable>
+					
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

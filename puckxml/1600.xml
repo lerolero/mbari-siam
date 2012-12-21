@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1600.xml,v 1.5 2010/03/17 19:00:20 mccann Exp $	-->
+<!-- Last edited by $Author: mccann $	$Date: 2010/03/17 19:00:20 $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://dods.mbari.org/data/ssdsdata/config/schema/2004oasis/SSDS_Metadata.xsd"
+	majorVersion="1" minorVersion="3" lastAuthor="$Author: mccann $"
+	lastUpdate="$Date: 2010/03/17 19:00:20 $">
+	<Deployment role="instrument">
+		<Device id="1600"/>
+		<output>
+			<DataStream>
+				<description>Aanderraa Oxygen Optode data stream</description>
+				<RecordDescription bufferStyle="ASCII" bufferParseType="ordered"
+					bufferItemSeparator="space" bufferLengthType="variable" parseable="true"
+					recordType="1">
+					<RecordVariable name="SensorModel" longName="SensorModel" units="string"
+						columnIndex="1" format="string"> </RecordVariable>
+					<RecordVariable name="SensorSerialNumber" longName="SensorSerialNumber"
+						units="string" columnIndex="2" format="string"> </RecordVariable>
+					<RecordVariable name="Oxygen" longName="Dissolved Oxygen" units="mmol/l"
+						columnIndex="3" format="float">
+						<StandardVariable name="moles_of_oxygen_per_unit_volume_in_sea_water"/>
+					</RecordVariable>
+					<RecordVariable name="Air_Saturation" longName="Air Saturation" units="percent"
+						columnIndex="4" format="float"> </RecordVariable>
+					<RecordVariable name="Temperature" longName="Temperature" units="deg C"
+						columnIndex="5" format="float">
+						<StandardVariable name="temperature_of_sensor_for_oxygen_in_sea_water"/>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

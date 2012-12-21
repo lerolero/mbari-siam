@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1647.xml,v 1.1 2008/11/04 22:46:40 bobh Exp $	-->
+<!-- Last edited by $Author: bobh $   -->
+
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:noNamespaceSchemaLocation="http://ssds.mbari.org/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="2" minorVersion="3" 
+	lastAuthor="$Author: bobh $" lastUpdate="$Date: 2008/11/04 22:46:40 $">
+	
+	<Deployment role="instrument">
+		<Device id="1647" name="PID Motor Control Loop" type="other" 
+		mfgName="AllMotion"  mfgModel="EZSV23"
+		preferredDeploymentRole="Instrument">
+			<description>PID Motor Control Loop using EZServo</description>
+			<Person	firstname="Bob" surname="Herlien" organization="MBARI"
+			email="bobh@mbari.org" phone="831-775-1750"/>
+		</Device>
+		
+		<output>
+			<DataStream>
+				<description>Motor Control Data Stream</description>
+				<RecordDescription bufferStyle="ascii" 
+					parseable="true" 
+					recordType="1"
+					bufferParseType="ordered"
+					bufferItemSeparator=" "
+					bufferLengthType="fixed">
+					<RecordVariable
+						name="velocityCommand-1"
+						longName="Commanded velocity for motor 1, RPM"
+						units="RPM"
+						columnIndex="1"
+						format=integer" >
+						<description>Velocity command sent to motor 1</description>
+					</RecordVariable>
+					<RecordVariable
+						name="velocityCommand-2"
+						longName="Commanded velocity for motor 2, RPM"
+						units="RPM"
+						columnIndex="2"
+						format="integer" >
+						<description>Velocity command sent to motor 2</description>
+					</RecordVariable>
+					<RecordVariable
+						name="velocityFeedback-x"
+						longName="Measured velocity in X direction used for feedback"
+						units="cm/s"	
+						columnIndex="3"
+						format="float" >
+						<description>Measured velocity in X direction used for feedback</description>
+						<StandardVariable name="cm/s"/>
+					</RecordVariable>
+					<RecordVariable
+						name="velocityFeedback-y"
+						longName="Measured velocity in Y direction used for feedback"
+						units="cm/s"	
+						columnIndex="4"
+						format="float" >
+						<description>Measured velocity in Y direction used for feedback</description>
+						<StandardVariable name="cm/s"/>
+					</RecordVariable>
+					<RecordVariable
+						name="velocityFeedback-z"
+						longName="Measured velocity in Z direction used for feedback"
+						units="cm/s"	
+						columnIndex="5"
+						format="float" >
+						<description>Measured velocity in Z direction used for feedback</description>
+						<StandardVariable name="cm/s"/>
+					</RecordVariable>
+					<RecordVariable
+						name="velocitySetpoint-x"
+						longName="Setpoint for velocity in X direction"
+						units="cm/s"	
+						columnIndex="6"
+						format="float" >
+						<description>Setpoint for velocity loop, X direction</description>
+						<StandardVariable name="cm/s"/>
+					</RecordVariable>
+					<RecordVariable
+						name="velocitySetpoint-y"
+						longName="Setpoint for velocity in Y direction"
+						units="cm/s"	
+						columnIndex="7"
+						format="float" >
+						<description>Setpoint for velocity loop, X direction</description>
+						<StandardVariable name="cm/s"/>
+					</RecordVariable>
+					<RecordVariable
+						name="velocitySetpoint-z"
+						longName="Setpoint for velocity in Z direction"
+						units="cm/s"	
+						columnIndex="8"
+						format="float" >
+						<description>Setpoint for velocity loop, Z direction</description>
+						<StandardVariable name="cm/s"/>
+					</RecordVariable>
+					<RecordVariable
+						name="motorPosition-1"
+						longName="Reported encoder position for motor 1"
+						units="counts"
+						columnIndex="9"
+						format="integer" >
+						<description>Encoder position for motor 1</description>
+					</RecordVariable>
+					<RecordVariable
+						name="motorPosition-2"
+						longName="Reported encoder position for motor 2"
+						units="counts"
+						columnIndex="10"
+						format="integer" >
+						<description>Encoder position for motor 2</description>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

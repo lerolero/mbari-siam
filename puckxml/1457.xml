@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1457.xml,v 1.4 2009/03/09 21:56:30 mccann Exp $	-->
+<!-- Last edited by $Author: mccann $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://dods.mbari.org/data/ssdsdata/config/schema/2005oasis/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="1" lastAuthor="$Author: mccann $" lastUpdate="$Date: 2009/03/09 21:56:30 $" >
+	<Deployment role="instrument" nominalDepth="-2.5">
+		<Device id="1457" />
+		<output>
+			<DataStream>
+				<RecordDescription bufferStyle="ASCII"
+				bufferParseType="ordered"
+				bufferItemSeparator=":"
+				bufferLengthType="variable"
+				parseable="true" recordType="1">
+					<!-- Sample Record:
+					1.7 :   32721
+					-->
+					<RecordVariable
+						name="SW_flux"
+						longName="Short Wave flux"
+						units="watts per square meter"
+						columnIndex="1"
+						format="float" >
+						<StandardVariable name="surface_downwelling_shortwave_flux_in_air"/>
+					</RecordVariable>
+					<RecordVariable
+						name="SW_raw"
+						longName="Short wave flux raw count"
+						columnIndex="2"
+						format="integer" >
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

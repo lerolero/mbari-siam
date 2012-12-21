@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1764.xml,v 1.1 2010/09/21 23:01:56 bobh Exp $	-->
+<!-- Last edited by $Author: bobh $	$Date: 2010/09/21 23:01:56 $   -->
+
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:noNamespaceSchemaLocation="http://ssds.mbari.org/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="2" minorVersion="3" 
+	lastAuthor="$Author: bobh $" lastUpdate="$Date: 2010/09/21 23:01:56 $">
+	
+	<Deployment role="instrument">
+		<Device id="1764" name="Workhorse Monitor 300KHz ADCP" type="Currents Sensor-ADCP" 
+			mfgName="RD Instruments"  mfgModel="WHM300-I-UG16" mfgSerialNumber="13871">
+			<description>RD Instruments Workhorse Monitor ADCP</description>
+			<Person	firstname="Bob" surname="Herlien" organization="MBARI"
+			email="bobh@mbari.org" phone="831-775-1750" />	
+		</Device>
+		<output>
+			<DataStream>
+				<description>ADCP Data Stream</description>
+				<RecordDescription bufferStyle="binary" 
+					bufferLengthType="variable" 
+					parseable="false" 
+					recordType="1">
+				    <RecordVariable name="ADCP_data" 
+				    	longName="ADCP Binary Data Stream" 
+				    	units="noUnits" 
+				    	columnIndex="1" >
+						<description>All of ADCP data output packed into binary string.  Must be decoded for use.</description>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

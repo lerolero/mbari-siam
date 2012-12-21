@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1539.xml,v 1.1 2006/03/09 23:47:23 rich Exp $	-->
+<!-- Last edited by $Author: rich $	$Date: 2006/03/09 23:47:23 $   -->
+
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:noNamespaceSchemaLocation="http://ssds.shore.mbari.org/ssdsdata/config/schema/2004cimt/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="0" lastAuthor="$Author: rich $" lastUpdate="$Date: 2006/03/09 23:47:23 $">
+	<Deployment role="instrument">
+		<Device id="1539" name="Workhorse Sentinal 300KHz ADCP" type="ADCP" 
+		mfgName="RD Instruments" mfgModel="WHS300HPX1" mfgSerialNumber="2024"
+		 preferredDeploymentRole="Instrument">
+			<description>Measures ocean current motions</description>
+			<Person firstname="Bill" surname="Ussler" organization="MBARI" email="methane@mbari.org"/>
+		</Device>
+		<output>
+			<DataStream>
+				<description>ADCP Data Stream</description>
+				<RecordDescription bufferStyle="binary" bufferLengthType="variable" parseable="false" recordType="1">
+				    <RecordVariable name="ADCP_data" longName="ADCP Binary Data Stream" units="noUnits" columnIndex="1" >
+						<description>All of ADCP data output packed into binary string.  Must be decoded for use.</description>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

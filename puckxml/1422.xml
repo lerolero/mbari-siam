@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1422.xml,v 1.5 2009/03/09 21:56:30 mccann Exp $	-->
+<!-- Last edited by $Author: mccann $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://dods.mbari.org/data/ssdsdata/config/schema/2004oasis/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="1" lastAuthor="$Author: mccann $" lastUpdate="$Date: 2009/03/09 21:56:30 $" >
+	<Deployment role="instrument" nominalDepth="1">
+		<Device id="1422" />
+		<output>
+			<DataStream>
+				<RecordDescription bufferStyle="ASCII"
+				bufferParseType="ordered"
+				bufferItemSeparator="whitespace"
+				bufferLengthType="variable"
+				parseable="true" recordType="1">
+					<!-- Sample Record:
+					    -493.10  -97.063   16.990   2721.5  I 
+					-->
+					<RecordVariable
+						name="delta_pCO2_mv"
+						longName="Delta partial pressure of CO2"
+						units="millivolts"	
+						columnIndex="1"
+						format="float" >
+							<description>Difference in partial pressure of CO2 between atmosphere and sea surface in millivolts</description>
+					</RecordVariable>
+					<RecordVariable
+						name="delta_pCO2_ppm"
+						longName="Delta partial pressure of CO2"
+						units="ppm"	
+						columnIndex="2"
+						format="float" >
+							<description>Difference in partial pressure of CO2 between atmosphere and sea surface in parts per million</description>
+					</RecordVariable>			
+					<RecordVariable
+						name="Temperature"
+						longName="Sensor Temperature"
+						units="deg C"
+						columnIndex="3"
+						format="float" >
+							<description>Temperature of the measuring cell</description>
+					</RecordVariable>
+					<RecordVariable
+						name="Pressure"
+						longName="Gas Pressure"
+						units="millivolts"
+						columnIndex="4"
+						format="float" >
+							<description>Gas pressure inside the mesuring cell</description>
+					</RecordVariable>
+					<RecordVariable
+						name="Record_marker"
+						longName="Record marker"
+						columnIndex="5"
+						format="string"	>
+							<description>'C' for calibration, 'I' for intermediate, \0 for a data record</description>
+					</RecordVariable>
+
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

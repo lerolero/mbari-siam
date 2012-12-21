@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Header: /home/cvs/puckxml/1565.xml,v 1.2 2010/06/01 17:07:10 mccann Exp $	-->
+<!-- Last edited by $Author: mccann $	$Date: 2010/06/01 17:07:10 $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://ssds.mbari.org/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="1" 
+	lastAuthor="$Author: mccann $" lastUpdate="$Date: 2010/06/01 17:07:10 $" >
+	
+	<Deployment role="instrument" nominalDepth="1">
+	
+		<Device	id="1565" />
+		
+		<output>
+			<DataStream>
+				<description>EK60 data stream</description>
+				
+				    
+					<RecordDescription bufferStyle="ascii" 
+						bufferParseType="ordered"
+						bufferItemSeparator="whitespace"
+						bufferLengthType="variable"	
+		                parseable="false"
+		                recordType="1">
+					<!-- Sample Record:
+						ok
+					-->
+					<!--
+						Comments:
+							This unit only returns the single word 'ok'.
+					-->
+						<RecordVariable
+							name="StringOK"
+							longName="Check String: ok [Unused]"
+							units="none"
+							columnIndex="1"
+							format="string"	>
+							<description>string that makes up every record</description>
+						</RecordVariable>
+					</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

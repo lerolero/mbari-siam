@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Test 20050823 -->
+<!-- $Header: /home/cvs/puckxml/1301.xml,v 1.2 2005/08/24 02:15:06 achase Exp $	-->
+<!-- Last edited by $Author: achase $	$Date: 2005/08/24 02:15:06 $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://ssds.shore.mbari.org/ssdsdata/config/schema/2004cimt/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="7" lastAuthor="$Author: achase $" lastUpdate="$Date: 2005/08/24 02:15:06 $" >
+	<Deployment role="instrument" name="M0-CIMT"
+	nominalLongitude="-121.903333" nominalLatitude="36.833333" nominalDepth="0">
+		<Device	id="1301" name="ECO BB OBS" type="Scatterometer" mfgName="Wetlabs" mfgModel="ECO BB" mfgSerialNumber="BBSB-024R"
+			preferredDeploymentRole="Instrument">
+			<description>ECO BB backscatterometer (1st deployed on M0-CIMT)</description>
+			<Person	firstname="Tim" surname="Pennington" organization="MBARI"
+			email="peti@mbari.org" phone="831-775-1715"/>
+		</Device>
+		<description>M0-CIMT installation of ECO BB</description>
+		<output>
+			<DataStream>
+				<description>ECO BB data stream</description>
+				<!-- Comments:
+					- Doesn't use fixedPosition parsing yet
+				-->
+				<RecordDescription bufferStyle="ASCII"
+				bufferParseType="ordered"
+				bufferItemSeparator="whitespace"
+				bufferLengthType="variable"
+				parseable="true" recordType="1">
+					<!-- COMMAND Sent:
+					-->
+					<!-- Sample Record:
+						05/23/04        15:49:54        1597    119     566
+						05/23/04        15:49:55        1589    119     565
+						05/23/04        15:49:55        1585    117     565
+						05/23/04        15:49:56        1583    116     565
+						05/23/04        15:49:56        1580    116     564
+					-->
+					<!-- Accuracy:
+					-->
+					<!--
+						Comments:
+							This XML assumes one data record per packet.
+					-->
+					<RecordVariable
+						name="Date_1"
+						longName="Date of Sample 1"
+						units="dd_mm_yy"	referenceScale="TBD"
+						columnIndex="1"
+						format="string"	>
+							<description>date in dd/mm/yy format of 1st sample in this record</description>
+							<StandardVariable name="date"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Time_1"
+						longName="Time of Day 1"
+						units="hh_mm_ss"	referenceScale="TBD"
+						columnIndex="2"
+						format="string"	>
+							<description>time of day in hh:mm:ss format of 1st sample in this record</description>
+							<StandardVariable name="time"/>
+					</RecordVariable>
+					<RecordVariable
+						name="RefSignal_1"
+						longName="Reference Light Signal 1"
+						units="counts"	referenceScale="TBD"
+						columnIndex="3"
+						format="int" >
+							<description>reference light signal of 1st sample in this record</description>
+							<StandardVariable name="intensity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="VolumeScattering_1"
+						longName="Fluorescence signal 1"
+						units="counts"	referenceScale="TBD"
+						columnIndex="4"
+						format="int" >
+							<description>fluorescence signal of 1st sample in this record</description>
+							<StandardVariable name="intensiy"/>
+					</RecordVariable>
+					<RecordVariable
+						name="ThermistorTemp_1"
+						longName="Thermistor Temperature 1"
+						units="counts"	referenceScale="TBD"
+						columnIndex="5"
+						format="int" >
+							<description>thermistor temperature of 1st sample in this record</description>
+							<StandardVariable name="temperature"/>
+					</RecordVariable>
+					
+					<RecordVariable
+						name="Date_2"
+						longName="Date of Sample 2"
+						units="dd_mm_yy"	referenceScale="TBD"
+						columnIndex="6"
+						format="string"	>
+							<description>date in dd/mm/yy format of 2nd sample in this record</description>
+							<StandardVariable name="date"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Time_2"
+						longName="Time of Day 2"
+						units="hh_mm_ss"	referenceScale="TBD"
+						columnIndex="7"
+						format="string"	>
+							<description>time of day in hh:mm:ss format of 2nd sample in this record</description>
+							<StandardVariable name="time"/>
+					</RecordVariable>
+					<RecordVariable
+						name="RefSignal_2"
+						longName="Reference Light Signal 2"
+						units="counts"	referenceScale="TBD"
+						columnIndex="8"
+						format="int" >
+							<description>reference light signal of 2nd sample in this record</description>
+							<StandardVariable name="intensity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="VolumeScattering_2"
+						longName="Fluorescence signal 2"
+						units="counts"	referenceScale="TBD"
+						columnIndex="9"
+						format="int" >
+							<description>fluorescence signal of 2nd sample in this record</description>
+							<StandardVariable name="intensiy"/>
+					</RecordVariable>
+					<RecordVariable
+						name="ThermistorTemp_2"
+						longName="Thermistor Temperature 2"
+						units="counts"	referenceScale="TBD"
+						columnIndex="10"
+						format="int" >
+							<description>thermistor temperature of 2nd sample in this record</description>
+							<StandardVariable name="temperature"/>
+					</RecordVariable>
+					
+					<RecordVariable
+						name="Date_3"
+						longName="Date of Sample 3"
+						units="dd_mm_yy"	referenceScale="TBD"
+						columnIndex="11"
+						format="string"	>
+							<description>date in dd/mm/yy format of 3rd sample in this record</description>
+							<StandardVariable name="date"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Time_3"
+						longName="Time of Day 3"
+						units="hh_mm_ss"	referenceScale="TBD"
+						columnIndex="12"
+						format="string"	>
+							<description>time of day in hh:mm:ss format of 3rd sample in this record</description>
+							<StandardVariable name="time"/>
+					</RecordVariable>
+					<RecordVariable
+						name="RefSignal_3"
+						longName="Reference Light Signal 3"
+						units="counts"	referenceScale="TBD"
+						columnIndex="13"
+						format="int" >
+							<description>reference light signal of 3rd sample in this record</description>
+							<StandardVariable name="intensity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="VolumeScattering_3"
+						longName="Fluorescence signal 3"
+						units="counts"	referenceScale="TBD"
+					
+						columnIndex="14"
+						format="int" >
+							<description>fluorescence signal of 3rd sample in this record</description>
+							<StandardVariable name="intensiy"/>
+					</RecordVariable>
+					<RecordVariable
+						name="ThermistorTemp_3"
+						longName="Thermistor Temperature 3"
+						units="counts"	referenceScale="TBD"
+						columnIndex="15"
+						format="int" >
+							<description>thermistor temperature of 3rd sample in this record</description>
+							<StandardVariable name="temperature"/>
+					</RecordVariable>
+					
+					<RecordVariable
+						name="Date_4"
+						longName="Date of Sample 4"
+						units="dd_mm_yy"	referenceScale="TBD"
+						columnIndex="16"
+						format="string"	>
+							<description>date in dd/mm/yy format of 4th sample in this record</description>
+							<StandardVariable name="date"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Time_4"
+						longName="Time of Day 4"
+						units="hh_mm_ss"	referenceScale="TBD"
+						columnIndex="17"
+						format="string"	>
+							<description>time of day in hh:mm:ss format of 4th sample in this record</description>
+							<StandardVariable name="time"/>
+					</RecordVariable>
+					<RecordVariable
+						name="RefSignal_4"
+						longName="Reference Light Signal 4"
+						units="counts"	referenceScale="TBD"
+						columnIndex="18"
+						format="int" >
+							<description>reference light signal of 4th sample in this record</description>
+							<StandardVariable name="intensity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="VolumeScattering_4"
+						longName="Fluorescence signal 4"
+						units="counts"	referenceScale="TBD"
+						columnIndex="19"
+						format="int" >
+							<description>fluorescence signal of 4th sample in this record</description>
+							<StandardVariable name="intensiy"/>
+					</RecordVariable>
+					<RecordVariable
+						name="ThermistorTemp_4"
+						longName="Thermistor Temperature 4"
+						units="counts"	referenceScale="TBD"
+						columnIndex="20"
+						format="int" >
+							<description>thermistor temperature of 4th sample in this record</description>
+							<StandardVariable name="temperature"/>
+					</RecordVariable>
+					
+					<RecordVariable
+						name="Date_5"
+						longName="Date of Sample 5"
+						units="dd_mm_yy"	referenceScale="TBD"
+						columnIndex="21"
+						format="string"	>
+							<description>date in dd/mm/yy format of 5th sample in this record</description>
+							<StandardVariable name="date"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Time_5"
+						longName="Time of Day 5"
+						units="hh_mm_ss"	referenceScale="TBD"
+						columnIndex="22"
+						format="string"	>
+							<description>time of day in hh:mm:ss format of 5th sample in this record</description>
+							<StandardVariable name="time"/>
+					</RecordVariable>
+					<RecordVariable
+						name="RefSignal_5"
+						longName="Reference Light Signal 5"
+						units="counts"	referenceScale="TBD"
+						columnIndex="23"
+						format="int" >
+							<description>reference light signal of 5th sample in this record</description>
+							<StandardVariable name="intensity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="VolumeScattering_5"
+						longName="Fluorescence signal 5"
+						units="counts"	referenceScale="TBD"
+						columnIndex="24"
+						format="int" >
+							<description>fluorescence signal of 5th sample in this record</description>
+							<StandardVariable name="intensiy"/>
+					</RecordVariable>
+					<RecordVariable
+						name="ThermistorTemp_5"
+						longName="Thermistor Temperature 5"
+						units="counts"	referenceScale="TBD"
+						columnIndex="25"
+						format="int" >
+							<description>thermistor temperature of 5th sample in this record</description>
+							<StandardVariable name="temperature"/>
+					</RecordVariable>
+
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

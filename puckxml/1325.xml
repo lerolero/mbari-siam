@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:noNamespaceSchemaLocation="http://ssds.shore.mbari.org/ssdsdata/config/schema/2004cimt/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="7" lastAuthor="$Author: rich $" lastUpdate="$Date: 2006/02/24 18:04:41 $" >
+	
+		<Deployment role="instrument" >
+			<Device id="1325" 
+			name="OCR-3000" 
+			type="Radiometer" 
+			mfgName="Satlantic" 
+			mfgModel="OCR-3000" 
+			mfgSerialNumber="0163" 
+			preferredDeploymentRole="Instrument">
+			<description>Hyperspectral Radiometer; Ed (downwelling irradiance) unit, facing upward</description>
+				<Person firstname="Kevin" surname="Mahoney" organization="MBARI" email="kmahoney@mbari.org"/>
+			</Device>
+		
+		
+		<output>
+			<DataStream>
+				<description>Satlantic Radiometer Datastream</description>
+				<RecordDescription bufferStyle="binary" bufferLengthType="fixed" parseable="false" recordType="1">
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

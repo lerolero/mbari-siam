@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1599.xml,v 1.2 2009/10/29 20:56:34 mccann Exp $	-->
+<!-- Last edited by $Author: mccann $	$Date: 2009/10/29 20:56:34 $   -->
+
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://new-ssds.mbari.org/ssds-docs/xml/schema/SSDS_Metadata.xsd" 
+	majorVersion="1" minorVersion="1" 
+	lastAuthor="$Author: mccann $" lastUpdate="$Date: 2009/10/29 20:56:34 $" >
+	<Deployment role="instrument" name="SideARM Deployment">
+		<Device id="1599" name="MSP430" type="Environment Monitor-System" 
+			mfgName="MBARI" mfgModel="MSP430" mfgSerialNumber="4.02" 
+			preferredDeploymentRole="instrument">
+			<description>MSP430 on SideARM402</description>
+			<Person firstname="Mark" surname="Chaffey" organization="MBARI" 
+			email="chma@mbari.org"/>
+		</Device>
+		<output>
+			<DataStream>
+				<description>MSP 430 environmental data stream</description>
+				<RecordDescription bufferStyle="ASCII" 
+					bufferParseType="ordered"   
+					bufferItemSeparator="," 
+					bufferLengthType="fixed"  
+					parseable="true" recordType="1">
+					<!-- Sample Record: 
+						$PEDATA, P1024.01, T26.71, H37.10, GFL0.38, GFH-0.28, C338.20, TC0.00, *3742 
+					-->
+					
+					<RecordVariable 
+						name="RecordStatus" 
+						longName="Status of MSP Record" 
+						units="noUnits"  
+						columnIndex="1" 
+						format="string">
+							<description>tag string at beginning of data</description>
+					</RecordVariable>
+					<RecordVariable 
+						name="Pressure" 
+						longName="Pressure Inside MMC Can" 
+						units="millibars"  
+						columnIndex="2" 
+						format="double" parseRegExp="P(\d+\.\d+)" 
+						validMin="0.0" validMax="5000.0" >
+							<description>atmospheric pressure measured inside the MMC controller pressure housing</description>
+					</RecordVariable>
+					<RecordVariable 
+						name="Temperature" 
+						longName="Temperature Inside MMC Can" 
+						units="degrees C" referenceScale="none" 
+						columnIndex="3" 
+						format="double" parseRegExp="T(\d+\.\d+)" >
+							<description>temperature measured inside the MMC controller pressure housing</description>
+					</RecordVariable>
+					<RecordVariable 
+						name="Humidity" 
+						longName="Relative Humidity Inside Can" 
+						units="percent"  
+						columnIndex="4" 
+						format="double" parseRegExp="H(\d+\.\d+)" 
+						validMin="0.0" validMax="100.0" >
+							<description>relative humidity measured inside the MMC controller pressure housing</description>
+					</RecordVariable>
+					<RecordVariable
+						name="Ground_Fault_Low" 
+						longName="Ground Fault Low Voltage" 
+						units="micoAmps"  
+						columnIndex="5" 
+						format="double" parseRegExp="GFL(-*\d+\.\d+)" >
+							<description>ground fault voltage measured on low voltage circuit</description>
+					</RecordVariable>
+					<RecordVariable
+						name="Ground_Fault_High" 
+						longName="Ground Fault High Voltage" 
+						units="micoAmps"  
+						columnIndex="6" 
+						format="double" parseRegExp="GFH(-*\d+\.\d+)" 
+						validMin="0.0" validMax="240.0" >
+							<description>ground fault voltage measured on high voltage circuit</description>
+					</RecordVariable>
+					<RecordVariable 
+						name="Compass_Heading" 
+						longName="Heading per Environmental Compass" 
+						units="degrees" referenceScale="trueNorth(?)" 
+						columnIndex="7" 
+						format="double" parseRegExp="C(\d+\.\d+)" 
+						validMin="0.0" validMax="360.0" >
+							<description>Heading measured by the compass on the MSP430</description>
+					</RecordVariable>
+					<RecordVariable 
+						name="Compass_Turns_Count" 
+						longName="Number of Compass Turns Since Reset" 
+						units="totalCount"  
+						columnIndex="8" 
+						format="int" parseRegExp="TC(-*\d+\.\d+)" >
+							<description>Accumulated number of turns measured by the Compass Heading since the last reset.  (Positive = clockwise, negative = counter-clockwise.)</description>
+					</RecordVariable>
+					<RecordVariable 
+						name="CheckSum" 
+						longName="checksum of data packet" 
+						units="tbd"  
+						columnIndex="9" 
+						format="int" parseRegExp="\*(\d+)" >
+							<description>checksum</description>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

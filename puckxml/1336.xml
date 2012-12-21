@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1336.xml,v 1.4 2005/08/25 18:29:07 graybeal Exp $	-->
+<!-- Last edited by $Author: graybeal $	$Date: 2005/08/25 18:29:07 $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:noNamespaceSchemaLocation="http://ssds.shore.mbari.org/ssdsdata/config/schema/2005mtm3/SSDS_Metadata.xsd" majorVersion="1" minorVersion="4" lastAuthor="$Author: graybeal $" lastUpdate="$Date: 2005/08/25 18:29:07 $" >
+    
+	<Deployment role="instrument" name="MTM3" nominalLongitude="-122" nominalLatitude="37" nominalDepth="-1">
+		<Device id="1336" name="P2 ADC" type="controller" mfgName="MBARI" mfgModel="P2rev2" mfgSerialNumber="8" preferredDeploymentRole="instrument">
+			<description>P2 ADC System</description>
+			<Person firstname="Lance" surname="McBride" organization="MBARI" email="lance@mbari.org" phone="831-775-2046"/>
+		</Device>
+		<description>MTM3 installation of P2 ADC</description>
+		<output>
+			<DataStream>
+				<description>P2 ADC data</description>
+				<!-- Comments:
+					- Doesn't use fixedPosition parsing yet
+				-->
+				<RecordDescription bufferStyle="ASCII" bufferParseType="ordered" bufferItemSeparator="whitespace" bufferLengthType="variable" parseable="true" recordType="1">
+					<!-- COMMAND Sent:
+					-->
+					<!-- Sample Record:
+					ADC00 A+2.1364e-03 N0000071 L+2.1364e-03 H+2.1364e-03 D+0.0000e+00 E0
+					ADC01 A+2.1364e-03 N0000071 L+2.1364e-03 H+2.1364e-03 D+0.0000e+00 E0
+					ADC03 A+0.0000e+00 N0000071 L+0.0000e+00 H+0.0000e+00 D+0.0000e+00 E0
+					DATA COUNT 00213
+					-->
+					<!-- Accuracy:
+					-->
+					<RecordVariable
+						name="Channel ADC02 Label"
+						longName="ADC02: Optical Ch 2 (Channel Label)"
+						units="none"  referenceScale="tbd"
+						columnIndex="1"
+						format="string" >
+						<description>Label for ADC02. This channel is the Channel Label for the Optical Channel 2.</description>
+						<StandardVariable name="labelString" />
+					</RecordVariable>
+					<RecordVariable
+						name="ADC02 Avg"
+						longName="ADC02/ Optical Ch 2 Avg"
+						units="volts"  referenceScale="tbd"
+						columnIndex="2"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for Optical Channel 2. (Power Can channel ADC02)</description>
+							<StandardVariable name="voltage" />
+					</RecordVariable>
+					<RecordVariable
+						name="ADC02 NumSamps"
+						longName="ADC02/ Optical Ch 2 Number of Samples"
+						units="count"  referenceScale="tbd"
+						columnIndex="3"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for Optical Channel 2. (Power Can channel ADC02)</description>
+							<StandardVariable name="count" />
+					</RecordVariable>
+					<RecordVariable
+						name="ADC02 Min"
+						longName="ADC02/ Optical Ch 2 Min"
+						units="volts"  referenceScale="tbd"
+						columnIndex="4"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for Optical Channel 2. (Power Can channel ADC02)</description>
+						<StandardVariable name="voltage" />
+					</RecordVariable>
+					<RecordVariable
+						name="ADC02 Max"
+						longName="ADC02/ Optical Ch 2 Max"
+						units="volts"  referenceScale="tbd"
+						columnIndex="5"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for Optical Channel 2. (Power Can ADC02)</description>
+							<StandardVariable name="voltage" />
+					</RecordVariable>
+					<RecordVariable
+						name="ADC02 SD"
+						longName="ADC02/ Optical Ch 2 SD"
+						units="volts"  referenceScale="tbd"
+						columnIndex="6"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Std Dev for Optical Channel 2. (Power Can channel ADC02)</description>
+							<StandardVariable name="voltage" />
+					</RecordVariable>
+					<RecordVariable
+						name="ADC02 Err Flag"
+						longName="ADC02/ Optical Ch 2 Err Flag"
+						units="0isgood"  referenceScale="tbd"
+						columnIndex="7"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for Optical Channel 2. (Power Can channel ADC02)</description>
+							<StandardVariable name="errorFlag" />
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel ADC03 Label"
+						longName="ADC03: Optical Reference (Channel Label)"
+						units="none"  referenceScale="tbd"
+						columnIndex="8"
+						format="string" >
+						<description>Label for ADC03. This channel is the Channel Label for the Optical Reference.</description>
+						<StandardVariable name="labelString" />
+					</RecordVariable>
+					<RecordVariable
+						name="ADC03 Avg"
+						longName="ADC03/ Optical Reference Avg"
+						units="volts"  referenceScale="tbd"
+						columnIndex="9"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for Optical Reference. (Power Can channel ADC03)</description>
+							<StandardVariable name="voltage" />
+					</RecordVariable>
+					<RecordVariable
+						name="ADC03 NumSamps"
+						longName="ADC03/ Optical Reference Number of Samples"
+						units="count"  referenceScale="tbd"
+						columnIndex="10"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for Optical Reference. (Power Can channel ADC03)</description>
+							<StandardVariable name="count" />
+					</RecordVariable>
+					<RecordVariable
+						name="ADC03 Min"
+						longName="ADC03/ Optical Reference Min"
+						units="volts"  referenceScale="tbd"
+						columnIndex="11"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for Optical Reference. (Power Can channel ADC03)</description>
+						<StandardVariable name="voltage" />
+					</RecordVariable>
+					<RecordVariable
+						name="ADC03 Max"
+						longName="ADC03/ Optical Reference Max"
+						units="volts"  referenceScale="tbd"
+						columnIndex="12"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for Optical Reference. (Power Can ADC03)</description>
+							<StandardVariable name="voltage" />
+					</RecordVariable>
+					<RecordVariable
+						name="ADC03 SD"
+						longName="ADC03/ Optical Reference SD"
+						units="volts"  referenceScale="tbd"
+						columnIndex="13"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Std Dev for Optical Reference. (Power Can channel ADC03)</description>
+							<StandardVariable name="voltage" />
+					</RecordVariable>
+					<RecordVariable
+						name="ADC03 Err Flag"
+						longName="ADC03/ Optical Reference Err Flag"
+						units="0isgood"  referenceScale="tbd"
+						columnIndex="14"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for Optical Reference. (Power Can channel ADC03)</description>
+							<StandardVariable name="errorFlag" />
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel ADC04 Label"
+						longName="ADC04: Optical Ch 1 (Channel Label)"
+						units="none"  referenceScale="tbd"
+						columnIndex="15"
+						format="string" >
+						<description>Label for ADC04. This channel is the Channel Label for the Optical Channel 1.</description>
+						<StandardVariable name="labelString" />
+					</RecordVariable>
+					<RecordVariable
+						name="ADC04 Avg"
+						longName="ADC04/ Optical Ch 1 Avg"
+						units="volts"  referenceScale="tbd"
+						columnIndex="16"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for Optical Channel 1. (Power Can channel ADC04)</description>
+							<StandardVariable name="voltage" />
+					</RecordVariable>
+					<RecordVariable
+						name="ADC04 NumSamps"
+						longName="ADC04/ Optical Ch 1 Number of Samples"
+						units="count"  referenceScale="tbd"
+						columnIndex="17"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for Optical Channel 1. (Power Can channel ADC04)</description>
+							<StandardVariable name="count" />
+					</RecordVariable>
+					<RecordVariable
+						name="ADC04 Min"
+						longName="ADC04/ Optical Ch 1 Min"
+						units="volts"  referenceScale="tbd"
+						columnIndex="18"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for Optical Channel 1. (Power Can channel ADC04)</description>
+						<StandardVariable name="voltage" />
+					</RecordVariable>
+					<RecordVariable
+						name="ADC04 Max"
+						longName="ADC04/ Optical Ch 1 Max"
+						units="volts"  referenceScale="tbd"
+						columnIndex="19"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for Optical Channel 1. (Power Can ADC04)</description>
+							<StandardVariable name="voltage" />
+					</RecordVariable>
+					<RecordVariable
+						name="ADC04 SD"
+						longName="ADC04/ Optical Ch 1 SD"
+						units="volts"  referenceScale="tbd"
+						columnIndex="20"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Std Dev for Optical Channel 1. (Power Can channel ADC04)</description>
+							<StandardVariable name="voltage" />
+					</RecordVariable>
+					<RecordVariable
+						name="ADC04 Err Flag"
+						longName="ADC04/ Optical Ch 1 Err Flag"
+						units="0isgood"  referenceScale="tbd"
+						columnIndex="21"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for Optical Channel 1. (Power Can channel ADC04)</description>
+							<StandardVariable name="errorFlag" />
+					</RecordVariable>
+
+
+
+
+
+					<RecordVariable name="CheckString Data" longName="CheckString Data" units="string" columnIndex="22" format="string">
+						<description>Just a word</description>
+						<StandardVariable name="checkString"/>
+					</RecordVariable>
+					<RecordVariable name="CheckString Count" longName="CheckString Count" units="string" columnIndex="23" format="string">
+						<description>Just a word</description>
+						<StandardVariable name="checkString"/>
+					</RecordVariable>
+					<RecordVariable name="Data Count" longName="Number of bytes transmitted in record" units="count" columnIndex="24" format="int">
+						<description>Total bytes transmitted</description>
+						<StandardVariable name="count"/>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

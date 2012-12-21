@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1425.xml,v 1.5 2009/10/14 20:48:12 mccann Exp $	-->
+<!-- Last edited by $Author: mccann $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://new-ssds.mbari.org/ssds-docs/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="1" lastAuthor="$Author: mccann $" lastUpdate="$Date: 2009/10/14 20:48:12 $" >
+	<Deployment role="instrument" >
+		<Device id="1425"></Device>
+		<output>
+			<DataStream>
+				<description>WETStar Data Stream</description>
+				<RecordDescription bufferStyle="binary" bufferLengthType="fixed" parseable="false" recordType="1">
+				    <RecordVariable name="WETStar_data" longName="WETStar Binary Analog Data Stream" units="" columnIndex="1" >
+						<description>Binary data from OASIS3 analog port attached to WETStar Fluorometer. Must be decoded for use.</description>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

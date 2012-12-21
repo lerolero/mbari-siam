@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Header: /home/cvs/puckxml/1696.xml,v 1.5 2009/01/21 20:01:43 mccann Exp $	-->
+
+<!-- Last edited by $Author: mccann $   -->
+
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://ssds.mbari.org/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="2" lastAuthor="$Author: mccann $"
+    lastUpdate="$Date: 2009/01/21 20:01:43 $">
+    <Deployment role="platform" name="EITS on MARS">
+        <Device id="1697"/>
+        <!-- Eye In The Sea instrument for MARS2008 -->
+        <Deployment role="instrument" name="Eye In The Sea combined data from the CTD and ADV">
+            <Device id="1696"/>
+            <Deployment role="sensor">
+                <Device id="1694"/>
+            </Deployment>
+            <Deployment role="sensor">
+                <Device id="1695"/>
+            </Deployment>
+            <output>
+                <DataStream name="EITS Data Logger output of environmental data"
+                    url="http://new-ssds.mbari.org:8080/servlet/GetOriginalDataServlet?deviceID=1696">
+                    <RecordDescription bufferStyle="ASCII" bufferParseType="ordered"
+                        bufferItemSeparator="whitespace" bufferLengthType="variable"
+                        parseable="true" recordType="1" recordTerminator="\n" recordParseRegExp="\s*([\-\d\.]+)\s*([\-\d\.]+)\s*([\-\d\.]+)\s*([\-\d\.]+)\s*([\-\d\.]+)\s*([\-\d\.]+)">
+                        <RecordVariable name="Temperature" longName="Water Temperature"
+                            units="deg C" columnIndex="1" format="float">
+                            <StandardVariable name="sea_water_temperature"/>
+                        </RecordVariable>
+                        <RecordVariable name="Salinity" longName="Salinity" units="psu"
+                            columnIndex="2" format="float">
+                            <StandardVariable name="sea_water_salnity"/>
+                        </RecordVariable>
+                        <RecordVariable name="Depth" longName="Depth" units="meters" columnIndex="3"
+                            format="float">
+                            <StandardVariable name="Depth"/>
+                        </RecordVariable>
+                        <RecordVariable name="CurrentDirection" longName="Current Direction"
+                            units="degrees magnetic" columnIndex="4" format="float">
+                            <StandardVariable name="direction_of_sea_water_velocity"/>
+                        </RecordVariable>
+                        <RecordVariable name="VerticalCurrentVelocity"
+                            longName="Upward Sea Water Velocity" units="m/s" columnIndex="5"
+                            format="float">
+                            <StandardVariable name="upward_sea_water_velocity"/>
+                        </RecordVariable>
+                        <RecordVariable name="HorizontalCurrentSpeed" longName="Sea Water Speed"
+                            units="m/s" columnIndex="6" format="float">
+                            <StandardVariable name="sea_water_speed"/>
+                        </RecordVariable>
+                    </RecordDescription>
+                </DataStream>
+            </output>
+        </Deployment>
+    </Deployment>
+</Metadata>
+

@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1497.xml,v 1.5 2010/03/17 19:00:57 mccann Exp $	-->
+<!-- Last edited by $Author: mccann $	$Date: 2010/03/17 19:00:57 $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://new-ssds.mbari.org/ssds-docs/xml/schema/SSDS_Metadata.xsd"
+	majorVersion="1" minorVersion="5" lastAuthor="$Author: mccann $"
+	lastUpdate="$Date: 2010/03/17 19:00:57 $">
+	<Deployment role="instrument">
+		<Device id="1497" />
+		<output>
+			<DataStream>
+				<description>ASIMET HRH data stream</description>
+				<RecordDescription bufferStyle="ASCII" bufferParseType="ordered"
+					bufferItemSeparator="space" bufferLengthType="variable" parseable="true"
+					recordType="1">
+					<RecordVariable name="Relative_Humidity" longName="Relative Humidity"
+						units="percent" referenceScale="TBD" columnIndex="1" format="float">
+						<description>Relative humidity in percent</description>
+						<StandardVariable name="humidity" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable name="Temperature" longName="AirTemperature" units="deg C"
+						referenceScale="TBD" columnIndex="2" format="float">
+						<description>air temperature</description>
+						<StandardVariable name="air_temperature" namespaceUriString="http://marinemetadata.org/cf"/>
+					</RecordVariable>
+					<RecordVariable name="Colon" longName="Colon" units="noUnits"
+						referenceScale="none" columnIndex="3" format="String">
+						<description>an annoying colon character between the calibrated and raw data</description>
+						<StandardVariable name="checkString" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable name="RH_counts" longName="Raw Relative Humidity Counts"
+						units="count" referenceScale="TBD" columnIndex="4" format="int" validMin="0"
+						validMax="65535">
+						<description>Raw relative humidity counts (16 bit)</description>
+						<StandardVariable name="count" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable name="TMP_counts" longName="Raw Temperature Counts"
+						units="count" referenceScale="TBD" columnIndex="5" format="int" validMin="0"
+						validMax="65535">
+						<description>Raw temperature counts (16 bit)</description>
+						<StandardVariable name="count" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

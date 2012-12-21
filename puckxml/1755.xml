@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1755.xml,v 1.1 2010/06/17 18:30:23 bobh Exp $	-->
+<!-- Last edited by $Author: bobh $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ssds.mbari.org/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="2" lastAuthor="$Author: bobh $" lastUpdate="$Date: 2010/06/17 18:30:23 $" >
+	<Deployment role="Instrument">
+		<Device	id="1755" name="Sensoray EMonitor" type="Environment Monitor-System" 
+			mfgName="Sensoray Co. Inc." mfgModel="518" mfgSerialNumber="5">
+			<description>PC104 Data Acquisition Board software on FOCE 5 (used in FOCE as Enclosure Monitor)</description>
+			<!-- If the CPU stack is changed, e.g. to foce2, a different equipment ID number should be used -->
+			<Person	firstname="Chad" surname="Kecy" organization="MBARI"
+			email="ckecy@mbari.org" phone="831-775-2039"/>
+		</Device>
+		<output>
+			<DataStream>
+				<description>Sensoray data stream</description>
+				<RecordDescription bufferStyle="ASCII"
+					bufferParseType="ordered"
+					bufferItemSeparator=" "
+					bufferLengthType="variable"
+					parseable="true" recordType="1">
+					<!-- Sample Record:
+						14.2300 9.7000 13.3000 14.3800 0.7886 145.9000 1.5834 1.0172
+					-->
+					<!--
+						Comments:
+					-->
+					<RecordVariable
+						name="Therm_HE104"
+						longName="Thermistor -- PC104 CPU"
+						units="degrees C"
+						columnIndex="1"
+						format="float" >
+						<description>Measures the temperature of the PC104 DC-DC converter</description>
+						<StandardVariable name="temperature_of_device" namespaceUriString="http://mmisw.org/ont/mmi/eqtenvirons/" />
+					</RecordVariable>
+					<RecordVariable
+						name="Therm_36V"
+						longName="Thermistor -- 36V Power SUpply"
+						units="degrees C"
+						columnIndex="2"
+						format="float" >
+						<description>Measures the temperature of the 36V DC-DC converter</description>
+						<StandardVariable name="temperature_of_device" namespaceUriString="http://mmisw.org/ont/mmi/eqtenvirons/" />
+					</RecordVariable>
+					<RecordVariable
+						name="Therm_24V"
+						longName="Thermistor -- 24V Power SUpply"
+						units="degrees C"
+						columnIndex="3"
+						format="float" >
+						<description>Measures the temperature of the 24V DC-DC converter</description>
+						<StandardVariable name="temperature_of_device" namespaceUriString="http://mmisw.org/ont/mmi/eqtenvirons/" />
+					</RecordVariable>
+					<RecordVariable
+						name="Therm_12V"
+						longName="Thermistor -- 12V Power SUpply"
+						units="degrees C"
+						columnIndex="4"
+						format="float" >
+						<description>Measures the temperature of the 12V DC-DC converter</description>
+						<StandardVariable name="temperature_of_device" namespaceUriString="http://mmisw.org/ont/mmi/eqtenvirons/" />
+						</RecordVariable>
+					<RecordVariable
+						name="HTM2500_Hum"
+						longName="Humidity Sensor"
+						units="%"
+						columnIndex="5"
+						format="float" >
+						<description>Measures the humidity of the electronics enclosure</description>
+						<StandardVariable name="humidity_in_device" namespaceUriString="http://mmisw.org/ont/mmi/eqtenvirons/" />
+					</RecordVariable>
+					<RecordVariable
+						name="HTM2500_Temp"
+						longName="Temperature Sensor"
+						units="degrees C"
+						columnIndex="6"
+						format="float" >
+						<description>Measures the temperature of the electronics enclosure</description>
+						<StandardVariable name="temperature_in_device" namespaceUriString="http://mmisw.org/ont/mmi/eqtenvirons/" />
+					</RecordVariable>
+					<RecordVariable
+						name="Therm_Heatsink"
+						longName="Thermistor -- PC104 Stack Heat Sink"
+						units="degrees C"
+						columnIndex="7"
+						format="float" >
+						<description>Measures the temperature of the PC104 DC-DC converter board's heat sink.</description>
+						<StandardVariable name="temperature_of_device" namespaceUriString="http://mmisw.org/ont/mmi/eqtenvirons/" />
+					</RecordVariable>
+					<RecordVariable
+						name="Pressure"
+						longName="Can Pressure"
+						units="psia"
+						columnIndex="8"
+						format="float" >
+						<description>Air pressure in can</description>
+						<StandardVariable name="pressure" namespaceUriString="http://mmisw.org/ont/ssds/processing/" />
+					</RecordVariable>
+					
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

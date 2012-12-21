@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Header: /home/cvs/puckxml/1488.xml,v 1.2 2010/03/17 18:38:50 mccann Exp $	-->
+<!-- Last edited by $Author: mccann $	$Date: 2010/03/17 18:38:50 $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://ssds.shore.mbari.org/ssdsdata/config/schema/2004cimt/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="7" lastAuthor="$Author: mccann $" lastUpdate="$Date: 2010/03/17 18:38:50 $" >
+	<Deployment role="instrument" >
+		<Device	id="1488" />	
+		<output>
+			<DataStream>
+				<description>Wetlabs ECO FLNTU data stream</description>
+				
+				<RecordDescription bufferStyle="ASCII"
+				bufferParseType="ordered"
+				bufferItemSeparator="whitespace"
+				bufferLengthType="variable"
+				parseable="true" recordType="1">
+				
+					<RecordVariable
+						name="Date"
+						longName="Date"
+						units="dd_mm_yy"
+						referenceScale="TBD"
+						columnIndex="1"
+						format="string"	>
+							<description>date in dd/mm/yy format</description>
+							<StandardVariable name="date"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Time"
+						longName="Time of Day "
+						units="hh_mm_ss"	referenceScale="TBD"
+						columnIndex="2"
+						format="string"	>
+							<description>time of day in hh:mm:ss format</description>
+							<StandardVariable name="time"/>
+					</RecordVariable>
+					
+					<RecordVariable
+						name="CHLRef"
+						longName="Fluorescence Reference Signal"
+						units="counts"	referenceScale="TBD"
+						columnIndex="3"
+						format="int" >
+							<description>fluroescence reference light signal</description>
+							<StandardVariable name="intensity"/>
+					</RecordVariable>
+					
+					<RecordVariable
+						name="CHLSignal"
+						longName="Fluorescence"
+						units="counts"	referenceScale="TBD"
+						columnIndex="4"
+						format="int" >
+							<description>Fluorescence signal</description>
+							<StandardVariable name="intensity"/>
+					</RecordVariable>
+					
+					
+					<RecordVariable
+						name="NTURef"
+						longName="Turbidity Reference Signal"
+						units="counts"	referenceScale="TBD"
+						columnIndex="5"
+						format="int" >
+							<description>turbidity (Nephelometric Trubidity Units) reference light signal</description>
+							<StandardVariable name="turbidity"/>
+					</RecordVariable>
+					
+					<RecordVariable
+						name="NTUSignal"
+						longName="Turbidity"
+						units="counts"	referenceScale="TBD"
+						columnIndex="6"
+						format="int" >
+							<description> Turbidity (Nephelometric Trubidity Units)</description>
+							<StandardVariable name="turbidity"/>
+					</RecordVariable>
+					
+					
+					<RecordVariable
+						name="Thermistor"
+						longName="Thermistor Temperature Counts"
+						units="counts"	referenceScale="TBD"
+						columnIndex="7"
+						format="int" >
+							<description>thermistor temperature counts</description>
+							<StandardVariable name="counts"/>
+					</RecordVariable>
+
+
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

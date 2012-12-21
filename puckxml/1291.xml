@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1291.xml,v 1.5 2007/04/20 21:27:30 kgomes Exp $	-->
+<!-- Last edited by $Author: kgomes $	$Date: 2007/04/20 21:27:30 $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://new-ssds.mbari.org/ssds-docs/xml/schema/SSDS_Metadata.xsd" 
+	majorVersion="1" minorVersion="5" 
+	lastAuthor="$Author: kgomes $" lastUpdate="$Date: 2007/04/20 21:27:30 $" >
+	<Deployment role="instrument" >
+		<Device	id="1291" name="ASIMET WND" type="Wind Sensor"	
+			mfgName="ASIMET" mfgModel="WND" mfgSerialNumber="WND358">
+			<description>ASIMET wind and compass</description>
+			<Person	firstname="Tom" surname="OReilly" organization="MBARI" email="oreilly@mbari.org"/>
+		</Device>
+		<output>
+			<DataStream>
+				<description>ASIMET WND data stream</description>
+				<RecordDescription bufferStyle="ASCII"
+				bufferParseType="ordered"
+				bufferItemSeparator="space"
+				bufferLengthType="variable"
+				parseable="true" recordType="1">
+					<RecordVariable
+						name="Eastward_Wind"
+						longName="Average Velocity of East Wind Vector"
+						units="meterspersecond"	
+						columnIndex="1"
+						format="float"	>
+							<description>average wind speed in east direction (toward east is positive)</description>
+							<StandardVariable name="eastward_wind" namespaceUriString="http://marinemetadata.org/cf"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Northward_Wind"
+						longName="Average Velocity of North Wind Vector"
+						units="meterspersecond"	
+						columnIndex="2"
+						format="float"	>
+							<description>average wind speed in north direction (toward north is positive)</description>
+						<StandardVariable name="northward_wind" namespaceUriString="http://marinemetadata.org/cf"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Avg_Wind_Speed"
+						longName="Scalar Average Wind Speed"
+						units="meterspersecond"	
+						columnIndex="3"
+						format="float"	>
+							<description>scalar wind speed </description>
+						<StandardVariable name="wind_speed" namespaceUriString="http://marinemetadata.org/cf"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Max_Wind_Speed"
+						longName="Maximum Wind Speed"
+						units="meterspersecond"	
+						columnIndex="4"
+						format="float"	>
+							<description>maximum (5-second) wind speed in last 1-minute period</description>
+						<StandardVariable name="wind_speed_of_gust" namespaceUriString="http://marinemetadata.org/cf"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Min_Wind_Speed"
+						longName="Minimum Wind Speed"
+						units="meterspersecond"	
+						columnIndex="5"
+						format="float"	>
+							<description>minimum (5-second) wind speed in last 1-minute period</description>
+						<StandardVariable name="wind_speed" namespaceUriString="http://marinemetadata.org/cf"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Vane_Direction_Relative"
+						longName="Direction of Wind Vane Relative to Compass"
+						units="degreesHeading"	
+						columnIndex="6"
+						format="float"	>
+							<description>last wind vane direction measured; vane direction plus compass direction = wind direction</description>
+					</RecordVariable>
+					<RecordVariable name="Compass_Direction" longName="Directional Attitude of Unit"
+						units="degreesHeading" columnIndex="7" format="float">
+						<description>last compass vane direction measured; vane direction plus
+							compass direction = wind direction</description>
+					</RecordVariable>
+					<RecordVariable
+						name="Tilt_X_Avg"
+						longName="Average Tilt around X axis"
+						units="degrees"	
+						columnIndex="8"
+						format="float"	>
+							<description>Tilt of vane around X axis</description>
+					</RecordVariable>
+					<RecordVariable
+						name="Tilt_Y_Avg"
+						longName="Average Tilt around Y axis"
+						units="degrees"	
+						columnIndex="9"
+						format="float"	>
+							<description>Tilt of vane around Y axis</description>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

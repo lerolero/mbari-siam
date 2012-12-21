@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1299.xml,v 1.2 2009/05/04 22:40:39 graybeal Exp $	-->
+<!-- Last edited by $Author: graybeal $	$Date: 2009/05/04 22:40:39 $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ssds.mbari.org/xml/schema/SSDS_Metadata.xsd" 
+	majorVersion="1" minorVersion="6" lastAuthor="$Author: graybeal $" lastUpdate="$Date: 2009/05/04 22:40:39 $" >
+	
+	<Deployment role="instrument">
+		<Device id="1299" name="Mooring Controller" type="Controller-Mooring Node" 
+			mfgName="MBARI" mfgModel="SideARM v4" mfgSerialNumber="4.15" 
+			preferredDeploymentRole="instrument">
+			<description>MOOS Mooring Controller (MMC) SideARM board</description>
+			<Person firstname="Tom" surname="O'Reilly" organization="MBARI" email="oreilly@mbari.org"/>
+		</Device>
+		<output>
+			<DataStream>
+				<description>MMC Data Stream</description>
+				<RecordDescription 
+					bufferStyle="ascii" bufferLengthType="variable" parseable="false" recordType="1">
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

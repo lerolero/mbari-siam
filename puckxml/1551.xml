@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1551.xml,v 1.1 2006/04/04 23:42:51 rich Exp $	-->
+<!-- Last edited by $Author: rich $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://dods.mbari.org/data/ssdsdata/config/schema/2005oasis/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="1" lastAuthor="$Author: rich $" lastUpdate="$Date: 2006/04/04 23:42:51 $" >
+	<Deployment role="instrument" name="Oasis-3 Ground Fault">
+		<Device	id="1551" name="O3GF" type="Multipurpose" mfgName="MBARI" 
+			mfgModel="Gnd Fault" mfgSerialNumber="1"
+			preferredDeploymentRole="Instrument">
+			<description>Measures battery voltage, current</description>
+			<Person firstname="Zorba" surname="Pickerill" organization="MBARI"
+			 email="zorba@mbari.org"/>
+		</Device>
+
+		<output>
+			<DataStream>
+				<description>O3GF data stream</description>
+				<RecordDescription bufferStyle="ASCII"
+				bufferParseType="ordered"
+				bufferItemSeparator=","
+				bufferLengthType="variable"
+				parseable="true" recordType="1">
+					<!-- Sample Record:
+					 1023, 650, 581.822, 170.555
+					-->
+					
+					<RecordVariable
+						name="PosCounts"
+						longName="Positive Leakage A/D Counts"
+						units="counts"	referenceScale="TBD"
+						columnIndex="1"
+						format="int" >
+							<description>Positive Leakage A/D counts</description>
+					</RecordVariable>
+					
+					<RecordVariable
+						name="ComCounts"
+						longName="Common Leakage A/D Counts"
+						units="counts"	referenceScale="TBD"
+						columnIndex="2"
+						format="int" >
+							<description>Common Leakage A/D counts</description>
+					</RecordVariable>
+					
+					<RecordVariable
+						name="posLeak"
+						longName="Power Positive Leakage"
+						units="uA"	referenceScale="TBD"
+						columnIndex="3"
+						format="float" >
+							<description>Power Positive Leakage (uA)</description>
+					</RecordVariable>
+					
+					<RecordVariable
+						name="comLeak"
+						longName="Power Common Leakage"
+						units="uA"	referenceScale="TBD"
+						columnIndex="4"
+						format="float" >
+							<description>Power Common Leakage (uA)</description>
+					</RecordVariable>
+
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

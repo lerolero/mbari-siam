@@ -1,0 +1,628 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1499.xml,v 1.5 2006/04/06 19:27:23 rich Exp $	-->
+<!-- Last edited by $Author: rich $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://new-ssds.mbari.org/ssds-docs/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="2" lastAuthor="$Author: rich $" lastUpdate="$Date: 2006/04/06 19:27:23 $" >
+	<Deployment role="instrument" name="TString Deployment">
+		<Device	id="1501" name="Surface Inductive Modem" type="Inductive Modem-Surface" mfgName="Sea-Bird Electronics" 
+			mfgModel="SIM" mfgSerialNumber="0397">
+			<description>Inductive modem controller board for cable coupler</description>
+			<Person	firstname="Paul" surname="Coenen" organization="MBARI"
+			email="coenen@mbari.org"/>
+		</Device>
+			<!--
+			If any of the nominalDepth values need to be changed (below),
+			also change the DisplayName strings in the item descriptions.
+			-->
+		<Deployment role="sensor" name="Inductive CTD - 20m" nominalDepth="20">
+			<Device id="1433" name="MicroCAT Inductive CTD" type="CTD" mfgName="Sea-Bird Electronics" mfgModel="SBE37IM" mfgSerialNumber="37IM20000-00416"/>
+		</Deployment>
+		<Deployment role="sensor" name="Inductive CTD - 40m" nominalDepth="40">
+			<Device id="1462" name="MicroCAT Inductive CTD" type="CTD" mfgName="Sea-Bird Electronics" mfgModel="SBE37IM" mfgSerialNumber="37IM20000-0811" />
+		</Deployment>
+		<Deployment role="sensor" name="Inductive CTD - 60m" nominalDepth="60">
+			<Device id="1463" name="MicroCAT Inductive CTD" type="CTD" mfgName="Sea-Bird Electronics" mfgModel="SBE37IM" mfgSerialNumber="37IM20000-0812" />
+		</Deployment>
+		<Deployment role="sensor" name="Inductive CTD - 80m" nominalDepth="80">
+			<Device id="1464" name="MicroCAT Inductive CTD" type="CTD" mfgName="Sea-Bird Electronics" mfgModel="SBE37IM" mfgSerialNumber="37IM20000-0813" />
+		</Deployment>
+		<Deployment role="sensor" name="Inductive CTD - 100m" nominalDepth="100">
+			<Device id="1373" name="MicroCAT Inductive CTD" type="CTD" mfgName="Sea-Bird Electronics" mfgModel="SBE37IM" mfgSerialNumber="37IM21734-1242" />
+		</Deployment>
+		<Deployment role="sensor" name="Inductive CTD - 150m" nominalDepth="150">
+			<Device id="1434" name="MicroCAT Inductive CTD" type="CTD" mfgName="Sea-Bird Electronics" mfgModel="SBE37IM" mfgSerialNumber="37IM20000-00413" />
+		</Deployment>
+		<Deployment role="sensor" name="Inductive CTD - 200m" nominalDepth="200">
+			<Device id="1374" name="MicroCAT Inductive CTD" type="CTD" mfgName="Sea-Bird Electronics" mfgModel="SBE37IM" mfgSerialNumber="37IM21734-1245" />
+		</Deployment>
+		<Deployment role="sensor" name="Inductive CTD - 250m" nominalDepth="250">
+			<Device id="1436" name="MicroCAT Inductive CTD" type="CTD" mfgName="Sea-Bird Electronics" mfgModel="SBE37IM" mfgSerialNumber="37IM20000-00468" />
+		</Deployment>
+		<Deployment role="sensor" name="Inductive CTD - 300m" nominalDepth="300">
+			<Device id="1375" name="MicroCAT Inductive CTD" type="CTD" mfgName="Sea-Bird Electronics" mfgModel="SBE37IM" mfgSerialNumber="37IM21734-1246" />
+		</Deployment>
+		<output>
+			<DataStream>
+				<description>Serial CTD data stream</description>
+				<RecordDescription bufferStyle="ASCII"
+				bufferParseType="ordered"
+				bufferItemSeparator=","
+				bufferLengthType="variable"
+				parseable="true" recordType="1">
+					<!-- Sample Record:
+					00817,  13.2054,  3.91888,   20.162, 10 Jan 2005, 19:57:51,  41325
+					00409,  13.1809,  3.92302, 10 Jan 2005, 19:59:02,  41278
+					01242,  12.2054,  3.91888,   60.162, 10 Jan 2005, 19:57:51,  41325
+					00474,  10.9228,  3.74378, 10 Jan 2005, 20:01:47,  41298
+					01245,  10.3130,  3.70027,   96.781, 10 Jan 2005, 19:54:07,  41293
+					00475,   9.7178,  3.66811, 10 Jan 2005, 20:03:13,  41294
+					01246,   9.3357,  3.65779,  188.988, 10 Jan 2005, 19:55:22,  41293
+					00661,   9.1194,  3.65163, 10 Jan 2005, 19:57:36,  41293
+					00476,   8.5853,  3.60518,  278.039, 10 Jan 2005, 19:58:52,  41293
+					-->
+					<!--
+						Comments:
+							This XML borrowed from the M0-CIMT TString XML, which was
+							designed to detect changes in the expected order of the
+							sensors in the reported packet.  For data reported from
+							OasisToSSDS, however, it should never be out of order,
+							so the change-detect mechanism is superfluous.
+							The DisplayName values include the nominal depth as a way of
+							making those display names unique for each CTD. Using sensor numbers
+							in this role would be less deployment-specific (and could still
+							be tracked back to a depth, although awkwardly), but would be 
+							all-but-meaningless to the average viewer of the data.  So I
+							decided the benefit was worth the increased maintenance cost. - jbg
+					-->
+					<RecordVariable
+						name="SensorString_1"
+						longName="Originating CTD Serial No. @ 20m"
+						units="none" referenceScale="TBD"
+						columnIndex="1"
+						format="int">
+							<description>Check String -- should be S/N for 20m CTD</description>
+						<StandardVariable name="checkString" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Temperature_1"
+						longName="Water Temperature @ 20m"
+						units="deg C"	referenceScale="TBD"
+						columnIndex="2"
+						missingValue="-99999"
+						format="float" >
+							<description>water temperature from 20m CTD</description>
+						<StandardVariable name="temperature" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Conductivity_1"
+						longName="Conductivity @ 20m"
+						units="S/m"	referenceScale="TBD"
+						columnIndex="3"
+						missingValue="-99999"
+						format="float" >
+							<description>sea water conductivity from 20m CTD</description>
+						<StandardVariable name="conductivity" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Pressure_1"
+						longName="Pressure @ 20m"
+						units="decibars"	referenceScale="TBD"
+						columnIndex="4"
+						missingValue="-99999"
+						format="float" >
+							<description>pressure of sea water from 20m CTD</description>
+						<StandardVariable name="pressure" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Date_1"
+						longName="Date of Sample @ 20m"
+						units="dd_MMM_yyyy"	referenceScale="TBD"
+						columnIndex="5"
+						format="string"	>
+							<description>last sample date, in 'dd MMM yyyy' format, from 20m CTD</description>
+						<StandardVariable name="date" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Time_1"
+						longName="Time of Sample @ 20m"
+						units="hh-mm-ss"	referenceScale="TBD"
+						columnIndex="6"
+						format="string"	>
+							<description>most recent sample time of day, in hh:mm:ss format, from 20m CTD</description>
+						<StandardVariable name="time" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="SampNum_1"
+						longName="Instr_Sample_Number_1 @ 20m"
+						units="tbd"	referenceScale="TBD"
+						columnIndex="7"
+						missingValue="-99999"
+						format="int"	>
+							<description>internal sample sequence number from 20m CTD</description>
+					</RecordVariable>
+					<RecordVariable
+						name="SensorString_2"
+						longName="Originating CTD Serial No. @ 40m"
+						units="none"	referenceScale="TBD"
+						columnIndex="8"
+						format="int">
+							<description>Check String -- should be S/N for 40m CTD</description>
+						<StandardVariable name="checkString" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Temperature_2"
+						longName="Water Temperature @ 40m"
+						units="deg C"	referenceScale="TBD"
+						columnIndex="9"
+						missingValue="-99999"
+						format="float" >
+							<description>water temperature from 40m CTD</description>
+						<StandardVariable name="temperature" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Conductivity_2"
+						longName="Conductivity @ 40m"
+						units="S/m"	referenceScale="TBD"
+						columnIndex="10"
+						missingValue="-99999"
+						format="float" >
+							<description>sea water conductivity from 40m CTD</description>
+						<StandardVariable name="conductivity" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Date_2"
+						longName="Date of Sample @ 40m"
+						units="dd_MMM_yyyy"	referenceScale="TBD"
+						columnIndex="11"
+						format="string"	>
+							<description>last sample date, in 'dd MMM yyyy' format, from 40m CTD</description>
+						<StandardVariable name="date" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Time_2"
+						longName="Time of Sample @ 40m"
+						units="hh-mm-ss" referenceScale="TBD"
+						columnIndex="12"
+						format="string"	>
+							<description>most recent sample time of day, in hh:mm:ss format, from 40m CTD</description>
+						<StandardVariable name="time" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="SampNum_2"
+						longName="Instr_Sample_Number_2 @ 40m"
+						units="tbd"	referenceScale="TBD"
+						columnIndex="13"
+						missingValue="-99999"
+						format="int">
+							<description>internal sample sequence number for 40m CTD</description>
+					</RecordVariable>
+					<RecordVariable
+						name="SensorString_3"
+						longName="Originating CTD Serial No. @ 60m"
+						units="none"	referenceScale="TBD"
+						columnIndex="14"
+						format="int" parseRegExp="00473" >
+							<description>Check String -- should be S/N for 60m CTD</description>
+						<StandardVariable name="checkString" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Temperature_3"
+						longName="Water Temperature @ 60m"
+						units="deg C"	referenceScale="TBD"
+						columnIndex="15"
+						missingValue="-99999"
+						format="float" >
+							<description>water temperature from 60m CTD</description>
+						<StandardVariable name="temperature" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Conductivity_3"
+						longName="Conductivity @ 60m"
+						units="S/m"	referenceScale="TBD"
+						columnIndex="16"
+						missingValue="-99999"
+						format="float" >
+							<description>sea water conductivity from 60m CTD</description>
+						<StandardVariable name="conductivity" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					
+					<RecordVariable
+						name="Date_3"
+						longName="Date of Sample @ 60m"
+						units="dd_MMM_yyyy"	referenceScale="TBD"
+						columnIndex="17"
+						format="string"	>
+							<description>last sample date, in 'dd MMM yyyy' format, from 60m CTD</description>
+						<StandardVariable name="date" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Time_3"
+						longName="Time of Sample @ 60m"
+						units="hh-mm-ss" referenceScale="TBD"
+						columnIndex="18"
+						format="string"	>
+							<description>most recent sample time of day, in hh:mm:ss format, from 60m CTD</description>
+						<StandardVariable name="time" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="SampNum_3"
+						longName="Instr_Sample_Number_3 @ 60m"
+						units="tbd"	referenceScale="TBD"
+						columnIndex="19"
+						missingValue="-99999"
+						format="int">
+							<description>internal sample sequence number for 60m CTD</description>
+					</RecordVariable>
+					<RecordVariable
+						name="SensorString_4"
+						longName="Originating CTD Serial No. @ 80m"
+						units="none" referenceScale="TBD"
+						columnIndex="20"
+						format="int">
+							<description>Check String -- should be S/N for 80m CTD</description>
+						<StandardVariable name="checkString" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Temperature_4"
+						longName="Water Temperature @ 80m"
+						units="deg C" referenceScale="TBD"
+						columnIndex="21"
+						missingValue="-99999"
+						format="float" >
+							<description>water temperature from 80m CTD</description>
+						<StandardVariable name="temperature" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Conductivity_4"
+						longName="Conductivity @ 80m"
+						units="S/m"	referenceScale="TBD"
+						columnIndex="22"
+						missingValue="-99999"
+						format="float" >
+							<description>sea water conductivity from 80m CTD</description>
+						<StandardVariable name="conductivity" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Date_4"
+						longName="Date of Sample @ 80m"
+						units="dd_MMM_yyyy"	referenceScale="TBD"
+						columnIndex="23"
+						format="string"	>
+							<description>last sample date, in 'dd MMM yyyy' format, from 80m CTD</description>
+						<StandardVariable name="date" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Time_4"
+						longName="Time of Sample @ 80m"
+						units="hh-mm-ss"	referenceScale="TBD"
+						columnIndex="24"
+						format="string"	>
+							<description>most recent sample time of day, in hh:mm:ss format, from 80m CTD</description>
+						<StandardVariable name="time" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="SampNum_4"
+						longName="Instr_Sample_Number_4 @ 80m"
+						units="tbd"	referenceScale="TBD"
+						columnIndex="25"
+						missingValue="-99999"
+						format="int">
+							<description>internal sample sequence number for 80m CTD</description>
+					</RecordVariable>
+					<RecordVariable
+						name="SensorString_5"
+						longName="Originating CTD Serial No. @ 100m"
+						units="none" referenceScale="TBD"
+						columnIndex="26"
+						format="int">
+							<description>Check String -- should be S/N for 100m CTD</description>
+						<StandardVariable name="checkString" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Temperature_5"
+						longName="Water Temperature @ 100m"
+						units="deg C" referenceScale="TBD"
+						columnIndex="27"
+						missingValue="-99999"
+						format="float" >
+							<description>water temperature from 100m CTD</description>
+						<StandardVariable name="temperature" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Conductivity_5"
+						longName="Conductivity @ 100m"
+						units="S/m"	referenceScale="TBD"
+						columnIndex="28"
+						missingValue="-99999"
+						format="float" >
+							<description>sea water conductivity from 100m CTD</description>
+						<StandardVariable name="conductivity" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Pressure_5"
+						longName="Pressure @ 100m"
+						units="decibars" referenceScale="TBD"
+						columnIndex="29"
+						missingValue="-99999"
+						format="float" >
+							<description>pressure of sea water from 100m CTD</description>
+						<StandardVariable name="pressure" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Date_5"
+						longName="Date of Sample @ 100m"
+						units="dd_MMM_yyyy"	referenceScale="TBD"
+						columnIndex="30"
+						format="string"	>
+							<description>last sample date, in 'dd MMM yyyy' format, from 100m CTD</description>
+						<StandardVariable name="date" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Time_5"
+						longName="Time of Sample @ 100m"
+						units="hh-mm-ss"	referenceScale="TBD"
+						columnIndex="31"
+						format="string"	>
+							<description>most recent sample time of day, in hh:mm:ss format, from 100m CTD</description>
+						<StandardVariable name="time" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="SampNum_5"
+						longName="Instr_Sample_Number_5 @ 100m"
+						units="tbd"	referenceScale="TBD"
+						columnIndex="32"
+						missingValue="-99999"
+						format="int"	>
+							<description>internal sample sequence number for 100m CTD</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="SensorString_6"
+						longName="Originating CTD Serial No. @ 150m"
+						units="none" referenceScale="TBD"
+						columnIndex="33"
+						format="int" >
+							<description>Check String -- should be S/N for 150m CTD</description>
+						<StandardVariable name="checkString" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Temperature_6"
+						longName="Water Temperature @ 150m"
+						units="deg C" referenceScale="TBD"
+						columnIndex="34"
+						missingValue="-99999"
+						format="float" >
+							<description>water temperature from 150m CTD</description>
+						<StandardVariable name="temperature" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Conductivity_6"
+						longName="Conductivity @ 150m"
+						units="S/m"	referenceScale="TBD"
+						columnIndex="35"
+						missingValue="-99999"
+						format="float" >
+							<description>sea water conductivity from 150m CTD</description>
+						<StandardVariable name="conductivity" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Date_6"
+						longName="Date of Sample @ 150m"
+						units="dd_MMM_yyyy"	referenceScale="TBD"
+						columnIndex="36"
+						format="string"	>
+							<description>last sample date, in 'dd MMM yyyy' format, from 150m CTD</description>
+						<StandardVariable name="date" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Time_6"
+						longName="Time of Sample @ 150m"
+						units="hh-mm-ss" referenceScale="TBD"
+						columnIndex="37"
+						format="string"	>
+							<description>most recent sample time of day, in hh:mm:ss format, from 150m CTD</description>
+						<StandardVariable name="time" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="SampNum_6"
+						longName="Instr_Sample_Number_6 @ 150m"
+						units="tbd"	referenceScale="TBD"
+						columnIndex="38"
+						missingValue="-99999"
+						format="int">
+							<description>internal sample sequence number for 150m CTD</description>
+					</RecordVariable>
+					<RecordVariable
+						name="SensorString_7"
+						longName="Originating CTD Serial No. @ 200m"
+						units="none" referenceScale="TBD"
+						columnIndex="39"
+						format="int">
+							<description>Check String -- should be S/N for 200m CTD</description>
+						<StandardVariable name="checkString" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Temperature_7"
+						longName="Water Temperature @ 200m"
+						units="deg C" referenceScale="TBD"
+						columnIndex="40"
+						missingValue="-99999"
+						format="float" >
+							<description>water temperature from 200m CTD</description>
+						<StandardVariable name="temperature" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Conductivity_7"
+						longName="Conductivity @ 200m"
+						units="S/m"	referenceScale="TBD"
+						columnIndex="41"
+						missingValue="-99999"
+						format="float" >
+							<description>sea water conductivity from 200m CTD</description>
+						<StandardVariable name="conductivity" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Pressure_7"
+						longName="Pressure @ 200m"
+						units="decibars" referenceScale="TBD"
+						columnIndex="42"
+						missingValue="-99999"
+						format="float" >
+							<description>pressure of sea water from 200m CTD</description>
+						<StandardVariable name="pressure" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Date_7"
+						longName="Date of Sample @ 200m"
+						units="dd_MMM_yyyy"	referenceScale="TBD"
+						columnIndex="43"
+						format="string"	>
+							<description>last sample date, in 'dd MMM yyyy' format, from 200m CTD</description>
+						<StandardVariable name="date" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Time_7"
+						longName="Time of Sample @ 200m"
+						units="hh-mm-ss" referenceScale="TBD"
+						columnIndex="44"
+						format="string"	>
+							<description>most recent sample time of day, in hh:mm:ss format, from 200m CTD</description>
+						<StandardVariable name="time" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="SampNum_7"
+						longName="Instr_Sample_Number_7 @ 200m"
+						units="tbd"	referenceScale="TBD"
+						columnIndex="45"
+						missingValue="-99999"
+						format="int">
+							<description>internal sample sequence number for 200m CTD</description>
+					</RecordVariable>
+					<RecordVariable
+						name="SensorString_8"
+						longName="Originating CTD Serial No. @ 250m"
+						units="none" referenceScale="TBD"
+						columnIndex="46"
+						format="int">
+							<description>Check String -- should be S/N for 250m CTD</description>
+						<StandardVariable name="checkString" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Temperature_8"
+						longName="Water Temperature @ 250m"
+						units="deg C" referenceScale="TBD"
+						columnIndex="47"
+						missingValue="-99999"
+						format="float" >
+							<description>water temperature from 250m CTD</description>
+						<StandardVariable name="temperature" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Conductivity_8"
+						longName="Conductivity @ 250m"
+						units="S/m"	referenceScale="TBD"
+						columnIndex="48"
+						missingValue="-99999"
+						format="float" >
+							<description>sea water conductivity from 250m CTD</description>
+						<StandardVariable name="conductivity" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Date_8"
+						longName="Date of Sample @ 250m"
+						units="dd_MMM_yyyy"	referenceScale="TBD"
+						columnIndex="49"
+						format="string"	>
+							<description>last sample date, in 'dd MMM yyyy' format, from 250m CTD</description>
+						<StandardVariable name="date" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Time_8"
+						longName="Time of Sample @ 250m"
+						units="hh-mm-ss" referenceScale="TBD"
+						columnIndex="50"
+						format="string"	>
+							<description>most recent sample time of day, in hh:mm:ss format, from 250m CTD</description>
+						<StandardVariable name="time" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="SampNum_8"
+						longName="Instr_Sample_Number_8 @ 250m"
+						units="tbd"	referenceScale="TBD"
+						columnIndex="51"
+						missingValue="-99999"
+						format="int">
+							<description>internal sample sequence number for 250m CTD</description>
+					</RecordVariable>
+					<RecordVariable
+						name="SensorString_9"
+						longName="Originating CTD Serial No. @ 300m"
+						units="none" referenceScale="TBD"
+						columnIndex="52"
+						format="int">
+							<description>Check String -- should be S/N for 300m CTD</description>
+						<StandardVariable name="checkString" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Temperature_9"
+						longName="Water Temperature @ 300m"
+						units="deg C" referenceScale="TBD"
+						columnIndex="53"
+						missingValue="-99999"
+						format="float" >
+							<description>water temperature from 300m CTD</description>
+						<StandardVariable name="temperature" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Conductivity_9"
+						longName="Conductivity @ 300m"
+						units="S/m"	referenceScale="TBD"
+						columnIndex="54"
+						missingValue="-99999"
+						format="float" >
+							<description>sea water conductivity from 300m CTD</description>
+						<StandardVariable name="conductivity" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Pressure_9"
+						longName="Pressure @ 300m"
+						units="decibars" referenceScale="TBD"
+						columnIndex="55"
+						missingValue="-99999"
+						format="float" >
+							<description>pressure of sea water from 300m CTD</description>
+						<StandardVariable name="pressure" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Date_9"
+						longName="Date of Sample @ 300m"
+						units="dd_MMM_yyyy"	referenceScale="TBD"
+						columnIndex="56"
+						format="string"	>
+							<description>last sample date, in 'dd MMM yyyy' format, from 300m CTD</description>
+						<StandardVariable name="date" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Time_9"
+						longName="Time of Sample @ 300m"
+						units="hh-mm-ss" referenceScale="TBD"
+						columnIndex="57"
+						format="string"	>
+							<description>most recent sample time of day, in hh:mm:ss format, from 300m CTD</description>
+						<StandardVariable name="time" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="SampNum_9"
+						longName="Instr_Sample_Number_9 @ 300m"
+						units="tbd"	referenceScale="TBD"
+						columnIndex="58"
+						missingValue="-99999"
+						format="int">
+							<description>internal sample sequence number for 300m CTD</description>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1342.xml,v 1.4 2005/08/29 22:34:44 graybeal Exp $	-->
+<!-- Last edited by $Author: graybeal $	$Date: 2005/08/29 22:34:44 $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation="http://ssds.shore.mbari.org/ssdsdata/config/schema/2005mtm3/SSDS_Metadata.xsd" majorVersion="1" minorVersion="4" lastAuthor="$Author: graybeal $" lastUpdate="$Date: 2005/08/29 22:34:44 $" >
+
+	<Deployment role="instrument" name="MTM3"
+	nominalLongitude="-122" nominalLatitude="37" nominalDepth="-5">
+		<Device	id="1342" name="ASIMET WND" type="Wind"	mfgName="WHOI" mfgModel="WND" mfgSerialNumber="WND0359"
+			preferredDeploymentRole="instrument">
+			<description>ASIMET Wind sensor</description>
+			<Person	firstname="Lance" surname="McBride" organization="MBARI"
+			email="lance@mbari.org" phone="831-775-2046"/>
+		</Device>
+		<description>MTM3 installation of ASIMET WND</description>
+		<output>
+			<DataStream>
+				<description>ASIMET WND data stream</description>
+				<!-- Comments:
+					- Doesn't use fixedPosition parsing yet
+			outputs calibrated value as follows:
+                Ve Vn WSavg WSmax WSmin LastVane LastComp TiltXAvg TiltYAvg<crlfetx> 
+                - example: #WND01C 2.34 1.45 4.9 5.2 4.7 123.1 234.5 0.2 0.3<crlfetx>
+                - C language format: "%6.2f %6.2f %5.1f %5.1f %5.1f %6.1f %6.1f %6.1f %6.1f\r\n\x03
+                Wind speed and direction are measured with a modified R.M. Young model 05103 wind 
+                monitor. This sensor was selected because of its proven record. It uses a propeller 
+                to measure wind speed. The standard vane potentiometer is removed and the vane shaft 
+                extended down and coupled with an absolute angle encoder for a full 360 degrees of 
+                measurement. A magnetometer compass is used to provide the north reference for use 
+                on buoys. This is can be disabled for use on ships (ships gyro and external GPS are 
+                then used to compute true wind speed in the data recorder). The propeller generates 
+                3 pulses per revolution which has a calibration of 0.297 meters of wind per 
+                revolution. The pulses are amplified and counted over a 5 second period providing 
+                scalar wind speed. The vane position is measured once per second and the compass 
+                measured once each 5 seconds. This provides a scalar wind speed and direction every 
+                5 seconds that is then vector averaged over the normal one minute sample period. 
+                The maximum and minimum wind speeds during the one minute time are also reported 
+                for wind gust information. See ASIMET Sampling Definitions for current sampling 
+                details.
+                
+	            From http://frodo.whoi.edu/asimet/asimet_sampling_definitions.html: 
+                 - Scalar wind speed and direction are measured
+                every 5 seconds. Pulses are counted for 5 seconds while
+                vane direction is sampled each second, and the compass
+                is sampled in the middle of the 5 second period. At the
+                end of each 5 seconds, the wind speed is calculated, the
+                vane direction is averaged (sums of sine and cosine with
+                arctan recombination), and the compass direction is
+                sampled and added to the vane average for direction. A
+                (sine and cosine) vector Vel(East) and Vel(North) are
+                calculated.
+                 - At the end of one minute the vector sum of
+                Vel(East) and Vel(North) are calculated and stored, the
+                average scalar wind speed is calculated and stored, the
+                maximum of the (5 second) wind speeds is stored, the
+                minimum of the (5 second) wind speeds is stored, the
+                last vane direction is stored, the last compass
+                direction is stored, the average of the X tilt is
+                calculated and stored, and the average of the Y tilt is
+                calculated and stored. The stored values are placed in a
+                buffer for output when data is requested over the next
+                minute (until the next update).
+                 - The data out is: 
+                ee.ee, nn.nn, ss.s, xx.x, mm.m, vvv.v, ccc.c, xx.xx,
+                yy.yy where e is vector wind  to the east in meters/sec,
+                n is vector wind to the north in meters/sec, s is scalar
+                average wind in meters/sec, x is maximum 5 sec wind
+                speed in meters/sec, m is minimum 5 second wind speed in
+                meters/sec, v is last vane direction in degrees, c is
+                last compass direction in degrees, x is average tilt in
+                degrees, and y is average tilt in degrees.
+                 - (C format is: 
+                 %6.2f %6.2f %5.1f %5.1f %5.1f %6.1f %6.1f %6.1f %6.1f\r\n\x03
+
+			 Specifications: 
+				Speed: 0 to 60 meters/second, propeller with a 0.098 meters/second per hertz, 
+				with 3 pulses/propeller revolution.
+				Direction: Vane encoder has a resolution and accuracy of 0.01 degrees. 
+				The compass has an accuracy of 2 degrees and a resolution of 1 degree. 
+				There is a full 360 degrees of range with no deadband.
+				-->
+				<RecordDescription bufferStyle="ASCII"
+				bufferParseType="ordered"
+				bufferItemSeparator="space"
+				bufferLengthType="variable"
+				parseable="true" recordType="1">
+					<!-- COMMAND Sent:
+						
+					-->
+					<!-- Sample Record:
+						   0.00   0.00   0.0   0.0   0.0  170.4  227.9   -1.0   -0.7
+					-->
+					<!-- Accuracy:
+					-->
+					<!--
+					-->
+					<RecordVariable
+						name="East Wind (to)"
+						longName="Average Velocity of East Wind Vector"
+						units="meterspersecond"	referenceScale="TBD"
+						columnIndex="1"
+						format="float"	>
+							<description>average wind speed in east direction; each 5 seconds, 5 vane directions are averaged (sums of sine and cosine with arctan recombination), added to the compass direction at the mid-point of the interval, and used to generate that period's East Wind value, one minute of which are vector averaged to produce this value</description>
+							<StandardVariable name="velocity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="North Wind (to)"
+						longName="Average Velocity of North Wind Vector"
+						units="meterspersecond"	referenceScale="TBD"
+						columnIndex="2"
+						format="float"	>
+							<description>average wind speed in north direction; each 5 seconds, 5 vane directions are averaged (sums of sine and cosine with arctan recombination), added to the compass direction at the mid-point of the interval, and used to generate that period's East Wind value, one minute of which are vector averaged to produce this value</description>
+							<StandardVariable name="velocity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Avg Wind Speed"
+						longName="Scalar Average Wind Speed"
+						units="meterspersecond"	referenceScale="TBD"
+						columnIndex="3"
+						format="float"	>
+							<description>scalar wind speed values averaged over 1 minute</description>
+							<StandardVariable name="velocity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Max Wind Speed"
+						longName="Maximum Wind Speed"
+						units="meterspersecond"	referenceScale="TBD"
+						columnIndex="4"
+						format="float"	>
+							<description>maximum (5-second) wind speed in last 1-minute period</description>
+							<StandardVariable name="velocity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Min Wind Speed"
+						longName="Minimum Wind Speed"
+						units="meterspersecond"	referenceScale="TBD"
+						columnIndex="5"
+						format="float"	>
+							<description>minimum (5-second) wind speed in last 1-minute period</description>
+							<StandardVariable name="velocity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Vane Direction (Relative)"
+						longName="Direction of Wind Vane Relative to Compass"
+						units="degreesHeading"	referenceScale="TBD"
+						columnIndex="6"
+						format="float"	>
+							<description>last wind vane direction measured; vane direction plus compass direction = wind direction</description>
+							<StandardVariable name="heading"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Compass Direction"
+						longName="Directional Attitude of Unit"
+						units="degreesHeading"	referenceScale="TBD"
+						columnIndex="7"
+						format="float"	>
+							<description>last compass vane direction measured; vane direction plus compass direction = wind direction</description>
+							<StandardVariable name="heading"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Tilt X Avg"
+						longName="Average Tilt around X axis"
+						units="degrees"	referenceScale="TBD"
+						columnIndex="8"
+						format="float"	>
+							<description>Tilt of vane around X axis</description>
+							<StandardVariable name="angle"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Tilt Y Avg"
+						longName="Average Tilt around Y axis"
+						units="degrees"	referenceScale="TBD"
+						columnIndex="9"
+						format="float"	>
+							<description>Tilt of vane around Y axis</description>
+							<StandardVariable name="angle"/>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

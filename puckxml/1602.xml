@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!-- $Header: /home/cvs/puckxml/1602.xml,v 1.2 2008/09/05 19:14:55 mccann Exp $	-->  
+<!-- Last edited by $Author: mccann $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://dods.mbari.org/data/ssdsdata/config/schema/2004oasis/SSDS_Metadata.xsd"
+	majorVersion="1" minorVersion="1" lastAuthor="$Author: mccann $"
+	lastUpdate="$Date: 2008/09/05 19:14:55 $">
+	<Deployment role="instrument">
+		<Device id="1602"/>
+		<output>
+			<DataStream>
+				<description>Emeter data stream</description>
+				<RecordDescription bufferStyle="ASCII" bufferParseType="ordered"
+					bufferItemSeparator="," bufferLengthType="variable" parseable="true"
+					recordType="1">
+					<!-- Sample Record:
+					28226,+00.08,+001.3,14.20,-0001.5,-0003.1,+0001.5,255.0,5,15
+					-->
+					<RecordVariable name="RunTime" longName="Time since last AHr reset"
+						units="seconds" columnIndex="1" format="int"> </RecordVariable>
+					<RecordVariable name="KWHrs" longName="Kilowatt Hours" units="KWH"
+						columnIndex="2" format="float"> </RecordVariable>
+					<RecordVariable name="Current" longName="Current" units="amps" 
+						columnIndex="3" format="float"> </RecordVariable>
+					<RecordVariable name="Volts" longName="Battery Voltage" units="volts"
+						columnIndex="4" format="float"> </RecordVariable>
+					<RecordVariable name="AHrs" longName="AmpHours" units="AH" 
+						columnIndex="5" format="float"> </RecordVariable>
+					<RecordVariable name="PeukertAHrs" longName="Peukert Ampere Hours" units="AH"
+						columnIndex="6" format="float"> </RecordVariable>
+					<RecordVariable name="PeukertAmps" longName="Peukert Amps" units="amps"
+						columnIndex="7" format="float"> </RecordVariable>
+					<RecordVariable name="TimeRemaining" longName="Time Remaining" units="seconds"
+						columnIndex="8" format="float"> </RecordVariable>
+					<RecordVariable name="BarGraphState" longName="BarGraph State" columnIndex="9"
+						format="int">
+						<description>1.lt.20% 2.lt.40% 3.lt.60% 4.lt.80% 5.lt.100%
+						6=FULL</description>
+					</RecordVariable>
+					<RecordVariable name="Temp" longName="Temperature" units="degrees C"
+						columnIndex="10" format="int">
+						<description>Battery compartment temperature in degrees C</description>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1416.xml,v 1.3 2007/04/19 15:53:34 kgomes Exp $	-->
+<!-- Last edited by $Author: kgomes $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://new-ssds.mbari.org/ssds-docs/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="2" lastAuthor="$Author: kgomes $" lastUpdate="$Date: 2007/04/19 15:53:34 $" >
+	<Deployment role="instrument" name="GPS Deployment">
+		<Device id="1416" name="Garmin GPS" type="GPS" mfgName="Garmin" mfgModel="GPS17-N" mfgSerialNumber="80721087">
+			<description>Measures latitude/longitude</description>
+			<Person firstname="Zorba" surname="Pickerill" organization="MBARI" email="zorba@mbari.org"/>
+		</Device>
+		<output>
+			<DataStream>
+
+				<description>Garmin GPS Data Stream</description>
+				<RecordDescription bufferStyle="ASCII"
+				bufferParseType="ordered"
+				bufferItemSeparator="whitespace"
+				bufferLengthType="variable"
+				parseable="true" recordType="1">
+					<!-- COMMAND Sent:
+					-->
+					<!-- Sample Record:
+					  36.76952 -122.03414 10.15 10 48 0 1.0 11 3f
+
+					  The data fields are as follows:
+					  Name             Description                   Format
+					  =============================================================
+					  latitude       Latitude (deg north)            floating point
+					  longitude      Longitude (deg west)            floating point
+					  std_dev        Position Standard Deviation (m) floating point
+					  samples        Number of samples taken         integer
+					  time_on        Power-On duration (s)           integer
+					  diffSamples    Number Differential GPS Samples integer
+					  hdop           Horizontal Dilution of Precision floating point
+					  temp           GPS Receiver Temp (deg C)       floating point
+					  status         Garmin Status Byte              hex (see note)
+
+						Note: Status Byte Format
+						  Bit  Description                 Values
+						   0   ROM checksum test           1 = Pass     0 = Fail
+						   1   Receiver failure discrete   1 = Pass     0 = Fail
+						   2   Stored data lost            1 = Retained 0 = Lost
+						   3   Real time clock lost        1 = Retained 0 = Lost
+						   4   Oscillator drift discrete   1 = Pass     0 = Excessive Drift
+						   5   Board configuration data    1 = Retained 0 = Lost
+						   6,7 Unused
+					-->
+
+					<RecordVariable
+						name="latitude"
+						longName="Latitude in degrees North"
+						units="degrees"	referenceScale="TBD"
+						columnIndex="1"
+						format="float" >
+						<description>Average Latitude in degrees North (negative for South)</description>
+						<StandardVariable name="latitude" namespaceUriString="http://marinemetadata.org/cf"/>
+					</RecordVariable>
+					<RecordVariable
+						name="longitude"
+						longName="Longitude in degree East"
+						units="degrees"	referenceScale="TBD"
+						columnIndex="2"
+						format="float" >
+						<description>Average Longitude in degrees East (negative for West)</description>
+						<StandardVariable name="longitude" namespaceUriString="http://marinemetadata.org/cf"/>
+					</RecordVariable>
+					<RecordVariable
+						name="std_dev"
+						longName="Standard Deviation of samples in meters"
+						units="meters"	referenceScale="TBD"
+						columnIndex="3"
+						format="float" >
+						<description>Standard Deviation of all samples</description>
+					</RecordVariable>
+					<RecordVariable
+						name="samples"
+						longName="Number of GPS fixes taken"
+						units="none"	referenceScale="TBD"
+						columnIndex="4"
+						format="int" >
+						<description>Number of GPS Fixes taken</description>
+					</RecordVariable>
+					<RecordVariable
+						name="time_on"
+						longName="Time GPS receiver was on, in seconds"
+						units="seconds"	referenceScale="TBD"
+						columnIndex="5"
+						format="int" >
+						<description>Time GPS receiver was on, in seconds</description>
+					</RecordVariable>
+					<RecordVariable
+						name="diff_samples"
+						longName="Number of differential samples"
+						units="none"	referenceScale="TBD"
+						columnIndex="6"
+						format="int" >
+						<description>Number of samples that were in differential mode</description>
+					</RecordVariable>
+					<RecordVariable
+						name="hdop"
+						longName="Horizontal Dilution of Precision"
+						units="meters"	referenceScale="TBD"
+						columnIndex="7"
+						format="float" >
+						<description>Horizontal Dilution of Precision</description>
+					</RecordVariable>
+					<RecordVariable
+						name="temp"
+						longName="Temperature of GPS receiver"
+						units="degrees C"	referenceScale="TBD"
+						columnIndex="8"
+						format="float" >
+						<description>Temperature of GPS receiver</description>
+						<StandardVariable name="temperature" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="status"
+						longName="Status byte from Garmin GPS"
+						units="none"	referenceScale="TBD"
+						columnIndex="9"
+						format="hexadecimal" >
+						<description>Status byte from Garmin GPS</description>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

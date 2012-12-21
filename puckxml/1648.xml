@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1648.xml,v 1.1 2008/11/04 22:46:40 bobh Exp $	-->
+<!-- Last edited by $Author: bobh $	$Date: 2008/11/04 22:46:40 $   -->
+
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:noNamespaceSchemaLocation="http://ssds.mbari.org/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="2" minorVersion="3" 
+	lastAuthor="$Author: bobh $" lastUpdate="$Date: 2008/11/04 22:46:40 $">
+	
+	<Deployment role="instrument">
+		<Device id="1648" name="FOCE Power Supply Monitor"
+		mfgName="MBARI"  mfgModel="FOCE Auxiliary Board"
+		preferredDeploymentRole="Instrument">
+			<description>Power Supply Monitor</description>
+			<Person	firstname="Chad" surname="Kecy" organization="MBARI"
+			email="ckecy@mbari.org" phone="831-775-2039"/>
+		</Device>
+		
+		<output>
+			<DataStream>
+				<description>Power Supply Data Stream</description>
+				<RecordDescription bufferStyle="ascii" 
+					parseable="true" 
+					recordType="1"
+					bufferParseType="ordered"
+					bufferItemSeparator=" "
+					bufferLengthType="fixed">
+					<RecordVariable
+						name="24V Voltage"
+						longName="Voltage"
+						units="Volts"	
+						columnIndex="1"
+						format="float" >
+						<description>Voltage from 24V Power Supply</description>
+						<StandardVariable name="Volts"/>
+					</RecordVariable>
+					<RecordVariable
+						name="12V Voltage"
+						longName="Voltage"
+						units="Volts"	
+						columnIndex="2"
+						format="float" >
+						<description>Voltage from 12V Power Supply</description>
+						<StandardVariable name="Volts"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Humidity"
+						longName="Relative Humidity"
+						units="percent"	
+						columnIndex="3"
+						format="float" >
+						<description>Relative Humdity in Can, percent</description>
+						<StandardVariable name="Humidity"/>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

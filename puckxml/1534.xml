@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1534.xml,v 1.2 2006/03/13 16:58:04 rich Exp $	-->
+<!-- Last edited by $Author: rich $	$Date: 2006/03/13 16:58:04 $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://ssds.shore.mbari.org/ssdsdata/config/schema/2004cimt/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="5" lastAuthor="$Author: rich $" lastUpdate="$Date: 2006/03/13 16:58:04 $" >
+
+  <Deployment role="instrument">
+		<Device	id="1534" name="CTD" type="CTD" mfgName="Seabird" 
+			mfgModel="37SM" mfgSerialNumber="37SM30960-2765"
+			preferredDeploymentRole="Instrument">
+			<description>Seabird MicroCAT CTD Recorder</description>
+			<Person	firstname="Francisco" surname="Chavez" organization="MBARI"
+			email="chfr@mbari.org" phone="831-775-1709"/>
+		</Device>
+	
+		<output>
+			<DataStream>
+				<description>CTD data stream</description>
+				<!-- Comments:
+				-->
+				<RecordDescription bufferStyle="ASCII"
+				bufferParseType="ordered"
+				bufferItemSeparator=","
+				bufferLengthType="variable"
+				parseable="true" recordType="1">
+					<!-- COMMAND Sent:
+					-->
+					<!-- Sample Record:
+						22.9091, 0.00004,   -0.052, 30 Apr 2004, 22:52:25
+					-->
+					<!-- Accuracy:
+					-->
+					<!--
+						Comments:
+							This XML assumes one data record per packet.
+					-->
+					<RecordVariable
+						name="Temperature"
+						longName="Water Temperature"
+						units="deg C"	referenceScale="TBD"
+						columnIndex="1"
+						format="float" >
+							<description>water temperature</description>
+							<StandardVariable name="temperature"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Conductivity"
+						longName="Conductivity"
+						units="S/m"	referenceScale="TBD"
+						columnIndex="2"
+						format="float" >
+							<description>sea water conductivity</description>
+							<StandardVariable name="conductivity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Pressure"
+						longName="Pressure"
+						units="decibars"	referenceScale="TBD"
+						columnIndex="3"
+						format="float" >
+							<description>pressure of sea water</description>
+							<StandardVariable name="pressure"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Date"
+						longName="Date of Sample"
+						units="dd_MMM_yyyy"	referenceScale="TBD"
+						columnIndex="4"
+						format="string"	>
+							<description>date in 'dd MMM yyyy' format</description>
+							<StandardVariable name="date"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Time"
+						longName="Time of Day"
+						units="hh-mm-ss"	referenceScale="TBD"
+						columnIndex="5"
+						format="string"	>
+							<description>time of day in hh:mm:ss format</description>
+							<StandardVariable name="time"/>
+					</RecordVariable>
+
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

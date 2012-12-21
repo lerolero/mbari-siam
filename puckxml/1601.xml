@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1601.xml,v 1.2 2009/03/09 21:56:31 mccann Exp $	-->
+<!-- Last edited by $Author: mccann $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://new-ssds.mbari.org/ssds-docs/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="1" lastAuthor="$Author: mccann $" lastUpdate="$Date: 2009/03/09 21:56:31 $" >
+	<Deployment role="instrument">
+		<Device id="1601"/>
+		<output>
+			<DataStream>
+				<description>O3GF data stream</description>
+				<RecordDescription bufferStyle="ASCII"
+				bufferParseType="ordered"
+				bufferItemSeparator=","
+				bufferLengthType="variable"
+				parseable="true" recordType="1">
+					<!-- Sample Record:
+					 1023, 650, 581.822, 170.555
+					-->
+					<RecordVariable
+						name="PosCounts"
+						longName="Positive Leakage A/D Counts"
+						units="counts"
+						columnIndex="1"
+						format="int" >
+							<description>Positive Leakage A/D counts</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ComCounts"
+						longName="Common Leakage A/D Counts"
+						units="counts"
+						columnIndex="2"
+						format="int" >
+							<description>Common Leakage A/D counts</description>
+					</RecordVariable>
+					<RecordVariable
+						name="posLeak"
+						longName="Power Positive Leakage"
+						units="uA"
+						columnIndex="3"
+						format="float" >
+							<description>Power Positive Leakage (uA)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="comLeak"
+						longName="Power Common Leakage"
+						units="uA"
+						columnIndex="4"
+						format="float" >
+							<description>Power Common Leakage (uA)</description>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

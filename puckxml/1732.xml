@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1732.xml,v 1.4 2009/05/24 00:44:40 graybeal Exp $	-->
+<!-- Last edited by $Author: graybeal $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://ssds.mbari.org/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="4" lastAuthor="$Author: graybeal $" lastUpdate="$Date: 2009/05/24 00:44:40 $" >
+    
+    <Deployment role="Instrument">
+        <Device id="1732" name="SAMI-CO2 Sensor" type="CO2 Monitor" 
+            mfgName="Sunburst Sensors LLC"  mfgModel="SAMI-CO2 1500" mfgSerialNumber="SAMI-69">
+            <description>Sunburst SAMI CO2 Sensor</description>
+            <Person	firstname="Bob" surname="Herlien" organization="MBARI"
+                email="herlien@mbari.org" phone="831-775-1722"/>
+        </Device>
+        
+        <output>
+            <DataStream>
+                <description>Output Sensor Data Stream from SAMI-CO2 when RUNNING</description>
+                <RecordDescription bufferStyle="ascii" 
+                    parseable="true" 
+                    recordType="1"
+                    bufferParseType="ordered"
+                    bufferItemSeparator=","
+                    bufferLengthType="variable">
+                    <!-- Sample Record:
+                        RUNNING,14:30:00,05/17/09,21.39,2564,3122,3292,23577,22699,26355,16,12,13,0.6224,0.5799,63478,63241, 0
+                    -->
+                    <!--
+                        Comments:  This record type is output when the SAMI is running normally, collecting CO2 data. 
+                        The normal record is preceded by "RUNNING,", which is stripped out.           
+                    -->
+                    <RecordVariable
+                        name="Time"
+                        units="HH:MM:SS"	
+                        columnIndex="1"
+                        format="string" >
+                        <description>time of day that sample was taken</description>
+                        <StandardVariable name="timeOfDay" namespaceUriString="http://mmisw.org/ont/mbarissds/parameter_provisional/" />
+                    </RecordVariable>
+                    <RecordVariable
+                        name="Date"
+                        units="MM/DD/YY"	
+                        columnIndex="2"
+                        format="string" >
+                        <description>date that sample was taken</description>
+                        <StandardVariable name="date" namespaceUriString="http://mmisw.org/ont/mbarissds/parameter_provisional/" />
+                    </RecordVariable>
+                    <RecordVariable
+                        name="Temperature"
+                        longName="Sea Water Temperature"
+                        units="degrees C"
+                        columnIndex="3"
+                        format="float" >
+                        <description>temperature of ambient sea water</description>
+                        <StandardVariable name="sea_water_temperature" namespaceUriString="http://mmisw.org/ont/cf/" />
+                    </RecordVariable>
+                    <RecordVariable
+                        name="D434"
+                        longName="434 nm Dark Signal"
+                        units="counts"
+                        columnIndex="4"
+                        format="int" >
+                        <description>light intensity at non-illuminated sensor at 434 nanometers wavelength (an indicator-absorbing wavelength)</description>
+                        <StandardVariable name="signal_optical_intensity__in_reference_sample_alternate_units" namespaceUriString="http://mmisw.org/ont/mbarissds/parameter_provisional/" />
+                    </RecordVariable>
+                    <RecordVariable
+                        name="D620"
+                        longName="620 nm Dark Signal"
+                        units="counts"
+                        columnIndex="5"
+                        format="int" >
+                        <description>light intensity at non-illuminated sensor at 620 nanometers wavelength (an indicator-absorbing wavelength)</description>
+                        <StandardVariable name="signal_optical_intensity__in_reference_sample_alternate_units" namespaceUriString="http://mmisw.org/ont/mbarissds/parameter_provisional/" />
+                    </RecordVariable>
+                    <RecordVariable
+                        name="D740"
+                        longName="740 nm Dark Signal"
+                        units="counts"
+                        columnIndex="6"
+                        format="int" >
+                        <description>light intensity at non-illuminated sensor at 740 nanometers wavelength (an indicator-non-absorbing wavelength)</description>
+                        <StandardVariable name="reference_optical_intensity_in_reference_sample_alternate_units" namespaceUriString="http://mmisw.org/ont/mbarissds/parameter_provisional/" />
+                    </RecordVariable>
+                    <RecordVariable
+                        name="I434"
+                        longName="434 nm Light Signal"
+                        units="counts"
+                        columnIndex="7"
+                        format="int" >
+                        <description>light intensity at illuminated sensor at 434 nanometers wavelength (an indicator-absorbing wavelength)</description>
+                        <StandardVariable name="signal_optical_intensity_alternate_units" namespaceUriString="http://mmisw.org/ont/mbarissds/parameter_provisional/" />
+                    </RecordVariable>
+                    <RecordVariable
+                        name="I620"
+                        longName="620 nm Light Signal"
+                        units="counts"
+                        columnIndex="8"
+                        format="int" >
+                        <description>light intensity at illuminated sensor at 620 nanometers wavelength (an indicator-absorbing wavelength)</description>
+                        <StandardVariable name="signal_optical_intensity_alternate_units" namespaceUriString="http://mmisw.org/ont/mbarissds/parameter_provisional/" />
+                    </RecordVariable>
+                    <RecordVariable
+                        name="I740"
+                        longName="740 nm Light Signal"
+                        units="counts"
+                        columnIndex="9"
+                        format="int" >
+                        <description>light intensity at illuminated sensor at 740 nanometers wavelength (an indicator-non-absorbing wavelength)</description>
+                        <StandardVariable name="reference_optical_intensity_alternate_units" namespaceUriString="http://mmisw.org/ont/mbarissds/parameter_provisional/" />
+                    </RecordVariable>
+                    <RecordVariable
+                        name="StdDev1"
+                        longName="Standard Deviation 1"
+                        units="counts"
+                        columnIndex="10"
+                        format="int" >
+                        <description>(per the manual, likely to be) the standard deviation of the voltage of the signal at 434nm</description>
+                        <StandardVariable name="standard_deviation_of_signal_optical_intensity_alternate_units" namespaceUriString="http://mmisw.org/ont/mbarissds/parameter_provisional/" />
+                    </RecordVariable>
+                    <RecordVariable
+                        name="StdDev2"
+                        longName="Standard Deviation 2"
+                        units="counts"
+                        columnIndex="11"
+                        format="int" >
+                        <description>(per the manual, likely to be) the standard deviation of the voltage of the signal at 620nm</description>
+                        <StandardVariable name="standard_deviation_of_signal_optical_intensity_alternate_units" namespaceUriString="http://mmisw.org/ont/mbarissds/parameter_provisional/" />
+                    </RecordVariable>
+                    <RecordVariable
+                        name="StdDev13"
+                        longName="Standard Deviation 3"
+                        units="counts"
+                        columnIndex="12"
+                        format="int" >
+                        <description>(per the manual, likely to be) the standard deviation of the voltage of the (reference) signal at 740nm</description>
+                        <StandardVariable name="standard_deviation_of_reference_optical_intensity_alternate_units" namespaceUriString="http://mmisw.org/ont/mbarissds/parameter_provisional/" />
+                    </RecordVariable>
+                    <RecordVariable
+                        name="K434"
+                        longName="434 nm Blank Calculation"
+                        columnIndex="13"
+                        format="float" >
+                        <description>(per the manual and other docs, inferred to be) the calculated reference blank value for 434nm</description>
+                        <StandardVariable name="calculated_reference_sample_optical_intensity_alternate_units" namespaceUriString="http://mmisw.org/ont/mbarissds/parameter_provisional/" />
+                    </RecordVariable>
+                    <RecordVariable
+                        name="K629"
+                        longName="620 nm Blank Calculation"
+                        columnIndex="14"
+                        format="float" >
+                        <description>(per the manual and other docs, inferred to be) the calculated reference blank value for 620nm</description>
+                        <StandardVariable name="calculated_reference_sample_optical_intensity_alternate_units" namespaceUriString="http://mmisw.org/ont/mbarissds/parameter_provisional/" />
+                    </RecordVariable>
+                    <RecordVariable
+                        name="BatteryVoltage1"
+                        longName="Battery Voltage 1"
+                        units="counts"
+                        columnIndex="15"
+                        format="int" >
+                        <description>voltage level in battery 1</description>
+                        <StandardVariable name="voltage_from_power_source" namespaceUriString="http://mmisw.org/ont/ssds/eqthealth/" />
+                    </RecordVariable>
+                    <RecordVariable
+                        name="BatteryVoltage2"
+                        longName="Battery Voltage 2"
+                        units="counts"
+                        columnIndex="16"
+                        format="int" >
+                        <description>voltage level in battery 2</description>
+                        <StandardVariable name="voltage_from_power_source" namespaceUriString="http://mmisw.org/ont/ssds/eqthealth/" />
+                    </RecordVariable>
+                    <RecordVariable
+                        name="BlankSample"
+                        longName="Blank Sample Indicator"
+                        columnIndex="17"
+                        format="int" >
+                        <description>Indicates whether the record was taken while system is running, or blanked off; '2222' indicates a blank sample</description>
+                        <StandardVariable name="observing_blank_flag" namespaceUriString="http://mmisw.org/ont/mmi/eqtstatus/" />
+                    </RecordVariable>
+                </RecordDescription>
+            </DataStream>
+            <DataStream>
+                <description>Output Sensor Data Stream from SAMI-CO2 when RNBLANK (calibration blank)</description>
+                <RecordDescription bufferStyle="ascii" 
+                    parseable="true" 
+                    recordType="2"
+                    bufferParseType="ordered"
+                    bufferItemSeparator=","
+                    bufferLengthType="variable">
+                    <!-- Sample Record:
+                        14:30:00,05/17/09,21.39,2564,3122,3292,23577,22699,26355,16,12,13,0.6224,0.5799,63478,63241, 0
+                    -->
+                    <!--
+                        Comments: This record type is output when the SAMI is doing a calibration blank, which it does automatically every so often. 
+                        The blank record is preceded by "RNBLANK,", which is stripped out.
+                    -->
+                    <RecordVariable
+                        name="Time"
+                        units="HH:MM:SS"	
+                        columnIndex="1"
+                        format="string" >
+                        <description>time of day that calibration blank sample was taken</description>
+                        <StandardVariable name="timeOfDay" namespaceUriString="http://mmisw.org/ont/mbarissds/parameter_provisional/" />
+                    </RecordVariable>
+                    <RecordVariable
+                        name="Date"
+                        units="MM/DD/YY"	
+                        columnIndex="2"
+                        format="string" >
+                        <description>date that calibration blank sample was taken</description>
+                        <StandardVariable name="date" namespaceUriString="http://mmisw.org/ont/mbarissds/parameter_provisional/" />
+                    </RecordVariable>
+                    <RecordVariable
+                        name="Temperature"
+                        longName="Sea Water Temperature"
+                        units="degrees C"
+                        columnIndex="3"
+                        format="float" >
+                        <description>temperature of ambient sea water (for calibration blank)</description>
+                        <StandardVariable name="sea_water_temperature" namespaceUriString="http://mmisw.org/ont/cf/" />
+                    </RecordVariable>
+                    <RecordVariable
+                        name="D434"
+                        longName="434 nm Dark Signal"
+                        units="counts"
+                        columnIndex="4"
+                        format="int" >
+                        <description>light intensity at non-illuminated sensor at 434 nanometers wavelength (an indicator-absorbing wavelength) (for calibration blank)</description>
+                        <StandardVariable name="signal_optical_intensity__in_reference_sample_alternate_units" namespaceUriString="http://mmisw.org/ont/mbarissds/parameter_provisional/" />
+                    </RecordVariable>
+                    <RecordVariable
+                        name="D620"
+                        longName="620 nm Dark Signal"
+                        units="counts"
+                        columnIndex="5"
+                        format="int" >
+                        <description>light intensity at non-illuminated sensor at 620 nanometers wavelength (an indicator-absorbing wavelength) (for calibration blank)</description>
+                        <StandardVariable name="signal_optical_intensity__in_reference_sample_alternate_units" namespaceUriString="http://mmisw.org/ont/mbarissds/parameter_provisional/" />
+                    </RecordVariable>
+                    <RecordVariable
+                        name="D740"
+                        longName="740 nm Dark Signal"
+                        units="counts"
+                        columnIndex="6"
+                        format="int" >
+                        <description>light intensity at non-illuminated sensor at 740 nanometers wavelength (an indicator-non-absorbing wavelength) (for calibration blank)</description>
+                        <StandardVariable name="reference_optical_intensity_in_reference_sample_alternate_units" namespaceUriString="http://mmisw.org/ont/mbarissds/parameter_provisional/" />
+                    </RecordVariable>
+                    <RecordVariable
+                        name="I434"
+                        longName="434 nm Light Signal"
+                        units="counts"
+                        columnIndex="7"
+                        format="int" >
+                        <description>light intensity at illuminated sensor at 434 nanometers wavelength (an indicator-absorbing wavelength) (for calibration blank)</description>
+                        <StandardVariable name="signal_optical_intensity_alternate_units" namespaceUriString="http://mmisw.org/ont/mbarissds/parameter_provisional/" />
+                    </RecordVariable>
+                    <RecordVariable
+                        name="I620"
+                        longName="620 nm Light Signal"
+                        units="counts"
+                        columnIndex="8"
+                        format="int" >
+                        <description>light intensity at illuminated sensor at 620 nanometers wavelength (an indicator-absorbing wavelength) (for calibration blank)</description>
+                        <StandardVariable name="signal_optical_intensity_alternate_units" namespaceUriString="http://mmisw.org/ont/mbarissds/parameter_provisional/" />
+                    </RecordVariable>
+                    <RecordVariable
+                        name="I740"
+                        longName="740 nm Light Signal"
+                        units="counts"
+                        columnIndex="9"
+                        format="int" >
+                        <description>light intensity at illuminated sensor at 740 nanometers wavelength (an indicator-non-absorbing wavelength) (for calibration blank)</description>
+                        <StandardVariable name="reference_optical_intensity_alternate_units" namespaceUriString="http://mmisw.org/ont/mbarissds/parameter_provisional/" />
+                    </RecordVariable>
+                    <RecordVariable
+                        name="StdDev1"
+                        longName="Standard Deviation 1"
+                        units="counts"
+                        columnIndex="10"
+                        format="int" >
+                        <description>(per the manual, likely to be) the standard deviation of the voltage of the signal at 434nm (for calibration blank)</description>
+                        <StandardVariable name="standard_deviation_of_signal_optical_intensity_alternate_units" namespaceUriString="http://mmisw.org/ont/mbarissds/parameter_provisional/" />
+                    </RecordVariable>
+                    <RecordVariable
+                        name="StdDev2"
+                        longName="Standard Deviation 2"
+                        units="counts"
+                        columnIndex="11"
+                        format="int" >
+                        <description>(per the manual, likely to be) the standard deviation of the voltage of the signal at 620nm (for calibration blank)</description>
+                        <StandardVariable name="standard_deviation_of_signal_optical_intensity_alternate_units" namespaceUriString="http://mmisw.org/ont/mbarissds/parameter_provisional/" />
+                    </RecordVariable>
+                    <RecordVariable
+                        name="StdDev13"
+                        longName="Standard Deviation 3"
+                        units="counts"
+                        columnIndex="12"
+                        format="int" >
+                        <description>(per the manual, likely to be) the standard deviation of the voltage of the (reference) signal at 740nm (for calibration blank)</description>
+                        <StandardVariable name="standard_deviation_of_reference_optical_intensity_alternate_units" namespaceUriString="http://mmisw.org/ont/mbarissds/parameter_provisional/" />
+                    </RecordVariable>
+                    <RecordVariable
+                        name="K434"
+                        longName="434 nm Blank Calculation"
+                        columnIndex="13"
+                        format="float" >
+                        <description>(per the manual and other docs, inferred to be) the calculated reference blank value for 434nm (for calibration blank)</description>
+                        <StandardVariable name="calculated_reference_sample_optical_intensity_alternate_units" namespaceUriString="http://mmisw.org/ont/mbarissds/parameter_provisional/" />
+                    </RecordVariable>
+                    <RecordVariable
+                        name="K629"
+                        longName="620 nm Blank Calculation"
+                        columnIndex="14"
+                        format="float" >
+                        <description>(per the manual and other docs, inferred to be) the calculated reference blank value for 620nm (for calibration blank)</description>
+                        <StandardVariable name="calculated_reference_sample_optical_intensity_alternate_units" namespaceUriString="http://mmisw.org/ont/mbarissds/parameter_provisional/" />
+                    </RecordVariable>
+                    <RecordVariable
+                        name="BatteryVoltage1"
+                        longName="Battery Voltage 1"
+                        units="counts"
+                        columnIndex="15"
+                        format="int" >
+                        <description>voltage level in battery 1 (for calibration blank)</description>
+                        <StandardVariable name="voltage_from_power_source" namespaceUriString="http://mmisw.org/ont/ssds/eqthealth/" />
+                    </RecordVariable>
+                    <RecordVariable
+                        name="BatteryVoltage2"
+                        longName="Battery Voltage 2"
+                        units="counts"
+                        columnIndex="16"
+                        format="int" >
+                        <description>voltage level in battery 2 (for calibration blank)</description>
+                        <StandardVariable name="voltage_from_power_source" namespaceUriString="http://mmisw.org/ont/ssds/eqthealth/" />
+                    </RecordVariable>
+                    <RecordVariable
+                        name="BlankSample"
+                        longName="Blank Sample Indicator"
+                        columnIndex="17"
+                        format="int" >
+                        <description>Indicates whether the record was taken while system is running, or blanked off; '2222' indicates a blank sample (for calibration blank)</description>
+                        <StandardVariable name="observing_blank_flag" namespaceUriString="http://mmisw.org/ont/mmi/eqtstatus/" />
+                    </RecordVariable>
+                </RecordDescription>
+            </DataStream>
+        </output>
+    </Deployment>
+</Metadata>

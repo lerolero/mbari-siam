@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1218.xml,v 1.1 2007/06/21 17:35:38 kgomes Exp $	-->
+<!-- Last edited by $Author: kgomes $	$Date: 2007/06/21 17:35:38 $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://new-ssds.mbari.org/ssds-docs/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="1" lastAuthor="$Author: kgomes $" lastUpdate="$Date: 2007/06/21 17:35:38 $" >
+	<Deployment role="platform" name="Mooring Deployment" nominalDepth="0">
+		<Device id="1218" name="MOOS Style Toroid" type="Mooring" mfgName="MBARI" mfgSerialNumber="001">
+			<description>Mooring Flotation Ring (Toroid) built to MOOS specifications</description>
+		</Device>
+		<description>Mooring Deployment</description>
+	</Deployment>
+</Metadata>

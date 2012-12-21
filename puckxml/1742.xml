@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1742.xml,v 1.1 2009/10/13 16:04:51 mccann Exp $	-->
+<!-- Last edited by $Author: mccann $	$Date: 2009/10/13 16:04:51 $   -->
+
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://dods.mbari.org/data/ssdsdata/config/schema/2004oasis/SSDS_Metadata.xsd"
+	majorVersion="1" minorVersion="2" lastAuthor="$Author: mccann $"
+	lastUpdate="$Date: 2009/10/13 16:04:51 $">
+	<Deployment role="instrument" >
+		<Device id="1742"/>
+		<output>
+			<DataStream>
+				<description>GPS Clock recordType</description>
+				<RecordDescription bufferStyle="ASCII" bufferParseType="ordered"
+					bufferItemSeparator="," bufferLengthType="variable" parseable="true"
+					recordType="1">
+					<!-- Sample Record:
+						Offset:+1,Timestamp:1220575726,$GPRMC,004845,A,3648.1451,N,12147.2751,W,000.0,000.0,050908,014.8,E*68
+					-->				
+					
+					<RecordVariable name="Offset" longName="Water Temperature" units="seconds" parseRegExp="Offset:([+-]\d+)"
+						 format="int">
+					</RecordVariable>
+					<RecordVariable name="Timestamp" longName="Unix epoch seconds" units="seconds" parseRegExp="Timestamp:(\d+)"
+						format="int">
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

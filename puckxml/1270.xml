@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1270.xml,v 1.2 2007/05/29 19:07:20 kgomes Exp $	-->
+<!-- Last edited by $Author: kgomes $	$Date: 2007/05/29 19:07:20 $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:noNamespaceSchemaLocation="http://new-ssds.mbari.org/ssds-docs/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="8" lastAuthor="$Author: kgomes $" lastUpdate="$Date: 2007/05/29 19:07:20 $" >
+	<Deployment role="instrument" name="Radiometer Deployment">
+		<Device id="1270" name="Satlantic Radiometer String" type="Radiometer" mfgName="Satlantic">
+			<description>Hyperspectral Radiometer</description>
+			<Person firstname="Ken" surname="Heller" organization="MBARI" email="kheller@mbari.org"/>
+		</Device>
+		<Deployment role="sensor" nominalDepth="-2.5">
+			<Device id="1312" name="OCR-3000" type="Radiometer" mfgName="Satlantic" mfgModel="MiniSpec-I" mfgSerialNumber="0165">
+				<description>Hyperspectral Radiometer (Head of String); Ed (downwelling irradiance) unit, facing upward</description>
+				<Person firstname="Ken" surname="Heller" organization="MBARI" email="kheller@mbari.org"/>
+			</Device>
+		</Deployment>
+		<Deployment role="sensor" nominalDepth="5">
+			<Device id="1325" name="OCR-3000" type="Radiometer" mfgName="Satlantic" mfgModel="MiniSpec-I" mfgSerialNumber="0163">
+				<description>Hyperspectral Radiometer; Lu (upwelling radiance) unit, facing downward</description>
+				<Person firstname="Ken" surname="Heller" organization="MBARI" email="kheller@mbari.org"/>
+			</Device>
+		</Deployment>
+		<Deployment role="sensor" nominalDepth="5">
+			<Device id="1326" name="OCR-3000" type="Radiometer" mfgName="Satlantic" mfgModel="MiniSpec-R" mfgSerialNumber="0164">
+				<description>Hyperspectral Radiometer; Ed (downwelling irradiance) unit, facing upward</description>
+				<Person firstname="Ken" surname="Heller" organization="MBARI" email="kheller@mbari.org"/>
+			</Device>
+		</Deployment>
+		<Deployment role="sensor" nominalDepth="10">
+			<Device id="1324" name="OCR-3000" type="Radiometer" mfgName="Satlantic" mfgModel="MiniSpec-I" mfgSerialNumber="0172">
+				<description>Hyperspectral Radiometer; Ed (downwelling irradiance) unit, facing upward</description>
+				<Person firstname="Ken" surname="Heller" organization="MBARI" email="kheller@mbari.org"/>
+			</Device>
+		</Deployment>
+		<Deployment role="sensor" nominalDepth="10">
+			<Device id="1320" name="OCR-3000" type="Radiometer" mfgName="Satlantic" mfgModel="MiniSpec-R" mfgSerialNumber="0173">
+				<description>Hyperspectral Radiometer; Lu (upwelling radiance) unit, facing downward</description>
+				<Person firstname="Ken" surname="Heller" organization="MBARI" email="kheller@mbari.org"/>
+			</Device>
+		</Deployment>
+		<description>Deployment of Satlantic Radiometer String</description>
+		<output>
+			<DataStream>
+				<description>Satlantic Radiometer Datastream</description>
+				<RecordDescription bufferStyle="binary" bufferLengthType="fixed" parseable="false" recordType="1">
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

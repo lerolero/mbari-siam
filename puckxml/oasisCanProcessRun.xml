@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/oasisCanProcessRun.xml,v 1.1 2007/11/06 21:27:19 mccann Exp $	-->
+<!-- Last edited by $Author: mccann $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://new-ssds.mbari.org/ssds-docs/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="1" lastAuthor="$Author: mccann $" lastUpdate="$Date: 2007/11/06 21:27:19 $">
+    <ProcessRun name="Oasis Can Process">
+        <Software name="ProcessAnalog" softwareVersion="1.1"
+            url="http://moonjelly.shore.mbari.org/cgi-bin/cvsweb.cgi/DPforSSDS/oasis/src/java/oasis/ssds/process/ProcessAnalog.java">
+            <description>Software to process Oasis Analog data to produce Oasis Can data </description>
+            <Person firstname="Bob" surname="Herlien" organization="consultant"
+                email="bob@herlien.com"/>
+            <Resource name="oasisCanProcessRun.xml"
+                uri="http://dods.mbari.org/data/ssdsdata/mooring/m1/2007/xml/oasisCanProcessRun.xml"
+            />
+        </Software>
+        <Resource name="processOasisCan.log"
+            uri="http://dods.mbari.org/data/ssdsdata/mooring/m1/2007/logs/processOasisCan.log"
+            resourceType="text/x-mbari-proclog">
+            <description>Output log from the OasisCan software process</description>
+        </Resource>
+        <Resource name="m1.cfg" uri="http://dods.mbari.org/data/oasis/cfg/m1.cfg">
+            <description>M1 configuration file</description>
+        </Resource>
+
+        <output>
+            <!-- A data file which needs to be described in order to be parsed/plotted by SSDS. -->
+            <!-- Note the data file is in the data subdirectory, rather than the netcdf subdirectory. -->
+            <DataFile contentType="flatfile"
+                url="http://dods.mbari.org/data/ssdsdata/mooring/m1/2007/data/oasisCan.dat"
+                dodsAccessible="true" name="oasisCan.dat" original="false">
+                <HeaderDescription>
+                    <CommentTag tagString="#"/>
+                    <!-- lines beginning with # at start of file will be ignored -->
+                </HeaderDescription>
+
+                <description>Processed data from Oasis3 Controller for M1</description>
+                <RecordDescription bufferStyle="ASCII" bufferParseType="ordered"
+                    bufferItemSeparator="whitespace" bufferLengthType="variable" parseable="true"
+                    recordType="1">
+                    <!-- Sample Record: 
+			    	    #java_time oasis_time voltage temperature pressure
+						1102545075000 2004343.93837 12.369 13.198 7.716
+			      	-->
+                    <RecordVariable name="time" longName="Date and time of sample"
+                        referenceScale="TBD" columnIndex="1" format="int">
+                        <description>date and time as milliseconds since Java epoch</description>
+                    </RecordVariable>
+                    <RecordVariable name="oasis_time" longName="Date and time in Oasis format"
+                        referenceScale="TBD" columnIndex="2" format="float">
+                        <description>Date/time as YYYYddd.ttttt, for year, day in year, fractional
+                            day</description>
+                    </RecordVariable>
+                    <RecordVariable name="battery_voltage" longName="Oasis Battery Voltage"
+                        units="volts" referenceScale="TBD" columnIndex="3" format="float">
+                        <description>Oasis Battery Voltage</description>
+                    </RecordVariable>
+                    <RecordVariable name="temperature" longName="Oasis Can Temperature"
+                        units="degrees C" referenceScale="TBD" columnIndex="4" format="float">
+                        <description>Temperature inside the OASIS can, in degrees C</description>
+                    </RecordVariable>
+                    <RecordVariable name="pressure" longName="Housing Pressure" units="PSIG"
+                        referenceScale="TBD" columnIndex="5" format="float">
+                        <description>Air Pressure inside OASIS housing, in PSIG</description>
+                    </RecordVariable>
+
+                </RecordDescription>
+            </DataFile>
+        </output>
+    </ProcessRun>
+</Metadata>
