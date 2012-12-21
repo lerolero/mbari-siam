@@ -4,6 +4,8 @@
 # Set SIAM_HOME to your SIAM home directory
 export SIAM_HOME=/Users/oreilly/tmp/mbari-siam
 
+export JAVA_DEV_ROOT=$SIAM_HOME
+
 alias gosiam="cd $SIAM_HOME"
 alias inf="export LOG4J_THRESHOLD=INFO"
 alias dbg="export LOG4J_THRESHOLD=DEBUG"
