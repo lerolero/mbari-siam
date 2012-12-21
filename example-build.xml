@@ -22,14 +22,14 @@
 	<local name="pname"/>
     <property name="pname" value="example" />
 		<echo>
-		${pname}.all            - build all FOCE service JARs and native code
+		${pname}.all             - build all FOCE service JARs and native code
 		${pname}.test            - test service JARs
-		${pname}.ctd            - dummy CTD service JARs
+		${pname}.ctd             - Seabird SBE-37 CTD service JAR
 		${pname}.adcp            - dummy ADCP service JARs
-		${pname}.co2            -  dummy CO2 service JARs
-		${pname}.rad            -  dummy radiometer service JARs
-		${pname}.sum            -  dummy summarizing service JARs
-		${pname}.multi            - multi-class service JARs
+		${pname}.co2             - dummy CO2 service JARs
+		${pname}.rad             - dummy radiometer service JARs
+		${pname}.sum             - dummy summarizing service JARs
+		${pname}.multi           - multi-class service JARs
 		</echo>
 	</target>
 		
@@ -53,12 +53,13 @@
 	<!--  ctd Service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<target name="ctd" depends="puckxml">
 		<echo>Building ctd service JARs</echo>
-		<exec executable="mkpuck">
-		<arg line="org.mbari.siam.devices.dummy.VarDummyInstrument 'DummySeabird37' 9992 ${siam_home}/ports/VarDummyInstrument-9992.jar ${siam_home}/docs/siam-site/content/examples/example.xml  'sampleSchedule = 600' 'dataLength = 100' 'registryName = DummySeabird37' 'UUID = 00000000-0000-0000-0000-000000000000'" />
-		</exec>		
-		<exec executable="mkpuck">
-		<arg line="org.mbari.siam.devices.dummy.VarDummyInstrument 'DummySeabird' 9993 ${siam_home}/ports/VarDummyInstrument-9993.jar ${siam_home}/docs/siam-site/content/examples/example.xml  'sampleSchedule = 600' 'dataLength = 72' 'UUID = 00000000-0000-0000-0000-000000000000'" />
-		</exec>		
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.devices.seabird.sbe37.SBE37 -jar ${siam_home}/ports/SBE37-9993.jar -base ${siam_home}/classes -classdir org/mbari/siam/devices/seabird/base" />
+		</exec>
+		<exec executable="mksiamjar">
+		<arg line="-service org.mbari.siam.devices.seabird.sbe37.SBE37 -mnem 'SBE-37' -id 9993 -jar ${siam_home}/ports/SBE37-9993.jar -xml ${siam_home}/docs/siam-site/content/examples/example.xml -add -classdir org/mbari/siam/devices/seabird/sbe37 'sampleSchedule = 18' 'diagnosticSampleInterval=30' 'powerPolicy = always' 'commPowerPolicy = always' 'log=true' 'currentLimitMa = 8000' 'peakCurrentMa=8000' 'defaultSkipInterval = -1' 'timeSynch=true' 'UUID = 7d11cc63-ab73-11dd-bd2b-81196419053c'" />
+		</exec>
+
 	</target>
 	
 	<!-- adcp Service JARs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
