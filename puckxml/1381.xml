@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1381.xml,v 1.2 2006/05/03 23:42:25 kgomes Exp $	-->
+<!-- Last edited by $Author: kgomes $   -->
+
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://dods.mbari.org/data/ssdsdata/config/schema/2004oasis/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="1" lastAuthor="$Author: kgomes $" lastUpdate="$Date: 2006/05/03 23:42:25 $" >
+
+	<Deployment role="instrument" name="SpecPRR">
+
+		<Device id="1381" name="Biospherical PRR type Spectroradiometer" type="radiometer" 
+		  mfgName="Biospherical" mfgModel="PRR 620" 
+		  mfgSerialNumber="19612" preferredDeploymentRole="Instrument">
+			<description>measures incident and reflected radiation at various wavelengths</description>
+			<Person firstname="Zorba" surname="Pickerill" organization="MBARI" email="zorba@mbari.org"/>
+		</Device>
+
+		<output>
+			<DataStream>
+				<description>SpecPRR Data Stream</description>
+				<RecordDescription bufferStyle="binary"
+				 bufferLengthType="fixed" 
+				 parseable="false" recordType="1">
+
+				    <RecordVariable name="SpecPRR_data" longName="SpecPRR Binary Data Stream" 
+				    units="noUnits" columnIndex="1" >
+					<description>All of SpecPRR data output packed into binary string.  Must be decoded for use.</description>
+					</RecordVariable>
+
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>
+

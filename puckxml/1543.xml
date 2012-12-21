@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1543.xml,v 1.2 2009/05/04 22:40:39 graybeal Exp $	-->
+<!-- Last edited by $Author: graybeal $	$Date: 2009/05/04 22:40:39 $   -->
+
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ssds.mbari.org/xml/schema/SSDS_Metadata.xsd" 
+	majorVersion="2" minorVersion="2" lastAuthor="$Author: graybeal $" lastUpdate="$Date: 2009/05/04 22:40:39 $" >
+
+	<Deployment role="instrument" >
+		<Device id="1543" name="MSP430" type="Environment Monitor-System" 
+			mfgName="Texas Instruments Incorporated" mfgModel="MSP430" mfgSerialNumber="4.13" 
+		preferredDeploymentRole="instrument">
+			<description>MSP430 sensor chip on SideARM board</description>
+			<Person firstname="Lance" surname="McBride" organization="MBARI" 
+			email="lance@mbari.org" phone="831-775-2046"/>
+		</Device>
+		
+		<output>
+			<DataStream>
+				<description>MSP430 environmental data stream</description>
+				<!-- Comments:
+					- Can't use fixedPosition parsing yet
+					- 
+				-->
+				<RecordDescription bufferStyle="ASCII" 
+					bufferParseType="ordered"   
+					bufferItemSeparator="," 
+					bufferLengthType="fixed"  
+					parseable="true" recordType="1">
+					<!-- Sample Record: 
+						$PEDATA, P1024.01, T26.71, H37.10, GFL0.38, GFH-0.28, C338.20, TC0.00, *3742 
+					-->
+					<!-- Accuracy: 
+					-->
+					<!--
+						Comments: 
+					-->
+					<RecordVariable
+						name="RecordStatus" 
+						longName="Status of MSP Record" 
+						units="noUnits"  
+						columnIndex="1" 
+						format="string" parseRegExp="$PEDATA" >
+						<description>tag string at beginning of data</description>
+						<StandardVariable name="checkString" namespaceUriString="http://mmisw.org/ont/ssds/processing/"/>
+					</RecordVariable>
+					<RecordVariable 
+						name="Pressure" 
+						longName="Pressure Inside MMC Can" 
+						units="millibars" referenceScale="TBD" 
+						columnIndex="2" 
+						format="double" parseRegExp="P(\d+\.\d+)" 
+						validMin="0.0" validMax="5000.0" >
+						<description>atmospheric pressure measured inside the MMC controller pressure housing</description>
+						<StandardVariable name="atmospheric_pressure_in_device" namespaceUriString="http://mmisw.org/ont/mmi/eqtenvirons/" />
+					</RecordVariable>
+					<RecordVariable 
+						name="Temperature" 
+						longName="Temperature Inside MMC Can" 
+						units="degrees C" referenceScale="none" 
+						columnIndex="3" 
+						format="double" parseRegExp="T(\d+\.\d+)" >
+						<description>temperature measured inside the MMC controller pressure housing</description>
+						<StandardVariable name="temperature_in_device" namespaceUriString="http://mmisw.org/ont/mmi/eqtenvirons/"/>
+					</RecordVariable>
+					<RecordVariable 
+						name="Humidity" 
+						longName="Relative Humidity Inside Can" 
+						units="percent" referenceScale="TBD" 
+						columnIndex="4" 
+						format="double" parseRegExp="H(\d+\.\d+)" 
+						validMin="0.0" validMax="100.0" >
+						<description>relative humidity measured inside the MMC controller pressure housing</description>
+						<StandardVariable name="relative_humidity_in_device" namespaceUriString="http://mmisw.org/ont/mmi/eqtenvirons/"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Ground_Fault_Low" 
+						longName="Ground Fault Low Voltage" 
+						units="volts" referenceScale="tbd" 
+						columnIndex="5" 
+						format="double" parseRegExp="GFL(\d+\.\d+)" >
+						<description>ground fault voltage measured on low voltage circuit</description>
+						<StandardVariable name="ground_fault_voltage" namespaceUriString="http://mmisw.org/ont/ssds/eqthealth/" />
+					</RecordVariable>
+					<RecordVariable
+						name="Ground_Fault_High" 
+						longName="Ground Fault High Voltage" 
+						units="volts" referenceScale="TBD" 
+						columnIndex="6" 
+						format="double" parseRegExp="GFH(\d+\.\d+)" 
+						validMin="0.0" validMax="240.0" >
+						<description>ground fault voltage measured on high voltage circuit</description>
+						<StandardVariable name="ground_fault_voltage" namespaceUriString="http://mmisw.org/ont/ssds/eqthealth/" />
+					</RecordVariable>
+					<RecordVariable 
+						name="Compass_Heading" 
+						longName="Heading per Environmental Compass" 
+						units="degrees" referenceScale="trueNorth(?)" 
+						columnIndex="7" 
+						format="double" parseRegExp="C(\d+\.\d+)" 
+						validMin="0.0" validMax="360.0" >
+						<description>Heading measured by the compass on the MSP430</description>
+						<StandardVariable name="heading_of_device" namespaceUriString="http://mmisw.org/ont/ssds/eqtorientation/" />
+					</RecordVariable>
+					<RecordVariable 
+						name="Compass_Turns_Count" 
+						longName="Number of Compass Turns Since Reset" 
+						units="count" referenceScale="TBD" 
+						columnIndex="8" 
+						format="int" parseRegExp="(CT%i)" >
+						<description>Accumulated number of turns measured by the Compass Heading since the last reset.  (Positive = clockwise, negative = counter-clockwise.)</description>
+						<StandardVariable name="accumulated_rotations" namespaceUriString="http://mmisw.org/ont/ssds/eqtorientation/" />
+					</RecordVariable>
+					<RecordVariable 
+						name="CheckSum" 
+						longName="checksum of data packet" 
+						columnIndex="9" 
+						format="int" parseRegExp="\*(\d+)"  >
+						<description>checksum</description>
+						<StandardVariable name="checksum" namespaceUriString="http://mmisw.org/ont/ssds/processing/"/>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

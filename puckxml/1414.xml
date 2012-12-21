@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1414.xml,v 1.10 2012/02/04 00:33:32 kgomes Exp $	-->
+<!-- Last edited by $Author: kgomes $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://new-ssds.mbari.org/ssds-docs/xml/schema/SSDS_Metadata.xsd"
+	majorVersion="1" minorVersion="1" lastAuthor="$Author: kgomes $"
+	lastUpdate="$Date: 2012/02/04 00:33:32 $">
+	<!-- Define name and startDate here. For production mooring turn remove the word "Test" and set the startDate to when good data are flowing -->
+	<Deployment role="platform" name="Test M1 - February 2012">
+		<Device id="1414"></Device>
+		<!-- Approximate watch circle parameters entered here can be adjusted in the database after deployment -->
+		<Resource
+			uri="doc://foobar/watchCircle?centerLon=-122.0335&amp;centerLat=36.7551&amp;warningDist=2.55"
+			name="Watch circle information">
+			<description>Data for this mooring's watch circle are embedded in the uriString of this
+				Resource. An application may parse for these parameters to use as criteria for
+				issuing a warning if the GPS position is geater than warningDist (in km) from
+				centerLat and centerLon (in decimal degrees WGS84)</description>
+		</Resource>
+	</Deployment>
+</Metadata>

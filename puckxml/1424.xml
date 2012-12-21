@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1424.xml,v 1.5 2010/06/01 17:07:10 mccann Exp $	-->
+<!-- Last edited by $Author: mccann $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://new-ssds.mbari.org/ssds-docs/xml/schema/SSDS_Metadata.xsd"
+	majorVersion="1" minorVersion="1" lastAuthor="$Author: mccann $"
+	lastUpdate="$Date: 2010/06/01 17:07:10 $">
+	<Deployment role="instrument">
+		<Device id="1424"/>
+		<output>
+			<DataStream>
+				<description>Metsys data stream</description>
+				<!-- Comments:
+					- Doesn't use fixedPosition parsing yet
+				-->
+				<RecordDescription bufferStyle="ASCII" bufferParseType="ordered"
+					bufferItemSeparator="whitespace" bufferLengthType="variable" parseable="true"
+					recordType="1">
+					<!-- Sample Record:
+						
+						01+0403.  02+0121.  03+2254.  04+13.90  05+22.52  06+43.21  07+218.4  08+0.000 
+						09+134.1  10+2.864  11+309.8  12+175.7  13+134.1  14+0.000  15-.59000
+
+					-->
+					<!--
+						Comments:
+						- Configuration: RM Young "Windbird" sensor installed (no sonic anemometer)
+					-->
+					<RecordVariable name="ArrayType" longName="Type of this Metsys data array"
+						units="noUnits" referenceScale="TBD" columnIndex="1" format="int"
+						parseRegExp="01([+-]\d+)\.">
+						<description>indication of the type of data array (should be 403, to match
+							this record description</description>
+					</RecordVariable>
+					<RecordVariable name="DayOfYear" longName="Day Of Year" units="dayofyear"
+						referenceScale="TBD" columnIndex="2" format="int"
+						parseRegExp="02([+-]\d+)\.">
+						<description>day number (in current year) that the data was
+						taken</description>
+					</RecordVariable>
+					<RecordVariable name="MetsysTime" longName="Time Of Day" units="hhmm"
+						referenceScale="TBD" columnIndex="3" format="int"
+						parseRegExp="03([+-]\d+)\.">
+						<description>time of day (GMT) that the data was taken, in hours and
+						minutes</description>
+					</RecordVariable>
+					<RecordVariable name="BatteryVoltage" longName="Metsys Battery Voltage"
+						units="volts" referenceScale="TBD" columnIndex="4" format="float"
+						parseRegExp="04([+-]\d*\.\d*)">
+						<description>voltage in Metsys battery</description>
+					</RecordVariable>
+					<RecordVariable name="AirTemperature" longName="Air Temperature" units="deg C"
+						referenceScale="TBD" columnIndex="5" format="float"
+						parseRegExp="05([+-]\d*\.\d*)">
+						<description>air temperature measured by Metsys</description>
+						<StandardVariable name="air_temperature"
+							namespaceUriString="http://marinemetadata.org/cf"/>
+					</RecordVariable>
+					<RecordVariable name="RelativeHumidity" longName="Relative Humidity"
+						units="percent" referenceScale="TBD" columnIndex="6" format="float"
+						parseRegExp="06([+-]\d*\.\d*)">
+						<description>relative humidity measured by Metsys</description>
+						<StandardVariable name="relative_humidity"
+							namespaceUriString="http://marinemetadata.org/cf"/>
+					</RecordVariable>
+					<RecordVariable name="AirPressure" longName="Barometric Pressure - 800"
+						units="millibars" referenceScale="TBD" columnIndex="7" format="float"
+						parseRegExp="07([+-]\d*\.\d*)">
+						<description>barometric pressure measured by Metsys - 800 millibars
+						(offset)</description>
+						<StandardVariable name="air_pressure"
+							namespaceUriString="http://marinemetadata.org/cf"/>
+					</RecordVariable>
+					<RecordVariable name="AvgWindSpeed_Sonic"
+						longName="Average Wind Speed (Sonic-n/a)" units="knots" referenceScale="TBD"
+						columnIndex="8" format="float" parseRegExp="08([+-]\d*\.\d*)">
+						<description>average wind speed, measured by Sonic sensor (not installed).
+							Averaged over 59 counts.</description>
+						<StandardVariable name="wind_speed"
+							namespaceUriString="http://marinemetadata.org/cf"/>
+					</RecordVariable>
+					<RecordVariable name="AvgWindDir_Sonic"
+						longName="Average Wind Direction (from, magnetic) (Sonic-n/a)"
+						units="degrees" referenceScale="TBD" columnIndex="9" format="float"
+						parseRegExp="09([+-]\d*\.\d*)">
+						<description>average direction from which wind is coming, measured by Sonic
+							sensor (not installed). Averaged over 59 counts.</description>
+						<StandardVariable name="wind_from_direction"
+							namespaceUriString="http://marinemetadata.org/cf"/>
+					</RecordVariable>
+					<RecordVariable name="WindSpd_Windbird" longName="Wind Speed (Windbird)"
+						units="knots" referenceScale="TBD" columnIndex="10" format="float"
+						parseRegExp="10([+-]\d*\.\d*)">
+						<description>wind speed, measured by RM Young mechanical ("Windbird")
+						sensor</description>
+						<StandardVariable name="wind_speed"
+							namespaceUriString="http://marinemetadata.org/cf"/>
+					</RecordVariable>
+					<RecordVariable name="WindDir_Windbird"
+						longName="Wind Direction (from, magnetic) (Windbird)" units="degrees"
+						referenceScale="TBD" columnIndex="11" format="float"
+						parseRegExp="11([+-]\d*\.\d*)">
+						<description>direction the wind is blowing from, measured by RM Young
+							mechanical ("Windbird") sensor</description>
+						<StandardVariable name="wind_from_direction"
+							namespaceUriString="http://marinemetadata.org/cf"/>
+					</RecordVariable>
+					<RecordVariable name="RelWindDir_Windbird"
+						longName="Wind Direction Relative to Sensor (Windbird)" units="degrees"
+						referenceScale="TBD" columnIndex="12" format="float"
+						parseRegExp="12([+-]\d*\.\d*)">
+						<description>direction the wind is blowing from relative to the origin of
+							the (Windbird) wind sensor</description>
+						<StandardVariable name="wind_from_direction"
+							namespaceUriString="http://marinemetadata.org/cf"/>
+					</RecordVariable>
+					<RecordVariable name="BuoyHdg" longName="Buoy Heading (magnetic)"
+						units="degrees" referenceScale="TBD" columnIndex="13" format="float"
+						parseRegExp="13([+-]\d*\.\d*)">
+						<description>heading of the Metsys instrument origin, which is installed
+							aligned with the North direction of the buoy</description>
+					</RecordVariable>
+					<RecordVariable name="AvgRelWindDir"
+						longName="Average Wind Dir Relative to Sensor" units="noUnits"
+						referenceScale="TBD" columnIndex="14" format="float"
+						parseRegExp="14([+-]\d*\.\d*)">
+						<description>the average of: the wind direction measurements relative to the
+							sensor (Rel Wind Dir, item 12). Averaged over 59 counts.</description>
+						<StandardVariable name="wind_from_direction"
+							namespaceUriString="http://marinemetadata.org/cf"/>
+					</RecordVariable>
+					<RecordVariable name="SonicVelocity"
+						longName="Anemometer Avg Sound Velocity (Sonic-n/a)" units="knots"
+						referenceScale="TBD" columnIndex="15" format="float"
+						parseRegExp="15([+-]\d*\.\d*)">
+						<description>Positive is average velocity of sound, negative is
+							measurementErrors.communicationErrors. Sonic anemometer not installed.
+						</description>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

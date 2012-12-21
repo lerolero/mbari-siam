@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1557.xml,v 1.4 2008/10/14 18:24:21 mccann Exp $	-->
+<!-- Last edited by $Author: mccann $	$Date: 2008/10/14 18:24:21 $   -->
+
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://dods.mbari.org/data/ssdsdata/config/schema/2004oasis/SSDS_Metadata.xsd"
+	majorVersion="1" minorVersion="1" lastAuthor="$Author: mccann $"
+	lastUpdate="$Date: 2008/10/14 18:24:21 $">
+	<Deployment role="instrument">
+		<Device id="1557"/>
+		<output>
+			<DataStream>
+				<description>ASIMET SWR data stream</description>
+				<!--  see http://frodo.whoi.edu/asimet/asimet_sampling_definitions.html -->
+				<RecordDescription bufferItemSeparator=":" bufferLengthType="variable"
+					bufferParseType="ordered" bufferStyle="ASCII" parseable="true" recordType="1">
+					<RecordVariable columnIndex="1" format="float" longName="Short Wave flux"
+						name="SW_flux" units="W m-2">
+						<StandardVariable name="downwelling_shortwave_flux_in_air"/>
+					</RecordVariable>
+					<RecordVariable columnIndex="2" format="int" longName="Short wave flux raw count"
+						name="SW_raw" units="count" validMax="65535" validMin="0"
+					> </RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

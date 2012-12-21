@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1646.xml,v 1.1 2008/11/04 22:46:40 bobh Exp $	-->
+<!-- Last edited by $Author: bobh $	$Date: 2008/11/04 22:46:40 $   -->
+
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:noNamespaceSchemaLocation="http://ssds.mbari.org/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="2" minorVersion="3" 
+	lastAuthor="$Author: bobh $" lastUpdate="$Date: 2008/11/04 22:46:40 $">
+	
+	<Deployment role="instrument">
+		<Device id="1646" name="SBE18 pH Sensors" type="pH" 
+		mfgName="Seabird Electronics"  mfgModel="SBE18" mfgSerialNumber="180280" 
+		preferredDeploymentRole="Instrument">
+			<description>Seabird CTD</description>
+			<Person	firstname="Peter" surname="Walz" organization="MBARI"
+			email="wape@mbari.org" phone="831-775-1740"/>
+		</Device>
+		
+		<output>
+			<DataStream>
+				<description>CTD Data Stream</description>
+				<RecordDescription bufferStyle="ascii" 
+					parseable="true" 
+					recordType="1"
+					bufferParseType="ordered"
+					bufferItemSeparator=" "
+					bufferLengthType="fixed">
+					<RecordVariable
+						name="Voltage-1"
+						longName="Voltage"
+						units="Volts"	
+						columnIndex="1"
+						format="float" >
+						<description>Voltage from Sensor #1</description>
+						<StandardVariable name="Volts"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Voltage-2"
+						longName="Voltage"
+						units="Volts"	
+						columnIndex="2"
+						format="float" >
+						<description>Voltage from Sensor #2</description>
+						<StandardVariable name="Volts"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Voltage-3"
+						longName="Voltage"
+						units="Volts"	
+						columnIndex="3"
+						format="float" >
+						<description>Voltage from Sensor #3</description>
+						<StandardVariable name="Volts"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Voltage-4"
+						longName="Voltage"
+						units="Volts"	
+						columnIndex="4"
+						format="float" >
+						<description>Voltage from Sensor #4</description>
+						<StandardVariable name="Volts"/>
+					</RecordVariable>
+					<RecordVariable
+						name="pH-1"
+						longName="pH-1"
+						units="pH"	
+						columnIndex="5"
+						format="float" >
+						<description>Calculated pH from Sensor #1</description>
+						<StandardVariable name="pH"/>
+					</RecordVariable>
+					<RecordVariable
+						name="pH-2"
+						longName="pH-2"
+						units="pH"	
+						columnIndex="6"
+						format="float" >
+						<description>Calculated pH from Sensor #2</description>
+						<StandardVariable name="pH"/>
+					</RecordVariable>
+					<RecordVariable
+						name="pH-3"
+						longName="pH-3"
+						units="pH"	
+						columnIndex="7"
+						format="float" >
+						<description>Calculated pH from Sensor #3</description>
+						<StandardVariable name="pH"/>
+					</RecordVariable>
+					<RecordVariable
+						name="pH-4"
+						longName="pH-4"
+						units="pH"	
+						columnIndex="8"
+						format="float" >
+						<description>Calculated pH from Sensor #4</description>
+						<StandardVariable name="pH"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Temperature"
+						longName="Water Temperature used for pH calculation"
+						units="deg C"	referenceScale="TBD"
+						columnIndex="9"
+						format="float" >
+							<description>water temperature</description>
+							<StandardVariable name="Temperature" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

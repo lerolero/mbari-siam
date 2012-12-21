@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1400.xml,v 1.1 2006/05/25 18:35:12 graybeal Exp $	-->
+<!-- Last edited by $Author: graybeal $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://dods.mbari.org/data/ssdsdata/config/schema/2004oasis/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="1" lastAuthor="$Author: graybeal $" lastUpdate="$Date: 2006/05/25 18:35:12 $" >
+	<Deployment role="instrument" name="pCO2 October 2004"
+		startDate="2004-10-21T20:05:00Z"
+		nominalLongitude="-122.0460" nominalLatitude="36.7640" nominalDepth="0">
+		<Device	id="1400" name="pCO2 Analyzer" type="Multipurpose" mfgName="MBARI" 
+			mfgModel="pCO2" mfgSerialNumber="M1"
+			preferredDeploymentRole="Instrument">
+			<description>pCO2 Analyzer</description>
+			<Person	firstname="Gernot" surname="Friederich" organization="MBARI"
+			email="frge@mbari.org" phone="831-775-1713"/>
+		</Device>
+
+		<description>M1 deployment of pCO2</description>
+		<input>
+			<DataFile name="/oasis/raw/m1.2004295.00"
+			          url="http://dods.mbari.org/data//oasis/raw/m1.2004295.00"
+					  webAccessible="false" />
+		</input>
+
+		<output>
+			<DataStream>
+				<description>pCO2 data stream</description>
+				<!-- Comments:
+				-->
+				<RecordDescription bufferStyle="ASCII"
+				bufferParseType="ordered"
+				bufferItemSeparator="whitespace"
+				bufferLengthType="variable"
+				parseable="true" recordType="1">
+					<!-- COMMAND Sent:
+					-->
+					<!-- Sample Record:
+					    -493.10  -97.063   16.990   2721.5  I
+					-->
+					<!-- Accuracy:
+					-->
+					<!--
+						Comments:
+							This XML assumes one data record per packet.
+					-->
+					<RecordVariable
+						name="pCO2 ppm"
+						longName="Partial pressure of CO2"
+						units="ppm"	referenceScale="TBD"
+						columnIndex="1"
+						format="float" >
+							<description>Partial pressure of CO2 in ppm</description>
+					</RecordVariable>
+					<RecordVariable
+						name="pCO2 mv"
+						longName="Sensor output in millivolts"
+						units="millivolts"	referenceScale="TBD"
+						columnIndex="2"
+						format="float" >
+							<description>sensor output in millivolts</description>
+							<StandardVariable name="millivolts"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Temperature"
+						longName="Water Temperature"
+						units="deg C"	referenceScale="TBD"
+						columnIndex="3"
+						format="float" >
+							<description>water temperature</description>
+							<StandardVariable name="temperature"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Water alarm"
+						longName="Water alarm output in millivolts"
+						units="millivolts"	referenceScale="TBD"
+						columnIndex="4"
+						format="float" >
+							<description>Water alarm sensor output in millivolts</description>
+							<StandardVariable name="millivolts"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Calibration marker"
+						longName="Calibration marker"
+						columnIndex="5"
+						format="string"	>
+							<description>'C' for calibration, 'I' for ???</description>
+					</RecordVariable>
+
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

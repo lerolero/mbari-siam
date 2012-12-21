@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1378.xml,v 1.3 2007/11/06 21:18:14 mccann Exp $	-->
+<!-- Last edited by $Author: mccann $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://dods.mbari.org/data/ssdsdata/config/schema/2005oasis/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="2" lastAuthor="$Author: mccann $" lastUpdate="$Date: 2007/11/06 21:18:14 $" >
+	<Deployment role="instrument">
+		<Device id="1378" />
+		<output>
+			<DataStream>
+				<RecordDescription bufferStyle="binary" bufferLengthType="fixed" parseable="false" recordType="1">
+				    <RecordVariable name="OASIS3_data" longName="OASIS3 Binary Analog Data Stream" units="noUnits" columnIndex="1" >
+						<description>Binary data from OASIS3 analog ports. Must be decoded for use. </description>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1435.xml,v 1.3 2012/02/04 00:33:32 kgomes Exp $	-->
+<!-- Last edited by $Author: kgomes $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:noNamespaceSchemaLocation="http://new-ssds.mbari.org/ssds-docs/xml/schema/SSDS_Metadata.xsd"
+		majorVersion="1" minorVersion="1" lastAuthor="$Author: kgomes $" lastUpdate="$Date: 2012/02/04 00:33:32 $">
+	<Deployment role="instrument" nominalDepth="60">
+		<Device id="1435"></Device>
+		<output>
+			<DataStream>
+				<description>IM CTD data stream with pressure</description>
+				<RecordDescription bufferStyle="ASCII" bufferParseType="ordered"
+						bufferItemSeparator="," bufferLengthType="variable" parseable="true"
+						recordType="1">
+					<!-- Sample Record:
+						00475,  17.3828,  0.00029, 13 Oct 2009, 15:06:20,     52
+					-->
+					<RecordVariable name="SerialNumber" longName="Serial Number" units=""
+							columnIndex="1" format="int">
+					</RecordVariable>
+					<RecordVariable name="Temperature" longName="Water Temperature" units="deg C"
+							columnIndex="2" format="float">
+						<StandardVariable name="sea_water_temperature"/>
+					</RecordVariable>
+					<RecordVariable name="Conductivity" longName="Conductivity" units="S/m"
+							columnIndex="3" format="float">
+						<StandardVariable name="sea_water_electrical_conductivity"/>
+					</RecordVariable>
+					<RecordVariable name="Pressure" longName="Pressure" units="decibars"
+							columnIndex="4" format="float">
+						<StandardVariable name="sea_water_pressure"/>
+					</RecordVariable>
+					<RecordVariable name="Date" longName="Date of Sample" units="dd_MMM_yyyy"
+							columnIndex="5" format="string">
+						<description>date in 'dd MMM yyyy' format</description>
+					</RecordVariable>
+					<RecordVariable name="Time" longName="Time of Day" units="hh-mm-ss"
+							columnIndex="6" format="string">
+						<description>time of day in hh:mm:ss format</description>
+					</RecordVariable>
+					<RecordVariable name="RecordNumber" longName="Record Number" units=""
+							columnIndex="7" format="int">
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>
+

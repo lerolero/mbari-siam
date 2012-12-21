@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1460.xml,v 1.2 2006/10/03 16:11:58 kgomes Exp $	-->
+<!-- Last edited by $Author: kgomes $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://new-ssds.mbari.org/ssds-docs/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="2" lastAuthor="$Author: kgomes $" lastUpdate="$Date: 2006/10/03 16:11:58 $" >
+	<Deployment role="Instrument">
+		<Device id="1460" name="Aanderaa Oxygen Optode" type="Oxygen Sensor" 
+		mfgName="Aanderaa" mfgModel="3835" mfgSerialNumber="121">
+			<description>Aanderaa Oxygen Sensor</description>
+			<Person firstname="Joe" surname="Needoba" organization="MBARI" email="needoba@mbari.org"/>
+		</Device>
+		<output>
+			<DataStream>
+				<description>Aanderaa oxygen data stream</description>
+				<RecordDescription bufferStyle="ASCII"
+					bufferParseType="ordered"
+					bufferItemSeparator="whitespace"
+					bufferLengthType="fixed"
+					parseable="true" recordType="1">
+					<RecordVariable
+						name="Model Number"
+						longName="Model Number of Unit"
+						units="none" referenceScale="TBD"
+						columnIndex="1"
+						format="string">
+							<description>model number of the unit</description>
+							<StandardVariable name="modelnumber"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Serial Number"
+						longName="Serial Number of Unit"
+						units="none" referenceScale="TBD"
+						columnIndex="2"
+						format="string">
+							<description>serial number of the unit</description>
+							<StandardVariable name="serialnumber"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Oxygen Concentration"
+						longName="Measured Oxygen Concentration"
+						units="uM" referenceScale="TBD"
+						columnIndex="3"
+						format="float"
+						validMin="0" validMax="500" >
+							<description>oxygen concentration</description>
+							<StandardVariable name="oxygen"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Air Saturation"
+						longName="Measured Air Saturation"
+						units="percent" referenceScale="TBD"
+						columnIndex="4"
+						format="float"
+						validMin="0" validMax="120" >
+							<description>air saturation</description>
+							<StandardVariable name="oxygen saturation"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Temperature"
+						longName="Measured Temperature"
+						units="degreesC" referenceScale="TBD"
+						columnIndex="5"
+						format="float"
+						validMin="0" validMax="36" >
+							<description>temperature</description>
+							<StandardVariable name="temperature"/>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

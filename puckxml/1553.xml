@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1553.xml,v 1.3 2009/10/26 19:32:44 mccann Exp $	-->
+<!-- Last edited by $Author: mccann $	$Date: 2009/10/26 19:32:44 $   -->
+
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:noNamespaceSchemaLocation="http://ssds.mbari.org/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="2" lastAuthor="$Author: mccann $" lastUpdate="$Date: 2009/10/26 19:32:44 $">
+	<Deployment role="instrument">
+		<Device id="1553" name="Aquadopp Current Meter" type="ADCP" 
+			mfgName="Nortek" mfgModel="Aquadopp 2MHz, 6000m (titanium) A6L" mfgSerialNumber="AQD2053"> 
+			<description>Measures ocean current motions</description>
+			<Person firstname="Karen" surname="Salamy" 
+			organization="MBARI" email="salamy@mbari.org"/>
+		</Device>
+		<output>
+			<DataStream>
+				<description>ADCP Data Stream</description>
+				<RecordDescription bufferStyle="binary" bufferLengthType="variable" parseable="false" recordType="1">
+				    <RecordVariable name="ADCP_data" longName="ADCP Binary Data Stream" units="noUnits" columnIndex="1" >
+						<description>All of ADCP data output packed into binary string.  Must be decoded for use.</description>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+		<output>
+			<DataStream>
+				<description>Summary ADCP Data Stream</description>
+				<RecordDescription bufferStyle="ascii" 
+					bufferLengthType="variable" 
+					parseable="false" 
+					recordType="1000">
+					<RecordVariable 
+						name="ADCP_summary" 
+						longName="Summary ADCP Data Record" 
+						units="noUnits" 
+						columnIndex="1" >
+						<description>Summary packets for ADCP variables in condensed XML format. Contents for each variable: 
+							number of samples, average, max, min, and standard deviation.</description>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

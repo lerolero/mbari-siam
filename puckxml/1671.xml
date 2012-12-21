@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1671.xml,v 1.1 2008/11/04 22:46:40 bobh Exp $	-->
+<!-- Last edited by $Author: bobh $	$Date: 2008/11/04 22:46:40 $   -->
+
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:noNamespaceSchemaLocation="http://ssds.mbari.org/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="2" minorVersion="3" 
+	lastAuthor="$Author: bobh $" lastUpdate="$Date: 2008/11/04 22:46:40 $">
+	
+	<Deployment role="instrument">
+		<Device id="1671" name="FOCE Power Supply Current Monitor"
+		mfgName="MBARI"  mfgModel="FOCE Auxiliary Board"
+		preferredDeploymentRole="Instrument">
+			<description>Power Supply Monitor</description>
+			<Person	firstname="Chad" surname="Kecy" organization="MBARI"
+			email="ckecy@mbari.org" phone="831-775-2039"/>
+		</Device>
+		
+		<output>
+			<DataStream>
+				<description>Power Supply Current Data Stream</description>
+				<RecordDescription bufferStyle="ascii" 
+					parseable="true" 
+					recordType="1"
+					bufferParseType="ordered"
+					bufferItemSeparator=" "
+					bufferLengthType="fixed">
+					<RecordVariable
+						name="12V Current"
+						longName="Current"
+						units="Amps"	
+						columnIndex="1"
+						format="float" >
+						<description>Current from 12V Power Supply</description>
+						<StandardVariable name="Amps"/>
+					</RecordVariable>
+					<RecordVariable
+						name="24V Current"
+						longName="Current"
+						units="Amps"	
+						columnIndex="2"
+						format="float" >
+						<description>Current from 24V Power Supply</description>
+						<StandardVariable name="Amps"/>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

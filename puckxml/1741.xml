@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1741.xml,v 1.1 2009/10/13 19:25:28 mccann Exp $	-->
+<!-- Last edited by $Author: mccann $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:noNamespaceSchemaLocation="http://dods.mbari.org/data/ssdsdata/config/schema/2004oasis/SSDS_Metadata.xsd"
+		majorVersion="1" minorVersion="1" lastAuthor="$Author: mccann $" lastUpdate="$Date: 2009/10/13 19:25:28 $">
+	<Deployment role="instrument" nominalDepth="220">
+		<Device id="1741"></Device>
+		<output>
+			<DataStream>
+				<description>IM CTD data stream with pressure</description>
+				<RecordDescription bufferStyle="ASCII" bufferParseType="ordered"
+						bufferItemSeparator="," bufferLengthType="variable" parseable="true"
+						recordType="1">
+					<!-- 
+					    Report from conning into instrument on 13 October 2009:
+						S>#11ds
+						SBE 16plus-IM V 2.1a  SERIAL NO. 6405    13 Oct 2009 11:28:45
+						vbatt = 13.2, vlith =  8.3, ioper =  61.4 ma, ipump =  66.6 ma, 
+						iext01 =   5.0 ma
+						status = logging
+						samples = 119, free = 3870360
+						sample interval = 10800 seconds, number of measurements per sample = 1
+						pump = run pump during sample, delay before sampling = 40.0 seconds
+						pressure sensor = strain gauge, range = 870.0
+						SBE 38 = no, SBE 50 = no, Gas Tension Device = no
+						Ext Volt 0 = yes, Ext Volt 1 = no
+						Ext Volt 2 = no, Ext Volt 3 = no
+						Ext Volt 4 = no, Ext Volt 5 = no
+						output format = converted decimal
+						output salinity = no, output sound velocity = no, output sample number = yes
+						append UCSD sigma-t, V, I
+						S>
+					 -->	
+					<!-- Sample Record:
+						00475,  17.3828,  0.00029, 13 Oct 2009, 15:06:20,     52
+					-->
+					<RecordVariable name="SerialNumber" longName="Serial Number" units=""
+							columnIndex="1" format="int">
+					</RecordVariable>
+					<RecordVariable name="Temperature" longName="Water Temperature" units="deg C"
+							columnIndex="2" format="float">
+						<StandardVariable name="sea_water_temperature"/>
+					</RecordVariable>
+					<RecordVariable name="Conductivity" longName="Conductivity" units="S/m"
+							columnIndex="3" format="float">
+						<StandardVariable name="sea_water_electrical_conductivity"/>
+					</RecordVariable>
+					<RecordVariable name="Pressure" longName="Pressure" units="decibars"
+							columnIndex="4" format="float">
+						<StandardVariable name="sea_water_pressure"/>
+					</RecordVariable>
+					<RecordVariable name="OxygenVolts" longName="Oxygen sensor voltage" units="V"
+							columnIndex="5" format="float">
+					</RecordVariable>
+					<RecordVariable name="DateTime" longName="DateTime of Sample" units=""
+							columnIndex="6" format="string">
+						<description>datetime in 'dd MMM yyyy hh:mm:ss' format</description>
+					</RecordVariable>
+					<RecordVariable name="Sigma-t" longName="UCSD sigma-t" units="kg/m^3"
+							columnIndex="7" format="float">
+					</RecordVariable>
+					<RecordVariable name="BatteryVoltage" longName="Battery Voltage" units="V"
+							columnIndex="8" format="float">
+					</RecordVariable>
+					<RecordVariable name="OperatingCurrent" longName="Operating Current" units="mA"
+							columnIndex="9" format="float">
+					</RecordVariable>
+					<RecordVariable name="RecordNumber" longName="Record Number" units=""
+							columnIndex="10" format="int">
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>
+

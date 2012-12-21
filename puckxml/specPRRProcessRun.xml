@@ -1,0 +1,342 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/specPRRProcessRun.xml,v 1.1 2007/11/06 21:17:35 mccann Exp $	-->
+<!-- Last edited by $Author: mccann $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://new-ssds.mbari.org/ssds-docs/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="1" lastAuthor="$Author: mccann $" lastUpdate="$Date: 2007/11/06 21:17:35 $">
+
+    <ProcessRun name="PRR Spectroradiometer Process">
+
+        <Software name="ProcessSpecPRR" softwareVersion="1.1"
+            url="http://moonjelly.shore.mbari.org/cgi-bin/cvsweb.cgi/DPforSSDS/oasis/src/java/oasis/ssds/process/ProcessSpecPRR.java?rev=1.1&amp;content-type=text/x-cvsweb-markup">
+            <description>Software to process Oasis raw data to produce data from Biospherical PRR
+                Spectroradiometers </description>
+            <Person firstname="Bob" surname="Herlien" organization="consultant"
+                email="bob@herlien.com"/>
+            <Resource name="specPRRProcessRun.xml"
+                uri="http://dods.mbari.org/data/ssdsdata/mooring/m1/2007/xml/specPRRProcessRun.xml"
+            />
+        </Software>
+        <Resource name="processSpecPRR.log"
+            uri="http://dods.mbari.org/data/ssdsdata/mooring/m1/2007/logs/processOasisCan.log"
+            resourceType="text/x-mbari-proclog">
+            <description>Output log from the OasisCan software process</description>
+        </Resource>
+
+        <Resource name="m1.cfg" uri="http://dods.mbari.org/data/oasis/cfg/m1.cfg">
+            <description>M1 configuration file</description>
+        </Resource>
+
+        <Resource name="specprr.m1.20071010"
+            uri="http://dods.mbari.org/data/oasis/cfg/specprr.m1.20061010">
+            <description>SpecPRR calibration file</description>
+        </Resource>
+
+        <Resource name="specprr.19612.620.20060728"
+            uri="http://dods.mbari.org/data/oasis/cfg/specprr.19612.620.20060728">
+            <description>SpecPRR calibration file</description>
+        </Resource>
+
+        <Resource name="satlant.dummy.a" uri="http://dods.mbari.org/data/oasis/cfg/satlant.dummy.a">
+            <description>SpecPRR calibration file</description>
+        </Resource>
+
+        <Resource name="satlant.dummy.b" uri="http://dods.mbari.org/data/oasis/cfg/satlant.dummy.b">
+            <description>SpecPRR calibration file</description>
+        </Resource>
+
+        <Resource name="specprr.19622.600.20060728"
+            uri="http://dods.mbari.org/data/oasis/cfg/specprr.19622.600.20060728">
+            <description>SpecPRR calibration file</description>
+        </Resource>
+
+        <output>
+            <!-- A data file which needs to be described in order to be parsed/plotted by SSDS. -->
+            <!-- Note the data file is in the data subdirectory, rather than the netcdf subdirectory. -->
+            <DataFile contentType="flatfile"
+                url="http://dods.mbari.org/data/ssdsdata/mooring/m1/2007/data/specPRR.dat"
+                dodsAccessible="true" name="specPRR.dat" original="false">
+                <HeaderDescription>
+                    <CommentTag tagString="#"/>
+                    <!-- lines beginning with # at start of file will be ignored -->
+                </HeaderDescription>
+
+                <description>Processed data from SpecPRRs 19612 and 19622</description>
+                <RecordDescription bufferStyle="ASCII" bufferParseType="ordered"
+                    bufferItemSeparator="whitespace" bufferLengthType="variable" parseable="true"
+                    recordType="1">
+                    <!-- Sample Record: 
+			    	    #java_time oasis_time voltage temperature pressure
+						1102575754000 2004344.29345 .000718 .002672 .004319 .001140 -.016748 .003519
+						-.000119 -.000064 1.401088 .000639 2.359434 3.509124 .000029 .000038 .000038
+						.000038 .000038 .000029 .000038 .000038 .000038 .000038 .000029 .000038 .000029
+						.000038 .000029 .000038 -.951735 -.916116 -.948213 -.955863 -.958426 -.950959
+						-.891069 -.000008 12.542293 9.955447 -.046486 .000391 .000391 .000000 -.048254
+						.000391 -.000070 -.001025 -.001381 -.001282 -.000880 -.000406 -.000597 -.000034
+					-->
+                    <RecordVariable name="time" longName="Date and time of sample"
+                        referenceScale="TBD" columnIndex="1" format="int">
+                        <description>date and time as milliseconds since Java epoch</description>
+                    </RecordVariable>
+                    <RecordVariable name="oasis_time" longName="Date and time in Oasis format"
+                        referenceScale="TBD" columnIndex="2" format="float">
+                        <description>Date/time as YYYYddd.ttttt, for year, day in year, fractional
+                            day</description>
+                    </RecordVariable>
+                    <RecordVariable name="Ed412_0m" longName="Surface Downward Irradiance at 412 nm"
+                        units="uwatts/cm2/nm" referenceScale="TBD" columnIndex="3" format="float">
+                        <description>Surface Downward Irradiance at 412 nm, in
+                        uwatts/cm2/nm</description>
+                    </RecordVariable>
+                    <RecordVariable name="Ed443_0m" longName="Surface Downward Irradiance at 443 nm"
+                        units="uwatts/cm2/nm" referenceScale="TBD" columnIndex="4" format="float">
+                        <description>Surface Downward Irradiance at 443 nm, in
+                        uwatts/cm2/nm</description>
+                    </RecordVariable>
+                    <RecordVariable name="Ed490_0m" longName="Surface Downward Irradiance at 490 nm"
+                        units="uwatts/cm2/nm" referenceScale="TBD" columnIndex="5" format="float">
+                        <description>Surface Downward Irradiance at 490 nm, in
+                        uwatts/cm2/nm</description>
+                    </RecordVariable>
+                    <RecordVariable name="Ed510_0m" longName="Surface Downward Irradiance at 510 nm"
+                        units="uwatts/cm2/nm" referenceScale="TBD" columnIndex="6" format="float">
+                        <description>Surface Downward Irradiance at 510 nm, in
+                        uwatts/cm2/nm</description>
+                    </RecordVariable>
+                    <RecordVariable name="Ed555_0m" longName="Surface Downward Irradiance at 555 nm"
+                        units="uwatts/cm2/nm" referenceScale="TBD" columnIndex="7" format="float">
+                        <description>Surface Downward Irradiance at 555 nm, in
+                        uwatts/cm2/nm</description>
+                    </RecordVariable>
+                    <RecordVariable name="Ed665_0m" longName="Surface Downward Irradiance at 665 nm"
+                        units="uwatts/cm2/nm" referenceScale="TBD" columnIndex="8" format="float">
+                        <description>Surface Downward Irradiance at 665nm, in
+                        uwatts/cm2/nm</description>
+                    </RecordVariable>
+                    <RecordVariable name="PAR_0m" longName="Surface PAR" units="uEinsteins/cm2/sec"
+                        referenceScale="TBD" columnIndex="9" format="float">
+                        <description>Surface Photosynthetically Active Radiation</description>
+                    </RecordVariable>
+                    <RecordVariable name="Gnd_0m" longName="Surface Ground" units="volts"
+                        referenceScale="TBD" columnIndex="10" format="float">
+                        <description>Ground Reference for Surface instrument</description>
+                    </RecordVariable>
+                    <RecordVariable name="Diode_0m" longName="Surface Diode Temperature"
+                        units="degrees C" referenceScale="TBD" columnIndex="11" format="float">
+                        <description>Diode temperature for Surface instrument</description>
+                    </RecordVariable>
+                    <RecordVariable name="Diode_Gnd_0m" longName="Surface Diode Ground"
+                        units="volts" referenceScale="TBD" columnIndex="12" format="float">
+                        <description>Diode Ground Reference for Surface instrument</description>
+                    </RecordVariable>
+                    <RecordVariable name="pitch_0m" longName="Surface Pitch Angle" units="degrees"
+                        referenceScale="TBD" columnIndex="13" format="float">
+                        <description>Pitch Angle for Surface instrument</description>
+                    </RecordVariable>
+                    <RecordVariable name="roll_0m" longName="Surface Roll Angle" units="degrees"
+                        referenceScale="TBD" columnIndex="14" format="float">
+                        <description>Pitch Angle for Surface instrument</description>
+                    </RecordVariable>
+
+
+                    <RecordVariable name="Lu412_Sat_A"
+                        longName="Upward Radiance at 412 nm for Sat A" units="uwatts/cm2/nm/str"
+                        referenceScale="TBD" columnIndex="15" format="float">
+                        <description>Upward Radiance at 412 nm for Satlantic Spectro A</description>
+                    </RecordVariable>
+                    <RecordVariable name="Lu443_Sat_A"
+                        longName="Upward Radiance at 443 nm for Sat A" units="uwatts/cm2/nm/str"
+                        referenceScale="TBD" columnIndex="16" format="float">
+                        <description>Upward Radiance at 443 nm for Satlantic Spectro A</description>
+                    </RecordVariable>
+                    <RecordVariable name="Lu490_Sat_A"
+                        longName="Upward Radiance at 490 nm for Sat A" units="uwatts/cm2/nm/str"
+                        referenceScale="TBD" columnIndex="17" format="float">
+                        <description>Upward Radiance at 490 nm for Satlantic Spectro A</description>
+                    </RecordVariable>
+                    <RecordVariable name="Lu510_Sat_A"
+                        longName="Upward Radiance at 510 nm for Sat A" units="uwatts/cm2/nm/str"
+                        referenceScale="TBD" columnIndex="18" format="float">
+                        <description>Upward Radiance at 510 nm for Satlantic Spectro A</description>
+                    </RecordVariable>
+                    <RecordVariable name="Lu555_Sat_A"
+                        longName="Upward Radiance at 555 nm for Sat A" units="uwatts/cm2/nm/str"
+                        referenceScale="TBD" columnIndex="19" format="float">
+                        <description>Upward Radiance at 555 nm for Satlantic Spectro A</description>
+                    </RecordVariable>
+                    <RecordVariable name="Lu670_Sat_A"
+                        longName="Upward Radiance at 670 nm for Sat A" units="uwatts/cm2/nm/str"
+                        referenceScale="TBD" columnIndex="20" format="float">
+                        <description>Upward Radiance at 670 nm for Satlantic Spectro A</description>
+                    </RecordVariable>
+                    <RecordVariable name="Lu683_Sat_A"
+                        longName="Upward Radiance at 683 nm for Sat A" units="uwatts/cm2/nm/str"
+                        referenceScale="TBD" columnIndex="21" format="float">
+                        <description>Upward Radiance at 683 nm for Satlantic Spectro A</description>
+                    </RecordVariable>
+                    <RecordVariable name="Gnd_Sat_A" longName="Ground Reference Satlantic A"
+                        units="volts" referenceScale="TBD" columnIndex="22" format="float">
+                        <description>Ground Reference for Satlantic Spectro A</description>
+                    </RecordVariable>
+
+                    <RecordVariable name="Lu412_Sat_B"
+                        longName="Upward Radiance at 412 nm for Sat B" units="uwatts/cm2/nm/str"
+                        referenceScale="TBD" columnIndex="23" format="float">
+                        <description>Upward Radiance at 412 nm for Satlantic Spectro B</description>
+                    </RecordVariable>
+                    <RecordVariable name="Lu443_Sat_B"
+                        longName="Upward Radiance at 443 nm for Sat B" units="uwatts/cm2/nm/str"
+                        referenceScale="TBD" columnIndex="24" format="float">
+                        <description>Upward Radiance at 443 nm for Satlantic Spectro B</description>
+                    </RecordVariable>
+                    <RecordVariable name="Lu490_Sat_B"
+                        longName="Upward Radiance at 490 nm for Sat B" units="uwatts/cm2/nm/str"
+                        referenceScale="TBD" columnIndex="25" format="float">
+                        <description>Upward Radiance at 490 nm for Satlantic Spectro B</description>
+                    </RecordVariable>
+                    <RecordVariable name="Lu510_Sat_B"
+                        longName="Upward Radiance at 510 nm for Sat B" units="uwatts/cm2/nm/str"
+                        referenceScale="TBD" columnIndex="26" format="float">
+                        <description>Upward Radiance at 510 nm for Satlantic Spectro B</description>
+                    </RecordVariable>
+                    <RecordVariable name="Lu555_Sat_B"
+                        longName="Upward Radiance at 555 nm for Sat B" units="uwatts/cm2/nm/str"
+                        referenceScale="TBD" columnIndex="27" format="float">
+                        <description>Upward Radiance at 555 nm for Satlantic Spectro B</description>
+                    </RecordVariable>
+                    <RecordVariable name="Lu670_Sat_B"
+                        longName="Upward Radiance at 670 nm for Sat B" units="uwatts/cm2/nm/str"
+                        referenceScale="TBD" columnIndex="28" format="float">
+                        <description>Upward Radiance at 670 nm for Satlantic Spectro B</description>
+                    </RecordVariable>
+                    <RecordVariable name="Lu683_Sat_B"
+                        longName="Upward Radiance at 683 nm for Sat B" units="uwatts/cm2/nm/str"
+                        referenceScale="TBD" columnIndex="29" format="float">
+                        <description>Upward Radiance at 683 nm for Satlantic Spectro B</description>
+                    </RecordVariable>
+                    <RecordVariable name="Gnd_Sat_B" longName="Ground Reference Satlantic B"
+                        units="volts" referenceScale="TBD" columnIndex="30" format="float">
+                        <description>Ground Reference for Satlantic Spectro B</description>
+                    </RecordVariable>
+
+                    <RecordVariable name="Ed412_10m"
+                        longName="Surface Downward Irradiance at 412 nm" units="uwatts/cm2/nm"
+                        referenceScale="TBD" columnIndex="31" format="float">
+                        <description>Surface Downward Irradiance at 412 nm, in
+                        uwatts/cm2/nm</description>
+                    </RecordVariable>
+                    <RecordVariable name="Ed443_10m" longName="10m Downward Irradiance at 443 nm"
+                        units="uwatts/cm2/nm" referenceScale="TBD" columnIndex="32" format="float">
+                        <description>Downward Irradiance at 443 nm at 10 meters, in
+                        uwatts/cm2/nm</description>
+                    </RecordVariable>
+                    <RecordVariable name="Ed490_10m" longName="10m Downward Irradiance at 490 nm"
+                        units="uwatts/cm2/nm" referenceScale="TBD" columnIndex="33" format="float">
+                        <description>Downward Irradiance at 490 nm at 10 meters, in
+                        uwatts/cm2/nm</description>
+                    </RecordVariable>
+                    <RecordVariable name="Ed510_10m" longName="10m Downward Irradiance at 510 nm"
+                        units="uwatts/cm2/nm" referenceScale="TBD" columnIndex="34" format="float">
+                        <description>Downward Irradiance at 510 nm at 10 meters, in
+                        uwatts/cm2/nm</description>
+                    </RecordVariable>
+                    <RecordVariable name="Ed555_10m" longName="10m Downward Irradiance at 555 nm"
+                        units="uwatts/cm2/nm" referenceScale="TBD" columnIndex="35" format="float">
+                        <description>Downward Irradiance at 555 nm at 10 meters, in
+                        uwatts/cm2/nm</description>
+                    </RecordVariable>
+                    <RecordVariable name="Ed656_10m" longName="10 Downward Irradiance at 656 nm"
+                        units="uwatts/cm2/nm" referenceScale="TBD" columnIndex="36" format="float">
+                        <description>Downward Irradiance at 656nm at 10 meters, in
+                        uwatts/cm2/nm</description>
+                    </RecordVariable>
+                    <RecordVariable name="PAR_10m" longName="10m PAR" units="uEinsteins/cm2/sec"
+                        referenceScale="TBD" columnIndex="37" format="float">
+                        <description>Photosynthetically Active Radiation at 10 meters</description>
+                    </RecordVariable>
+                    <RecordVariable name="Gnd_10m" longName="10m Ground" units="volts"
+                        referenceScale="TBD" columnIndex="38" format="float">
+                        <description>Ground Reference for 10m instrument</description>
+                    </RecordVariable>
+                    <RecordVariable name="temp_0m" longName="Temperature at 10m" units="degrees C"
+                        referenceScale="TBD" columnIndex="39" format="float">
+                        <description>Temperature for 10m instrument</description>
+                    </RecordVariable>
+                    <RecordVariable name="depth_10m" longName="Depth of 10m instrument"
+                        units="dbars" referenceScale="TBD" columnIndex="40" format="float">
+                        <description>Depth of 10m instrument</description>
+                    </RecordVariable>
+
+                    <RecordVariable name="mcp_10m" longName="10m MCP" units="uwatts/cm2/nm"
+                        referenceScale="TBD" columnIndex="41" format="float">
+                        <description>Output of 10m MCP instrument</description>
+                    </RecordVariable>
+                    <RecordVariable name="fluor_10m" longName="10m fluorometer" units="volts"
+                        referenceScale="TBD" columnIndex="42" format="float">
+                        <description>Output of 10m WetStar fluorometer</description>
+                    </RecordVariable>
+                    <RecordVariable name="Gnd_10m_mcp" longName="Ground Ref for 10m MCP"
+                        units="volts" referenceScale="TBD" columnIndex="43" format="float">
+                        <description>Ground Reference for 10m MCP</description>
+                    </RecordVariable>
+
+                    <RecordVariable name="mcp_30m" longName="30m MCP" units="uwatts/cm2/nm"
+                        referenceScale="TBD" columnIndex="44" format="float">
+                        <description>Output of 10m MCP instrument</description>
+                    </RecordVariable>
+                    <RecordVariable name="Gnd_30m_mcp" longName="Ground Ref for 30m MCP"
+                        units="volts" referenceScale="TBD" columnIndex="45" format="float">
+                        <description>Ground Reference for 30m MCP</description>
+                    </RecordVariable>
+
+                    <RecordVariable name="Lu412_10m" longName="10m Upward Radiance at 412 nm"
+                        units="uwatts/cm2/nm/str" referenceScale="TBD" columnIndex="46"
+                        format="float">
+                        <description>Upward Radiance at 412 nm for Satlantic Spectro A</description>
+                    </RecordVariable>
+                    <RecordVariable name="Lu443_10m" longName="Upward Radiance at 443 nm"
+                        units="uwatts/cm2/nm/str" referenceScale="TBD" columnIndex="47"
+                        format="float">
+                        <description>10m Upward Radiance at 443 nm for Satlantic Spectro
+                        A</description>
+                    </RecordVariable>
+                    <RecordVariable name="Lu490_10m" longName="10m Upward Radiance at 490 nm"
+                        units="uwatts/cm2/nm/str" referenceScale="TBD" columnIndex="48"
+                        format="float">
+                        <description>10m Upward Radiance at 490 nm for Satlantic Spectro
+                        A</description>
+                    </RecordVariable>
+                    <RecordVariable name="Lu510_10m" longName="10m Upward Radiance at 510 nm"
+                        units="uwatts/cm2/nm/str" referenceScale="TBD" columnIndex="49"
+                        format="float">
+                        <description>10m Upward Radiance at 510 nm for Satlantic Spectro
+                        A</description>
+                    </RecordVariable>
+                    <RecordVariable name="Lu555_10m" longName="10m Upward Radiance at 555 nm"
+                        units="uwatts/cm2/nm/str" referenceScale="TBD" columnIndex="50"
+                        format="float">
+                        <description>10m Upward Radiance at 555 nm for Satlantic Spectro
+                        A</description>
+                    </RecordVariable>
+                    <RecordVariable name="Lu670_10m" longName="10m Upward Radiance at 670 nm"
+                        units="uwatts/cm2/nm/str" referenceScale="TBD" columnIndex="51"
+                        format="float">
+                        <description>10m Upward Radiance at 670 nm for Satlantic Spectro
+                        A</description>
+                    </RecordVariable>
+                    <RecordVariable name="Lu683_10m" longName="10m Upward Radiance at 683 nm"
+                        units="uwatts/cm2/nm/str" referenceScale="TBD" columnIndex="52"
+                        format="float">
+                        <description>10m Upward Radiance at 683 nm for Satlantic Spectro
+                        A</description>
+                    </RecordVariable>
+                    <RecordVariable name="Gnd_10m" longName="10m Ground Reference" units="volts"
+                        referenceScale="TBD" columnIndex="53" format="float">
+                        <description>10m Ground Reference</description>
+                    </RecordVariable>
+
+                </RecordDescription>
+            </DataFile>
+        </output>
+    </ProcessRun>
+</Metadata>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1306.xml,v 1.6 2010/03/17 18:39:18 mccann Exp $	-->
+<!-- Last edited by $Author: mccann $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://dods.mbari.org/data/ssdsdata/config/schema/2004oasis/SSDS_Metadata.xsd"
+	majorVersion="1" minorVersion="3" lastAuthor="$Author: mccann $"
+	lastUpdate="$Date: 2010/03/17 18:39:18 $">
+	<Deployment role="platform" name="M2 - May 2011" startDate="2011-05-26T18:00:00Z" nominalLatitude="36.69623" nominalLongitude="-122.39965">
+		<Device id="1789"/>
+		<Resource
+			url="doc://foobar/watchCircle?centerLon=-122.39725&amp;centerLat=36.69605&amp;warningDist=5"
+			name="Watch circle information">
+			<description>Data for this mooring's watch circle are embedded in the uriString of this
+				Resource. An application may parse for these parameters to use as criteria for
+				issuing a warning if the GPS position is geater than warningDist (in km) from
+				centerLat and centerLon (in decimal degrees WGS84)</description>
+		</Resource>
+	</Deployment>
+</Metadata>

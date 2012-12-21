@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://new-ssds.mbari.org/ssds-docs/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="1" lastAuthor="$Author: kgomes $" lastUpdate="$Date: 2007/04/19 15:54:11 $" >
+	<Deployment role="instrument" name="SpecPRR Deployment">
+		<Device id="1421" name="Biospherical PRR Spectroradiometer" type="Radiometer-Multispectral" mfgName="Biospherical" mfgModel="PRR600" mfgSerialNumber="19616">
+			<description>Radiometer to measure incident and reflected radiation below surface</description>
+			<Person firstname="Erich" surname="Rienecker" organization="MBARI" email="erich@mbari.org"/>
+		</Device>
+		<output>
+			<DataStream>
+				<description>SpecPRR Data Stream</description>
+				<RecordDescription bufferStyle="binary" bufferLengthType="fixed" parseable="false"
+					recordType="1">
+					<RecordVariable name="SpecPRR_data" longName="SpecPRR Binary Data Stream"
+						units="noUnits" columnIndex="1">
+						<description>All of SpecPRR data output packed into binary string. Must be
+							decoded for use.</description>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

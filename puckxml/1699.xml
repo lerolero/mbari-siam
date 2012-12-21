@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1699.xml,v 1.5 2009/05/01 22:32:01 mccann Exp $	-->
+<!-- Last edited by $Author: mccann $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://ssds.shore.mbari.org/ssdsdata/config/schema/2004cimt/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="7" lastAuthor="$Author: mccann $"
+    lastUpdate="$Date: 2009/05/01 22:32:01 $">
+    <Deployment role="instrument" name="getM2 download">
+        <Device id="1305"/>
+        <description>A ProcessRun of the hourly executed getM2 script on tsunami</description>
+        <output>
+            <DataStream name="Download statistics log" url="http://new-ssds.mbari.org:8080/servlet/GetOriginalDataServlet?deviceID=1699&amp;startPacketSubType=1&amp;lastNumberOfPackets=10&amp;isi=1">
+                <description>Download statistics</description>
+                <RecordDescription bufferStyle="ASCII" bufferParseType="ordered"
+                    bufferItemSeparator="," bufferLengthType="variable" recordTerminator="\n"
+                    parseable="true" recordType="1">
+                    <RecordVariable name="StartEpoch" longName="Start time of download"
+                        units="seconds" columnIndex="1" format="int"/>
+                    <RecordVariable name="EndEpoch" longName="End time of download" units="seconds"
+                        columnIndex="2" format="int"/>
+                    <RecordVariable name="BytesDownloaded" longName="Bytes of data downloaded"
+                        units="bytes" columnIndex="3" format="int"/>
+                    <RecordVariable name="ExitCode" longName="Return code from getoasis"
+                        columnIndex="4" format="int">
+                        <description> 0 = Success 
+                            1 = Argument error (bad command line arguments) 
+                            2 = Couldn't acquire TNC port (hung download or someone's using port) 
+                            3 = Couldn't connect to OASIS (it's not listening) 
+                            4 = Download error (something broke after it connected) 
+                            5 = Abort error (somebody killed the download) 
+                        </description>
+                    </RecordVariable>
+                </RecordDescription>
+            </DataStream>
+        </output>
+    </Deployment>
+</Metadata>

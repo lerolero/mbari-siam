@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1277.xml,v 1.4 2006/06/07 22:16:35 graybeal Exp $	-->
+<!-- Last edited by $Author: graybeal $	$Date: 2006/06/07 22:16:35 $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://ssds.mbari.org/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="4" 
+	lastAuthor="$Author: graybeal $" lastUpdate="$Date: 2006/06/07 22:16:35 $" >
+
+  <Deployment role="instrument">
+		<Device	id="1277" name="CTD" type="CTD" 
+			mfgName="Seabird" mfgModel="37SM" mfgSerialNumber="37SM26805-2004"
+			preferredDeploymentRole="Instrument">
+			<description>Seabird MicroCAT CTD Recorder</description>
+			<Person	firstname="Francisco" surname="Chavez" organization="MBARI"
+			email="chfr@mbari.org" phone="831-775-1709"/>
+		</Device>
+	
+		<output>
+			<DataStream>
+				<description>CTD data stream</description>
+				<!-- Comments:
+				-->
+				<RecordDescription bufferStyle="ASCII"
+				bufferParseType="ordered"
+				bufferItemSeparator=","
+				bufferLengthType="variable"
+				parseable="true" recordType="1">
+					<RecordVariable
+						name="Temperature"
+						longName="Water Temperature"
+						units="deg C"	
+						columnIndex="1"
+						format="float" >
+							<description>water temperature</description>
+							<StandardVariable name="sea_water_temperature"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Conductivity"
+						longName="Conductivity"
+						units="S/m"	
+						columnIndex="2"
+						format="float" >
+							<description>sea water conductivity</description>
+							<StandardVariable name="sea_water_electrical_conductivity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Date"
+						longName="Date of Sample"
+						units="dd_MMM_yyyy"	
+						columnIndex="3"
+						format="string"	>
+							<description>date in 'dd MMM yyyy' format</description>
+					</RecordVariable>
+					<RecordVariable
+						name="Time"
+						longName="Time of Day"
+						units="hh-mm-ss"	
+						columnIndex="4"
+						format="string"	>
+							<description>time of day in hh:mm:ss format</description>
+							<StandardVariable name="time"/>
+					</RecordVariable>
+
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

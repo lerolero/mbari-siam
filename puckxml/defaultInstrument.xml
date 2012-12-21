@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/defaultInstrument.xml,v 1.1 2008/09/05 18:14:33 mccann Exp $	-->
+<!-- Last edited by $Author: mccann $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://dods.mbari.org/data/ssdsdata/config/schema/2004oasis/SSDS_Metadata.xsd"
+	majorVersion="1" minorVersion="2" lastAuthor="$Author: mccann $" lastUpdate="$Date: 2008/09/05 18:14:33 $">
+	<Deployment role="instrument" >
+		<Device id="%DeviceId%" />
+		<description>Default XML file due to missing or unreadable XML file specified in
+			configuration file</description>
+		<output>
+			<DataStream>
+				<description>Data stream from default instrument metadata</description>
+				<RecordDescription parseable="false" recordType="1"/>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

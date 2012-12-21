@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<Device id="1216" name="GPS" type="GPS" mfgName="?" mfgModel="?" mfgSerialNumber="?" 
+	preferredDeploymentRole="Instrument">
+		<description>GPS positioning sensor</description>
+		<Person id="000000" firstname="Tom" surname="O'Reilly" organization="MBARI" 
+		email="oreilly@mbari.org" phone="831-775-?"/>
+	</Device>
+	<Deployment role="instrument" name="TBD" 
+	nominalLongitude="-120.0" nominalLatitude="36.0" nominalDepth="-5">
+		<Device id="1216" name="GPS" type="GPS" mfgName="?" mfgModel="?" mfgSerialNumber="000000" 
+		preferredDeploymentRole="Instrument">
+			<description>GPS positioning sensor</description>
+			<Person id="000000" firstname="Tom" surname="O'Reilly" organization="MBARI" 
+			email="oreilly@mbari.org" phone="831-775-?"/>
+		</Device>
+		<description>GPS</description>
+		<output>
+			<DataStream contentType="?">
+				<description>GPS data stream</description>
+				<!-- Comments:
+				    - Originally thought to be on CIMT/M0 deployment, but that is not the case
+					- Can't use fixedPosition parsing yet
+					- GPS claims the right to append blanks to buffers
+				-->
+				<RecordDescription bufferStyle="ASCII" 
+				bufferParseType="ordered"   
+				bufferItemSeparator="space" 
+				bufferLengthType="variable"  
+				parseable="1" recordType="1">
+					<!-- COMMAND Sent: 
+						$PGRM0,,2
+						$PGRM0,GPRMC,1
+						$PGRM0,GPGSV,1
+						$PGRM0,PGRMT,1
+					-->
+					<!-- Sample Record: 
+						$GPRMC,164220,A,3648.2034,N,12147.2594,W,000.0,226.9,090304,014.8,E*6C 
+					-->
+					<!-- Accuracy: 
+						Position accuracy: Differential GPS: 5m RMS, Non-differential, 15m RMS 
+						(100m w/Selective Availability on)
+						Velocity accuracy 0.2m/s RMS steady state (subject to Selective Availability) 
+					-->
+					<!--
+					 	Comments: 
+						- We parse for $GPRMC as a double-check - if that isn't found, record is bad.
+					-->
+					<RecordVariable 
+						name="RecordLabel" 
+						longName="Label of GPS Record" 
+						units="noUnits" referenceScale="TBD" 
+						columnIndex="1" 
+						format="string" parseRegExp="$GPRMC" 
+						validMin="0" validMax="0" >
+							<description>longer description of item</description>
+							<StandardVariable name="checkString"/>
+					</RecordVariable>
+					<RecordVariable 
+						name="Time" 
+						longName="Time of GPS Fix" 
+						units="hhmmss" referenceScale="TBD" 
+						columnIndex="2" 
+						format="int" parseRegExp="%6d" 
+						validMin="0" validMax="240000" >
+							<description>Time the GPS fix was obtained, in hhmmss format</description>
+							<StandardVariable name="timeOfDay"/>
+					</RecordVariable>
+					<!--	Comments: 
+						- We parse for A as a double-check - if that isn't found, record is bad.
+					-->
+					<RecordVariable 
+						name="GPS Status" 
+						longName="Status of GPS Fix" 
+						units="noUnits" referenceScale="none" 
+						columnIndex="3" 
+						format="string" parseRegExp="A" >
+							<description>GPS status flag: A=Valid position, V=NAV receiver warning</description>
+							<StandardVariable name="checkString"/>
+					</RecordVariable>
+					<RecordVariable 
+						name="Latitude" 
+						longName="GPS Absolute Latitude" 
+						units="degreesLatitude" referenceScale="TBD" 
+						columnIndex="4" 
+						format="float" parseRegExp="%f" 
+						validMin="0.0" validMax="90.0" >
+							<description>latitude of GPS fix, in ddmm.ssss format 
+							(leading 0s will be transmitted)</description>
+							<StandardVariable name="latitude"/>
+					</RecordVariable>
+					<RecordVariable 
+						name="Latitude Hemisphere" 
+						longName="Hemisphere of Latitude Position" 
+						units="NorS" referenceScale="none" 
+						columnIndex="5" 
+						format="string" parseRegExp="%s" >
+							<description>hemisphere of GPS latitude fix, N=north, S=south</description>
+					</RecordVariable>
+					<RecordVariable 
+						name="Longitude" 
+						longName="GPS Absolute Longitude" 
+						units="degreesLongitude" referenceScale="TBD" 
+						columnIndex="6" 
+						format="float" parseRegExp="%f" 
+						validMin="0.0" validMax="180.0" >
+							<description>longitude of GPS fix, in dddmm.ssss format 
+							(leading 0s will be transmitted)</description>
+							<StandardVariable name="longitude"/>
+					</RecordVariable>
+					<RecordVariable 
+						name="Longitude Hemisphere" 
+						longName="Hemisphere of Longitude Position" 
+						units="EorW" referenceScale="none" 
+						columnIndex="7" 
+						format="string" parseRegExp="%s" >
+							<description>hemisphere of GPS longitude fix, N=north, S=south</description>
+					</RecordVariable>
+					<RecordVariable 
+						name="Speed" 
+						longName="Speed over Ground" 
+						units="knots" referenceScale="TBD" 
+						columnIndex="8" 
+						format="float" parseRegExp="%f" 
+						validMin="0.0" validMax="999.9" >
+							<description>measured speed over ground since last fix
+							(leading 0s will be transmitted)</description>
+							<StandardVariable name="unitsName"/>
+					</RecordVariable>
+					<RecordVariable 
+						name="Course" 
+						longName="Course Made Good" 
+						units="degreesHeadingTrue" referenceScale="TBD" 
+						columnIndex="9" 
+						format="float" parseRegExp="%f" 
+						validMin="0.0" validMax="359.9" >
+							<description>measured direction of travel, true north = 0 
+							(leading 0s will be transmitted)</description>
+							<StandardVariable name="heading"/>
+					</RecordVariable>
+					<RecordVariable 
+						name="Date" 
+						longName="Date of GPS Fix" 
+						units="yearMonthDay" referenceScale="TBD" 
+						columnIndex="10" 
+						format="int" parseRegExp="%i" 
+						validMin="000000" validMax="991231" >
+							<description>date of GPS fix, expressed in ddmmyy format</description>
+							<StandardVariable name="Date"/>
+					</RecordVariable>
+					<RecordVariable 
+						name="Magnetic Variation" 
+						longName="Absolute Magnetic Variation at Location" 
+						units="degreesHeading" referenceScale="TBD" 
+						columnIndex="11" 
+						format="float" parseRegExp="%f" 
+						validMin="0.0" validMax="180.0" >
+							<description>Absolute value of determined magnetic variation at location of fix
+							(leading 0s will be transmitted)</description>
+							<StandardVariable name="unitsName"/>
+					</RecordVariable>
+					<RecordVariable 
+						name="Magnetic Variation Direction" 
+						longName="Direction of Magnetic Variation at Location" 
+						units="EorW" referenceScale="TBD" 
+						columnIndex="12" 
+						format="float" parseRegExp="%f" >
+							<description>direction of magnetic variation at location of fix,
+							a westerly variation adds to true course</description>
+							<StandardVariable name="unitsName"/>
+					</RecordVariable>
+					<RecordVariable 
+						name="Mode Indicator" 
+						longName="Indicator of GPS Operation Mode" 
+						units="none" referenceScale="none" 
+						columnIndex="13" 
+						format="string" parseRegExp="%s" >
+							<description>indication of GPS operational mode (only output if
+							NMEA 2.30 active): A=Autonomous, D=Differential, E=Estimated, 
+							N=Data not valid (value not documented)</description>
+ 					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

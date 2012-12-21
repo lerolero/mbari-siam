@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1355.xml,v 1.5 2010/08/12 17:46:17 kgomes Exp $	-->
+<!-- Last edited by $Author: kgomes $	$Date: 2010/08/12 17:46:17 $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://new-ssds.mbari.org/ssds-docs/xml/schema/SSDS_Metadata.xsd"
+	lastAuthor="$Author: kgomes $" lastUpdate="$Date: 2010/08/12 17:46:17 $">
+	<Deployment role="instrument" nominalDepth="10">
+		<Device id="1355"/>
+		<output>
+			<DataStream>
+				<RecordDescription bufferStyle="ASCII" bufferParseType="ordered"
+					bufferItemSeparator="," bufferLengthType="variable" parseable="true"
+					recordType="1">
+					<!-- Sample Record:
+						22.9091, 0.00004,   -0.052, 30 Apr 2004, 22:52:25
+					-->
+					<RecordVariable name="Temperature" longName="Water Temperature" units="deg C"
+						columnIndex="1" format="float">
+						<StandardVariable name="sea_water_temperature"
+							namespaceUriString="http://marinemetadata.org/cf"/>
+					</RecordVariable>
+					<RecordVariable name="Conductivity" longName="Conductivity" units="S/m"
+						columnIndex="2" format="float">
+						<StandardVariable name="sea_water_electrical_conductivity"
+							namespaceUriString="http://marinemetadata.org/cf/"/>
+					</RecordVariable>
+					<RecordVariable name="Pressure" longName="Pressure" units="decibars"
+						columnIndex="3" format="float">
+						<StandardVariable name="sea_water_pressure"
+							namespaceUriString="http://marinemetadata.org/cf/"/>
+					</RecordVariable>
+					<RecordVariable name="Date" longName="Date of Sample" units="dd_MMM_yyyy"
+						columnIndex="4" format="string"> </RecordVariable>
+					<RecordVariable name="Time" longName="Time of Day" units="hh-mm-ss"
+						columnIndex="5" format="string"> </RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

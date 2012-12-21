@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1267.xml,v 1.5 2010/06/01 17:07:10 mccann Exp $	-->
+<!-- Last edited by $Author: mccann $	$Date: 2010/06/01 17:07:10 $   -->
+<!-- Test More -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:noNamespaceSchemaLocation="http://ssds.shore.mbari.org/ssdsdata/config/schema/2004cimt/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="5" lastAuthor="$Author: mccann $" lastUpdate="$Date: 2010/06/01 17:07:10 $">
+	<Deployment role="instrument" nominalDepth="5">
+		<Device id="1267" />
+		<description>M0-CIMT installation of Workhorse ADCP</description>
+		<output>
+			<DataStream>
+				<description>ADCP Data Stream</description>
+				<RecordDescription bufferStyle="binary" bufferLengthType="fixed" parseable="false" recordType="1">
+				    <RecordVariable name="ADCP_data" longName="ADCP Binary Data Stream" units="noUnits" columnIndex="1" >
+						<description>All of ADCP data output packed into binary string.  Must be decoded for use.</description>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1754.xml,v 1.1 2010/06/17 18:30:23 bobh Exp $	-->
+<!-- Last edited by $Author: bobh $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ssds.mbari.org/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="3" lastAuthor="$Author: bobh $" lastUpdate="$Date: 2010/06/17 18:30:23 $" >
+	<Deployment role="Instrument">
+		<Device	id="1754" name="FOCE Power Monitor " type="Electrical Sensor" 
+			mfgName="MBARI" mfgModel="PMonitor" mfgSerialNumber="5">
+			<description>A/D board software monitoring power voltages on FOCE 5</description>
+			<!-- If the CPU stack is changed, e.g. to foce2, a different equipment ID number should be used -->
+			<Person	firstname="Kent" surname="Headley" organization="MBARI"
+			email="headley@mbari.org" phone="831-775-1822"/>
+		</Device>
+		<output>
+			<DataStream>
+				<description>Power monitor data stream</description>
+				<RecordDescription bufferStyle="ASCII"
+					bufferParseType="ordered"
+					bufferItemSeparator=" "
+					bufferLengthType="variable"
+					parseable="true" recordType="1">
+					<!-- Sample Record:
+						24.1337 24.1337 12.1615 12.0798 12.1418 36.6037 36.2840 0.5702   0.0237 0.0125 0.0101 -0.0021 -0.0104 -0.0066
+					-->
+					<!--
+						Comments:
+					-->
+					<RecordVariable
+						name="Computer_Volt_24V"
+						longName="Voltage -- 24V Computer Bus"
+						units="volts"
+						columnIndex="1"
+						format="float" >
+						<description>voltage measured on the 24V bus for computer components</description>
+						<StandardVariable name="electrical_voltage_on_system_bus" namespaceUriString="http://mmisw.org/ont/mmi/eqtenvirons/" />
+					</RecordVariable>
+					<RecordVariable
+						name="Science_Volt_24V"
+						longName="Voltage -- 24V Science Bus"
+						units="volts"
+						columnIndex="2"
+						format="float" >
+						<description>voltage measured on the 24V bus for science components</description>
+						<StandardVariable name="electrical_voltage_on_system_bus" namespaceUriString="http://mmisw.org/ont/mmi/eqtenvirons/" />
+					</RecordVariable>
+					<RecordVariable
+						name="Pri_Volt_12V"
+						longName="Voltage -- 12V Primary Bus"
+						units="volts"
+						columnIndex="3"
+						format="float" >
+						<description>voltage measured on the Primary 12V bus</description>
+						<StandardVariable name="electrical_voltage_on_system_bus" namespaceUriString="http://mmisw.org/ont/mmi/eqtenvirons/" />
+					</RecordVariable>
+					<RecordVariable
+						name="Sec_Volt_12V"
+						longName="Voltage -- 12V Secondary Bus"
+						units="volts"
+						columnIndex="4"
+						format="float" >
+						<description>voltage measured on the Secondary 12V bus</description>
+						<StandardVariable name="electrical_voltage_on_system_bus" namespaceUriString="http://mmisw.org/ont/mmi/eqtenvirons/" />
+					</RecordVariable>
+					<RecordVariable
+						name="PH_Volt_12V"
+						longName="Voltage -- 12V pH Sensors Circuit"
+						units="volts"
+						columnIndex="5"
+						format="float" >
+						<description>voltage measured on the 12V circuit for the pH sensors</description>
+						<StandardVariable name="electrical_voltage_on_device_circuit" namespaceUriString="http://mmisw.org/ont/mmi/eqtenvirons/" />
+					</RecordVariable>
+					<RecordVariable
+						name="Mot1_Volt_36V"
+						longName="Voltage -- 36V Motor 1 Circuit"
+						units="volts"
+						columnIndex="6"
+						format="float" >
+						<description>voltage measured on the 36V circuit for motor 1</description>
+						<StandardVariable name="electrical_voltage_on_device_circuit" namespaceUriString="http://mmisw.org/ont/mmi/eqtenvirons/" />
+					</RecordVariable>
+					<RecordVariable
+						name="Mot2_Volt_36V"
+						longName="Voltage -- 36V Motor 2 Circuit"
+						units="volts"
+						columnIndex="7"
+						format="float" >
+						<description>voltage measured on the 36V circuit for motor 2</description>
+						<StandardVariable name="temperature_of_device" namespaceUriString="http://mmisw.org/ont/mmi/eqtenvirons/" />
+					</RecordVariable>
+					<RecordVariable
+						name="Computer_Curr_24V"
+						longName="Current -- 24V Computer Bus"
+						units="amps"
+						columnIndex="8"
+						format="float" >
+						<description>current measured on the 24V bus for computer components</description>
+						<StandardVariable name="electrical_current" namespaceUriString="http://mmisw.org/ont/mmi/eqtstatus/" />
+					</RecordVariable>
+					<RecordVariable
+						name="Science_Curr_24V"
+						longName="Current -- 24V Science Bus"
+						units="amps"
+						columnIndex="9"
+						format="float" >
+						<description>current measured on the 24V bus for science components</description>
+						<StandardVariable name="electrical_current" namespaceUriString="http://mmisw.org/ont/mmi/eqtstatus/" />
+					</RecordVariable>
+					<RecordVariable
+						name="Pri_Curr_12V"
+						longName="Current -- 12V Primary Bus"
+						units="amps"
+						columnIndex="10"
+						format="float" >
+						<description>current measured on the Primary 12V bus</description>
+						<StandardVariable name="electrical_current" namespaceUriString="http://mmisw.org/ont/mmi/eqtstatus/" />
+					</RecordVariable>
+					<RecordVariable
+						name="Sec_Curr_12V"
+						longName="Current -- 12V Secondary Bus"
+						units="amps"
+						columnIndex="11"
+						format="float" >
+						<description>current measured on the Secondary 12V bus</description>
+						<StandardVariable name="electrical_current" namespaceUriString="http://mmisw.org/ont/mmi/eqtstatus/" />
+					</RecordVariable>
+					<RecordVariable
+						name="PH_Curr_12V"
+						longName="Current -- 12V pH Sensor Bus"
+						units="amps"
+						columnIndex="12"
+						format="float" >
+						<description>current measured on the 12V circuit for the pH sensors</description>
+						<StandardVariable name="electrical_current" namespaceUriString="http://mmisw.org/ont/mmi/eqtstatus/" />
+					</RecordVariable>
+					<RecordVariable
+						name="Mot1_Curr_36V"
+						longName="Current -- 36V Motor 1"
+						units="amps"
+						columnIndex="13"
+						format="float" >
+						<description>current measured on the 36V circuit for Motor 1</description>
+						<StandardVariable name="electrical_current" namespaceUriString="http://mmisw.org/ont/mmi/eqtstatus/" />
+					</RecordVariable>
+					<RecordVariable
+						name="Mot2_Curr_36V"
+						longName="Current -- 36V Motor 2"
+						units="amps"
+						columnIndex="14"
+						format="float" >
+						<description>current measured on the 36V circuit for Motor 2</description>
+						<StandardVariable name="electrical_current" namespaceUriString="http://mmisw.org/ont/mmi/eqtstatus/" />
+					</RecordVariable>
+					
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

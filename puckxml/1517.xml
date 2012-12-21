@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1517.xml,v 1.4 2006/04/29 08:29:48 graybeal Exp $	-->
+<!-- Last edited by $Author: graybeal $	$Date: 2006/04/29 08:29:48 $   -->
+
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:noNamespaceSchemaLocation="http://ssds.mbari.org/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="4" 
+	lastAuthor="$Author: graybeal $" lastUpdate="$Date: 2006/04/29 08:29:48 $" >
+	
+		<Deployment role="instrument" >
+			<Device id="1517" name="HyperOCR-I" type="Radiometer-Hyperspectral" 
+				mfgName="Satlantic" mfgModel="HyperOCR-ICSA" mfgSerialNumber="239" 
+				preferredDeploymentRole="Instrument">		
+				<description>Hyperspectral Radiometer (HyperOCR-ICSA); Downwelling surface IRRADIANCE-AIR</description>
+				<Person	firstname="Francisco" surname="Chavez" organization="MBARI"
+					email="chfr@mbari.org" phone="831-775-1709"/>
+			</Device>
+
+		    <output>
+				<DataStream>
+					<description>Satlantic Radiometer Datastream</description>
+					<RecordDescription bufferStyle="binary" 
+						bufferLengthType="fixed" 
+						parseable="false" 
+						recordType="1">
+					</RecordDescription>
+				</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

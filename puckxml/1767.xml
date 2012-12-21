@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1745.xml,v 1.1 2010/03/17 18:54:19 mccann Exp $	-->
+<!-- Last edited by $Author: mccann $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://new-ssds.mbari.org/ssds-docs/xml/schema/SSDS_Metadata.xsd"
+		majorVersion="1" minorVersion="1" lastAuthor="$Author: mccann $" lastUpdate="$Date: 2010/03/17 18:54:19 $">
+	<Deployment role="instrument" nominalDepth="225">
+		<Device id="1767"></Device>
+		<output>
+			<DataStream>
+				<description>IM CTD data stream with pressure and oxygen</description>
+				<RecordDescription bufferStyle="ASCII" bufferParseType="ordered"
+						bufferItemSeparator="," bufferLengthType="variable" parseable="true"
+						recordType="1">
+					
+					<RecordVariable name="SerialNumber" longName="Serial Number" units=""
+							columnIndex="1" format="int">
+					</RecordVariable>
+					<RecordVariable name="Temperature" longName="Water Temperature" units="deg C"
+							columnIndex="2" format="float">
+					</RecordVariable>
+					<RecordVariable name="Conductivity" longName="Conductivity" units="S/m"
+							columnIndex="3" format="float">
+					</RecordVariable>
+					<RecordVariable name="Pressure" longName="Pressure" units="decibars"
+							columnIndex="4" format="float">
+					</RecordVariable>
+					<RecordVariable name="OxygenVolts" longName="Oxygen sensor voltage" units="V"
+							columnIndex="5" format="float">
+					</RecordVariable>
+					<RecordVariable name="Date" longName="Date of Sample" units=""
+							columnIndex="6" format="string">
+					</RecordVariable>
+					<RecordVariable name="Time" longName="Time of Sample" units=""
+							columnIndex="7" format="string">
+					</RecordVariable>
+					<RecordVariable name="RecordNumber" longName="Record Number" units=""
+							columnIndex="8" format="int">
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>
+

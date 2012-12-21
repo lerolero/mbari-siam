@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1251.xml,v 1.5 2012/02/04 00:33:32 kgomes Exp $	-->
+<!-- Last edited by $Author: kgomes $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://new-ssds.mbari.org/ssds-docs/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="1" lastAuthor="$Author: kgomes $" lastUpdate="$Date: 2012/02/04 00:33:32 $" >
+	<Deployment role="instrument">
+		<Device	id="1251"></Device>
+		<output>
+			<DataStream>
+				<description>ASIMET LWR Data Stream</description>
+				<RecordDescription bufferStyle="ASCII"
+				bufferParseType="ordered"
+				bufferItemSeparator="whitespace"
+				bufferLengthType="variable"
+				parseable="true" recordType="1">
+					<!-- Sample Record:
+					285.49  285.49  16938.8  16978.8  -21.6  371.3   33539   3374
+					-->
+					<!--
+						Comments:
+							This XML assumes one data record per packet.
+					-->
+					<RecordVariable
+						name="temp_dome"
+						longName="Dome Temperature"
+						units="deg Kelvin"	referenceScale="TBD"
+						columnIndex="1"
+						format="float" >
+							<description>dome temperature</description>
+							<StandardVariable name="Temperature" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="temp_body"
+						longName="Body Temperature"
+						units="deg Kelvin"	referenceScale="TBD"
+						columnIndex="2"
+						format="float" >
+							<description>body temperature</description>
+						<StandardVariable name="Temperature" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="res_dome"
+						longName="Dome resistence"
+						units="ohms"	referenceScale="TBD"
+						columnIndex="3"
+						format="int" >
+							<description>Dome resistence</description>
+						<StandardVariable name="resistence" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="res_body"
+						longName="Body resistence"
+						units="ohms"	referenceScale="TBD"
+						columnIndex="4"
+						format="int" >
+							<description>Body resistence</description>
+						<StandardVariable name="resistence" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="volts_pile"
+						longName="Pile microvolts"
+						units="microvolts"	referenceScale="TBD"
+						columnIndex="5"
+						format="float" >
+							<description>Voltage of pile</description>
+						<StandardVariable name="volts" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="LW_flux"
+						longName="Long Wave flux"
+						units="watts per square meter"	referenceScale="TBD"
+						columnIndex="6"
+						format="float" >
+							<description>Flux of long-wave radiation</description>
+						<StandardVariable name="flux" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="domet_raw"
+						longName="Dome temperature raw count"
+						columnIndex="7"
+						format="int" >
+							<description>Dome temperature A/D count</description>
+					</RecordVariable>
+					<RecordVariable
+						name="bodyt_raw"
+						longName="Body temperature raw count"
+						columnIndex="8"
+						format="int" >
+							<description>Body temperature A/D count</description>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

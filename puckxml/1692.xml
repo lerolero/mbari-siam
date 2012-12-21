@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1692.xml,v 1.3 2009/02/06 05:17:06 graybeal Exp $	-->
+<!-- Last edited by $Author: graybeal $	$Date: 2009/02/06 05:17:06 $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ssds.mbari.org/xml/schema/SSDS_Metadata.xsd"
+	majorVersion="2" minorVersion="1" lastAuthor="$Author: graybeal $"
+	lastUpdate="$Date: 2009/02/06 05:17:06 $">
+	<Deployment role="instrument">
+		<Device id="1692"></Device>
+			<output>
+			<DataStream>
+				<description>Aanderraa Oxygen Optode data stream</description>
+
+				<RecordDescription bufferStyle="ASCII"
+					bufferParseType="ordered"
+					bufferItemSeparator="space"
+					bufferLengthType="variable"
+					parseable="true" recordType="1">
+	    
+ 	            <RecordVariable 
+					     name="Measurement"
+					     longName="MeasurementString" 
+					     units="string"
+					     columnIndex="1" format="string">
+						<description>Just the word MEASUREMENT</description>
+						<!--StandardVariable name="checkString"/-->
+				</RecordVariable>
+
+				<RecordVariable 
+					     name="SensorModel"
+					     longName="SensorModel" 
+					     units="string"
+					     columnIndex="2" format="string">
+						<description>The model of the sensor reporting measurements</description>
+						<!--StandardVariable name="checkString"/-->
+				</RecordVariable>
+				
+				<RecordVariable 
+					     name="SensorSerialNumber"
+					     longName="SensorSerialNumber" 
+					     units="string"
+					     columnIndex="3" format="string">
+						<description>The serial number of the sensor reporting measurements</description>
+						<!--StandardVariable name="checkString"/-->
+				</RecordVariable>
+				
+				<RecordVariable 
+					     name="OxygenLabel"
+					     longName="OxygenLabel" 
+					     units="string"
+					     columnIndex="4" format="string">
+						<description>Just the word Oxygen:</description>
+						<!--StandardVariable name="checkString"/-->
+				</RecordVariable>
+				
+				<RecordVariable
+						name="Oxygen"
+						longName="Dissolved Oxygen"
+						units="mmol/l"	
+						columnIndex="5"
+						format="float"	>
+						<description>Dissolved oxygen concentration in mmol per liter</description>
+					<StandardVariable name="moles_of_oxygen_per_unit_mass_in_sea_water" namespaceUriString="http://marinemetadata.org/cf"/>
+				</RecordVariable>
+				
+				<RecordVariable 
+					     name="SaturationLabel"
+					     longName="SaturationLabel" 
+					     units="string"
+					     columnIndex="6" format="string">
+						<description>Just the word Saturation:</description>
+						<!--StandardVariable name="checkString"/-->
+				</RecordVariable>
+				
+				<RecordVariable
+						name="Air_Saturation"
+						longName="Air Saturation"
+						units="percent"	
+						columnIndex="7"
+						format="float"	>
+						<description>Air saturation value</description>
+						<!--StandardVariable name="OxygenAirSaturation"/-->
+				</RecordVariable>
+				
+				<RecordVariable 
+					     name="TemperatureLabel"
+					     longName="TemperatureLabel" 
+					     units="string"
+					     columnIndex="8" format="string">
+						<description>Just the word Temperature:</description>
+						<!--StandardVariable name="checkString"/-->
+				</RecordVariable>
+				
+				<RecordVariable
+						name="Temperature"
+						longName="Temperature"
+						units="deg C"	
+						columnIndex="9"
+						format="float"	>
+						<description>Temperature value</description>
+						<!--StandardVariable name="Temperature"/-->
+				</RecordVariable>
+
+             </RecordDescription>
+		   </DataStream>
+		</output>
+		<output>
+			<DataStream>
+				<description>Summary Oxygen Optode Data Stream</description>
+				<RecordDescription bufferStyle="ascii" 
+					bufferLengthType="variable" 
+					parseable="false" 
+					recordType="1000">
+					<RecordVariable 
+						name="Oxygen_optode_summary" 
+						longName="Summary Oxygen Optode Data Record" 
+						units="noUnits" 
+						columnIndex="1" >
+						<description>Summary packets for Oxygen Optode variables in condensed XML format. Contents for each variable: 
+							number of samples, average, max, min, and standard deviation.</description>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

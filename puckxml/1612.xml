@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1612.xml,v 1.2 2007/06/28 22:30:07 kgomes Exp $	-->
+<!-- Last edited by $Author: kgomes $	$Date: 2007/06/28 22:30:07 $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://ssds.shore.mbari.org/ssdsdata/config/schema/2004cimt/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="7" lastAuthor="$Author: kgomes $" lastUpdate="$Date: 2007/06/28 22:30:07 $" >
+	<Deployment role="instrument" name="UW-ALOHA" nominalLongitude="-122.36773" nominalLatitude="47.48227" nominalDepth="30">
+		<Device	id="1612" name="Seabird SBE 52-MP CTD" type="CTD" mfgName="Seabird" mfgModel="SBE52MP-43F" mfgSerialNumber="5239043-006"
+			preferredDeploymentRole="Instrument">
+			<description>SBE 52MP CTD on UW test deployment at Seahurst</description>
+			<Person	firstname="Tim" surname="McGinnis" organization="University of Washington"
+			email="tmcginnis@apl.washington.edu" phone=""/>
+		</Device>
+		<description>UW-Seahurst installation of Seabird SBE 52-MP CTD</description>
+		<output>
+			<DataStream>
+				<description>SBE 52-MP data stream</description>
+				<RecordDescription bufferStyle="ASCII"
+				bufferParseType="ordered"
+				bufferItemSeparator=","
+				bufferLengthType="variable"
+				parseable="true" recordType="1">
+					<!-- Sample Record:
+						32.6057, 10.5358,   27.53,32.781
+					-->
+					<!--
+						Comments:
+							This XML assumes one data record per packet.
+					-->
+					<RecordVariable
+						name="Conductivity"
+						longName="Conductivity"
+						units="S/m"	referenceScale="TBD"
+						columnIndex="1"
+						format="float" >
+							<description>sea water conductivity</description>
+						<StandardVariable name="Conductivity" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Temperature"
+						longName="Water Temperature"
+						units="deg C"	referenceScale="TBD"
+						columnIndex="2"
+						format="float" >
+							<description>water temperature</description>
+							<StandardVariable name="Temperature" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Pressure"
+						longName="Pressure"
+						units="decibars"	referenceScale="TBD"
+						columnIndex="3"
+						format="float" >
+							<description>pressure of sea water</description>
+						<StandardVariable name="Pressure" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Oxygen"
+						longName="Oxygen"
+						units="ml/l"	referenceScale="TBD"
+						columnIndex="4"
+						format="float"	>
+							<description>Oxygen in ml/l</description>
+						<StandardVariable name="oxygen" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

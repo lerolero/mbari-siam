@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1546.xml,v 1.6 2008/10/01 23:18:45 mccann Exp $	-->
+<!-- Last edited by $Author: mccann $	$Date: 2008/10/01 23:18:45 $   -->
+
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:noNamespaceSchemaLocation="http://ssds.mbari.org/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="3" minorVersion="2" 
+	lastAuthor="$Author: mccann $" lastUpdate="$Date: 2008/10/01 23:18:45 $">
+	
+	<Deployment role="instrument">
+		<Device id="1546" />
+
+		<output>
+			<DataStream>
+				<description>CTD Data Stream</description>
+				<RecordDescription bufferStyle="ascii" 
+					parseable="true" 
+					recordType="1"
+					bufferParseType="ordered"
+					bufferItemSeparator=","
+					bufferLengthType="fixed">
+					<RecordVariable
+						name="Temperature"
+						longName="Water Temperature"
+						units="deg C"	
+						columnIndex="1"
+						format="float" >
+						<description>water temperature</description>
+						<StandardVariable name="sea_water_temperature"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Conductivity"
+						longName="Conductivity"
+						units="S/m"	
+						columnIndex="2"
+						format="float" >
+						<description>sea water conductivity</description>
+						<StandardVariable name="sea_water_electrical_conductivity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Pressure"
+						longName="Pressure"
+						units="decibars"	
+						columnIndex="3"
+						format="float" >
+						<description>pressure of sea water</description>
+						<StandardVariable name="sea_water_pressure"/>
+					</RecordVariable>
+					<RecordVariable
+						name="TransmissivityVoltage"
+						longName="Pathlength Transmissometer Voltage"
+						units="volts"	
+						columnIndex="4"
+						format="float">
+						<description>measured voltage from external 25cm pathlength transmissometer sensor (range 0-5V)</description>			
+					</RecordVariable>
+					<RecordVariable
+						name="OBSVoltage"
+						longName="Optical Backscatterometer Voltage"
+						units="volts"	
+						columnIndex="5"
+						format="float"	>
+						<description>measured voltage from Optical Backscatterometer (range 0-5V)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="Date"
+						longName="Date of Sample"
+						units="dd_MMM_yyyy"	
+						columnIndex="6"
+						format="string"	>
+						<description>date in 'dd MMM yyyy' format</description>
+					</RecordVariable>
+					<RecordVariable
+						name="Time"
+						longName="Time of Day"
+						units="hh-mm-ss"	
+						columnIndex="7"
+						format="string"	>
+						<description>time of day in hh:mm:ss format</description>
+						<StandardVariable name="time"/>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+		<output>
+			<DataStream>
+				<description>Summary CTD Data Stream</description>
+				<RecordDescription bufferStyle="ascii" 
+					bufferLengthType="variable" 
+					parseable="false" 
+					recordType="1000">
+					<RecordVariable 
+						name="CTD_summary" 
+						longName="Summary CTD Data Record" 
+						units="noUnits" 
+						columnIndex="1" >
+						<description>Summary packets for CTD variables in condensed XML format. Contents for each variable: 
+							number of samples, average, max, min, and standard deviation.</description>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+		
+	</Deployment>
+</Metadata>

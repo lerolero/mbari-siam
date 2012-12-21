@@ -1,0 +1,197 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1286.xml,v 1.3 2007/04/20 15:53:19 kgomes Exp $	-->
+<!-- Last edited by $Author: kgomes $	$Date: 2007/04/20 15:53:19 $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://new-ssds.mbari.org/ssds-docs/xml/schema/SSDS_Metadata.xsd" 
+	majorVersion="1" minorVersion="3" 
+	lastAuthor="$Author: kgomes $" lastUpdate="$Date: 2007/04/20 15:53:19 $" >
+	<Deployment role="instrument" name="Triaxys Wave Sensor Deployment">
+		<Device	id="1286" name="Triaxys Directional Wave Sensor" type="Wave Sensor"	mfgName="Axys Environmental Systems" mfgModel="OEM Directional Wave Sensor" mfgSerialNumber="TAS01020"
+			preferredDeploymentRole="instrument">
+			<description>Ocean wave sensor.</description>
+			<Person	firstname="Andrew" surname="Hamilton" organization="MBARI" email="hamilton@mbari.org"/>
+		</Device>
+		<output>
+			<DataStream>
+				<description>Wave sensor data stream</description>
+				<!-- Comments:
+					- Doesn't use fixedPosition parsing yet
+				-->
+				<RecordDescription bufferStyle="ASCII"
+				bufferParseType="ordered"
+				bufferItemSeparator=","
+				bufferLengthType="variable"
+				parseable="true" recordType="1">
+					<!-- Sample Record: $WC,80,060216,0128,13.14,1680,01020,3.33,,49,0,-0.230,0.000,1.700,0.00,33.3,0.00,288,63,4263
+					-->
+					<RecordVariable
+						name="RecordTypeLabel"
+						longName="Label	of Record Type"
+						units="noUnits"	
+						columnIndex="1"
+						format="String"	>
+							<description>label indicating type of wave sensor record returned (correct is $WC)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="MessageSize"
+						longName="Number of Data Bytes in Message"
+						units="count" 
+						columnIndex="2"
+						format="int"
+						validMin="0" validMax="100" >
+							<description>Number of bytes in the message not including the message type, size, or checksum characters</description>
+					</RecordVariable>
+					<RecordVariable
+						name="Date"
+						longName="Date of Measurement"
+						units="yearMonthDay" 
+						columnIndex="3"
+						format="int"
+						validMin="000000" validMax="991231" >
+							<description>date of measurement, expressed	in yymmdd format</description>
+					</RecordVariable>
+					<RecordVariable
+						name="Time"
+						longName="Time of Measurement"
+						units="hhmm" 
+						columnIndex="4"
+						format="int"
+						validMin="0" validMax="2400" >
+							<description>Time the measurement was obtained, in hhmm format</description>
+							<StandardVariable name="time" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Voltage"
+						longName="Voltage"
+						units="volts"	
+						columnIndex="5"
+						format="float" >
+							<description>voltage of unit</description>
+					</RecordVariable>
+					<RecordVariable
+						name="NumSamples"
+						longName="Number of Samples"
+						units="count"	
+						columnIndex="6"
+						format="int" >
+							<description>number of samples, found as the sample frequency times the sample duration</description>
+					</RecordVariable>
+					<RecordVariable
+						name="SerialNumber"
+						longName="Serial Number"
+						units="uid"	
+						columnIndex="7"
+						format="int" >
+							<description>Serial number of the unit</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GpucEpromVersion"
+						longName="Version of the Gpuc EPROM"
+						units="version"	
+						columnIndex="8"
+						format="float" >
+							<description>version of the Gpuc EPROM</description>
+					</RecordVariable>
+					<RecordVariable
+						name="PC104EpromVersion"
+						longName="Version of the PC104 EPROM"
+						units="version"	
+						columnIndex="9"
+						format="float" >
+							<description>version of the PC104 EPROM</description>
+					</RecordVariable>
+					<RecordVariable
+						name="NumberBoots"
+						longName="Number of Boot Times"
+						units="count"	
+						columnIndex="10"
+						format="int" >
+							<description>number of boot times</description>
+					</RecordVariable>
+					<RecordVariable
+						name="Status"
+						longName="Status Code"
+						units=""	
+						columnIndex="11"
+						format="int" >
+					</RecordVariable>
+					<RecordVariable
+						name="xOffset"
+						longName="X Offset"
+						units="meters"	
+						columnIndex="12"
+						format="float" >
+							<description>offset for the X component of the translation displacements, forward from wave sensor to the center of mass of the body (wave sensor is origin)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="yOffset"
+						longName="Y Offset"
+						units="meters"	
+						columnIndex="13"
+						format="float" >
+							<description>offset for the X component of the translation displacements, starboard from wave sensor to the center of mass of the body (wave sensor is origin).</description>
+					</RecordVariable>
+					<RecordVariable
+						name="zOffset"
+						longName="Z Offset"
+						units="meters"	
+						columnIndex="14"
+						format="float" >
+							<description>offset for the X component of the translation displacements, down from wave sensor back to the center of mass of the body (wave sensor is origin).</description>
+					</RecordVariable>
+					<RecordVariable
+						name="WaveHeight"
+						longName="Significant Wave Height (Hs)"
+						units="meters"	
+						columnIndex="15"
+						format="float" >
+							<description>Zero down-crossing significant wave height, Hs, where Hs is the average height of the highest third of the waves.</description>
+						<StandardVariable name="significant_height_of_wind_and_swell_waves" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="PeakPeriod"
+						longName="Peak Period (Tp)"
+						units="seconds"	
+						columnIndex="16"
+						format="float" >
+							<description>Peak wave period Tp (= 1.0/fp where fp is the frequency at which the wave spectrum S(f) has its maximum value).</description>
+						<StandardVariable name="swell_wave_period" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="MaxWaveHeight"
+						longName="Maximum Wave Height (Hmax)"
+						units="meters"	
+						columnIndex="17"
+						format="float" >
+							<description>Maximum zero down-crossing wave height (trough to peak) </description>
+						<StandardVariable name="significant_height_of_wind_and_swell_waves" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="MeanDirection"
+						longName="[Unused] Mean Direction"
+						units="degrees"	
+						columnIndex="18"
+						format="int" >
+							<description>[Unused] average direction from which waves arrived (?)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="DirectionSpread"
+						longName="[Unused] Direction Spread"
+						units="degrees"	
+						columnIndex="19"
+						format="int" >
+							<description>[Unused] spread of the direction from which waves arrived</description>
+					</RecordVariable>
+					<RecordVariable
+						name="Checksum"
+						longName="Checksum"
+						units="count" 
+						columnIndex="20"
+						format="int" >
+							<description>Arithmetic checksum for data record not including last comma and checksum characters.</description>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

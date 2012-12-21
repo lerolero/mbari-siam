@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1423.xml,v 1.1 2006/05/25 18:35:12 graybeal Exp $	-->
+<!-- Last edited by $Author: graybeal $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://dods.mbari.org/data/ssdsdata/config/schema/2004oasis/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="1" lastAuthor="$Author: graybeal $" lastUpdate="$Date: 2006/05/25 18:35:12 $" >
+	<Deployment role="instrument" name="ISUS M2 May 2005"
+		startDate="2005-05-19Z"
+		nominalLongitude="-122.3880" nominalLatitude="36.6900" nominalDepth="-2.5">
+
+		<Device id="1423" name="MBARI ISUS" type="ISUS" 
+		mfgName="MBARI" mfgModel="ISUS" mfgSerialNumber="M2-2005" preferredDeploymentRole="Instrument">
+			<description>nitrate analyzer</description>
+			<Person firstname="Ken" surname="Johnson" organization="MBARI" email="johnson@mbari.org"/>
+		</Device>
+		<description>M2 deployment of MBARI ISUS</description>
+		<output>
+			<DataStream>
+				<description>MBARI-ISUS Data Stream</description>
+				<RecordDescription bufferStyle="ASCII" bufferLengthType="fixed" parseable="false" recordType="1">
+				    <RecordVariable name="MBARI_ISUS_data" longName="MBARI-ISUS ASCII Data Stream" units="noUnits" columnIndex="1" >
+						<description>All of MBARI-ISUS data output.  Must be decoded for use.</description>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

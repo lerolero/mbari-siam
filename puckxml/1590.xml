@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1590.xml,v 1.2 2009/02/26 16:52:17 graybeal Exp $	-->
+<!-- Last edited by $Author: graybeal $	$Date: 2009/02/26 16:52:17 $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://new-ssds.mbari.org/ssds-docs/xml/schema/SSDS_Metadata.xsd" 
+	majorVersion="1" minorVersion="3" 
+	lastAuthor="$Author: graybeal $" lastUpdate="$Date: 2009/02/26 16:52:17 $" >
+	<Deployment role="instrument">
+		<Device id="1590" name="GPS" type="GPS" 
+			mfgName="Garmin" mfgModel="GPS16-HVS" mfgSerialNumber="81108743"> 
+			<description>GPS positioning sensor</description>
+			<Person firstname="Mark" surname="Chaffey" organization="MBARI" email="chma@mbari.org" phone="831-775-1708"/>
+		</Device>
+		<output>
+			<DataStream>
+				<description>GPS data stream</description>
+				<!-- Comments:
+					- Doesn't use fixedPosition parsing yet
+				-->
+				<RecordDescription bufferStyle="ASCII"
+				bufferParseType="ordered"
+				bufferItemSeparator=","
+				bufferLengthType="variable"
+				parseable="true" recordType="1">
+					<!-- COMMAND Sent:
+						$PGRM0,,2
+						$PGRM0,GPRMC,1
+						$PGRM0,GPGSV,1
+						$PGRM0,PGRMT,1
+					-->
+					<!-- Sample Record:
+						$GPRMC,164220,A,3648.2034,N,12147.2594,W,000.0,226.9,090304,014.8,E*6C
+					-->
+					<!-- Accuracy:
+						Position accuracy: Differential	GPS: 5m	RMS, Non-differential, 15m RMS
+						(100m w/Selective Availability on)
+						Velocity accuracy 0.2m/s RMS steady state (subject to Selective	Availability)
+					-->
+					<!--
+						Comments:
+						- One could parse for $GPRMC as	a double-check - if that isn't found, record is	bad.
+					-->
+					<RecordVariable
+						name="RecordLabel"
+						longName="Label	of GPS Record"
+						units="noUnits"	
+						columnIndex="1"
+						format="String"	>
+							<description>label indicating type of GPS record returned (if different
+							than $GPRMC, indicates an error	or other record	type)</description>
+							<!--StandardVariable name="checkString"/-->
+					</RecordVariable>
+					<RecordVariable
+						name="Time"
+						longName="Time of GPS Fix"
+						units="hhmmss" 
+						columnIndex="2"
+						format="int"
+						validMin="0" validMax="240000" >
+							<description>Time the GPS fix was obtained, in hhmmss format</description>
+							<StandardVariable name="time" namespaceUriString="http://mmisw.org/cf/parameter"/>
+					</RecordVariable>
+					<!--	Comments:
+						- We could parse for 'A' as a double-check - if	that isn't found, record is bad.
+					-->
+					<RecordVariable
+						name="GPS_Status"
+						longName="Status of GPS	Fix"
+						units="noUnits"	referenceScale="none"
+						columnIndex="3"
+						format="String">
+							<description>GPS status	flag: A=Valid position,	V=NAV receiver warning</description>
+					</RecordVariable>
+					<RecordVariable
+						name="Latitude_String"
+						longName="GPS Absolute Latitude"
+						units="degreesLatitude"	
+						columnIndex="4"
+						format="String" >
+							<description>latitude of GPS fix, in ddmm.mmm format (decimal degrees, minutes, 4 places) (leading 0s will be transmitted)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="Latitude_Hemisphere"
+						longName="Hemisphere of	Latitude Position"
+						units="NorS"
+						columnIndex="5"
+						format="String">
+							<description>hemisphere	of GPS latitude	fix, N=north, S=south</description>
+					</RecordVariable>
+					<RecordVariable
+						name="Longitude_String"
+						longName="GPS Absolute Longitude"
+						units="degreesLongitude" 
+						columnIndex="6"
+						format="String" >
+							<description>longitude of GPS fix, in dddmm.mmm format (decimal degrees, minutes, 4 places) (leading 0s will be transmitted)</description>
+					</RecordVariable>
+					<RecordVariable
+					    name="Longitude_Hemisphere"
+						longName="Hemisphere of	Longitude Position"
+						units="EorW" referenceScale="none"
+						columnIndex="7"
+						format="String">
+							<description>hemisphere	of GPS longitude fix, N=north, S=south</description>
+					</RecordVariable>
+					<RecordVariable
+						name="Speed"
+						longName="Speed	over Ground"
+						units="knots" 
+						columnIndex="8"
+						format="float"
+						validMin="0.0" validMax="999.9"	>
+							<description>measured speed over ground	since last fix
+							(leading 0s will be transmitted)</description>
+						<StandardVariable name="platform_speed_wrt_ground" namespaceUriString="http://mmisw.org/cf/parameter/cf"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Course"
+						longName="Course Made Good"
+						units="degreesHeadingTrue" 
+						columnIndex="9"
+						format="float"
+						validMin="0.0" validMax="359.9"	>
+							<description>measured direction	of travel, true	north = 0 (leading 0s will be transmitted)</description>
+						<StandardVariable name="platform_course" namespaceUriString="http://mmisw.org/cf/parameter"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Date"
+						longName="Date of GPS Fix"
+						units="yearMonthDay" 
+						columnIndex="10"
+						format="int"
+						validMin="000000" validMax="991231" >
+							<description>date of GPS fix, expressed	in ddmmyy format</description>
+					</RecordVariable>
+					<RecordVariable
+						name="Magnetic_Variation"
+						longName="Absolute Magnetic Variation at Location"
+						units="degreesHeading" 
+						columnIndex="11"
+						format="float"
+						validMin="0.0" validMax="180.0"	>
+							<description>Absolute value of determined magnetic variation at location of fix (leading 0s will be transmitted)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="Magnetic_Variation_Direction_x_Checksum"
+						longName="Direction of Magnetic	Variation at Location and Checksum"
+						units="EorW" 
+						columnIndex="12"
+						format="String" >
+							<description>direction of magnetic variation at	location of fix, a westerly variation adds to true course * Checkum value</description>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+		<output>
+			<DataStream>
+				<description>GPS error stream</description>
+				<RecordDescription bufferStyle="ASCII"
+					bufferLengthType="variable"
+					parseable="false" recordType="2">
+					<!--
+						Comments:
+						- Error record is variable length, it collects as much info as possible.
+						-->
+					<RecordVariable
+						name="GPS_Error_Record"
+						longName="GPS Error String When No Fix"
+						units="noUnits"	
+						columnIndex="1"
+						format="String"	>
+						<description>GPS collects and returns as much information as possible</description>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1250.xml,v 1.4 2012/02/04 00:33:32 kgomes Exp $	-->
+<!-- Last edited by $Author: kgomes $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://new-ssds.mbari.org/ssds-docs/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="1" lastAuthor="$Author: kgomes $" lastUpdate="$Date: 2012/02/04 00:33:32 $" >
+	<Deployment role="instrument" >
+		<Device	id="1250"></Device>
+		<output>
+			<DataStream>
+				<description>ASIMET SWR Data Stream</description>
+				<!-- Comments:
+				-->
+				<RecordDescription bufferStyle="ASCII"
+				bufferParseType="ordered"
+				bufferItemSeparator=":"
+				bufferLengthType="variable"
+				parseable="true" recordType="1">
+					<!-- Sample Record:
+					1.7 :   32721
+					-->
+					<!--
+						Comments:
+							This XML assumes one data record per packet.
+					-->
+					<RecordVariable
+						name="SW_flux"
+						longName="Short Wave flux"
+						units="watts per square meter"	referenceScale="TBD"
+						columnIndex="1"
+						format="float" >
+							<description>Flux of short-wave radiation</description>
+							<StandardVariable name="flux" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="SW_raw"
+						longName="Short wave flux raw count"
+						columnIndex="2"
+						format="integer" >
+							<description>SW flux A/D count</description>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

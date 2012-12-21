@@ -1,0 +1,671 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1593.xml,v 1.2 2009/02/26 16:52:17 graybeal Exp $	-->
+<!-- Last edited by $Author: graybeal $	$Date: 2009/02/26 16:52:17 $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:noNamespaceSchemaLocation="http://new-ssds.mbari.org/ssds-docs/xml/schema/SSDS_Metadata.xsd" 
+	majorVersion="1" minorVersion="2" 
+	lastAuthor="$Author: graybeal $" lastUpdate="$Date: 2009/02/26 16:52:17 $" >
+    
+	<Deployment role="instrument" >
+		<Device id="1593" name="MOOS 400-12V Switch" type="Network Hub-Power Controller" mfgName="MBARI" mfgModel="MOOS 400-12V Switch" mfgSerialNumber="1.04">
+			<description>MOOS Mooring BIN Power Controller</description>
+			<Person firstname="Ed" surname="Mellinger" organization="MBARI" email="meed@mbari.org"/>
+		</Device>
+		
+		<output>
+			<DataStream>
+				<description>Mooring Power Can data</description>
+			
+				<RecordDescription bufferStyle="ASCII" bufferParseType="ordered" bufferItemSeparator="whitespace" bufferLengthType="variable" parseable="true" recordType="1">
+					<RecordVariable
+						name="Channel_ADC00_Label"
+						longName="ADC00: 400V Input Volt (Channel Label)"
+						units="none"
+						columnIndex="1"
+						format="string" >
+						<description>Label for ADC00. This channel is the Channel Label for the 400V Input Voltage.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC00_Avg"
+						longName="ADC00/ 400V Input Volt Avg"
+						units="volts"
+						columnIndex="2"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for 400V Input Voltage. (Power Can channel ADC00)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC00_NumSamps"
+						longName="ADC00/ 400V Input Volt Number of Samples"
+						units="count"
+						columnIndex="3"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for 400V Input Voltage. (Power Can channel ADC00)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC00_Min"
+						longName="ADC00/ 400V Input Volt Min"
+						units="volts"
+						columnIndex="4"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for 400V Input Voltage. (Power Can channel ADC00)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC00_Max"
+						longName="ADC00/ 400V Input Volt Max"
+						units="volts"
+						columnIndex="5"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for 400V Input Voltage. (Power Can ADC00)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC00_Err_Flag"
+						longName="ADC00/ 400V Input Volt Err Flag"
+						units="0isgood"
+						columnIndex="6"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for 400V Input Voltage. (Power Can channel ADC00)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC01_Label"
+						longName="ADC01: 400-12 Conv 0 In Curr (Channel Label)"
+						units="none"
+						columnIndex="7"
+						format="string" >
+						<description>Label for ADC01. This channel is the Channel Label for the 400-12 Converter 0 Input Current.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC01_Avg"
+						longName="ADC01/ 400-12 Conv 0 In Curr Avg"
+						units="amps"
+						columnIndex="8"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for 400-12 Converter 0 Input Current. (Power Can channel ADC01)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC01_NumSamps"
+						longName="ADC01/ 400-12 Conv 0 In Curr Number of Samples"
+						units="count"
+						columnIndex="9"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for 400-12 Converter 0 Input Current. (Power Can channel ADC01)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC01_Min"
+						longName="ADC01/ 400-12 Conv 0 In Curr Min"
+						units="amps"
+						columnIndex="10"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for 400-12 Converter 0 Input Current. (Power Can channel ADC01)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC01_Max"
+						longName="ADC01/ 400-12 Conv 0 In Curr Max"
+						units="amps"
+						columnIndex="11"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for 400-12 Converter 0 Input Current. (Power Can ADC01)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC01_Err_Flag"
+						longName="ADC01/ 400-12 Conv 0 In Curr Err Flag"
+						units="0isgood"
+						columnIndex="12"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for 400-12 Converter 0 Input Current. (Power Can channel ADC01)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC02_Label"
+						longName="ADC02: 400-12 Conv 1 In Curr (Channel Label)"
+						units="none"
+						columnIndex="13"
+						format="string" >
+						<description>Label for ADC02. This channel is the Channel Label for the 400-12 Converter 1 Input Current.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC02_Avg"
+						longName="ADC02/ 400-12 Conv 1 In Curr Avg"
+						units="amps"
+						columnIndex="14"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for 400-12 Converter 1 Input Current. (Power Can channel ADC02)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC02_NumSamps"
+						longName="ADC02/ 400-12 Conv 1 In Curr Number of Samples"
+						units="count"
+						columnIndex="15"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for 400-12 Converter 1 Input Current. (Power Can channel ADC02)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC02_Min"
+						longName="ADC02/ 400-12 Conv 1 In Curr Min"
+						units="amps"
+						columnIndex="16"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for 400-12 Converter 1 Input Current. (Power Can channel ADC02)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC02_Max"
+						longName="ADC02/ 400-12 Conv 1 In Curr Max"
+						units="amps"
+						columnIndex="17"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for 400-12 Converter 1 Input Current. (Power Can ADC02)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC02_Err_Flag"
+						longName="ADC02/ 400-12 Conv 1 In Curr Err Flag"
+						units="0isgood"
+						columnIndex="18"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for 400-12 Converter 1 Input Current. (Power Can channel ADC02)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC03_Label"
+						longName="ADC03: 400V Sw 0 Out Curr (Channel Label)"
+						units="none"
+						columnIndex="19"
+						format="string" >
+						<description>Label for ADC03. This channel is the Channel Label for the 400V Switch 0 Output Current.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC03_Avg"
+						longName="ADC03/ 400V Sw 0 Out Curr Avg"
+						units="amps"
+						columnIndex="20"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for 400V Switch 0 Output Current. (Power Can channel ADC03)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC03_NumSamps"
+						longName="ADC03/ 400V Sw 0 Out Curr Number of Samples"
+						units="count"
+						columnIndex="21"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for 400V Switch 0 Output Current. (Power Can channel ADC03)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC03_Min"
+						longName="ADC03/ 400V Sw 0 Out Curr Min"
+						units="amps"
+						columnIndex="22"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for 400V Switch 0 Output Current. (Power Can channel ADC03)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC03_Max"
+						longName="ADC03/ 400V Sw 0 Out Curr Max"
+						units="amps"
+						columnIndex="23"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for 400V Switch 0 Output Current. (Power Can ADC03)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC03_Err_Flag"
+						longName="ADC03/ 400V Sw 0 Out Curr Err Flag"
+						units="0isgood"
+						columnIndex="24"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for 400V Switch 0 Output Current. (Power Can channel ADC03)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC04_Label"
+						longName="ADC04: 400V Sw 1 Out Curr (Channel Label)"
+						units="none"
+						columnIndex="25"
+						format="string" >
+						<description>Label for ADC04. This channel is the Channel Label for the 400V Switch 1 Output Current.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC04_Avg"
+						longName="ADC04/ 400V Sw 1 Out Curr Avg"
+						units="amps"
+						columnIndex="26"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for 400V Switch 1 Output Current. (Power Can channel ADC04)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC04_NumSamps"
+						longName="ADC04/ 400V Sw 1 Out Curr Number of Samples"
+						units="count"
+						columnIndex="27"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for 400V Switch 1 Output Current. (Power Can channel ADC04)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC04_Min"
+						longName="ADC04/ 400V Sw 1 Out Curr Min"
+						units="amps"
+						columnIndex="28"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for 400V Switch 1 Output Current. (Power Can channel ADC04)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC04_Max"
+						longName="ADC04/ 400V Sw 1 Out Curr Max"
+						units="amps"
+						columnIndex="29"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for 400V Switch 1 Output Current. (Power Can ADC04)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC04_Err_Flag"
+						longName="ADC04/ 400V Sw 1 Out Curr Err Flag"
+						units="0isgood"
+						columnIndex="30"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for 400V Switch 1 Output Current. (Power Can channel ADC04)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC05_Label"
+						longName="ADC05: 400V Sw 2 Out Curr (Channel Label)"
+						units="none"
+						columnIndex="31"
+						format="string" >
+						<description>Label for ADC05. This channel is the Channel Label for the 400V Switch 2 Output Current.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC05_Avg"
+						longName="ADC05/ 400V Sw 2 Out Curr Avg"
+						units="amps"
+						columnIndex="32"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for 400V Switch 2 Output Current. (Power Can channel ADC05)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC05_NumSamps"
+						longName="ADC05/ 400V Sw 2 Out Curr Number of Samples"
+						units="count"
+						columnIndex="33"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for 400V Switch 2 Output Current. (Power Can channel ADC05)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC05_Min"
+						longName="ADC05/ 400V Sw 2 Out Curr Min"
+						units="amps"
+						columnIndex="34"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for 400V Switch 2 Output Current. (Power Can channel ADC05)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC05_Max"
+						longName="ADC05/ 400V Sw 2 Out Curr Max"
+						units="amps"
+						columnIndex="35"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for 400V Switch 2 Output Current. (Power Can ADC05)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC05_Err_Flag"
+						longName="ADC05/ 400V Sw 2 Out Curr Err Flag"
+						units="0isgood"
+						columnIndex="36"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for 400V Switch 2 Output Current. (Power Can channel ADC05)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC10_Label"
+						longName="ADC10: 12V Output Voltage (Channel Label)"
+						units="none"
+						columnIndex="37"
+						format="string" >
+						<description>Label for ADC10. This channel is the Channel Label for the 12V Output Voltage.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC10_Avg"
+						longName="ADC10/ 12V Output Voltage Avg"
+						units="volts"
+						columnIndex="38"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for 12V Output Voltage. (Power Can channel ADC10)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC10_NumSamps"
+						longName="ADC10/ 12V Output Voltage Number of Samples"
+						units="count"
+						columnIndex="39"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for 12V Output Voltage. (Power Can channel ADC10)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC10_Min"
+						longName="ADC10/ 12V Output Voltage Min"
+						units="volts"
+						columnIndex="40"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for 12V Output Voltage. (Power Can channel ADC10)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC10_Max"
+						longName="ADC10/ 12V Output Voltage Max"
+						units="volts"
+						columnIndex="41"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for 12V Output Voltage. (Power Can ADC10)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC10_Err_Flag"
+						longName="ADC10/ 12V Output Voltage Err Flag"
+						units="0isgood"
+						columnIndex="42"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for 12V Output Voltage. (Power Can channel ADC10)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC11_Label"
+						longName="ADC11: 12V Output Current (Channel Label)"
+						units="none"
+						columnIndex="43"
+						format="string" >
+						<description>Label for ADC11. This channel is the Channel Label for the 12V Output Current.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC11_Avg"
+						longName="ADC11/ 12V Output Current Avg"
+						units="amps"
+						columnIndex="44"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for 12V Output Current. (Power Can channel ADC11)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC11_NumSamps"
+						longName="ADC11/ 12V Output Current Number of Samples"
+						units="count"
+						columnIndex="45"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for 12V Output Current. (Power Can channel ADC11)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC11_Min"
+						longName="ADC11/ 12V Output Current Min"
+						units="amps"
+						columnIndex="46"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for 12V Output Current. (Power Can channel ADC11)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC11_Max"
+						longName="ADC11/ 12V Output Current Max"
+						units="amps"
+						columnIndex="47"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for 12V Output Current. (Power Can ADC11)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC11_Err_Flag"
+						longName="ADC11/ 12V Output Current Err Flag"
+						units="0isgood"
+						columnIndex="48"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for 12V Output Current. (Power Can channel ADC11)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC12_Label"
+						longName="ADC12: Ultracap Voltage (Channel Label)"
+						units="none"
+						columnIndex="49"
+						format="string" >
+						<description>Label for ADC12. This channel is the Channel Label for the Ultracap Voltage.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC12_Avg"
+						longName="ADC12/ Ultracap Voltage Avg"
+						units="volts"
+						columnIndex="50"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for Ultracap Voltage. (Power Can channel ADC12)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC12_NumSamps"
+						longName="ADC12/ Ultracap Voltage Number of Samples"
+						units="count"
+						columnIndex="51"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for Ultracap Voltage. (Power Can channel ADC12)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC12_Min"
+						longName="ADC12/ Ultracap Voltage Min"
+						units="volts"
+						columnIndex="52"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for Ultracap Voltage. (Power Can channel ADC12)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC12_Max"
+						longName="ADC12/ Ultracap Voltage Max"
+						units="volts"
+						columnIndex="53"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for Ultracap Voltage. (Power Can ADC12)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC12_Err_Flag"
+						longName="ADC12/ Ultracap Voltage Err Flag"
+						units="0isgood"
+						columnIndex="54"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for Ultracap Voltage. (Power Can channel ADC12)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC13_Label"
+						longName="ADC13: Batt Voltage (Channel Label)"
+						units="none"
+						columnIndex="55"
+						format="string" >
+						<description>Label for ADC13. This channel is the Channel Label for the Battery Voltage.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC13_Avg"
+						longName="ADC13/ Batt Voltage Avg"
+						units="volts"
+						columnIndex="56"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for Battery Voltage. (Power Can channel ADC13)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC13_NumSamps"
+						longName="ADC13/ Batt Voltage Number of Samples"
+						units="count"
+						columnIndex="57"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for Battery Voltage. (Power Can channel ADC13)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC13_Min"
+						longName="ADC13/ Batt Voltage Min"
+						units="volts"
+						columnIndex="58"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for Battery Voltage. (Power Can channel ADC13)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC13_Max"
+						longName="ADC13/ Batt Voltage Max"
+						units="volts"
+						columnIndex="59"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for Battery Voltage. (Power Can ADC13)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC13_Err_Flag"
+						longName="ADC13/ Batt Voltage Err Flag"
+						units="0isgood"
+						columnIndex="60"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for Battery Voltage. (Power Can channel ADC13)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC14_Label"
+						longName="ADC14: 400-12 Converter Temp (Channel Label)"
+						units="none"
+						columnIndex="61"
+						format="string" >
+						<description>Label for ADC14. This channel is the Channel Label for the 400-12 Converter Temperature.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC14_Avg"
+						longName="ADC14/ 400-12 Converter Temp Avg"
+						units="deg C"
+						columnIndex="62"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for 400-12 Converter Temperature. (Power Can channel ADC14)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC14_NumSamps"
+						longName="ADC14/ 400-12 Converter Temp Number of Samples"
+						units="count"
+						columnIndex="63"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for 400-12 Converter Temperature. (Power Can channel ADC14)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC14_Min"
+						longName="ADC14/ 400-12 Converter Temp Min"
+						units="deg C"
+						columnIndex="64"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for 400-12 Converter Temperature. (Power Can channel ADC14)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC14_Max"
+						longName="ADC14/ 400-12 Converter Temp Max"
+						units="deg C"
+						columnIndex="65"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for 400-12 Converter Temperature. (Power Can ADC14)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC14_Err_Flag"
+						longName="ADC14/ 400-12 Converter Temp Err Flag"
+						units="0isgood"
+						columnIndex="66"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for 400-12 Converter Temperature. (Power Can channel ADC14)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_BP00_Label"
+						longName="BP00: 400V Status (Channel Label)"
+						units="none"
+						columnIndex="67"
+						format="string" >
+						<description>Label for BP00. This channel is the Channel Label for the 400V Status Bits.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="BP00_NumSamps"
+						longName="BP00/ 400V Status Number of Samples"
+						units="count"
+						columnIndex="68"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for 400V Status Bits. (Power Can channel BP00)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="BP00-0_NumSamps"
+						longName="BP00-0/  Number of Samples"
+						units="count"
+						columnIndex="69"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for 400-12 Converter 0 CB OK Flag. (Power Can channel BP00-0)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="BP00-1_NumSamps"
+						longName="BP00-1/  Number of Samples"
+						units="count"
+						columnIndex="70"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for 400-12 Converter 1 CB OK Flag. (Power Can channel BP00-1)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="BP00-2_NumSamps"
+						longName="BP00-2/  Number of Samples"
+						units="count"
+						columnIndex="71"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for 400V Switch 0 On Flag. (Power Can channel BP00-2)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="BP00-3_NumSamps"
+						longName="BP00-3/  Number of Samples"
+						units="count"
+						columnIndex="72"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for 400V Switch 0 CB OK Flag. (Power Can channel BP00-3)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="BP00-4_NumSamps"
+						longName="BP00-4/  Number of Samples"
+						units="count"
+						columnIndex="73"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for 400V Switch 1 On Flag. (Power Can channel BP00-4)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="BP00-5_NumSamps"
+						longName="BP00-5/  Number of Samples"
+						units="count"
+						columnIndex="74"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for 400V Switch 1 CB OK Flag. (Power Can channel BP00-5)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="BP00-6_NumSamps"
+						longName="BP00-6/  Number of Samples"
+						units="count"
+						columnIndex="75"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for 400V Switch 2 On Flag. (Power Can channel BP00-6)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="BP00-7_NumSamps"
+						longName="BP00-7/  Number of Samples"
+						units="count"
+						columnIndex="76"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for 400V Switch 2 CB OK Flag. (Power Can channel BP00-7)</description>
+					</RecordVariable>
+					<RecordVariable
+					 	name="CheckString_Data" 
+					    longName="CheckString Data" 
+					    units="string" 
+					    columnIndex="77" format="string">
+						<description>Just the word DATA</description>
+					</RecordVariable>
+					<RecordVariable 
+					 	name="CheckString_Count"
+					    longName="CheckString Count" 
+					    units="string"
+					    columnIndex="78" format="string">
+						<description>Just the word COUNT</description>
+					</RecordVariable>
+					<RecordVariable 
+					 	name="Data_Count"
+					    longName="Number of bytes transmitted in record" 
+					    units="count" columnIndex="79" format="int">
+						<description>Total bytes transmitted</description>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

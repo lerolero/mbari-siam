@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1737.xml,v 1.1 2009/08/19 23:36:20 bobh Exp $	-->
+<!-- Last edited by $Author: bobh $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ssds.mbari.org/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="2" lastAuthor="$Author: bobh $" lastUpdate="$Date: 2009/08/19 23:36:20 $" >
+	<Deployment role="Instrument">
+		<Device	id="1737" name="Humidity Monitor" type="Humidity Sensor" 
+			mfgName="MBARI" mfgModel="Environmental Board" mfgSerialNumber="1">
+			<description>Humidity Sensor portion of FOCE Environmental Board</description>
+			<!-- If the CPU stack is changed, e.g. to foce2, a different equipment ID number should be used -->
+			<Person	firstname="Bob" surname="Herlien" organization="MBARI"
+			email="bobh@mbari.org" phone="831-775-1750"/>
+		</Device>
+		<output>
+			<DataStream>
+				<description>Humidity Monitor data stream</description>
+				<RecordDescription bufferStyle="ASCII"
+					bufferParseType="ordered"
+					bufferItemSeparator=" "
+					bufferLengthType="variable"
+					parseable="true" recordType="1">
+					<!-- Sample Record:
+						20.0000 20.0000 20.0000 20.0000 20.0000
+					-->
+					<!--
+						Comments:
+					-->
+					<RecordVariable
+						name="Humidity0"
+						longName="Humdity Sensor 0"
+						units="% RH"
+						columnIndex="1"
+						format="float" >
+						<description>Relative Humidity</description>
+						<StandardVariable name="humidity_in_device" namespaceUriString="http://mmisw.org/ont/mmi/eqtenvirons/" />
+					</RecordVariable>
+					<RecordVariable
+						name="Humidity1"
+						longName="Humdity Sensor 1"
+						units="% RH"
+						columnIndex="2"
+						format="float" >
+						<description>Relative Humidity</description>
+						<StandardVariable name="humidity_in_device" namespaceUriString="http://mmisw.org/ont/mmi/eqtenvirons/" />
+					</RecordVariable>
+					<RecordVariable
+						name="Humidity2"
+						longName="Humdity Sensor 2"
+						units="% RH"
+						columnIndex="3"
+						format="float" >
+						<description>Relative Humidity</description>
+						<StandardVariable name="humidity_in_device" namespaceUriString="http://mmisw.org/ont/mmi/eqtenvirons/" />
+					</RecordVariable>
+					<RecordVariable
+						name="Humidity3"
+						longName="Humdity Sensor 3"
+						units="% RH"
+						columnIndex="4"
+						format="float" >
+						<description>Relative Humidity</description>
+						<StandardVariable name="humidity_in_device" namespaceUriString="http://mmisw.org/ont/mmi/eqtenvirons/" />
+					</RecordVariable>
+					<RecordVariable
+						name="Humidity4"
+						longName="Humdity Sensor 4"
+						units="% RH"
+						columnIndex="5"
+						format="float" >
+						<description>Relative Humidity</description>
+						<StandardVariable name="humidity_in_device" namespaceUriString="http://mmisw.org/ont/mmi/eqtenvirons/" />
+					</RecordVariable>
+					
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1456.xml,v 1.4 2009/03/09 21:56:30 mccann Exp $	-->
+<!-- Last edited by $Author: mccann $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://dods.mbari.org/data/ssdsdata/config/schema/2005oasis/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="1" lastAuthor="$Author: mccann $" lastUpdate="$Date: 2009/03/09 21:56:30 $" >
+	<Deployment role="instrument">
+		<Device id="1456" />
+		<output>
+			<DataStream>
+				<RecordDescription bufferStyle="ASCII"
+				bufferParseType="ordered"
+				bufferItemSeparator="whitespace"
+				bufferLengthType="variable"
+				parseable="true" recordType="1">
+					<!-- Sample Record:
+					285.49  285.49  16938.8  16978.8  -21.6  371.3   33539   3374
+					-->
+					<RecordVariable
+						name="temp_dome"
+						longName="Dome Temperature"
+						units="deg Kelvin"
+						columnIndex="1"
+						format="float" >
+					</RecordVariable>
+					<RecordVariable
+						name="temp_body"
+						longName="Body Temperature"
+						units="deg Kelvin"
+						columnIndex="2"
+						format="float" >
+					</RecordVariable>
+					<RecordVariable
+						name="res_dome"
+						longName="Dome resistence"
+						units="ohms"
+						columnIndex="3"
+						format="int" >
+					</RecordVariable>
+					<RecordVariable
+						name="res_body"
+						longName="Body resistence"
+						units="ohms"
+						columnIndex="4"
+						format="int" >
+					</RecordVariable>
+					<RecordVariable
+						name="volts_pile"
+						longName="Pile microvolts"
+						units="microvolts"
+						columnIndex="5"
+						format="float" >
+					</RecordVariable>
+					<RecordVariable
+						name="LW_flux"
+						longName="Long Wave flux"
+						units="watts per square meter"
+						columnIndex="6"
+						format="float" >
+						<StandardVariable name="surface_downwelling_longwave_flux_in_air"/>
+					</RecordVariable>
+					<RecordVariable
+						name="domet_raw"
+						longName="Dome temperature raw count"
+						columnIndex="7"
+						format="int" >
+					</RecordVariable>
+					<RecordVariable
+						name="bodyt_raw"
+						longName="Body temperature raw count"
+						columnIndex="8"
+						format="int" >
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

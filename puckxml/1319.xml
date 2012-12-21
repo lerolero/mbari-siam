@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1319.xml,v 1.1 2005/06/08 21:29:34 achase Exp $	-->
+<!-- Last edited by $Author: achase $	$Date: 2005/06/08 21:29:34 $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://ssds.shore.mbari.org/ssdsdata/config/schema/2004cimt/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="9" lastAuthor="$Author: achase $" lastUpdate="$Date: 2005/06/08 21:29:34 $" >
+	<Deployment role="instrument" name="M0-CIMT"
+	nominalLongitude="-121.903333" nominalLatitude="36.833333">
+		<Device	id="1319" name="Inductive CTD Modem" type="CommDevice" mfgName="Seabird" 
+			mfgModel="S-MODEM1" mfgSerialNumber="40928C?"
+			preferredDeploymentRole="Instrument">
+			<description>Communication device/reporting instrument for an inductive CTD string (1st deployed on M0-CIMT)</description>
+			<Person	firstname="Paul" surname="Coenen" organization="MBARI"
+			email="coenen@mbari.org" phone="831-775-2099"/>
+		</Device>
+
+			<!--If any of the nominalDepth values need to be changed (below), a
+			also change the DisplayName strings in the item descriptions
+			.-->
+		<Deployment role="sensor" name="CTD string" nominalLongitude="-121.903333" 
+			nominalLatitude="36.833333" nominalDepth="10.">
+			<Device id="1315" name="Inductive CTD" type="CTD" preferredDeploymentRole="sensor"
+			mfgName="Seabird" mfgModel="SVE37IMP" mfgSerialNumber="3532" />
+		</Deployment>
+		<Deployment role="sensor" name="CTD string" nominalLongitude="-121.903333" 
+			nominalLatitude="36.833333" nominalDepth="20.">
+			<Device id="1316" name="Inductive CTD" type="CTD" preferredDeploymentRole="sensor"
+			mfgName="Seabird" mfgModel="SVE37IMP" mfgSerialNumber="3533" />
+		</Deployment>
+		<Deployment role="sensor" name="CTD string" nominalLongitude="-121.903333" 
+			nominalLatitude="36.833333" nominalDepth="40.">
+			<Device id="1317" name="Inductive CTD" type="CTD" preferredDeploymentRole="sensor"
+			mfgName="Seabird" mfgModel="SVE37IMP" mfgSerialNumber="3534" />
+		</Deployment>
+		<Deployment role="sensor" name="CTD string" nominalLongitude="-121.903333" 
+			nominalLatitude="36.833333" nominalDepth="55.">
+			<Device id="1318" name="Inductive CTD" type="CTD" preferredDeploymentRole="sensor"
+			mfgName="Seabird" mfgModel="SVE37IMP" mfgSerialNumber="3535" />
+		</Deployment>
+		
+		<description>M0-CIMT installation of Serial CTD</description>
+		<output>
+			<DataStream>
+				<description>Serial CTD data stream</description>
+				<!-- Comments:
+				-->
+				<RecordDescription bufferStyle="ASCII"
+				bufferParseType="ordered"
+				bufferItemSeparator=","
+				bufferLengthType="variable"
+				parseable="true" recordType="1">
+					<!-- COMMAND Sent:
+					-->
+					<!-- Sample Record:
+						 03532,  22.5918,  0.00006,   -0.039, 30 Apr 2004, 22:51:15,   2321
+						 03533,  22.5977,  0.00004,   -0.022, 30 Apr 2004, 22:51:25,   2321
+						 03534,  22.8576,  0.00004,   -0.022, 30 Apr 2004, 22:51:34,   2321
+						 03535,  22.7357,  0.00005,   -0.048, 30 Apr 2004, 22:51:43,   2321
+					-->
+					<!-- Accuracy:
+					-->
+					<!--
+						Comments:
+							This XML is designed to detect changes in the expected
+							order of the sensors in the reported packet. If a sensor
+							is reported out of order, the parsing will fail (because
+							one of the SensorString values will be wrong).  This hack
+							only is worth doing if the data from the inductive CTDs
+							will almost always is reported in the same order. If the
+							order routinely varies, SSDS needs more sophisticated
+							parsing to handle it.
+							The DisplayName values include the nominal depth as a way of
+							making those display names unique for each CTD. Using sensor numbers
+							in this role would be less deployment-specific (and could still
+							be tracked back to a depth, although awkwardly), but would be 
+							all-but-meaningless to the average viewer of the data.  So I
+							decided the benefit was worth the increased maintenance cost. - jbg
+					-->
+					<RecordVariable
+						name="SensorString_1"
+						longName="Originating CTD Serial No."
+						units="none"	referenceScale="TBD"
+						columnIndex="1"
+						format="int" parseRegExp="([0-9])3532" >
+							<description>Check String -- should be 03532 for first CTD</description>
+							<StandardVariable name="checkString"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Temperature_1"
+						longName="Water Temperature @ 10m"
+						units="deg C"	referenceScale="TBD"
+						columnIndex="2"
+						format="float" >
+							<description>water temperature from unit 03532</description>
+							<StandardVariable name="temperature"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Conductivity_1"
+						longName="Conductivity @ 10m"
+						units="S/m"	referenceScale="TBD"
+						columnIndex="3"
+						format="float" >
+							<description>sea water conductivity from unit 03532</description>
+							<StandardVariable name="conductivity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Pressure_1"
+						longName="Pressure @ 10m"
+						units="decibars"	referenceScale="TBD"
+						columnIndex="4"
+						format="float" >
+							<description>pressure of sea water from unit 03532</description>
+							<StandardVariable name="pressure"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Date_1"
+						longName="Date of Sample @ 10m"
+						units="dd_MMM_yyyy"	referenceScale="TBD"
+						columnIndex="5"
+						format="string"	>
+							<description>last sample date, in 'dd MMM yyyy' format, from unit 03532</description>
+							<StandardVariable name="date"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Time_1"
+						longName="Time of Sample @ 10m"
+						units="hh-mm-ss"	referenceScale="TBD"
+						columnIndex="6"
+						format="string"	>
+							<description>most recent sample time of day, in hh:mm:ss format, from unit 03532</description>
+							<StandardVariable name="time"/>
+					</RecordVariable>
+					<RecordVariable
+						name="SampNum_1"
+						longName="Instr_Sample_Number_1"
+						units="tbd"	referenceScale="TBD"
+						columnIndex="7"
+						format="int"	>
+							<description>internal sample sequence number for this instrument</description>
+							<StandardVariable name="time"/>
+					</RecordVariable>
+
+					<RecordVariable
+						name="SensorString_2"
+						longName="Originating CTD Serial No."
+						units="none"	referenceScale="TBD"
+						columnIndex="8"
+						format="int" parseRegExp="([0-9])3533" >
+							<description>Check String -- should be 03533 for first CTD</description>
+							<StandardVariable name="checkString"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Temperature_2"
+						longName="Water Temperature @ 20m"
+						units="deg C"	referenceScale="TBD"
+						columnIndex="9"
+						format="float" >
+							<description>water temperature from unit 03533</description>
+							<StandardVariable name="temperature"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Conductivity_2"
+						longName="Conductivity @ 20m"
+						units="S/m"	referenceScale="TBD"
+						columnIndex="10"
+						format="float" >
+							<description>sea water conductivity from unit 03533</description>
+							<StandardVariable name="conductivity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Pressure_2"
+						longName="Pressure @ 20m"
+						units="decibars"	referenceScale="TBD"
+						columnIndex="11"
+						format="float" >
+							<description>pressure of sea water from unit 03533</description>
+							<StandardVariable name="pressure"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Date_2"
+						longName="Date of Sample @ 20m"
+						units="dd_MMM_yyyy"	referenceScale="TBD"
+						columnIndex="12"
+						format="string"	>
+							<description>last sample date, in 'dd MMM yyyy' format, from unit 03533</description>
+							<StandardVariable name="date"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Time_2"
+						longName="Time of Sample @ 20m"
+						units="hh-mm-ss"	referenceScale="TBD"
+						columnIndex="13"
+						format="string"	>
+							<description>most recent sample time of day, in hh:mm:ss format, from unit 03533</description>
+							<StandardVariable name="time"/>
+					</RecordVariable>
+					<RecordVariable
+						name="SampNum_2"
+						longName="Instr_Sample_Number_2"
+						units="tbd"	referenceScale="TBD"
+						columnIndex="14"
+						format="int"	>
+							<description>internal sample sequence number for this instrument</description>
+							<StandardVariable name="time"/>
+					</RecordVariable>
+
+					<RecordVariable
+						name="SensorString_3"
+						longName="Originating CTD Serial No."
+						units="none"	referenceScale="TBD"
+						columnIndex="15"
+						format="int" parseRegExp="([0-9])3534" >
+							<description>Check String -- should be 03534 for first CTD</description>
+							<StandardVariable name="checkString"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Temperature_3"
+						longName="Water Temperature @ 40m"
+						units="deg C"	referenceScale="TBD"
+						columnIndex="16"
+						format="float" >
+							<description>water temperature from unit 03534</description>
+							<StandardVariable name="temperature"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Conductivity_3"
+						longName="Conductivity @ 40m"
+						units="S/m"	referenceScale="TBD"
+						columnIndex="17"
+						format="float" >
+							<description>sea water conductivity from unit 03534</description>
+							<StandardVariable name="conductivity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Pressure_3"
+						longName="Pressure @ 40m"
+						units="decibars"	referenceScale="TBD"
+						columnIndex="18"
+						format="float" >
+							<description>pressure of sea water from unit 03534</description>
+							<StandardVariable name="pressure"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Date_3"
+						longName="Date of Sample @ 40m"
+						units="dd_MMM_yyyy"	referenceScale="TBD"
+						columnIndex="19"
+						format="string"	>
+							<description>last sample date, in 'dd MMM yyyy' format, from unit 03534</description>
+							<StandardVariable name="date"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Time_3"
+						longName="Time of Sample @ 40m"
+						units="hh-mm-ss"	referenceScale="TBD"
+						columnIndex="20"
+						format="string"	>
+							<description>most recent sample time of day, in hh:mm:ss format, from unit 03534</description>
+							<StandardVariable name="time"/>
+					</RecordVariable>
+					<RecordVariable
+						name="SampNum_3"
+						longName="Instr_Sample_Number_3"
+						units="tbd"	referenceScale="TBD"
+						columnIndex="21"
+						format="int"	>
+							<description>internal sample sequence number for this instrument</description>
+							<StandardVariable name="time"/>
+					</RecordVariable>
+
+					<RecordVariable
+						name="SensorString_4"
+						longName="Originating CTD Serial No."
+						units="none"	referenceScale="TBD"
+						columnIndex="22"
+						format="int" parseRegExp="([0-9])3535" >
+							<description>Check String -- should be 03535 for first CTD</description>
+							<StandardVariable name="checkString"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Temperature_4"
+						longName="Water Temperature @ 55m"
+						units="deg C"	referenceScale="TBD"
+						columnIndex="23"
+						format="float" >
+							<description>water temperature from unit 03535</description>
+							<StandardVariable name="temperature"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Conductivity_4"
+						longName="Conductivity @ 55m"
+						units="S/m"	referenceScale="TBD"
+						columnIndex="24"
+						format="float" >
+							<description>sea water conductivity from unit 03535</description>
+							<StandardVariable name="conductivity"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Pressure_4"
+						longName="Pressure @ 55m"
+						units="decibars"	referenceScale="TBD"
+						columnIndex="25"
+						format="float" >
+							<description>pressure of sea water from unit 03535</description>
+							<StandardVariable name="pressure"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Date_4"
+						longName="Date of Sample @ 55m"
+						units="dd_MMM_yyyy"	referenceScale="TBD"
+						columnIndex="26"
+						format="string"	>
+							<description>last sample date, in 'dd MMM yyyy' format, from unit 03535</description>
+							<StandardVariable name="date"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Time_4"
+						longName="Time of Sample @ 55m"
+						units="hh-mm-ss"	referenceScale="TBD"
+						columnIndex="27"
+						format="string"	>
+							<description>most recent sample time of day, in hh:mm:ss format, from unit 03535</description>
+							<StandardVariable name="time"/>
+					</RecordVariable>
+					<RecordVariable
+						name="SampNum_4"
+						longName="Instr_Sample_Number_4"
+						units="tbd"	referenceScale="TBD"
+						columnIndex="28"
+						format="int"	>
+							<description>internal sample sequence number for this instrument</description>
+							<StandardVariable name="time"/>
+					</RecordVariable>
+
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

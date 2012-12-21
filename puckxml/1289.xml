@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1289.xml,v 1.5 2008/09/05 20:35:23 mccann Exp $	-->
+<!-- Last edited by $Author: mccann $	$Date: 2008/09/05 20:35:23 $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://dods.mbari.org/data/ssdsdata/config/schema/2004oasis/SSDS_Metadata.xsd"
+	majorVersion="1" minorVersion="3" lastAuthor="$Author: mccann $"
+	lastUpdate="$Date: 2008/09/05 20:35:23 $">
+	<Deployment role="instrument">
+		<Device id="1289"/>
+		<output>
+			<DataStream>
+				<description>ASIMET LWR data stream</description>
+				<!--  see http://frodo.whoi.edu/asimet/asimet_sampling_definitions.html -->
+				<RecordDescription bufferStyle="ASCII" bufferParseType="ordered"
+					bufferItemSeparator="space" bufferLengthType="variable" parseable="true"
+					recordType="1">
+					<RecordVariable name="temp_dome" longName="Dome Temperature" units="Kelvin"
+						columnIndex="1" format="float"> </RecordVariable>
+					<RecordVariable name="temp_body" longName="Body Temperature" units="Kelvin"
+						columnIndex="2" format="float"> </RecordVariable>
+					<RecordVariable name="res_dome" longName="Dome Resistance" units="ohms"
+						columnIndex="3" format="float"> </RecordVariable>
+					<RecordVariable name="res_body" longName="Body Resistance" units="ohms"
+						columnIndex="4" format="float"> </RecordVariable>
+					<RecordVariable name="volts_pile" longName="Thermopile" units="microvolts"
+						columnIndex="5" format="float"> </RecordVariable>
+					<RecordVariable name="LWR" longName="Longwave Radiation" units="W m-2"
+						columnIndex="6" format="float">
+						<StandardVariable name="downwelling_longwave_flux_in_air"/>
+					</RecordVariable>
+					<RecordVariable name="dome_traw" longName="Raw Dome Temperature Counts"
+						units="count" columnIndex="7" format="int" validMin="0" validMax="65535"> </RecordVariable>
+					<RecordVariable name="body_traw" longName="Raw Body Temperature Counts"
+						units="count" columnIndex="8" format="int" validMin="0" validMax="65535"> </RecordVariable>
+					<RecordVariable name="tpile_raw" longName="Raw Thermopile Counts" units="count"
+						columnIndex="9" format="int" validMin="0" validMax="65535"
+					> </RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

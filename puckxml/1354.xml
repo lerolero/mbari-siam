@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1354.xml,v 1.2 2006/10/11 22:30:52 kgomes Exp $	-->
+<!-- Last edited by $Author: kgomes $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://new-ssds.mbari.org/ssds-docs/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="1" lastAuthor="$Author: kgomes $" lastUpdate="$Date: 2006/10/11 22:30:52 $" >
+	<Deployment role="instrument" name="M1 Surface CTD - October 2006">
+		<Device	id="1354" name="Serial CTD" type="CTD" mfgName="Seabird" mfgModel="SBE 37-SM" mfgSerialNumber="37SM26805-2002">
+			<description>Serial CTD</description>
+			<Person	firstname="Paul" surname="Coenen" organization="MBARI" email="coenen@mbari.org" phone="831-775-2099"/>
+		</Device>
+		<description>M1 deployment of surface CTD in October 2006</description>
+		<output>
+			<DataStream>
+				<description>Serial CTD data stream</description>
+				<RecordDescription bufferStyle="ASCII"
+				bufferParseType="ordered"
+				bufferItemSeparator=","
+				bufferLengthType="variable"
+				parseable="true" recordType="1">
+					<!-- Sample Record:
+						22.9091, 0.00004, 30 Apr 2004, 22:52:25
+					-->
+					<!--
+						Comments:
+							This XML assumes one data record per packet.
+					-->
+					<RecordVariable
+						name="Temperature"
+						longName="Water Temperature"
+						units="deg C"	referenceScale="TBD"
+						columnIndex="1"
+						format="float" >
+							<description>water temperature</description>
+							<StandardVariable name="surface_temperature" namespaceUriString="http://marinemetadata.org/cf"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Conductivity"
+						longName="Conductivity"
+						units="S/m"	referenceScale="TBD"
+						columnIndex="2"
+						format="float" >
+							<description>sea water conductivity</description>
+							<StandardVariable name="conductivity" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Date"
+						longName="Date of Sample"
+						units="dd_MMM_yyyy"	referenceScale="TBD"
+						columnIndex="3"
+						format="string"	>
+							<description>date in 'dd MMM yyyy' format</description>
+						<StandardVariable name="Date" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Time"
+						longName="Time of Day"
+						units="hh-mm-ss"	referenceScale="TBD"
+						columnIndex="4"
+						format="string"	>
+							<description>time of day in hh:mm:ss format</description>
+						<StandardVariable name="Time" namespaceUriString="http://marinemetadata.org/ssds"/>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

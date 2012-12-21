@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1485.xml,v 1.2 2009/02/03 19:17:48 kgomes Exp $	-->
+<!-- Last edited by $Author: kgomes $	$Date: 2009/02/03 19:17:48 $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:noNamespaceSchemaLocation="http://new-ssds.mbari.org/ssds-docs/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="5" lastAuthor="$Author: kgomes $" lastUpdate="$Date: 2009/02/03 19:17:48 $">
+	<Deployment role="instrument" >
+		<Device id="1485" name="Deprecated" type="Communication" 
+			mfgName="NA" mfgModel="NA" mfgSerialNumber="NA" preferredDeploymentRole="Instrument">
+			<description>This device no longer exists and has been deprecated (deleted)</description>
+		</Device>
+	</Deployment>
+</Metadata>

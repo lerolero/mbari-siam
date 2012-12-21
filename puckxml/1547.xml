@@ -1,0 +1,2524 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1547.xml,v 1.7 2009/02/26 00:36:39 graybeal Exp $	-->
+<!-- Last edited by $Author: graybeal $	$Date: 2009/02/26 00:36:39 $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:noNamespaceSchemaLocation="http://ssds.mbari.org/xml/schema/SSDS_Metadata.xsd" 
+	majorVersion="2" minorVersion="3" 
+	lastAuthor="$Author: graybeal $" lastUpdate="$Date: 2009/02/26 00:36:39 $" >
+    
+	<Deployment role="instrument">
+		<Device id="1547" name="Power Can" type="Controller-Power" 
+			mfgName="MBARI" mfgModel="Power Controller" mfgSerialNumber="2"> 
+			<description>Mooring Power Controller</description>
+			<Person firstname="Ed" surname="Mellinger" organization="MBARI" email="meed@mbari.org" phone="831-775-1730"/>
+		</Device>
+		
+		<output>
+			<DataStream>
+				<description>Mooring Power Can data</description>
+			
+				<RecordDescription bufferStyle="ASCII" bufferParseType="ordered" bufferItemSeparator="whitespace" bufferLengthType="variable" parseable="true" recordType="1">
+
+					<!--                                                        -->
+                    <!-- The following XML was originally produced by a Perl    -->
+                    <!-- script, located in the MBARI CVS repository,           -->
+                    <!-- in ssds/src/perl/xmlbuilders/powercontroller.          -->
+                    <!-- If you need to generate a new XML for a power can      -->
+                    <!-- that is very different from this one, I suggest using  -->
+                    <!-- the script.     - John G                               -->
+					<!--                                                        -->
+
+					<RecordVariable
+						name="Channel_ADC00_Label"
+						longName="ADC00: N Solar Current (Channel Label)"
+						units="none"
+						columnIndex="1"
+						format="string" >
+						<description>Label for ADC00. This channel is the Channel Label for the Solar Current on the North Panel.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC00_Avg"
+						longName="ADC00/ N Solar Current Avg"
+						units="amps"
+						columnIndex="2"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for Solar Current on the North Panel. (Power Can channel ADC00)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC00_NumSamps"
+						longName="ADC00/ N Solar Current Number of Samples"
+						units="count"
+						columnIndex="3"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for Solar Current on the North Panel. (Power Can channel ADC00)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC00_Min"
+						longName="ADC00/ N Solar Current Min"
+						units="amps"
+						columnIndex="4"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for Solar Current on the North Panel. (Power Can channel ADC00)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC00_Max"
+						longName="ADC00/ N Solar Current Max"
+						units="amps"
+						columnIndex="5"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for Solar Current on the North Panel. (Power Can ADC00)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC00_SD"
+						longName="ADC00/ N Solar Current SD"
+						units="amps"
+						columnIndex="6"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Std Dev for Solar Current on the North Panel. (Power Can channel ADC00)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC00_Err_Flag"
+						longName="ADC00/ N Solar Current Err Flag"
+						units="0isgood"
+						columnIndex="7"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for Solar Current on the North Panel. (Power Can channel ADC00)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC01_Label"
+						longName="ADC01: E Solar Current (Channel Label)"
+						units="none"
+						columnIndex="8"
+						format="string" >
+						<description>Label for ADC01. This channel is the Channel Label for the Solar Current on the East Panel.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC01_Avg"
+						longName="ADC01/ E Solar Current Avg"
+						units="amps"
+						columnIndex="9"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for Solar Current on the East Panel. (Power Can channel ADC01)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC01_NumSamps"
+						longName="ADC01/ E Solar Current Number of Samples"
+						units="count"
+						columnIndex="10"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for Solar Current on the East Panel. (Power Can channel ADC01)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC01_Min"
+						longName="ADC01/ E Solar Current Min"
+						units="amps"
+						columnIndex="11"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for Solar Current on the East Panel. (Power Can channel ADC01)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC01_Max"
+						longName="ADC01/ E Solar Current Max"
+						units="amps"
+						columnIndex="12"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for Solar Current on the East Panel. (Power Can ADC01)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC01_SD"
+						longName="ADC01/ E Solar Current SD"
+						units="amps"
+						columnIndex="13"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Std Dev for Solar Current on the East Panel. (Power Can channel ADC01)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC01_Err_Flag"
+						longName="ADC01/ E Solar Current Err Flag"
+						units="0isgood"
+						columnIndex="14"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for Solar Current on the East Panel. (Power Can channel ADC01)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC02_Label"
+						longName="ADC02: N Solar Voltage (Channel Label)"
+						units="none"
+						columnIndex="15"
+						format="string" >
+						<description>Label for ADC02. This channel is the Channel Label for the Solar Voltage on the North Panel.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC02_Avg"
+						longName="ADC02/ N Solar Voltage Avg"
+						units="volts"
+						columnIndex="16"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for Solar Voltage on the North Panel. (Power Can channel ADC02)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC02_NumSamps"
+						longName="ADC02/ N Solar Voltage Number of Samples"
+						units="count"
+						columnIndex="17"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for Solar Voltage on the North Panel. (Power Can channel ADC02)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC02_Min"
+						longName="ADC02/ N Solar Voltage Min"
+						units="volts"
+						columnIndex="18"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for Solar Voltage on the North Panel. (Power Can channel ADC02)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC02_Max"
+						longName="ADC02/ N Solar Voltage Max"
+						units="volts"
+						columnIndex="19"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for Solar Voltage on the North Panel. (Power Can ADC02)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC02_SD"
+						longName="ADC02/ N Solar Voltage SD"
+						units="volts"
+						columnIndex="20"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Std Dev for Solar Voltage on the North Panel. (Power Can channel ADC02)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC02_Err_Flag"
+						longName="ADC02/ N Solar Voltage Err Flag"
+						units="0isgood"
+						columnIndex="21"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for Solar Voltage on the North Panel. (Power Can channel ADC02)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC03_Label"
+						longName="ADC03: E Solar Voltage (Channel Label)"
+						units="none"
+						columnIndex="22"
+						format="string" >
+						<description>Label for ADC03. This channel is the Channel Label for the Solar Voltage on the East Panel.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC03_Avg"
+						longName="ADC03/ E Solar Voltage Avg"
+						units="volts"
+						columnIndex="23"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for Solar Voltage on the East Panel. (Power Can channel ADC03)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC03_NumSamps"
+						longName="ADC03/ E Solar Voltage Number of Samples"
+						units="count"
+						columnIndex="24"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for Solar Voltage on the East Panel. (Power Can channel ADC03)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC03_Min"
+						longName="ADC03/ E Solar Voltage Min"
+						units="volts"
+						columnIndex="25"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for Solar Voltage on the East Panel. (Power Can channel ADC03)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC03_Max"
+						longName="ADC03/ E Solar Voltage Max"
+						units="volts"
+						columnIndex="26"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for Solar Voltage on the East Panel. (Power Can ADC03)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC03_SD"
+						longName="ADC03/ E Solar Voltage SD"
+						units="volts"
+						columnIndex="27"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Std Dev for Solar Voltage on the East Panel. (Power Can channel ADC03)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC03_Err_Flag"
+						longName="ADC03/ E Solar Voltage Err Flag"
+						units="0isgood"
+						columnIndex="28"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for Solar Voltage on the East Panel. (Power Can channel ADC03)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC04_Label"
+						longName="ADC04: N Batt. Current (Channel Label)"
+						units="none"
+						columnIndex="29"
+						format="string" >
+						<description>Label for ADC04. This channel is the Channel Label for the Battery Current on the North Panel.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC04_Avg"
+						longName="ADC04/ N Batt. Current Avg"
+						units="amps"
+						columnIndex="30"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for Battery Current on the North Panel. (Power Can channel ADC04)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC04_NumSamps"
+						longName="ADC04/ N Batt. Current Number of Samples"
+						units="count"
+						columnIndex="31"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for Battery Current on the North Panel. (Power Can channel ADC04)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC04_Min"
+						longName="ADC04/ N Batt. Current Min"
+						units="amps"
+						columnIndex="32"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for Battery Current on the North Panel. (Power Can channel ADC04)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC04_Max"
+						longName="ADC04/ N Batt. Current Max"
+						units="amps"
+						columnIndex="33"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for Battery Current on the North Panel. (Power Can ADC04)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC04_SD"
+						longName="ADC04/ N Batt. Current SD"
+						units="amps"
+						columnIndex="34"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Std Dev for Battery Current on the North Panel. (Power Can channel ADC04)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC04_Err_Flag"
+						longName="ADC04/ N Batt. Current Err Flag"
+						units="0isgood"
+						columnIndex="35"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for Battery Current on the North Panel. (Power Can channel ADC04)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC05_Label"
+						longName="ADC05: E Batt. Current (Channel Label)"
+						units="none"
+						columnIndex="36"
+						format="string" >
+						<description>Label for ADC05. This channel is the Channel Label for the East Battery Current.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC05_Avg"
+						longName="ADC05/ E Batt. Current Avg"
+						units="amps"
+						columnIndex="37"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for East Battery Current. (Power Can channel ADC05)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC05_NumSamps"
+						longName="ADC05/ E Batt. Current Number of Samples"
+						units="count"
+						columnIndex="38"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for East Battery Current. (Power Can channel ADC05)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC05_Min"
+						longName="ADC05/ E Batt. Current Min"
+						units="amps"
+						columnIndex="39"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for East Battery Current. (Power Can channel ADC05)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC05_Max"
+						longName="ADC05/ E Batt. Current Max"
+						units="amps"
+						columnIndex="40"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for East Battery Current. (Power Can ADC05)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC05_SD"
+						longName="ADC05/ E Batt. Current SD"
+						units="amps"
+						columnIndex="41"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Std Dev for East Battery Current. (Power Can channel ADC05)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC05_Err_Flag"
+						longName="ADC05/ E Batt. Current Err Flag"
+						units="0isgood"
+						columnIndex="42"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for East Battery Current. (Power Can channel ADC05)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC10_Label"
+						longName="ADC10: S Solar Current (Channel Label)"
+						units="none"
+						columnIndex="43"
+						format="string" >
+						<description>Label for ADC10. This channel is the Channel Label for the South Solar Current.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC10_Avg"
+						longName="ADC10/ S Solar Current Avg"
+						units="amps"
+						columnIndex="44"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for South Solar Current. (Power Can channel ADC10)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC10_NumSamps"
+						longName="ADC10/ S Solar Current Number of Samples"
+						units="count"
+						columnIndex="45"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for South Solar Current. (Power Can channel ADC10)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC10_Min"
+						longName="ADC10/ S Solar Current Min"
+						units="amps"
+						columnIndex="46"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for South Solar Current. (Power Can channel ADC10)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC10_Max"
+						longName="ADC10/ S Solar Current Max"
+						units="amps"
+						columnIndex="47"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for South Solar Current. (Power Can ADC10)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC10_SD"
+						longName="ADC10/ S Solar Current SD"
+						units="amps"
+						columnIndex="48"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Std Dev for South Solar Current. (Power Can channel ADC10)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC10_Err_Flag"
+						longName="ADC10/ S Solar Current Err Flag"
+						units="0isgood"
+						columnIndex="49"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for South Solar Current. (Power Can channel ADC10)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC11_Label"
+						longName="ADC11: W Solar Current (Channel Label)"
+						units="none"
+						columnIndex="50"
+						format="string" >
+						<description>Label for ADC11. This channel is the Channel Label for the West Solar Current.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC11_Avg"
+						longName="ADC11/ W Solar Current Avg"
+						units="amps"
+						columnIndex="51"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for West Solar Current. (Power Can channel ADC11)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC11_NumSamps"
+						longName="ADC11/ W Solar Current Number of Samples"
+						units="count"
+						columnIndex="52"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for West Solar Current. (Power Can channel ADC11)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC11_Min"
+						longName="ADC11/ W Solar Current Min"
+						units="amps"
+						columnIndex="53"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for West Solar Current. (Power Can channel ADC11)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC11_Max"
+						longName="ADC11/ W Solar Current Max"
+						units="amps"
+						columnIndex="54"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for West Solar Current. (Power Can ADC11)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC11_SD"
+						longName="ADC11/ W Solar Current SD"
+						units="amps"
+						columnIndex="55"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Std Dev for West Solar Current. (Power Can channel ADC11)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC11_Err_Flag"
+						longName="ADC11/ W Solar Current Err Flag"
+						units="0isgood"
+						columnIndex="56"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for West Solar Current. (Power Can channel ADC11)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC12_Label"
+						longName="ADC12: S Solar Voltage (Channel Label)"
+						units="none"
+						columnIndex="57"
+						format="string" >
+						<description>Label for ADC12. This channel is the Channel Label for the South Solar Voltage.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC12_Avg"
+						longName="ADC12/ S Solar Voltage Avg"
+						units="volts"
+						columnIndex="58"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for South Solar Voltage. (Power Can channel ADC12)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC12_NumSamps"
+						longName="ADC12/ S Solar Voltage Number of Samples"
+						units="count"
+						columnIndex="59"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for South Solar Voltage. (Power Can channel ADC12)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC12_Min"
+						longName="ADC12/ S Solar Voltage Min"
+						units="volts"
+						columnIndex="60"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for South Solar Voltage. (Power Can channel ADC12)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC12_Max"
+						longName="ADC12/ S Solar Voltage Max"
+						units="volts"
+						columnIndex="61"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for South Solar Voltage. (Power Can ADC12)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC12_SD"
+						longName="ADC12/ S Solar Voltage SD"
+						units="volts"
+						columnIndex="62"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Std Dev for South Solar Voltage. (Power Can channel ADC12)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC12_Err_Flag"
+						longName="ADC12/ S Solar Voltage Err Flag"
+						units="0isgood"
+						columnIndex="63"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for South Solar Voltage. (Power Can channel ADC12)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC13_Label"
+						longName="ADC13: W Solar Voltage (Channel Label)"
+						units="none"
+						columnIndex="64"
+						format="string" >
+						<description>Label for ADC13. This channel is the Channel Label for the West Solar Voltage.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC13_Avg"
+						longName="ADC13/ W Solar Voltage Avg"
+						units="volts"
+						columnIndex="65"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for West Solar Voltage. (Power Can channel ADC13)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC13_NumSamps"
+						longName="ADC13/ W Solar Voltage Number of Samples"
+						units="count"
+						columnIndex="66"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for West Solar Voltage. (Power Can channel ADC13)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC13_Min"
+						longName="ADC13/ W Solar Voltage Min"
+						units="volts"
+						columnIndex="67"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for West Solar Voltage. (Power Can channel ADC13)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC13_Max"
+						longName="ADC13/ W Solar Voltage Max"
+						units="volts"
+						columnIndex="68"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for West Solar Voltage. (Power Can ADC13)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC13_SD"
+						longName="ADC13/ W Solar Voltage SD"
+						units="volts"
+						columnIndex="69"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Std Dev for West Solar Voltage. (Power Can channel ADC13)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC13_Err_Flag"
+						longName="ADC13/ W Solar Voltage Err Flag"
+						units="0isgood"
+						columnIndex="70"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for West Solar Voltage. (Power Can channel ADC13)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC14_Label"
+						longName="ADC14: S Batt. Current (Channel Label)"
+						units="none"
+						columnIndex="71"
+						format="string" >
+						<description>Label for ADC14. This channel is the Channel Label for the South Battery Current.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC14_Avg"
+						longName="ADC14/ S Batt. Current Avg"
+						units="amps"
+						columnIndex="72"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for South Battery Current. (Power Can channel ADC14)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC14_NumSamps"
+						longName="ADC14/ S Batt. Current Number of Samples"
+						units="count"
+						columnIndex="73"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for South Battery Current. (Power Can channel ADC14)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC14_Min"
+						longName="ADC14/ S Batt. Current Min"
+						units="amps"
+						columnIndex="74"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for South Battery Current. (Power Can channel ADC14)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC14_Max"
+						longName="ADC14/ S Batt. Current Max"
+						units="amps"
+						columnIndex="75"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for South Battery Current. (Power Can ADC14)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC14_SD"
+						longName="ADC14/ S Batt. Current SD"
+						units="amps"
+						columnIndex="76"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Std Dev for South Battery Current. (Power Can channel ADC14)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC14_Err_Flag"
+						longName="ADC14/ S Batt. Current Err Flag"
+						units="0isgood"
+						columnIndex="77"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for South Battery Current. (Power Can channel ADC14)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC15_Label"
+						longName="ADC15: W Batt. Current (Channel Label)"
+						units="none"
+						columnIndex="78"
+						format="string" >
+						<description>Label for ADC15. This channel is the Channel Label for the West Battery Current.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC15_Avg"
+						longName="ADC15/ W Batt. Current Avg"
+						units="amps"
+						columnIndex="79"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for West Battery Current. (Power Can channel ADC15)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC15_NumSamps"
+						longName="ADC15/ W Batt. Current Number of Samples"
+						units="count"
+						columnIndex="80"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for West Battery Current. (Power Can channel ADC15)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC15_Min"
+						longName="ADC15/ W Batt. Current Min"
+						units="amps"
+						columnIndex="81"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for West Battery Current. (Power Can channel ADC15)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC15_Max"
+						longName="ADC15/ W Batt. Current Max"
+						units="amps"
+						columnIndex="82"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for West Battery Current. (Power Can ADC15)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC15_SD"
+						longName="ADC15/ W Batt. Current SD"
+						units="amps"
+						columnIndex="83"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Std Dev for West Battery Current. (Power Can channel ADC15)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC15_Err_Flag"
+						longName="ADC15/ W Batt. Current Err Flag"
+						units="0isgood"
+						columnIndex="84"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for West Battery Current. (Power Can channel ADC15)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC20_Label"
+						longName="ADC20: Wind Turbine Input Current (Channel Label)"
+						units="none"
+						columnIndex="85"
+						format="string" >
+						<description>Label for ADC20. This channel is the Channel Label for the Wind Turbine Input Current.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC20_Avg"
+						longName="ADC20/ Wind Turbine Input Current Avg"
+						units="amps"
+						columnIndex="86"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for Wind Turbine Input Current. (Power Can channel ADC20)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC20_NumSamps"
+						longName="ADC20/ Wind Turbine Input Current Number of Samples"
+						units="count"
+						columnIndex="87"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for Wind Turbine Input Current. (Power Can channel ADC20)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC20_Min"
+						longName="ADC20/ Wind Turbine Input Current Min"
+						units="amps"
+						columnIndex="88"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for Wind Turbine Input Current. (Power Can channel ADC20)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC20_Max"
+						longName="ADC20/ Wind Turbine Input Current Max"
+						units="amps"
+						columnIndex="89"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for Wind Turbine Input Current. (Power Can ADC20)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC20_SD"
+						longName="ADC20/ Wind Turbine Input Current SD"
+						units="amps"
+						columnIndex="90"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Std Dev for Wind Turbine Input Current. (Power Can channel ADC20)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC20_Err_Flag"
+						longName="ADC20/ Wind Turbine Input Current Err Flag"
+						units="0isgood"
+						columnIndex="91"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for Wind Turbine Input Current. (Power Can channel ADC20)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC21_Label"
+						longName="ADC21: Loadsink 1 (N) Current (Channel Label)"
+						units="none"
+						columnIndex="92"
+						format="string" >
+						<description>Label for ADC21. This channel is the Channel Label for the Loadsink 1 (North) Current.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC21_Avg"
+						longName="ADC21/ Loadsink 1 (N) Current Avg"
+						units="amps"
+						columnIndex="93"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for Loadsink 1 (North) Current. (Power Can channel ADC21)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC21_NumSamps"
+						longName="ADC21/ Loadsink 1 (N) Current Number of Samples"
+						units="count"
+						columnIndex="94"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for Loadsink 1 (North) Current. (Power Can channel ADC21)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC21_Min"
+						longName="ADC21/ Loadsink 1 (N) Current Min"
+						units="amps"
+						columnIndex="95"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for Loadsink 1 (North) Current. (Power Can channel ADC21)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC21_Max"
+						longName="ADC21/ Loadsink 1 (N) Current Max"
+						units="amps"
+						columnIndex="96"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for Loadsink 1 (North) Current. (Power Can ADC21)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC21_SD"
+						longName="ADC21/ Loadsink 1 (N) Current SD"
+						units="amps"
+						columnIndex="97"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Std Dev for Loadsink 1 (North) Current. (Power Can channel ADC21)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC21_Err_Flag"
+						longName="ADC21/ Loadsink 1 (N) Current Err Flag"
+						units="0isgood"
+						columnIndex="98"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for Loadsink 1 (North) Current. (Power Can channel ADC21)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC22_Label"
+						longName="ADC22: Battery Bus Voltage (Channel Label)"
+						units="none"
+						columnIndex="99"
+						format="string" >
+						<description>Label for ADC22. This channel is the Channel Label for the Battery Bus Voltage.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC22_Avg"
+						longName="ADC22/ Battery Bus Voltage Avg"
+						units="volts"
+						columnIndex="100"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for Battery Bus Voltage. (Power Can channel ADC22)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC22_NumSamps"
+						longName="ADC22/ Battery Bus Voltage Number of Samples"
+						units="count"
+						columnIndex="101"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for Battery Bus Voltage. (Power Can channel ADC22)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC22_Min"
+						longName="ADC22/ Battery Bus Voltage Min"
+						units="volts"
+						columnIndex="102"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for Battery Bus Voltage. (Power Can channel ADC22)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC22_Max"
+						longName="ADC22/ Battery Bus Voltage Max"
+						units="volts"
+						columnIndex="103"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for Battery Bus Voltage. (Power Can ADC22)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC22_SD"
+						longName="ADC22/ Battery Bus Voltage SD"
+						units="volts"
+						columnIndex="104"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Std Dev for Battery Bus Voltage. (Power Can channel ADC22)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC22_Err_Flag"
+						longName="ADC22/ Battery Bus Voltage Err Flag"
+						units="0isgood"
+						columnIndex="105"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for Battery Bus Voltage. (Power Can channel ADC22)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC23_Label"
+						longName="ADC23: Loadsink 1 (N) Temp (Channel Label)"
+						units="none"
+						columnIndex="106"
+						format="string" >
+						<description>Label for ADC23. This channel is the Channel Label for the Loadsink 1 (North) Temperature.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC23_Avg"
+						longName="ADC23/ Loadsink 1 (N) Temp Avg"
+						units="deg C"
+						columnIndex="107"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for Loadsink 1 (North) Temperature. (Power Can channel ADC23)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC23_NumSamps"
+						longName="ADC23/ Loadsink 1 (N) Temp Number of Samples"
+						units="count"
+						columnIndex="108"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for Loadsink 1 (North) Temperature. (Power Can channel ADC23)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC23_Min"
+						longName="ADC23/ Loadsink 1 (N) Temp Min"
+						units="deg C"
+						columnIndex="109"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for Loadsink 1 (North) Temperature. (Power Can channel ADC23)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC23_Max"
+						longName="ADC23/ Loadsink 1 (N) Temp Max"
+						units="deg C"
+						columnIndex="110"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for Loadsink 1 (North) Temperature. (Power Can ADC23)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC23_SD"
+						longName="ADC23/ Loadsink 1 (N) Temp SD"
+						units="deg C"
+						columnIndex="111"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Std Dev for Loadsink 1 (North) Temperature. (Power Can channel ADC23)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC23_Err_Flag"
+						longName="ADC23/ Loadsink 1 (N) Temp Err Flag"
+						units="0isgood"
+						columnIndex="112"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for Loadsink 1 (North) Temperature. (Power Can channel ADC23)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC24_Label"
+						longName="ADC24: Diversion Regltr. 1 Temp (Channel Label)"
+						units="none"
+						columnIndex="113"
+						format="string" >
+						<description>Label for ADC24. This channel is the Channel Label for the Diversion Regulator 1 Temperature.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC24_Avg"
+						longName="ADC24/ Diversion Regltr. 1 Temp Avg"
+						units="deg C"
+						columnIndex="114"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for Diversion Regulator 1 Temperature. (Power Can channel ADC24)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC24_NumSamps"
+						longName="ADC24/ Diversion Regltr. 1 Temp Number of Samples"
+						units="count"
+						columnIndex="115"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for Diversion Regulator 1 Temperature. (Power Can channel ADC24)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC24_Min"
+						longName="ADC24/ Diversion Regltr. 1 Temp Min"
+						units="deg C"
+						columnIndex="116"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for Diversion Regulator 1 Temperature. (Power Can channel ADC24)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC24_Max"
+						longName="ADC24/ Diversion Regltr. 1 Temp Max"
+						units="deg C"
+						columnIndex="117"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for Diversion Regulator 1 Temperature. (Power Can ADC24)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC24_SD"
+						longName="ADC24/ Diversion Regltr. 1 Temp SD"
+						units="deg C"
+						columnIndex="118"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Std Dev for Diversion Regulator 1 Temperature. (Power Can channel ADC24)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC24_Err_Flag"
+						longName="ADC24/ Diversion Regltr. 1 Temp Err Flag"
+						units="0isgood"
+						columnIndex="119"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for Diversion Regulator 1 Temperature. (Power Can channel ADC24)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC25_Label"
+						longName="ADC25: Aux 2 Input Current (Channel Label)"
+						units="none"
+						columnIndex="120"
+						format="string" >
+						<description>Label for ADC25. This channel is the Channel Label for the Aux 2 Input Current.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC25_Avg"
+						longName="ADC25/ Aux 2 Input Current Avg"
+						units="amps"
+						columnIndex="121"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for Aux 2 Input Current. (Power Can channel ADC25)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC25_NumSamps"
+						longName="ADC25/ Aux 2 Input Current Number of Samples"
+						units="count"
+						columnIndex="122"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for Aux 2 Input Current. (Power Can channel ADC25)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC25_Min"
+						longName="ADC25/ Aux 2 Input Current Min"
+						units="amps"
+						columnIndex="123"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for Aux 2 Input Current. (Power Can channel ADC25)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC25_Max"
+						longName="ADC25/ Aux 2 Input Current Max"
+						units="amps"
+						columnIndex="124"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for Aux 2 Input Current. (Power Can ADC25)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC25_SD"
+						longName="ADC25/ Aux 2 Input Current SD"
+						units="amps"
+						columnIndex="125"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Std Dev for Aux 2 Input Current. (Power Can channel ADC25)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC25_Err_Flag"
+						longName="ADC25/ Aux 2 Input Current Err Flag"
+						units="0isgood"
+						columnIndex="126"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for Aux 2 Input Current. (Power Can channel ADC25)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC26_Label"
+						longName="ADC26: Loadsink 2 (S) Current (Channel Label)"
+						units="none"
+						columnIndex="127"
+						format="string" >
+						<description>Label for ADC26. This channel is the Channel Label for the Loadsink 2 (South) Current.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC26_Avg"
+						longName="ADC26/ Loadsink 2 (S) Current Avg"
+						units="amps"
+						columnIndex="128"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for Loadsink 2 (South) Current. (Power Can channel ADC26)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC26_NumSamps"
+						longName="ADC26/ Loadsink 2 (S) Current Number of Samples"
+						units="count"
+						columnIndex="129"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for Loadsink 2 (South) Current. (Power Can channel ADC26)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC26_Min"
+						longName="ADC26/ Loadsink 2 (S) Current Min"
+						units="amps"
+						columnIndex="130"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for Loadsink 2 (South) Current. (Power Can channel ADC26)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC26_Max"
+						longName="ADC26/ Loadsink 2 (S) Current Max"
+						units="amps"
+						columnIndex="131"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for Loadsink 2 (South) Current. (Power Can ADC26)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC26_SD"
+						longName="ADC26/ Loadsink 2 (S) Current SD"
+						units="amps"
+						columnIndex="132"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Std Dev for Loadsink 2 (South) Current. (Power Can channel ADC26)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC26_Err_Flag"
+						longName="ADC26/ Loadsink 2 (S) Current Err Flag"
+						units="0isgood"
+						columnIndex="133"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for Loadsink 2 (South) Current. (Power Can channel ADC26)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC27_Label"
+						longName="ADC27: Battery Bus Voltage (Channel Label)"
+						units="none"
+						columnIndex="134"
+						format="string" >
+						<description>Label for ADC27. This channel is the Channel Label for the Battery Bus Voltage.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC27_Avg"
+						longName="ADC27/ Battery Bus Voltage Avg"
+						units="volts"
+						columnIndex="135"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for Battery Bus Voltage. (Power Can channel ADC27)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC27_NumSamps"
+						longName="ADC27/ Battery Bus Voltage Number of Samples"
+						units="count"
+						columnIndex="136"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for Battery Bus Voltage. (Power Can channel ADC27)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC27_Min"
+						longName="ADC27/ Battery Bus Voltage Min"
+						units="volts"
+						columnIndex="137"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for Battery Bus Voltage. (Power Can channel ADC27)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC27_Max"
+						longName="ADC27/ Battery Bus Voltage Max"
+						units="volts"
+						columnIndex="138"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for Battery Bus Voltage. (Power Can ADC27)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC27_SD"
+						longName="ADC27/ Battery Bus Voltage SD"
+						units="volts"
+						columnIndex="139"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Std Dev for Battery Bus Voltage. (Power Can channel ADC27)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC27_Err_Flag"
+						longName="ADC27/ Battery Bus Voltage Err Flag"
+						units="0isgood"
+						columnIndex="140"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for Battery Bus Voltage. (Power Can channel ADC27)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC28_Label"
+						longName="ADC28: Loadsink 2 (S) Temp (Channel Label)"
+						units="none"
+						columnIndex="141"
+						format="string" >
+						<description>Label for ADC28. This channel is the Channel Label for the Loadsink 2 (South) Temperature.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC28_Avg"
+						longName="ADC28/ Loadsink 2 (S) Temp Avg"
+						units="deg C"
+						columnIndex="142"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for Loadsink 2 (South) Temperature. (Power Can channel ADC28)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC28_NumSamps"
+						longName="ADC28/ Loadsink 2 (S) Temp Number of Samples"
+						units="count"
+						columnIndex="143"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for Loadsink 2 (South) Temperature. (Power Can channel ADC28)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC28_Min"
+						longName="ADC28/ Loadsink 2 (S) Temp Min"
+						units="deg C"
+						columnIndex="144"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for Loadsink 2 (South) Temperature. (Power Can channel ADC28)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC28_Max"
+						longName="ADC28/ Loadsink 2 (S) Temp Max"
+						units="deg C"
+						columnIndex="145"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for Loadsink 2 (South) Temperature. (Power Can ADC28)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC28_SD"
+						longName="ADC28/ Loadsink 2 (S) Temp SD"
+						units="deg C"
+						columnIndex="146"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Std Dev for Loadsink 2 (South) Temperature. (Power Can channel ADC28)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC28_Err_Flag"
+						longName="ADC28/ Loadsink 2 (S) Temp Err Flag"
+						units="0isgood"
+						columnIndex="147"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for Loadsink 2 (South) Temperature. (Power Can channel ADC28)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC29_Label"
+						longName="ADC29: Diversion Regltr. 2 Temp (Channel Label)"
+						units="none"
+						columnIndex="148"
+						format="string" >
+						<description>Label for ADC29. This channel is the Channel Label for the Diversion Regulator 2 Temperature.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC29_Avg"
+						longName="ADC29/ Diversion Regltr. 2 Temp Avg"
+						units="deg C"
+						columnIndex="149"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for Diversion Regulator 2 Temperature. (Power Can channel ADC29)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC29_NumSamps"
+						longName="ADC29/ Diversion Regltr. 2 Temp Number of Samples"
+						units="count"
+						columnIndex="150"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for Diversion Regulator 2 Temperature. (Power Can channel ADC29)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC29_Min"
+						longName="ADC29/ Diversion Regltr. 2 Temp Min"
+						units="deg C"
+						columnIndex="151"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for Diversion Regulator 2 Temperature. (Power Can channel ADC29)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC29_Max"
+						longName="ADC29/ Diversion Regltr. 2 Temp Max"
+						units="deg C"
+						columnIndex="152"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for Diversion Regulator 2 Temperature. (Power Can ADC29)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC29_SD"
+						longName="ADC29/ Diversion Regltr. 2 Temp SD"
+						units="deg C"
+						columnIndex="153"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Std Dev for Diversion Regulator 2 Temperature. (Power Can channel ADC29)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC29_Err_Flag"
+						longName="ADC29/ Diversion Regltr. 2 Temp Err Flag"
+						units="0isgood"
+						columnIndex="154"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for Diversion Regulator 2 Temperature. (Power Can channel ADC29)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC30_Label"
+						longName="ADC30: 48-400 Conv 0 Input Current  (Channel Label)"
+						units="none"
+						columnIndex="155"
+						format="string" >
+						<description>Label for ADC30. This channel is the Channel Label for the 48V-400V Converter 0 Input Current.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC30_Avg"
+						longName="ADC30/ 48-400 Conv 0 Input Current  Avg"
+						units="amps"
+						columnIndex="156"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for 48V-400V Converter 0 Input Current. (Power Can channel ADC30)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC30_NumSamps"
+						longName="ADC30/ 48-400 Conv 0 Input Current  Number of Samples"
+						units="count"
+						columnIndex="157"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for 48V-400V Converter 0 Input Current. (Power Can channel ADC30)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC30_Min"
+						longName="ADC30/ 48-400 Conv 0 Input Current  Min"
+						units="amps"
+						columnIndex="158"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for 48V-400V Converter 0 Input Current. (Power Can channel ADC30)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC30_Max"
+						longName="ADC30/ 48-400 Conv 0 Input Current  Max"
+						units="amps"
+						columnIndex="159"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for 48V-400V Converter 0 Input Current. (Power Can ADC30)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC30_SD"
+						longName="ADC30/ 48-400 Conv 0 Input Current  SD"
+						units="amps"
+						columnIndex="160"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Std Dev for 48V-400V Converter 0 Input Current. (Power Can channel ADC30)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC30_Err_Flag"
+						longName="ADC30/ 48-400 Conv 0 Input Current  Err Flag"
+						units="0isgood"
+						columnIndex="161"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for 48V-400V Converter 0 Input Current. (Power Can channel ADC30)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC31_Label"
+						longName="ADC31: 48-400 Conv 1 Input Current  (Channel Label)"
+						units="none"
+						columnIndex="162"
+						format="string" >
+						<description>Label for ADC31. This channel is the Channel Label for the 48V-400V Converter 1 Input Current.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC31_Avg"
+						longName="ADC31/ 48-400 Conv 1 Input Current  Avg"
+						units="amps"
+						columnIndex="163"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for 48V-400V Converter 1 Input Current. (Power Can channel ADC31)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC31_NumSamps"
+						longName="ADC31/ 48-400 Conv 1 Input Current  Number of Samples"
+						units="count"
+						columnIndex="164"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for 48V-400V Converter 1 Input Current. (Power Can channel ADC31)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC31_Min"
+						longName="ADC31/ 48-400 Conv 1 Input Current  Min"
+						units="amps"
+						columnIndex="165"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for 48V-400V Converter 1 Input Current. (Power Can channel ADC31)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC31_Max"
+						longName="ADC31/ 48-400 Conv 1 Input Current  Max"
+						units="amps"
+						columnIndex="166"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for 48V-400V Converter 1 Input Current. (Power Can ADC31)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC31_SD"
+						longName="ADC31/ 48-400 Conv 1 Input Current  SD"
+						units="amps"
+						columnIndex="167"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Std Dev for 48V-400V Converter 1 Input Current. (Power Can channel ADC31)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC31_Err_Flag"
+						longName="ADC31/ 48-400 Conv 1 Input Current  Err Flag"
+						units="0isgood"
+						columnIndex="168"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for 48V-400V Converter 1 Input Current. (Power Can channel ADC31)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC32_Label"
+						longName="ADC32: 400V Output Voltage (Channel Label)"
+						units="none"
+						columnIndex="169"
+						format="string" >
+						<description>Label for ADC32. This channel is the Channel Label for the 400V Output Voltage.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC32_Avg"
+						longName="ADC32/ 400V Output Voltage Avg"
+						units="volts"
+						columnIndex="170"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for 400V Output Voltage. (Power Can channel ADC32)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC32_NumSamps"
+						longName="ADC32/ 400V Output Voltage Number of Samples"
+						units="count"
+						columnIndex="171"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for 400V Output Voltage. (Power Can channel ADC32)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC32_Min"
+						longName="ADC32/ 400V Output Voltage Min"
+						units="volts"
+						columnIndex="172"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for 400V Output Voltage. (Power Can channel ADC32)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC32_Max"
+						longName="ADC32/ 400V Output Voltage Max"
+						units="volts"
+						columnIndex="173"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for 400V Output Voltage. (Power Can ADC32)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC32_SD"
+						longName="ADC32/ 400V Output Voltage SD"
+						units="volts"
+						columnIndex="174"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Std Dev for 400V Output Voltage. (Power Can channel ADC32)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC32_Err_Flag"
+						longName="ADC32/ 400V Output Voltage Err Flag"
+						units="0isgood"
+						columnIndex="175"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for 400V Output Voltage. (Power Can channel ADC32)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC35_Label"
+						longName="ADC35: 48-12 Conv 0 Input Current (Channel Label)"
+						units="none"
+						columnIndex="176"
+						format="string" >
+						<description>Label for ADC35. This channel is the Channel Label for the 48V-12V Converter 0 Input Current.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC35_Avg"
+						longName="ADC35/ 48-12 Conv 0 Input Current Avg"
+						units="amps"
+						columnIndex="177"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for 48V-12V Converter 0 Input Current. (Power Can channel ADC35)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC35_NumSamps"
+						longName="ADC35/ 48-12 Conv 0 Input Current Number of Samples"
+						units="count"
+						columnIndex="178"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for 48V-12V Converter 0 Input Current. (Power Can channel ADC35)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC35_Min"
+						longName="ADC35/ 48-12 Conv 0 Input Current Min"
+						units="amps"
+						columnIndex="179"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for 48V-12V Converter 0 Input Current. (Power Can channel ADC35)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC35_Max"
+						longName="ADC35/ 48-12 Conv 0 Input Current Max"
+						units="amps"
+						columnIndex="180"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for 48V-12V Converter 0 Input Current. (Power Can ADC35)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC35_SD"
+						longName="ADC35/ 48-12 Conv 0 Input Current SD"
+						units="amps"
+						columnIndex="181"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Std Dev for 48V-12V Converter 0 Input Current. (Power Can channel ADC35)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC35_Err_Flag"
+						longName="ADC35/ 48-12 Conv 0 Input Current Err Flag"
+						units="0isgood"
+						columnIndex="182"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for 48V-12V Converter 0 Input Current. (Power Can channel ADC35)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC36_Label"
+						longName="ADC36: 48-12 Conv 1 Input Current (Channel Label)"
+						units="none"
+						columnIndex="183"
+						format="string" >
+						<description>Label for ADC36. This channel is the Channel Label for the 48V-12V Converter 1 Input Current.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC36_Avg"
+						longName="ADC36/ 48-12 Conv 1 Input Current Avg"
+						units="amps"
+						columnIndex="184"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for 48V-12V Converter 1 Input Current. (Power Can channel ADC36)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC36_NumSamps"
+						longName="ADC36/ 48-12 Conv 1 Input Current Number of Samples"
+						units="count"
+						columnIndex="185"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for 48V-12V Converter 1 Input Current. (Power Can channel ADC36)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC36_Min"
+						longName="ADC36/ 48-12 Conv 1 Input Current Min"
+						units="amps"
+						columnIndex="186"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for 48V-12V Converter 1 Input Current. (Power Can channel ADC36)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC36_Max"
+						longName="ADC36/ 48-12 Conv 1 Input Current Max"
+						units="amps"
+						columnIndex="187"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for 48V-12V Converter 1 Input Current. (Power Can ADC36)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC36_SD"
+						longName="ADC36/ 48-12 Conv 1 Input Current SD"
+						units="amps"
+						columnIndex="188"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Std Dev for 48V-12V Converter 1 Input Current. (Power Can channel ADC36)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC36_Err_Flag"
+						longName="ADC36/ 48-12 Conv 1 Input Current Err Flag"
+						units="0isgood"
+						columnIndex="189"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for 48V-12V Converter 1 Input Current. (Power Can channel ADC36)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC37_Label"
+						longName="ADC37: 12V Output Voltage (Channel Label)"
+						units="none"
+						columnIndex="190"
+						format="string" >
+						<description>Label for ADC37. This channel is the Channel Label for the 12V Output Voltage.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC37_Avg"
+						longName="ADC37/ 12V Output Voltage Avg"
+						units="volts"
+						columnIndex="191"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for 12V Output Voltage. (Power Can channel ADC37)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC37_NumSamps"
+						longName="ADC37/ 12V Output Voltage Number of Samples"
+						units="count"
+						columnIndex="192"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for 12V Output Voltage. (Power Can channel ADC37)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC37_Min"
+						longName="ADC37/ 12V Output Voltage Min"
+						units="volts"
+						columnIndex="193"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for 12V Output Voltage. (Power Can channel ADC37)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC37_Max"
+						longName="ADC37/ 12V Output Voltage Max"
+						units="volts"
+						columnIndex="194"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for 12V Output Voltage. (Power Can ADC37)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC37_SD"
+						longName="ADC37/ 12V Output Voltage SD"
+						units="volts"
+						columnIndex="195"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Std Dev for 12V Output Voltage. (Power Can channel ADC37)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC37_Err_Flag"
+						longName="ADC37/ 12V Output Voltage Err Flag"
+						units="0isgood"
+						columnIndex="196"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for 12V Output Voltage. (Power Can channel ADC37)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC42_Label"
+						longName="ADC42: Bridle Load Cell Current (Channel Label)"
+						units="none"
+						columnIndex="197"
+						format="string" >
+						<description>Label for ADC42. This channel is the Channel Label for the Bridle Load Cell Current.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC42_Avg"
+						longName="ADC42/ Bridle Load Cell Current Avg"
+						units="amps"
+						columnIndex="198"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for Bridle Load Cell Current. (Power Can channel ADC42) 4-20mA current loop
+</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC42_NumSamps"
+						longName="ADC42/ Bridle Load Cell Current Number of Samples"
+						units="count"
+						columnIndex="199"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for Bridle Load Cell Current. (Power Can channel ADC42) 4-20mA current loop
+</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC42_Min"
+						longName="ADC42/ Bridle Load Cell Current Min"
+						units="amps"
+						columnIndex="200"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for Bridle Load Cell Current. (Power Can channel ADC42) 4-20mA current loop
+</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC42_Max"
+						longName="ADC42/ Bridle Load Cell Current Max"
+						units="amps"
+						columnIndex="201"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for Bridle Load Cell Current. (Power Can ADC42) 4-20mA current loop
+</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC42_SD"
+						longName="ADC42/ Bridle Load Cell Current SD"
+						units="amps"
+						columnIndex="202"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Std Dev for Bridle Load Cell Current. (Power Can channel ADC42) 4-20mA current loop
+</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC42_Err_Flag"
+						longName="ADC42/ Bridle Load Cell Current Err Flag"
+						units="0isgood"
+						columnIndex="203"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for Bridle Load Cell Current. (Power Can channel ADC42) 4-20mA current loop
+</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC43_Label"
+						longName="ADC43: Bridle Load Cell GF (Channel Label)"
+						units="none"
+						columnIndex="204"
+						format="string" >
+						<description>Label for ADC43. This channel is the Channel Label for the Bridle Load Cell Ground Fault.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC43_Avg"
+						longName="ADC43/ Bridle Load Cell GF Avg"
+						units="counts"
+						columnIndex="205"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for Bridle Load Cell Ground Fault. (Power Can channel ADC43)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC43_NumSamps"
+						longName="ADC43/ Bridle Load Cell GF Number of Samples"
+						units="count"
+						columnIndex="206"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for Bridle Load Cell Ground Fault. (Power Can channel ADC43)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC43_Min"
+						longName="ADC43/ Bridle Load Cell GF Min"
+						units="counts"
+						columnIndex="207"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for Bridle Load Cell Ground Fault. (Power Can channel ADC43)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC43_Max"
+						longName="ADC43/ Bridle Load Cell GF Max"
+						units="counts"
+						columnIndex="208"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for Bridle Load Cell Ground Fault. (Power Can ADC43)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC43_SD"
+						longName="ADC43/ Bridle Load Cell GF SD"
+						units="counts"
+						columnIndex="209"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Std Dev for Bridle Load Cell Ground Fault. (Power Can channel ADC43)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC43_Err_Flag"
+						longName="ADC43/ Bridle Load Cell GF Err Flag"
+						units="0isgood"
+						columnIndex="210"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for Bridle Load Cell Ground Fault. (Power Can channel ADC43)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_ADC48_Label"
+						longName="ADC48: Iso Board Input Current (Channel Label)"
+						units="none"
+						columnIndex="211"
+						format="string" >
+						<description>Label for ADC48. This channel is the Channel Label for the Iso Board Input current.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC48_Avg"
+						longName="ADC48/ Iso Board Input Current Avg"
+						units="amps"
+						columnIndex="212"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for Iso Board Input current. (Power Can channel ADC48)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC48_NumSamps"
+						longName="ADC48/ Iso Board Input Current Number of Samples"
+						units="count"
+						columnIndex="213"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for Iso Board Input current. (Power Can channel ADC48)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC48_Min"
+						longName="ADC48/ Iso Board Input Current Min"
+						units="amps"
+						columnIndex="214"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for Iso Board Input current. (Power Can channel ADC48)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC48_Max"
+						longName="ADC48/ Iso Board Input Current Max"
+						units="amps"
+						columnIndex="215"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for Iso Board Input current. (Power Can ADC48)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC48_SD"
+						longName="ADC48/ Iso Board Input Current SD"
+						units="amps"
+						columnIndex="216"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Std Dev for Iso Board Input current. (Power Can channel ADC48)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="ADC48_Err_Flag"
+						longName="ADC48/ Iso Board Input Current Err Flag"
+						units="0isgood"
+						columnIndex="217"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for Iso Board Input current. (Power Can channel ADC48)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_GFZ00_Label"
+						longName="GFZ00: [Unused] 400V GF-Open Ckt Test (Channel Label)"
+						units="none"
+						columnIndex="218"
+						format="string" >
+						<description>Label for GFZ00. This channel is the Channel Label for the [Unused] 400V Ground Fault Open Circuit Test.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFZ00_Avg"
+						longName="GFZ00/ [Unused] 400V GF-Open Ckt Test Avg"
+						units="amps"
+						columnIndex="219"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for [Unused] 400V Ground Fault Open Circuit Test. (Power Can channel GFZ00)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFZ00_NumSamps"
+						longName="GFZ00/ [Unused] 400V GF-Open Ckt Test Number of Samples"
+						units="count"
+						columnIndex="220"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for [Unused] 400V Ground Fault Open Circuit Test. (Power Can channel GFZ00)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFZ00_Min"
+						longName="GFZ00/ [Unused] 400V GF-Open Ckt Test Min"
+						units="amps"
+						columnIndex="221"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for [Unused] 400V Ground Fault Open Circuit Test. (Power Can channel GFZ00)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFZ00_Max"
+						longName="GFZ00/ [Unused] 400V GF-Open Ckt Test Max"
+						units="amps"
+						columnIndex="222"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for [Unused] 400V Ground Fault Open Circuit Test. (Power Can GFZ00)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFZ00_Err_Flag"
+						longName="GFZ00/ [Unused] 400V GF-Open Ckt Test Err Flag"
+						units="0isgood"
+						columnIndex="223"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for [Unused] 400V Ground Fault Open Circuit Test. (Power Can channel GFZ00)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_GFL00_Label"
+						longName="GFL00: [Unused] 400V GF-Low Side (Channel Label)"
+						units="none"
+						columnIndex="224"
+						format="string" >
+						<description>Label for GFL00. This channel is the Channel Label for the [Unused] 400V Ground Fault Low Side.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFL00_Avg"
+						longName="GFL00/ [Unused] 400V GF-Low Side Avg"
+						units="amps"
+						columnIndex="225"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for [Unused] 400V Ground Fault Low Side. (Power Can channel GFL00)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFL00_NumSamps"
+						longName="GFL00/ [Unused] 400V GF-Low Side Number of Samples"
+						units="count"
+						columnIndex="226"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for [Unused] 400V Ground Fault Low Side. (Power Can channel GFL00)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFL00_Min"
+						longName="GFL00/ [Unused] 400V GF-Low Side Min"
+						units="amps"
+						columnIndex="227"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for [Unused] 400V Ground Fault Low Side. (Power Can channel GFL00)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFL00_Max"
+						longName="GFL00/ [Unused] 400V GF-Low Side Max"
+						units="amps"
+						columnIndex="228"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for [Unused] 400V Ground Fault Low Side. (Power Can GFL00)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFL00_Err_Flag"
+						longName="GFL00/ [Unused] 400V GF-Low Side Err Flag"
+						units="0isgood"
+						columnIndex="229"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for [Unused] 400V Ground Fault Low Side. (Power Can channel GFL00)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_GFH00_Label"
+						longName="GFH00: [Unused] 400V GF-High Side (Channel Label)"
+						units="none"
+						columnIndex="230"
+						format="string" >
+						<description>Label for GFH00. This channel is the Channel Label for the [Unused] 400V Ground Fault High Side.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFH00_Avg"
+						longName="GFH00/ [Unused] 400V GF-High Side Avg"
+						units="amps"
+						columnIndex="231"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for [Unused] 400V Ground Fault High Side. (Power Can channel GFH00)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFH00_NumSamps"
+						longName="GFH00/ [Unused] 400V GF-High Side Number of Samples"
+						units="count"
+						columnIndex="232"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for [Unused] 400V Ground Fault High Side. (Power Can channel GFH00)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFH00_Min"
+						longName="GFH00/ [Unused] 400V GF-High Side Min"
+						units="amps"
+						columnIndex="233"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for [Unused] 400V Ground Fault High Side. (Power Can channel GFH00)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFH00_Max"
+						longName="GFH00/ [Unused] 400V GF-High Side Max"
+						units="amps"
+						columnIndex="234"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for [Unused] 400V Ground Fault High Side. (Power Can GFH00)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFH00_Err_Flag"
+						longName="GFH00/ [Unused] 400V GF-High Side Err Flag"
+						units="0isgood"
+						columnIndex="235"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for [Unused] 400V Ground Fault High Side. (Power Can channel GFH00)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_GFT00_Label"
+						longName="GFT00: [Unused] 400V GF-Self Test (Channel Label)"
+						units="none"
+						columnIndex="236"
+						format="string" >
+						<description>Label for GFT00. This channel is the Channel Label for the [Unused] 400V Ground Fault Self Test.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFT00_Avg"
+						longName="GFT00/ [Unused] 400V GF-Self Test Avg"
+						units="amps"
+						columnIndex="237"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for [Unused] 400V Ground Fault Self Test. (Power Can channel GFT00)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFT00_NumSamps"
+						longName="GFT00/ [Unused] 400V GF-Self Test Number of Samples"
+						units="count"
+						columnIndex="238"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for [Unused] 400V Ground Fault Self Test. (Power Can channel GFT00)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFT00_Min"
+						longName="GFT00/ [Unused] 400V GF-Self Test Min"
+						units="amps"
+						columnIndex="239"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for [Unused] 400V Ground Fault Self Test. (Power Can channel GFT00)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFT00_Max"
+						longName="GFT00/ [Unused] 400V GF-Self Test Max"
+						units="amps"
+						columnIndex="240"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for [Unused] 400V Ground Fault Self Test. (Power Can GFT00)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFT00_Err_Flag"
+						longName="GFT00/ [Unused] 400V GF-Self Test Err Flag"
+						units="0isgood"
+						columnIndex="241"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for [Unused] 400V Ground Fault Self Test. (Power Can channel GFT00)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_GFZ01_Label"
+						longName="GFZ01: 48V GF-Open Ckt Test (Channel Label)"
+						units="none"
+						columnIndex="242"
+						format="string" >
+						<description>Label for GFZ01. This channel is the Channel Label for the 48V Ground Fault Open Circuit Test.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFZ01_Avg"
+						longName="GFZ01/ 48V GF-Open Ckt Test Avg"
+						units="amps"
+						columnIndex="243"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for 48V Ground Fault Open Circuit Test. (Power Can channel GFZ01)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFZ01_NumSamps"
+						longName="GFZ01/ 48V GF-Open Ckt Test Number of Samples"
+						units="count"
+						columnIndex="244"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for 48V Ground Fault Open Circuit Test. (Power Can channel GFZ01)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFZ01_Min"
+						longName="GFZ01/ 48V GF-Open Ckt Test Min"
+						units="amps"
+						columnIndex="245"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for 48V Ground Fault Open Circuit Test. (Power Can channel GFZ01)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFZ01_Max"
+						longName="GFZ01/ 48V GF-Open Ckt Test Max"
+						units="amps"
+						columnIndex="246"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for 48V Ground Fault Open Circuit Test. (Power Can GFZ01)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFZ01_Err_Flag"
+						longName="GFZ01/ 48V GF-Open Ckt Test Err Flag"
+						units="0isgood"
+						columnIndex="247"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for 48V Ground Fault Open Circuit Test. (Power Can channel GFZ01)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_GFL01_Label"
+						longName="GFL01: 48V GF-Low Side (Channel Label)"
+						units="none"
+						columnIndex="248"
+						format="string" >
+						<description>Label for GFL01. This channel is the Channel Label for the 48V Ground Fault Low Side.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFL01_Avg"
+						longName="GFL01/ 48V GF-Low Side Avg"
+						units="amps"
+						columnIndex="249"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for 48V Ground Fault Low Side. (Power Can channel GFL01)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFL01_NumSamps"
+						longName="GFL01/ 48V GF-Low Side Number of Samples"
+						units="count"
+						columnIndex="250"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for 48V Ground Fault Low Side. (Power Can channel GFL01)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFL01_Min"
+						longName="GFL01/ 48V GF-Low Side Min"
+						units="amps"
+						columnIndex="251"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for 48V Ground Fault Low Side. (Power Can channel GFL01)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFL01_Max"
+						longName="GFL01/ 48V GF-Low Side Max"
+						units="amps"
+						columnIndex="252"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for 48V Ground Fault Low Side. (Power Can GFL01)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFL01_Err_Flag"
+						longName="GFL01/ 48V GF-Low Side Err Flag"
+						units="0isgood"
+						columnIndex="253"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for 48V Ground Fault Low Side. (Power Can channel GFL01)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_GFH01_Label"
+						longName="GFH01: 48V GF-High Side (Channel Label)"
+						units="none"
+						columnIndex="254"
+						format="string" >
+						<description>Label for GFH01. This channel is the Channel Label for the 48V Ground Fault High Side.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFH01_Avg"
+						longName="GFH01/ 48V GF-High Side Avg"
+						units="amps"
+						columnIndex="255"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for 48V Ground Fault High Side. (Power Can channel GFH01)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFH01_NumSamps"
+						longName="GFH01/ 48V GF-High Side Number of Samples"
+						units="count"
+						columnIndex="256"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for 48V Ground Fault High Side. (Power Can channel GFH01)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFH01_Min"
+						longName="GFH01/ 48V GF-High Side Min"
+						units="amps"
+						columnIndex="257"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for 48V Ground Fault High Side. (Power Can channel GFH01)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFH01_Max"
+						longName="GFH01/ 48V GF-High Side Max"
+						units="amps"
+						columnIndex="258"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for 48V Ground Fault High Side. (Power Can GFH01)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFH01_Err_Flag"
+						longName="GFH01/ 48V GF-High Side Err Flag"
+						units="0isgood"
+						columnIndex="259"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for 48V Ground Fault High Side. (Power Can channel GFH01)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_GFT01_Label"
+						longName="GFT01: 48V GF-Self Test (Channel Label)"
+						units="none"
+						columnIndex="260"
+						format="string" >
+						<description>Label for GFT01. This channel is the Channel Label for the 48V Ground Fault Self Test.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFT01_Avg"
+						longName="GFT01/ 48V GF-Self Test Avg"
+						units="amps"
+						columnIndex="261"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for 48V Ground Fault Self Test. (Power Can channel GFT01) 500-1000 uA high side fault; sampled once/minute
+</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFT01_NumSamps"
+						longName="GFT01/ 48V GF-Self Test Number of Samples"
+						units="count"
+						columnIndex="262"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for 48V Ground Fault Self Test. (Power Can channel GFT01) 500-1000 uA high side fault; sampled once/minute
+</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFT01_Min"
+						longName="GFT01/ 48V GF-Self Test Min"
+						units="amps"
+						columnIndex="263"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for 48V Ground Fault Self Test. (Power Can channel GFT01) 500-1000 uA high side fault; sampled once/minute
+</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFT01_Max"
+						longName="GFT01/ 48V GF-Self Test Max"
+						units="amps"
+						columnIndex="264"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for 48V Ground Fault Self Test. (Power Can GFT01) 500-1000 uA high side fault; sampled once/minute
+</description>
+					</RecordVariable>
+					<RecordVariable
+						name="GFT01_Err_Flag"
+						longName="GFT01/ 48V GF-Self Test Err Flag"
+						units="0isgood"
+						columnIndex="265"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for 48V Ground Fault Self Test. (Power Can channel GFT01) 500-1000 uA high side fault; sampled once/minute
+</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_WS00_Label"
+						longName="WS00: Batt Box H2O (Channel Label)"
+						units="none"
+						columnIndex="266"
+						format="string" >
+						<description>Label for WS00. This channel is the Channel Label for the Battery Box Water Sensor.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="WS00_NumSamps"
+						longName="WS00/ Batt Box H2O NumSamps"
+						units="count"
+						columnIndex="267"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for Battery Box Water Sensor. (Power Can channel WS00)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="WS00_A-N0"
+						longName="WS00/ Batt Box H2O A (=North 0) flag"
+						units="none"
+						columnIndex="268"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The A (=North 0) flag for Battery Box Water Sensor. (Power Can channel WS00)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="WS00_B-N1"
+						longName="WS00/ Batt Box H2O B/N1"
+						units="none"
+						columnIndex="269"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The B (=North 1) flag for Battery Box Water Sensor. (Power Can channel WS00)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="WS00_C-E0"
+						longName="WS00/ Batt Box H2O C/E0"
+						units="none"
+						columnIndex="270"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The C (=East 0) flag for Battery Box Water Sensor. (Power Can WS00)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="WS00_D-E1"
+						longName="WS00/ Batt Box H2O D/E1"
+						units="none"
+						columnIndex="271"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The D (=East 1) flag for Battery Box Water Sensor. (Power Can channel WS00)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_WS01_Label"
+						longName="WS01: Batt Box H2O (Channel Label)"
+						units="none"
+						columnIndex="272"
+						format="string" >
+						<description>Label for WS01. This channel is the Channel Label for the Battery Box Water Sensor.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="WS01_NumSamps"
+						longName="WS01/ Batt Box H2O NumSamps"
+						units="count"
+						columnIndex="273"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for Battery Box Water Sensor. (Power Can channel WS01)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="WS01_A-N0"
+						longName="WS01/ Batt Box H2O A (=North 0) flag"
+						units="none"
+						columnIndex="274"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The A (=North 0) flag for Battery Box Water Sensor. (Power Can channel WS01)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="WS01_B-N1"
+						longName="WS01/ Batt Box H2O B/N1"
+						units="none"
+						columnIndex="275"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The B (=North 1) flag for Battery Box Water Sensor. (Power Can channel WS01)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="WS01_C-E0"
+						longName="WS01/ Batt Box H2O C/E0"
+						units="none"
+						columnIndex="276"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The C (=East 0) flag for Battery Box Water Sensor. (Power Can WS01)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="WS01_D-E1"
+						longName="WS01/ Batt Box H2O D/E1"
+						units="none"
+						columnIndex="277"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The D (=East 1) flag for Battery Box Water Sensor. (Power Can channel WS01)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_PRES_Label"
+						longName="PRES: Pwr Can Internal Pressure (Channel Label)"
+						units="none"
+						columnIndex="278"
+						format="string" >
+						<description>Label for PRES. This channel is the Channel Label for the Power Can Internal Pressure.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="PRES_Avg"
+						longName="PRES/ Pwr Can Internal Pressure Avg"
+						units="millibars"
+						columnIndex="279"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for Power Can Internal Pressure. (Power Can channel PRES)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="PRES_NumSamps"
+						longName="PRES/ Pwr Can Internal Pressure Number of Samples"
+						units="count"
+						columnIndex="280"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for Power Can Internal Pressure. (Power Can channel PRES)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="PRES_Min"
+						longName="PRES/ Pwr Can Internal Pressure Min"
+						units="millibars"
+						columnIndex="281"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for Power Can Internal Pressure. (Power Can channel PRES)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="PRES_Max"
+						longName="PRES/ Pwr Can Internal Pressure Max"
+						units="millibars"
+						columnIndex="282"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for Power Can Internal Pressure. (Power Can PRES)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="PRES_Err_Flag"
+						longName="PRES/ Pwr Can Internal Pressure Err Flag"
+						units="0isgood"
+						columnIndex="283"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for Power Can Internal Pressure. (Power Can channel PRES)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_TMP1_Label"
+						longName="TMP1: Pressure Sensor Temperature (Channel Label)"
+						units="none"
+						columnIndex="284"
+						format="string" >
+						<description>Label for TMP1. This channel is the Channel Label for the Pressure Sensor Temperature.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="TMP1_Avg"
+						longName="TMP1/ Pressure Sensor Temperature Avg"
+						units="deg C"
+						columnIndex="285"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for Pressure Sensor Temperature. (Power Can channel TMP1)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="TMP1_NumSamps"
+						longName="TMP1/ Pressure Sensor Temperature Number of Samples"
+						units="count"
+						columnIndex="286"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for Pressure Sensor Temperature. (Power Can channel TMP1)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="TMP1_Min"
+						longName="TMP1/ Pressure Sensor Temperature Min"
+						units="deg C"
+						columnIndex="287"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for Pressure Sensor Temperature. (Power Can channel TMP1)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="TMP1_Max"
+						longName="TMP1/ Pressure Sensor Temperature Max"
+						units="deg C"
+						columnIndex="288"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for Pressure Sensor Temperature. (Power Can TMP1)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="TMP1_Err_Flag"
+						longName="TMP1/ Pressure Sensor Temperature Err Flag"
+						units="0isgood"
+						columnIndex="289"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for Pressure Sensor Temperature. (Power Can channel TMP1)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_HUMI_Label"
+						longName="HUMI: Pwr Can Internal Humidity (Channel Label)"
+						units="none"
+						columnIndex="290"
+						format="string" >
+						<description>Label for HUMI. This channel is the Channel Label for the Power Can Internal Humidity.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="HUMI_Avg"
+						longName="HUMI/ Pwr Can Internal Humidity Avg"
+						units="% RH"
+						columnIndex="291"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for Power Can Internal Humidity. (Power Can channel HUMI)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="HUMI_NumSamps"
+						longName="HUMI/ Pwr Can Internal Humidity Number of Samples"
+						units="count"
+						columnIndex="292"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for Power Can Internal Humidity. (Power Can channel HUMI)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="HUMI_Min"
+						longName="HUMI/ Pwr Can Internal Humidity Min"
+						units="% RH"
+						columnIndex="293"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for Power Can Internal Humidity. (Power Can channel HUMI)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="HUMI_Max"
+						longName="HUMI/ Pwr Can Internal Humidity Max"
+						units="% RH"
+						columnIndex="294"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for Power Can Internal Humidity. (Power Can HUMI)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="HUMI_Err_Flag"
+						longName="HUMI/ Pwr Can Internal Humidity Err Flag"
+						units="0isgood"
+						columnIndex="295"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for Power Can Internal Humidity. (Power Can channel HUMI)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Channel_TMP2_Label"
+						longName="TMP2: Humidity Sensor Temperature (Channel Label)"
+						units="none"
+						columnIndex="296"
+						format="string" >
+						<description>Label for TMP2. This channel is the Channel Label for the Humidity Sensor Temperature.</description>
+					</RecordVariable>
+					<RecordVariable
+						name="TMP2_Avg"
+						longName="TMP2/ Humidity Sensor Temperature Avg"
+						units="deg C"
+						columnIndex="297"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Average for Humidity Sensor Temperature. (Power Can channel TMP2)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="TMP2_NumSamps"
+						longName="TMP2/ Humidity Sensor Temperature Number of Samples"
+						units="count"
+						columnIndex="298"
+						format="long" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Number of Samples for Humidity Sensor Temperature. (Power Can channel TMP2)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="TMP2_Min"
+						longName="TMP2/ Humidity Sensor Temperature Min"
+						units="deg C"
+						columnIndex="299"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Minimum for Humidity Sensor Temperature. (Power Can channel TMP2)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="TMP2_Max"
+						longName="TMP2/ Humidity Sensor Temperature Max"
+						units="deg C"
+						columnIndex="300"
+						format="double" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Maximum for Humidity Sensor Temperature. (Power Can TMP2)</description>
+					</RecordVariable>
+					<RecordVariable
+						name="TMP2_Err_Flag"
+						longName="TMP2/ Humidity Sensor Temperature Err Flag"
+						units="0isgood"
+						columnIndex="301"
+						format="int" parseRegExp="^[A-Z]+([-+0-9].*)" >
+							<description>The Error Flag Value for Humidity Sensor Temperature. (Power Can channel TMP2)</description>
+					</RecordVariable>
+
+					<RecordVariable
+						name="Checkstring_Data"
+						longName="CheckString Data"
+						units="string"
+						columnIndex="302" format="string" >
+							<description>Just the word DATA</description>
+					</RecordVariable>
+					<RecordVariable
+						name="Checkstring_Count"
+						longName="CheckString Count"
+						units="string"
+						columnIndex="303" format="string" >
+							<description>Just the word COUNT</description>
+					</RecordVariable>
+					<RecordVariable
+						name="Data_Count"
+						longName="Number of Bytes Transmitted in Record"
+						units="count"
+						columnIndex="304" format="int" >
+							<description>Total bytes transmitted</description>
+					</RecordVariable>
+<!--                                                        -->
+<!--    End of automatically generated XML.                 -->
+<!--                                                        -->
+
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

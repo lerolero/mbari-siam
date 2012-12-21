@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1758.xml,v 1.1 2010/06/17 18:30:23 bobh Exp $	-->
+<!-- Last edited by $Author: bobh $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ssds.mbari.org/xml/schema/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="2" lastAuthor="$Author: bobh $" lastUpdate="$Date: 2010/06/17 18:30:23 $" >
+	<Deployment role="Instrument">
+		<Device	id="1758" name="CPU Temperature" type="CPU Temperature" 
+			mfgName="Lippert" mfgModel="Cool RoadRunner LX-800" mfgSerialNumber="803-0010-00 4208.135503">
+			<description>CPU Temperature from CPU Chip</description>
+			<!-- If the CPU stack is changed, e.g. to foce2, a different equipment ID number should be used -->
+			<Person	firstname="Bob" surname="Herlien" organization="MBARI"
+			email="bobh@mbari.org" phone="831-775-1750"/>
+		</Device>
+		<output>
+			<DataStream>
+				<description>CPU Temperature data stream</description>
+				<RecordDescription bufferStyle="ASCII"
+					bufferParseType="ordered"
+					bufferItemSeparator=" "
+					bufferLengthType="variable"
+					parseable="true" recordType="1">
+					<!-- Sample Record:
+						29 17
+					-->
+					<!--
+						Comments:
+					-->
+					<RecordVariable
+						name="CPUTemperature"
+						longName="CPU Temperature"
+						units="degrees C"
+						columnIndex="1"
+						format="float" >
+						<description>CPU Temperature</description>
+						<StandardVariable name="temperature" namespaceUriString="http://mmisw.org/ont/mmi/eqtenvirons/" />
+					</RecordVariable>
+					<RecordVariable
+						name="AmbientTemperature"
+						longName="Ambient Temperature measured by CPU chip"
+						units="degrees C"
+						columnIndex="2"
+						format="float" >
+						<description>Ambient Temperature</description>
+						<StandardVariable name="temperature" namespaceUriString="http://mmisw.org/ont/mmi/eqtenvirons/" />
+					</RecordVariable>
+					
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

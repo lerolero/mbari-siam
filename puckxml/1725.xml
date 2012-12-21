@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1725.xml,v 1.6 2009/05/31 17:52:57 graybeal Exp $	-->
+<!-- Last edited by $Author: graybeal $	$Date: 2009/05/31 17:52:57 $   -->
+
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:noNamespaceSchemaLocation="http://ssds.mbari.org/xml/schema/SSDS_Metadata.xsd"
+	majorVersion="1" minorVersion="5" 
+	lastAuthor="$Author: graybeal $" lastUpdate="$Date: 2009/05/31 17:52:57 $">
+	
+	<Deployment role="instrument">
+		<Device id="1725" name="Digital pH Sensor" type="pH" 
+			mfgName="MBARI"  mfgModel="Digital SBE18" mfgSerialNumber="180514A">
+			<description>SeaBird SBE18 pH sensor in digital housing</description>
+			<Person	firstname="Thom" surname="Maughan" organization="MBARI"
+				email="tm@mbari.org" phone="831-775-1865"/>
+		</Device>
+		
+		<output>
+			<DataStream>
+				<description>Processed pH Sensor Stream; takes data from digital pH sensor (first field), and adds calculated pH and values used in calculation</description>
+				<RecordDescription bufferStyle="ascii" 
+					parseable="true" 
+					recordType="1"
+					bufferParseType="ordered"
+					bufferItemSeparator=" "
+					bufferLengthType="variable">
+					<RecordVariable
+						name="pH_Voltage"
+						longName="pH Voltage"
+						units="mV"	
+						columnIndex="1"
+						format="float" parseRegExp="*%f" >
+						<description>Response from sensor (includes leading '*') containing voltage corresponding to pH level</description>
+						<StandardVariable name="sea_water_pH_in_raw_units" namespaceUriString="http://mmisw.org/ont/ssds/cfnotionalterm/"/>
+					</RecordVariable>
+					<RecordVariable
+						name="pH"
+						longName="Calculated pH (Total Scale)"
+						units="pH"	
+						columnIndex="2"
+						format="float" >
+						<description>Calculated pH</description>
+						<StandardVariable name="sea_water_pH_reported_on_total_scale" namespaceUriString="http://mmisw.org/ont/cf/parameter/"/>
+					</RecordVariable>
+					<RecordVariable
+						name="Sea_Water_Temperature"
+						longName="Water temperature for pH calculation"
+						units="deg C"
+						columnIndex="3"
+						format="float" >
+						<description>water temperature (obtained from CTD) used in calculation of pH</description>
+						<StandardVariable name="sea_water_temperature" namespaceUriString="http://mmisw.org/ont/cf/parameter/"/>
+					</RecordVariable>
+					<RecordVariable
+						name="pH_correction"
+						longName="Correction factor for pH calculation"
+						units="ph_units"
+						columnIndex="4"
+						format="float" >
+						<description>correction value added to calculated pH to produce correct value (set after in-situ calibration)</description>
+						<StandardVariable name="calibration_correction" namespaceUriString="http://mmisw.org/ont/ssds/coefficient/"/>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1215.xml,v 1.1 2006/04/04 15:53:46 rich Exp $	-->
+<!-- Last edited by $Author: rich $	$Date: 2006/04/04 15:53:46 $   -->
+
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:noNamespaceSchemaLocation="http://ssds.shore.mbari.org/ssdsdata/config/schema/2004cimt/SSDS_Metadata.xsd"
+    majorVersion="1" minorVersion="0" lastAuthor="$Author: rich $" lastUpdate="$Date: 2006/04/04 15:53:46 $">
+	<Deployment role="instrument">
+		<Device id="1215" 
+		name="Smart Star" 
+		type="Multipurpose" 
+		mfgName="Z-World" 
+		mfgModel="Smart Star" 
+		mfgSerialNumber="unknown"
+		preferredDeploymentRole="Instrument">
+			<description>Multi-channel analog to digital converter (ADC) with digital I/O</description>
+			<Person firstname="Tom" surname="Oreilly" 
+			organization="MBARI" email="oreilly@mbari.org"/>
+		</Device>
+		<output>
+			<DataStream>
+				<description>Smart Star Data Stream</description>
+				<RecordDescription bufferStyle="binary" bufferLengthType="variable" parseable="false" recordType="1">
+				    <RecordVariable name="Smart_Star_Data" longName="Smart_Star_Datastream" units="noUnits" columnIndex="1" >
+						<description>Smart-Star data must be decoded for use.</description>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>

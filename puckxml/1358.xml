@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Header: /home/cvs/puckxml/1358.xml,v 1.4 2009/10/06 00:04:59 mccann Exp $	-->
+<!-- Last edited by $Author: mccann $   -->
+<Metadata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:noNamespaceSchemaLocation="http://dods.mbari.org/data/ssdsdata/config/schema/2004oasis/SSDS_Metadata.xsd"
+		majorVersion="1" minorVersion="1" lastAuthor="$Author: mccann $" lastUpdate="$Date: 2009/10/06 00:04:59 $">
+	<Deployment role="instrument" nominalDepth="1">
+		<Device id="1358"></Device>
+		<output>
+			<DataStream>
+				<description>Serial CTD data stream</description>
+				<RecordDescription bufferStyle="ASCII" bufferParseType="ordered"
+						bufferItemSeparator="," bufferLengthType="variable" parseable="true"
+						recordType="1">
+					<!-- Sample Record:
+						22.9091, 0.00004, 30 Apr 2004, 22:52:25
+					-->
+					<RecordVariable name="Temperature" longName="Water Temperature" units="deg C"
+							columnIndex="1" format="float">
+						
+						<StandardVariable name="sea_water_temperature"/>
+					</RecordVariable>
+					<RecordVariable name="Conductivity" longName="Conductivity" units="S/m"
+							columnIndex="2" format="float">
+						
+						<StandardVariable name="sea_water_electrical_conductivity"/>
+					</RecordVariable>
+					<RecordVariable name="Date" longName="Date of Sample" units="dd_MMM_yyyy"
+							columnIndex="3" format="string">
+						<description>date in 'dd MMM yyyy' format</description>
+					
+					</RecordVariable>
+					<RecordVariable name="Time" longName="Time of Day" units="hh-mm-ss"
+							columnIndex="4" format="string">
+						<description>time of day in hh:mm:ss format</description>
+					</RecordVariable>
+				</RecordDescription>
+			</DataStream>
+		</output>
+	</Deployment>
+</Metadata>
+
