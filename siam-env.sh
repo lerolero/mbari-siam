@@ -1,7 +1,9 @@
 #!/bin/bash
-# Set up SIAM environmnent
+# Set up SIAM environment
 
-export SIAM_HOME=/Users/oreilly/siam2
+# Set SIAM_HOME to your SIAM home directory
+export SIAM_HOME=/Users/oreilly/tmp/siam
+
 alias gosiam="cd $SIAM_HOME"
 alias inf="export LOG4J_THRESHOLD=INFO"
 alias dbg="export LOG4J_THRESHOLD=DEBUG"
