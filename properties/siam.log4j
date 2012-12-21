@@ -5,7 +5,7 @@
 # http://www.vipan.com/htdocs/log4jhelp.html
 
 #log4j.rootCategory=WARN, stdout, rolling, lf5
-log4j.rootCategory=INFO, rolling
+log4j.rootCategory=INFO, stdout
 
 # Set logging level for specific packages 
 
