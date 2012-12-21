@@ -2,7 +2,7 @@
 # Set up SIAM environment
 
 # Set SIAM_HOME to your SIAM home directory
-export SIAM_HOME=/Users/oreilly/tmp/siam
+export SIAM_HOME=/Users/oreilly/tmp/mbari-siam
 
 alias gosiam="cd $SIAM_HOME"
 alias inf="export LOG4J_THRESHOLD=INFO"
