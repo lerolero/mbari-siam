@@ -88,21 +88,21 @@ We have successfully used JDK 6.x, J2SE 1.3.1, J2SE 1.4.2, J2SE 5.0
 <td>All SIAM code maintains compatibility with Java 1.3 to support older embedded JVMs</td>
 </tr>
 <tr>
-<td>Gnu Utilities</td>
-<td>
-SIAM is built using the Gnu tool chain (make, gcc).<br />
-The SIAM utilities use various shells and scripts, primarily  
-bash, csh, Perl
-</td>
-<td><a href="http://www.gnu.org" target="blank">http://www.gnu.org</a></td>
-<td>GNU make 3.81 (version 3.80 for Cygwin)<br />
-gcc version 4.2.1<br />
-Other versions may work, but have not been tested<br />
-Cygwin can provide these for Windows users<br />
-(see optional packages below)
-</td>
+<td>Apache Ant</td>
+<td><p>Ant is to build SIAM as an alternative to make. Also used to build PUCK classes.</p></td>
+<td><a href="http://ant.apache.org" target="blank">http://ant.apache.org</a></td>
+<td>version 1.8 or higher is required</td>
 </tr>
 <tr class="alt">
+<td>Gnu Utilities</td>
+<td>
+<p>The SIAM utilities use various shells and scripts, primarily  
+bash, csh, Perl</p>
+</td>
+<td><a href="http://www.gnu.org" target="blank">http://www.gnu.org</a></td>
+<td></td>
+</tr>
+<tr>
 <td>RXTX</td>
 <td>
 Version 2.1-7r2<br />
@@ -116,17 +116,17 @@ RXTX is a native library (using JNO) providing serial and parallel communication
 We do not have a license to distribute RXTX, so it is necessary to obtain and install RXTX from the developers.<br />
 The RXTX website has been undergoing some changes and availability has been spotty<br />if the first URL is not working, try the listed alternatives</td>
 </tr>
-<tr>
+<tr class="alt">
 <td>Open Source Data Turbine (OSDT)</td>
-<td>Streaming data middleware system that lets you stream live data from
+<td><p>Streaming data middleware system that lets you stream live data from
 experiments, labs, webcams, etc. <br />
-SIAM uses OSDT to provide a data stream pub/sub mechanism for other applications, including other SIAM services and visualization tools like RDV.
+SIAM uses OSDT to provide a data stream pub/sub mechanism for other applications, including other SIAM services and visualization tools like RDV.</p>
  </td>
 <td><a href="http://www.dataturbine.org" target="blank">http://www.dataturbine.org</a></td>
 <td>
 </td>
 </tr>
-<tr class="alt">
+<tr>
 <td>log4j</td>
 <td>
 Version 1.2<br />
@@ -162,18 +162,12 @@ The following table describes optional software packages for SIAM
   <th>Notes</th>
 </tr>
 <tr class="alt">
-<td>Apache Ant</td>
-<td>Ant may be used to build SIAM as an alternative to make. Also used to build PUCK classes.</td>
-<td><a href="http://ant.apache.org" target="blank">http://ant.apache.org</a></td>
-<td>-</td>
-</tr>
-<tr>
 <td>Cygwin</td>
 <td>Cygwin provides an environment similar to Unix/Linux for Win32, including ports for a wide range of Gnu software</td>
 <td><a href="http://www.cygwin.com" target="blank">http://www.cygwin.com</a></td>
 <td>An editor capable of saving files in Unix format (no DOS line ends) is needed, e.g. vi, emacs, etc. several are available as optional Cygwin packages.</td>
 </tr>
-<tr class="alt">
+<tr>
 <td>Real-time Data Viewer<br />(RDV)</td>
 <td>RDV is a visualization environment for scientific and engineering data. <br />
 Built on top of the Data Turbine  dynamic data server, it supports local and remote data sources and can visualize numeric, video, image, and audio data in a number of different ways. 
@@ -185,6 +179,21 @@ Support and more information may be found at Palta Software:
 <a href="http://www.paltasoftware.com/rdv/" target="blank">http://www.paltasoftware.com/rdv/</a>
 </td>
 <td>-</td>
+</tr>
+<tr class="alt">
+<td>Gnu Utilities</td>
+<td>
+SIAM may be built using the Gnu tool chain (make, gcc).<br />
+The SIAM utilities use various shells and scripts, primarily  
+bash, csh, Perl
+</td>
+<td><a href="http://www.gnu.org" target="blank">http://www.gnu.org</a></td>
+<td>GNU make 3.81 (version 3.80 for Cygwin)<br />
+gcc version 4.2.1<br />
+Other versions may work, but have not been tested<br />
+Cygwin can provide these for Windows users<br />
+(see optional packages below)
+</td>
 </tr>
 <!--
 <tr>
@@ -229,12 +238,14 @@ To make things less confusing, we'll refer to this user as &quot;ops&quot; or &q
 <h2>SIAM Source</h2>
 
 <p>
-The SIAM code is currently shared under royalty-free license through collaborator agreements.
-To obtain a license, please contact the <a href="mailto:itd@mbari.org">Director of Information and Technology Dissemination</a> at MBARI.
+The SIAM code is currently shared under an open source license. The code repository is hosted externally <a href="http://code.google.com/p/mbari-siam/">at this site</a>.
 </p>
 <p>
-SIAM is distributed as a tar.gz archive. As user ops, the distribution should be unpacked on the computer that will be used to build the source tree. 
-This will create a directory named siam2.<br />
+SIAM is distributed as a mercurial archive. 
+Obtain a local copy of the mbari-siam repository with this command:<br />
+<pre class="indented">
+<code>hg clone https://code.google.com/p/mbari-siam/</code>
+</pre>
 </p>
 <div class="emphasis">Win32 note: do not install siam in a path whose name contains any whitespace (e.g. &quot;My Documents&quot;), as it will interfere with make and javac</div><br />
 The top-level directory structure under siam2 is described in the following table:
@@ -572,6 +583,19 @@ It is often convenient to set the environment during login initialization (using
 Example scripts are included in the SIAM source package (siam2/build/siam-env.*).
 </p>
 
+<h3>Ant Build Files</h3>
+<p>
+SIAM uses Apache ant to create SIAM JAR files and instrument PUCK JAR files. 
+Ant requires that two files, build.properties and build.xml, be located at the top of the build directory.
+build.properties contains build environment variable definitions.<br />
+build.xml contains build target definitions (much like a Makefile).<br />
+Issuing the ant command will automatically build the default target (in this case, all of the SIAM files).
+</p>
+<p>
+In addition to build.xml, the SIAM distribution contains a number of other build configurations for generating PUCK JAR files.
+These should also be located in the top level SIAM directory (SIAM_HOME).
+</p>
+<!--
 <h3>Makefiles</h3>
 <p>
 There is a system of Makefiles used to build SIAM. The Java classes for each 
@@ -617,10 +641,22 @@ Create a symbolic link to with this name to the siam2 directory as follows befor
 <div class="commands">
 ln -s siam2 siam
 </div>
+-->
 <p></p>
 
 <h3>Build targets</h3>
-The table below defines various targets that may be built using the SIAM makefiles:
+To make specific targets use<br \>
+<div class="commands">
+ant <target-name><br />
+</div>
+To see a list of availble targets, use<br \>
+<div class="commands">
+ant help<br />
+</div>
+<p>
+Among the targets listed are additional topics to provide detailed help on specified targets and their sub-targets.
+The table below describes several common targets that may be built:
+</p>
 <table class="altTable">
 <tr>
   <th>Build Target</th>
@@ -630,6 +666,7 @@ The table below defines various targets that may be built using the SIAM makefil
 <td>default</td>
 <td>Builds all SIAM Java classes</td>
 </tr>
+<!--
 <tr class="alt">
 <td>deployed</td>
 <td>
@@ -648,6 +685,7 @@ Includes shoreUtils, portal, documentation, etc.
 </p>
 </td>
 </tr>
+-->
 <tr class="alt">
 <td>siamjar</td>
 <td>
@@ -657,8 +695,8 @@ Does not include instrument service classes (which are obtained dynamically from
 </td>
 </tr>
 <tr>
-<td>javadoc</td>
-<td><p>Builds SIAM JavaDoc documentation.</p></td>
+<td>siamif</td>
+<td><p>Builds SIAM interface JAR (SIAM class exports for use by 3rd party applications).</p></td>
 </tr>
 <tr class="alt">
 <td>Instrument Service JAR (PUCK) targets</td>
@@ -667,15 +705,22 @@ Instrument service JARs may be configured and built using Makefiles or shell scr
 Depends on instrument service XML not included with SIAM; you may make your own using examples, or supply a placeholder document.  (see below)
 </td>
 </tr>
-
+<tr>
+<td>javadoc</td>
+<td><p>Builds SIAM JavaDoc documentation.</p></td>
+</tr>
+<tr class="alt">
+<td>install</td>
+<td><p>Copies siam.jar to codebase directory</p></td>
+</tr>
 </table>
 
-<h4>Make siamjar</h4>
+<h4>Building siamjar</h4>
 <p>
 If you plan to build and run SIAM on the target, you will need to build the default (build SIAM classes) and siamjar (archive SIAM classes into siam.jar) targets:<br /></p>
 <div class="commands">
-make<br />
-make siamjar
+ant<br />
+ant siamjar
 </div>
 
 <a name="make_jars"></a>
@@ -684,54 +729,40 @@ make siamjar
 Once the SIAM classes have been built, instrument service JAR files may be configured and built.<br />
 There are a couple of ways to do this: using make or a shell script.<br />
 
-The instrument service JAR files (PUCK JARs) are configured in Makefiles/scripts organized by deployment.<br />
-The Makefiles use the mkpuck and mksiamjar utilities, passing in instrument service default configuration parameters, and generate instrument service JAR files in SIAM_HOME/ports.<br />
+The instrument service JAR files (PUCK JARs) are configured in ant build files, organized by deployment.<br />
+The ant build files use the mkpuck and mksiamjar utilities, passing in instrument service default configuration parameters, and generate instrument service JAR files in SIAM_HOME/ports.<br />
 The instrument service JARs used by MBARI include an XML file containing metadata describing the instrument and it's data stream. <br />
 This XML document that accompanies the instrument service may be extracted by the host and used to automatically configure the data handling system.<br />
 This metadata is typically maintained separately from the SIAM repository, since it is instrument-specific.
 </p>
 <p>
-Using Makefiles<br />
-The main makefile (<em class="darkpath">SIAM_HOME/make/Makefile</em>) contains lines that may be uncommented to include the instrument service Makefiles.<br />
-In these files, targets are defined for building related groups of instruments. The targets are given names prepended with the deployment name to prevent target naming conflicts.<br />
-For example a target named &quot;2009FOCE.ctd&quot; builds a set of CTD instrument service JAR files with different IDs and configurations.<br />
-There is generally a default target (e.g. focepucks) for building all of the instrument groups, or targets may be built individually.<br />
+Sample ant build files are included in the documentation in the <em class="darkpath">SIAM_HOME/docs/siam-site/content/examples</em> directory.
+There are example PUCK metadata XML files containing only comments, which are used in the example Makefiles. An example of the MBARI XML schema is also included.
 </p>
-<p>
-Using shell scripts<br />
-Since there are not really any dependencies to be managed, using make is not strictly required.<br />
-The script to configure and build instrument service JAR files may be called by a shell script as well.<br />
-<em class="darkpath">SIAM_HOME/docs/siam-site/examples/makeJars-example.sh</em> is an example of one way to do this that allows groups of JAR files to be built.
-</p>
-<p>
-Sample Makefiles and JAR-building scripts are included in the documentation in the <em class="darkpath">SIAM_HOME/docs/siam-site/content/examples</em> directory.
-There are example XML files containing only comments, which are used in the example Makefiles. An example of the MBARI XML schema is also included.
-Additional Makefile examples (that reference XML not found in the SIAM repository) are included in the SIAM_HOME/make/ directory, e.g. Makefile.2009FOCE, pucks.ALOHA2010 etc.<br />
-</p>
-Here are sample command lines showing how to use the example Makefile and script (execute from SIAM_HOME after uncommenting the appropriate line in make/Makefile):<br /><br />
+Here are sample command lines showing how to use the example ant build commands:<br /><br />
 <div class="commands">
+# show available ant targets<br />
+ant help<br /><br />
 # show available example targets<br />
-make example.help<br /><br />
+ant example.help<br /><br />
 # build example ctd and adcp dummy services<br />
-make example.ctd example.adcp<br />
+ant example.ctd example.adcp<br />
 <br />
-# show available example targets using script<br />
-makeJars-example.sh --help<br /><br />
-# build example ctd and camera services using script<br />
-makeJars-example.sh ctd cam<br />
 </div>
-
+<p>
+SIAM builds may also be managed using the Gnu make utility. Makefile examples (which reference XML not found in the SIAM repository) are included in the SIAM_HOME/make/ directory, e.g. Makefile.2009FOCE, pucks.ALOHA2010 etc.<br />
+</p>
 <p>
 If you are targeting a SIAM application or Portal* build for another machine, you also need to build a distribution using the deployed or shore targets:<br />
 Build an ipkg SIAM distribution for MOOS mooring controller:<br />
 </p>
 <div class="commands">
-make deployed<br />
+ant moos.deployed<br />
 </div>
 <br />
 Build SIAM tar distribution for a Portal:<br /><br />
 <div class="commands">
-make shore<br />
+ant moos.shore<br />
 </div>
 <p><br />
 * a Portal is a telemetry endpoint for a SIAM node that is not continuously connected, e.g., a mooring with satellite communications<br />
