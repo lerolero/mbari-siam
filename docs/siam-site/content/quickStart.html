@@ -14,10 +14,11 @@
 		<ul>
 			<li>Install 3rd party packages
 				<ul>
-					<li>Java SDK 1.3 or higher</li>
-					<li>GNU Make 3.80 (3.81 and above aren't compatible with Windows/Cygwin)</li>
+					<li>Java SDK 1.3 and above</li>
+					<li>Apache ant v1.8 and above</li>
 					<li>bash shell</li>
 					<li>RXTX 2.1-7r2</li>
+				<!--<li>GNU Make 3.80 (3.81 and above aren't compatible with Windows/Cygwin)</li>-->
 					</ul>
               </li>
 			<li>Install SIAM source tree
@@ -45,19 +46,22 @@
 				<li>Build SIAM Java sources
 				<ul>
 					<li><em class="commands1">cd $SIAM_HOME</em></li>
-					<li><em class="commands1">make</em></li>
-					</ul>
+					<li><em class="commands1">ant</em></li>
+                    <li>use <em class="commands1">ant help</em> to see target options</li>
+					<li>SIAM class files may be found in <em class="darkpath">SIAM_HOME/classes</em> directory</li>
+					<li><em class="darkpath">SIAM_HOME/build</em> directory contains siam.jar, javadoc and other export outputs.</li>
+				</ul>
                  </li>
 				<li>Build siamjar
 				<ul>
-					<li><em class="commands1">make siamjar</em></li>
+					<li><em class="commands1">ant siamjar</em></li>
 					</ul>
                  </li>
-				<li>Build instrument service JAR files
+				<li>Build example instrument service JAR files
 				<ul>
-					<li><em class="commands1">make example.all</em></li>
+					<li><em class="commands1">ant example.all</em></li>
 					<li>creates instrument service JAR files in <em class="darkpath">SIAM_HOME/ports</em></li>
-					<li><em class="emphasis">example makefile and shell script are available from</em> <a href="examples.html">example index</a></li>
+					<li><em class="emphasis">example ant build files and shell scripts are available from</em> <a href="examples.html">example index</a></li>
 					</ul>
                  </li>
 				<li>Configure example siamPort.cfg
